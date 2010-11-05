@@ -1,0 +1,2007 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
+<link type="text/css" href="css/jquery.contextMenu.css" rel="stylesheet" />
+<title>Facebook Games Simplifier</title>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.utils.js"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js"></script>
+<script type="text/javascript" src="scripts/time.js"></script>
+<script type="text/javascript" src="scripts/database.js"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js"></script>
+<script type="text/javascript">
+	var bkP = chrome.extension.getBackgroundPage();
+	var userID = bkP.userID;
+	
+	var loaded = 0;	
+	
+	function updateLoaded()
+	{
+		loaded++;
+		
+		$( "#progressbar" ).progressbar('option', 'value', loaded*20);
+		
+		if(loaded == 5)
+		{
+			clearInterval(resizeInt);
+			updateCount();
+			$( "#dialog-loading" ).dialog("close");
+		}
+	}
+	
+	function hiddenFeed(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'BonusesPendingList';
+		
+		if($('div#'+game+opt, '#'+game+'Game').children('div').length == 0)
+		{
+			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds. To unhide it, follow steps in this link:<br /><br /><a href="http://www.kimwoodbridge.com/updated-how-to-unhide-a-facebook-application-or-page/" target="_blank">LINK</a>.</h3>');
+		}
+	}
+
+	function capitaliseFirstLetter(string)
+	{
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	
+	function SelectFavourites(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+		
+		$('input[name="neighArr[]"]', 'div#'+game+opt).removeAttr('checked');
+		
+		$('input[name="neighArr[]"]:lt(20)', 'div#'+game+opt).trigger('click');
+	}
+	
+	function listGifts(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+
+		for(var id in bkP.giftsArray[gameID])
+		{
+			var v = bkP.giftsArray[gameID][id];
+			$('.sendToGiftsList','div#'+game+opt).append('<div class="selectGiftToSend" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+id+'.png"><div style="font-size: 11px;">'+v.name+'</div></div>');
+		}
+		$('.sendToGiftsList','div#'+game+opt).children('div:first').addClass('selected');
+		$('.sendToGiftsList','div#'+game+opt).append('<br class="clear" style="clear:both"/>');
+	}
+	
+	function SendGifts(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+
+		var sendTo = [];
+
+		$('input[name="neighArr[]"]:checked','div#'+game+opt).each(function()
+		{
+			sendTo.push($(this).val());
+		});
+		
+		var gift = $('.sendToGiftsList > div.selected','div#'+game+opt).attr('giftID');
+		
+		var params = {
+			gift: gift,
+			gameID:	gameID,
+			sendTo: sendTo
+		};
+		
+		eval('bkP.'+game+'GetZyngaVars(params)');
+	}
+	
+	function ListNeighbours(gameID, neigh)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+
+		var sortedList = new Array();
+		$('.sendToNeighboursList','div#'+game+opt).html('');
+		
+		for(var id in neigh)
+		{
+			var v = neigh[id];
+			
+			var initialLength = sortedList.length;
+			sortedList.push(v.name);
+			sortedList.sort(); //.reverse();
+			
+			var i = $.inArray(v.name, sortedList);
+			
+			if(v.name.length > 20)
+			{
+				var nameText = v.name.substring(0,20)+'...';
+			}
+			else
+			{
+				var nameText = v.name;
+			}
+			
+			var html = '<div style="float: left; width: 250px;margin-right: 10px;"><input type="checkbox" neighName="'+v.name+'" gameID="'+gameID+'" neighID="'+id+'" value="'+id+'"name="neighArr[]"> <img src="icons/favourite-bw.png" class="addToSendFav" title="Click to add to favourites"> '+nameText+'</div>';
+
+			if(i == initialLength)
+			{
+				$('.sendToNeighboursList','div#'+game+opt).append(html);
+			}
+			else 
+			{
+				$($('.sendToNeighboursList','div#'+game+opt).children("div")[i]).before(html);
+			}
+		}
+		
+		$('.sendToNeighboursList','div#'+game+opt).append('<br style="clear:both" />');
+		
+		$('.sendToFavouritesList','div#'+game+opt).html('');
+		
+		database.db.transaction(function(tx)
+		{
+			tx.executeSql("SELECT * FROM neighbours where gameID = ?", [gameID], function(tx, res)
+			{
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					$('input[neighID="'+res.rows.item(i)['id']+'"]').siblings('img').trigger('click');
+				}
+				$('.sendToFavouritesList','div#'+game+opt).append('<br style="clear:both" />');
+			}, null, database.onSuccess, database.onError);
+		});
+	}
+	
+	
+	function freegiftSuccess(data)
+	{
+		var gameID = data.gameID;
+		var game = gamesData[gameID].systemName;
+		$(getGiftHistoryRow(gameID, data)).prependTo('#'+game+'SendFreeGiftsHistoryList');
+	}
+	
+	function freegiftError()
+	{
+		$('#dialog-error').dialog({
+			buttons:
+			{
+				"OK": function()
+				{
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-error').dialog('open');
+	}
+
+	
+	function getGiftHistoryRow(gameID, v)
+	{
+		var game = gamesData[gameID].systemName;
+		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+v.gift+'.png"><div style="font-size: 11px;">'+v.friend+'</div></div>'
+	}
+	
+	function checkIfBonusIsManual(gameID, typeText)
+	{
+		var ret = false;
+		$(gamesData[gameID].filter.bonusesNewWindow).each(function(k,v)
+		{
+			var re = new RegExp(v, "i") ;
+			
+			if(re.test(typeText))
+			{
+				ret = true;
+				return false;
+			}
+		});
+		
+				
+		return ret;
+	}
+	
+	function checkIfRequestIsManual(gameID, typeText)
+	{
+		var ret = false;
+		$(gamesData[gameID].filter.requestsNewWindow).each(function(k,v)
+		{
+			var re = new RegExp(v, "i") ;
+			
+			if(re.test(typeText))
+			{
+				ret = true;
+				return false;
+			}
+		});
+		
+		return ret;
+	}
+	
+	function getNewBonusRow(gameID, v)
+	{
+		var title = v.title;
+		title = title.replace(/'/gi, '');
+		
+		if(title == 'Get Tricks and Treats')
+		{
+		
+			var opt = Math.round(Math.random());
+			if(opt == 0)
+			{
+				var gift = 'trick';
+			}
+			else
+			{
+				var gift = 'treat';
+			}
+			var newUrl = v.url.replace('tracks.php', 'reward.php');
+			newUrl = newUrl + '&select='+gift;
+		}
+		else
+		{
+			var newUrl = v.url;
+		}
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+	}
+	
+	function getNewRequestRow(gameID, v)
+	{
+		var game = gamesData[gameID].systemName;
+		var title = v.title;
+		title = title.replace(/'/gi, '');
+		
+		if(v.image.indexOf('http') != -1)
+		{
+			var url = v.image;
+		}
+		else
+		{
+			var url = 'icons/reqs/'+game+'/'+v.image+'.png';
+		}
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+	}
+	
+	function getNewManualBonusRow(gameID, v)
+	{
+		var title = v.title;
+		title = title.replace(/'/gi, '');
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem updateTimeAgo manualBonus"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+	}
+	
+	function getNewManualRequestRow(gameID, v)
+	{
+		var game = gamesData[gameID].systemName;
+		var title = v.title;
+		title = title.replace(/'/gi, '');
+
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem updateTimeAgo manualRequest"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="icons/reqs/'+game+'/'+v.image+'.png" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+	}
+	
+	
+	function processManualBonusClick(e)
+	{
+		var gameID = $(e.currentTarget).attr('gameID');
+		$(e.currentTarget).unbind('click');
+		var URI = $(e.currentTarget).attr('url');
+		$(e.currentTarget).remove();
+		database.deleteItem('bonuses', gameID, $(e.currentTarget).attr('id'), 0);		
+		bkP.openURI(URI);
+		updateCount(gameID);
+	}
+	
+	function processManualRequestClick(e)
+	{
+		var gameID = $(e.currentTarget).attr('gameID');
+		$(e.currentTarget).unbind('click');
+		$(e.currentTarget).remove();
+		database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 0);	
+		bkP.getRequestLink($(e.currentTarget).attr('id'), $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
+		updateCount(gameID);
+	}
+	
+	function addNewBonus(data)
+	{
+		var gameID = data[1];
+		var game = gamesData[gameID].systemName;
+		var opt = 'BonusesPendingList';	
+		
+		var v = {	id: data[0],	title: data[2],	text: data[3],	image: data[4],	url: data[5],	time: data[6]	}
+		
+		if(checkIfBonusIsManual(gameID, v.title))
+		{
+			var opt = 'ManualBonusesList';
+			var html = getNewManualBonusRow(gameID, v);
+			var manual = true;
+		}
+		else
+		{		
+			var opt = 'BonusesPendingList';
+			var html = getNewBonusRow(gameID, v);
+			var manual = false;
+		}
+		
+		$('div#'+game+opt, '#'+game+'Game').find('.fvBonusErr').remove();
+		
+		var list = $('div#'+game+opt, '#'+game+'Game').children('div');
+		
+		var found = false;
+		
+		if(list.length > 0)
+		{
+			list.each(function()
+			{
+				if(parseInt($(this).attr('time')) < v.time)
+				{
+					found = true;
+					$(this).before(html);
+					return false;
+				}
+			});
+			if(!found)
+			{
+				$('div#'+game+opt, '#'+game+'Game').children('br').before(html);
+			}
+		}
+		else
+		{
+			$('div#'+game+opt, '#'+game+'Game').prepend(html);
+		}
+
+		if(manual)
+		{
+			$('div#'+v.id).click(processManualBonusClick);
+		}
+		else
+		{
+			$('div#'+v.id).click(processBonusClick);
+		}
+		updateCount(gameID);
+	}
+	
+	function processBonusClick(e)
+	{
+		var gameID = $(e.currentTarget).attr('gameID');
+		var game =  gamesData[gameID].systemName;
+
+
+		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
+		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
+		
+		eval('bkP.'+game+'Bonuses.Click("'+$(e.currentTarget).attr('id')+'","'+$(e.currentTarget).attr('url')+'")');
+	}
+	
+	function processRequestsClick(e)
+	{
+		var gameID = $(e.currentTarget).attr('gameID');
+		var game =  gamesData[gameID].systemName;
+		
+		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
+		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'})
+		eval('bkP.'+game+'Requests.Click("'+$(e.currentTarget).attr('id')+'","'+$(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg+'")');
+	}
+	
+	function ReceivePendingBonuses(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		$('#'+game+'BonusesPendingList').children('div').each(function(){
+			$(this).trigger('click');
+		});
+	}
+	
+	function ReceivePendingRequests(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		$('#'+game+'RequestsPendingList').children('div').each(function(){
+			$(this).trigger('click');
+		});
+	}
+	
+	function bonusError(id, data)
+	{
+		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
+		$('#'+id).find('.bonusError').text('('+data.error+' error)');
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		
+		
+		if(data.error == 'connection')
+		{
+			setTimeout(function() {
+				$('#'+id).enableContextMenu().click(processBonusClick).removeClass('inProgress');
+				$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+			}, 1000);
+		}
+		else
+		{
+			setTimeout(function() {
+				$('#'+id).prependTo('#'+game+'BonusesHistoryList');
+				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				updateCount(gameID);
+			}, 1000);
+		}
+	}
+	
+	function bonusSuccess(id, data)
+	{
+		$('#'+id).find('img:last').attr('src', 'gfx/90px-check.png');
+		$('#'+id).find('.bonusError').text('');
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		
+		if(bkP.options.games[gameID].likeBonus)
+		{
+			bkP.likeBonus(id);
+		}
+		
+		if(bkP.options.games[gameID].commentBonus)
+		{
+			bkP.commentBonus(id);
+		}
+				
+		setTimeout(function() {
+			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
+			$('#'+id).removeClass('inProgress').find('img:last').attr('src', data.image);
+			$('#'+id).find('.title').text(data.title);
+			if(data.text != '')
+			{
+				$('#'+id).find('.title').next('span').text(data.text);
+			}
+			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+			updateCount(gameID);
+		}, 1000);
+	}
+	
+	function requestError(id, data)
+	{
+		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
+		$('#'+id).find('.bonusError').text('('+data.error+' error)');
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		
+		
+		if(data.error == 'connection')
+		{
+			setTimeout(function() {
+				$('#'+id).enableContextMenu().click(processRequestsClick).removeClass('inProgress');
+				$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+			}, 1000);
+		}
+		else
+		{
+			setTimeout(function() {
+				$('#'+id).prependTo('#'+game+'RequestsHistoryList');
+				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				updateCount(gameID);
+			}, 1000);
+		}
+	}
+	
+	function requestSuccess(id, data)
+	{
+		$('#'+id).find('img:last').attr('src', 'gfx/90px-check.png');
+		$('#'+id).find('.bonusError').text('');
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		
+		setTimeout(function() {
+			$('#'+id).prependTo('#'+game+'RequestsHistoryList');
+			$('#'+id).removeClass('inProgress');
+			
+			if(data.image !== '')
+			{
+				$('#'+id).find('img:last').attr('src', data.image);
+			}
+			else
+			{
+				$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+			}
+			
+			
+			if(data.title != '')
+			{
+				$('#'+id).find('.title').text(data.title);
+			}
+			$('#'+id).find('.title').next('span').text(data.text);
+			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+			updateCount(gameID);
+		}, 1000);
+	}
+
+	function ClearManualBonuses(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		
+		database.db.transaction(function(tx)
+		{
+			$('#'+game+'ManualBonusesList').children('div').each(function()
+			{
+				var elID = $(this).attr('id');
+				if($(this).hasClass('manualRequest'))
+				{
+					var postData = $(this).attr('postData');
+					var i1 = postData.indexOf('&actions%5B');
+					
+					var postData = postData.slice(0,i1);
+					postData += '&actions[reject]=Ignore';
+					bkP.emptyUnwantedGifts(postData);
+					tx.executeSql('DELETE FROM requests where id = ? and gameID = ?', [elID, gameID], database.onSuccess, database.onError);
+				}
+				else
+				{
+					tx.executeSql('DELETE FROM bonuses where id = ? and gameID = ?', [elID, gameID], database.onSuccess, database.onError);
+				}
+			
+				$(this).remove();
+			});	
+		});
+	}
+	
+	function ClearPendingBonuses(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var game = gamesData[gameID].systemName;
+					$('#'+game+'BonusesPendingList').html('');
+					updateCount(gameID);
+					database.clearTable('bonuses', gameID, 0);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearPendingRequests(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var game = gamesData[gameID].systemName;
+		
+					$('#'+game+'RequestsPendingList').children('div').each(function()
+					{
+						var postData = $(this).attr('postData');
+						var i1 = postData.indexOf('&actions%5B');
+						
+						var postData = postData.slice(0,i1);
+						postData += '&actions[reject]=Ignore';
+						$(this).remove();
+						bkP.emptyUnwantedGifts(postData);
+					});
+					database.clearTable('requests', gameID, 0);
+					updateCount(gameID);
+
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearCollectedBonuses(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var game = gamesData[gameID].systemName;
+					$('#'+game+'BonusesHistoryList').html('');
+					updateCount(gameID);
+					database.clearTable('bonuses', gameID, 1);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearCollectedRequests(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var game = gamesData[gameID].systemName;
+					$('#'+game+'RequestsHistoryList').html('');
+					updateCount(gameID);
+					database.clearTable('requests', gameID, 1);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearSentFreeGifts(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var game = gamesData[gameID].systemName;
+					$('#'+game+'SendFreeGiftsHistoryList').html('');
+					database.clearTable('freegifts', gameID);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function addNewRequest(data)
+	{
+		var gameID = data[1];
+		var game = gamesData[gameID].systemName;
+		var opt = 'RequestsPendingList';
+		
+		
+		var v = {	id: data[0],	title: data[2],	text: data[3],	image: data[4], post: data[5],	time: data[6]	}
+		
+		
+		
+		if(checkIfRequestIsManual(gameID, v.text))
+		{
+			var opt = 'ManualBonusesList';
+			var html = getNewManualRequestRow(gameID, v);
+			var manual = true;
+		}
+		else
+		{		
+			var opt = 'RequestsPendingList';
+			var html = getNewRequestRow(gameID, v);
+			var manual = false;
+		}
+		
+		var list = $('div#'+game+opt, '#'+game+'Game').children('div');
+		
+		if(list.length > 0)
+		{
+			list.each(function()
+			{
+				if(parseInt($(this).attr('time')) < v.time)
+				{
+					$(this).before(html);
+					return false;
+				}
+			});
+		}
+		else
+		{
+			$('div#'+game+opt, '#'+game+'Game').prepend(html);
+		}
+
+		if(manual)
+		{
+			$('div#'+v.id).click(processManualRequestClick);
+		}
+		else
+		{
+			$('div#'+v.id).click(processRequestsClick);
+		}
+		updateCount(gameID);
+	}
+	
+	
+	
+	function createMenu(gameID)
+	{
+		var game = 	gamesData[gameID].systemName;
+		
+		for(var id in 	gamesData[gameID].buttons)
+		{
+			var but = gamesData[gameID].buttons[id];
+			var butName = but.name;
+
+			$('.optionsMenu', '#'+game+'Game').append('<input type="radio" id="'+game+id+'" gameID="'+gameID+'" sysID="'+id+'" name="'+game+'Menu" class="'+id+'" /><label for="'+game+id+'">'+butName+'</label>');
+			
+			$('.contentListing', '#'+game+'Game').append('<div id="'+game+id+'List" class="hide"><br style="clear: both" /></div>');
+			
+			$('.submenu', '#'+game+'Game').append('<div id="'+game+id+'SubMenu" class="hide"></div>');
+			
+			for(var id2 in but.submenu)
+			{
+				var sub = but.submenu[id2];
+				
+				$('#'+game+id+'SubMenu').append('<button id="'+game+id2+'" gameID="'+gameID+'" sysID="'+id2+'">'+sub.name+'</button>');
+			}
+			
+		}
+	}
+	
+	function indicator_switch(mode)
+	{
+		if(mode == 'on')
+		{
+			$('.act_indicator').css('visibility', 'visible');
+		}
+		else
+		{
+			$('.act_indicator').css('visibility', 'hidden');
+		}
+	}
+
+	function calcage(secs, num1, num2)
+	{
+		s = ((Math.floor(secs/num1))%num2).toString();
+		if (s.length < 2)
+			s = "0" + s;
+		return s;
+	}
+
+	function lastSeen(seen)
+	{
+		var today = new Date();
+		var diff = today.getTime()-seen.getTime();
+
+		var secs = Math.floor(diff.valueOf()/1000);
+
+		if(secs < 300)
+		{
+			return true;
+		}
+		DisplayFormat = "%%H%% Hours, %%M%% Minutes ago";
+		DisplayStr = DisplayFormat.replace(/%%H%%/g, calcage(secs,3600,24));
+		DisplayStr = DisplayStr.replace(/%%M%%/g, calcage(secs,60,60));
+
+		return DisplayStr.replace(/00 Hours, /, '');
+	}
+
+	function populateChat(v, chatID)
+	{
+		var date = new Date(v.time*1000);
+		var s = (date.getSeconds().toString().length == 1 ? "0"+date.getSeconds() : date.getSeconds());
+		var m = (date.getMinutes().toString().length == 1 ? "0"+date.getMinutes() : date.getMinutes());
+		var h = (date.getHours().toString().length == 1 ? "0"+date.getHours() : date.getHours());
+		
+		var mod = $('.shouts', chatID).children('div:last').hasClass('bg1') ? '2' : '1';
+		
+		var addit = '';
+		if(v.user_id == 0)
+		{
+			v.user_id = '100001178615702';
+			mod = '4';
+			addit = ' style="font-weight: bolder;" ';
+		}
+		
+		var newRow = $('<div id="p'+v.id+'" class="bg'+mod+'"><div class="inner"><div class="chat"><b class="time">'+h+':'+m+':'+s+'</b> by <span class="username"><a title="Click to go to facebook profile" target="_blank" '+addit+' href="http://www.facebook.com/profile.php?id='+v.user_id+'">'+v.user+'</a></span><br> » <span class="message">'+v.text+'</span></div></div></div>');
+		$('.shouts', chatID).append(newRow);
+	}
+
+	function populateOnline(v, chatID)
+	{
+		var mod = $('.users', chatID).children('div:last').hasClass('bg1') ? '2' : '1';
+		
+		var img = 'online';
+		var addit = '';
+		
+		if(v.id == 0)
+		{
+			v.id = '100001178615702';
+
+			var lastAt = lastSeen(new Date(v.time*1000));
+
+			if(lastAt === true)
+			{
+				addit = '<br /><span style="font-weight: normal; font-size: 0.8em;">(online now)</span>';
+				mod = '3';
+			}
+			else
+			{
+				mod = '4';
+				img = 'offline';
+				addit = '<br /><span style="font-weight: normal; font-size: 0.8em;">(Last seen: '+lastAt+')</span>';
+			}
+		}
+		
+		var newRow = $('<div class="bg'+mod+'" style="margin:4px 0"><div class="inner"><div class="username font'+mod+'"><img src="gfx/'+img+'.png" class="online_img"> <a title="Click to go to facebook profile" target="_blank" href="http://www.facebook.com/profile.php?id='+v.id+'">'+v.user+'</a>'+addit+'</div></div></div>');
+		$('.users', chatID).append(newRow);
+	}
+	
+	function emptyMessageBox(isPriv)
+	{
+		$('.message', (isPriv ? '#privateChat' : '#publicChat')).val('');
+	}
+
+	function send(form)
+	{	
+		var msg = $(form).find('.message').val();
+		var privateVar = $(form).attr('id') == 'privateChat' ? true : false;
+		if(msg !== '')
+		{
+			bkP.send(msg, privateVar);
+		}
+		
+	}
+
+	function parseNoticeData()
+	{
+		$('#noticesContent').html('');
+		
+		for(k in bkP.options.developerNotices)
+		{
+			var v = bkP.options.developerNotices[k];
+			var date = new Date(v.time*1000);
+			var s = (date.getSeconds().toString().length == 1 ? "0"+date.getSeconds() : date.getSeconds());
+			var m = (date.getMinutes().toString().length == 1 ? "0"+date.getMinutes() : date.getMinutes());
+			var h = (date.getHours().toString().length == 1 ? "0"+date.getHours() : date.getHours());
+			
+			var newRow = $('<div class="bg4" style="text-align:left"><span class="username" style="font-weight: bolder">'+v.title+'</span><br /><span style="font-size:0.9em">'+date.toLocaleDateString()+' @ '+date.toLocaleTimeString()+'</span><br /><br /> » <span class="message">'+v.message+'</span><br /><br /></div></div></div>');
+			$('#noticesContent').prepend(newRow);
+		};
+	}
+
+	function parseChatData(data)
+	{
+		if($('.message','#privateChat').attr('disabled') !== false || $('.message','#publicChat').attr('disabled') !== false)
+		{
+			$('.message','#privateChat').val('').removeAttr('disabled');
+			$('.message','#publicChat').val('').removeAttr('disabled');
+		}
+		
+		$(data.dataPublic).each(function(k,v)
+		{
+			populateChat(v, '#chatUsers');
+		});	
+		$('.shoutbox', '#chatUsers').scrollTop(10000);
+		
+		$(data.dataPrivate).each(function(k,v)
+		{
+			populateChat(v, '#chatDev');
+		});
+		
+		$('.shoutbox', '#chatDev').scrollTop(10000);
+
+		$('.users', '#chatUsers').html('');
+		$(data.onlinePublic).each(function(k,v)
+		{
+			populateOnline(v, '#chatUsers');
+		});
+		
+		$('.users', '#chatDev').html('');
+		$(data.onlinePrivate).each(function(k,v)
+		{
+			populateOnline(v, '#chatDev');
+		});
+	}
+
+	function switchEnabled(gameID, reload)
+	{
+		var game = gamesData[gameID].systemName;
+		var enabled  = bkP.options.games[gameID].enabled;
+		var e =  bkP.options.games[gameID];
+
+		var el = $('.badgeGames', 'label[for="'+gameID+'Selected"]');
+		
+		if(enabled == false)
+		{
+			if(gameID == bkP.options.defaultGame)
+			{
+				bkP.options.defaultGame = 0;
+				bkP.saveOptions();
+			}
+			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').attr('disabled', 'disabled');			
+			$(el).addClass('hide');
+			$('img', 'label[for="'+gameID+'Selected"]').attr('src', 'icons/menu/'+game+'-bw.png');
+			$('div.content', 		$('#'+game+'Game')).addClass('hide');
+			$('div.notEnabledInfo', $('#'+game+'Game')).removeClass('hide');
+			
+			if(typeof(reload) != 'undefined')
+			{
+				database.clearByGameID(gameID);
+				$('div.bonusItem, div.requestItem, div.freegiftHistory, div.manualItem', $('#'+game+'Game')).remove();
+				updateCount();
+				bkP.options.games[gameID] = bkP.defaultGameOptions;
+				bkP.stopBonusesForGame(gameID);
+			}
+		}
+		else
+		{
+			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').removeAttr('disabled');
+			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"]').removeAttr('checked');
+			$('.gameEnabledBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			
+			if(gameID == bkP.options.defaultGame)
+			{
+				$('.gameDefaultBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			}
+			
+			if(e.likeBonus)
+			{
+				$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			}
+			
+			if(e.commentBonus)
+			{
+				$('.gameCommentBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			}
+				
+				
+			$(el).removeClass('hide');
+			$('img', 'label[for="'+gameID+'Selected"]').attr('src', 'icons/menu/'+game+'.png');
+			$('div.content', 		$('#'+game+'Game')).removeClass('hide');
+			$('div.notEnabledInfo', $('#'+game+'Game')).addClass('hide');
+			
+			
+			if(typeof(reload) != 'undefined')
+			{
+				selectFirstTab(gameID);
+				updateCount();
+				bkP.startBonusesForGame(gameID);
+				prepareNeighboursList(gameID);
+			}			
+		}
+	}
+	
+	
+	function selectFirstTab(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var enabled  = bkP.options.games[gameID].enabled;
+
+		
+		if(enabled)
+		{
+			$('.optionsMenu', $('#'+game+'Game')).children('input:nth-child(1)').trigger('click');
+			$('.optionsMenu', $('#'+game+'Game')).buttonset('refresh');
+		}
+	}
+
+	
+	function updateCount(gameID)
+	{
+		var processList = {};
+		
+		
+		if(typeof(gameID) == 'undefined')
+		{
+			for(var idd in bkP.options.games)
+			{
+				if(bkP.options.games[idd].enabled)
+				{
+					processList[idd] = true;
+				}
+			}
+		}
+		else
+		{
+			processList[gameID] = true;
+		}
+		
+		for(var idd2 in processList)
+		{		
+			var game = gamesData[idd2].systemName;
+			
+			var totCount = 0;
+			
+			var bCount = $('#'+game+'BonusesPendingList > div').length;
+			var rCount = $('#'+game+'RequestsPendingList > div').length;
+			var mCount = $('#'+game+'ManualBonusesList > div').length;
+			
+			totCount += bCount;
+			totCount += rCount;
+			totCount += mCount;
+
+			$('label[for="'+game+'BonusesPending"]').find('span > span').text(bCount);
+			$('label[for="'+game+'RequestsPending"]').find('span > span').text(rCount);
+			$('label[for="'+game+'ManualBonuses"]').find('span > span').text(mCount);
+			$('label[for="'+idd2+'Selected"]').find('.badgeGames').text(totCount);
+		}
+	}
+	
+	function loadBonuses()
+	{
+		database.db.transaction(function(tx)
+		{
+			tx.executeSql('delete from neighbours where exists (select 1 from neighbours t2 where neighbours.id = t2.id and neighbours.gameID = t2.gameID and  neighbours.autoID > t2.autoID)');
+			
+			if(bkP.options.deleteHistoryOlderThan != 0)
+			{
+				var now = Math.floor(new Date().getTime()/1000);
+				var newerThan = now-bkP.options.deleteHistoryOlderThan;
+				
+				tx.executeSql("DELETE FROM bonuses where status = '1' and time < ? ", [newerThan], database.onSuccess, database.onError);
+				tx.executeSql("DELETE FROM requests where status = '1' and time < ? ", [newerThan], database.onSuccess, database.onError);
+				tx.executeSql("DELETE FROM freegifts where time < ? ", [newerThan], database.onSuccess, database.onError);
+			}
+			
+			if(bkP.options.deleteOlderThan != 0)
+			{
+				var now = Math.floor(new Date().getTime()/1000);
+				var newerThan = now-bkP.options.deleteOlderThan;
+				
+				tx.executeSql("DELETE FROM bonuses where status = '0' and time < ? ", [newerThan], database.onSuccess, database.onError);
+			}
+
+			// wczytywanie bonusow czekajacych			
+			tx.executeSql("SELECT * FROM bonuses where status = '0' order by time ASC", [], function(tx, res)
+			{
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+										
+					if(checkIfBonusIsManual(gameID, v.title))
+					{
+						var opt = 'ManualBonusesList';
+						var html = getNewManualBonusRow(gameID, v);
+						var manual = true;
+					}
+					else
+					{		
+						var opt = 'BonusesPendingList';
+						var html = getNewBonusRow(gameID, v);
+						var manual = false;
+					}
+					
+					var game = gamesData[gameID].systemName;
+					
+					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+					
+					if(manual)
+					{
+						$('div#'+v.id).click(processManualBonusClick);
+					}
+					else
+					{
+						$('div#'+v.id).click(processBonusClick);
+					}
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM requests where status = '0' order by time ASC", [], function(tx, res)
+			{
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+					
+					if(checkIfRequestIsManual(gameID, v.text))
+					{
+						var opt = 'ManualBonusesList';
+						var html = getNewManualRequestRow(gameID, v);
+						var manual = true;
+					}
+					else
+					{		
+						var opt = 'RequestsPendingList';
+						var html = getNewRequestRow(gameID, v);
+						var manual = false;
+					}					
+					
+					
+					var game = gamesData[gameID].systemName;
+					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+
+					if(manual)
+					{
+						$('div#'+v.id).click(processManualRequestClick);
+					}
+					else
+					{
+						$('div#'+v.id).click(processRequestsClick);
+					}
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM bonuses where status = '1' order by time ASC", [], function(tx, res)
+			{
+				var opt = 'BonusesHistoryList';
+				
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+					
+					var err = (v.error == '' ? '' : '('+v.error+' error)');
+					
+					var html = '<div id="'+v.id+'" time="'+v.time+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+					
+					
+					var game = gamesData[gameID].systemName;
+					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM requests where status = '1' order by time ASC", [], function(tx, res)
+			{
+				var opt = 'RequestsHistoryList';
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}					
+					
+					var err = (v.error == '' ? '' : '('+v.error+' error)');		
+					
+					var html = '<div time="'+v.time+'" class="requestItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+					
+					var game = gamesData[gameID].systemName;
+					$('div#'+game+opt, '#'+game+'Game').prepend(html);		
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM freegifts order by time ASC", [], function(tx, res)
+			{
+				var opt = 'SendFreeGiftsHistoryList';
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+					
+					var html = getGiftHistoryRow(gameID, res.rows.item(i));
+					
+					var game = gamesData[gameID].systemName;
+					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+			
+			
+			for(var gameID in bkP.options.games)
+			{
+				if(!bkP.options.games[gameID].enabled)
+				{
+					continue;
+				}
+				prepareNeighboursList(gameID);
+			}
+		});
+	}
+	
+	function prepareNeighboursList(gameID)
+	{
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+		
+		if($('div#'+game+opt, '#'+game+'Game').length == 1)
+		{
+			$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Favourites send to list:</h2> <div class="sendToFavouritesList"></div> <h2 class="center">Gifts list:</h2> <div class="sendToGiftsList"></div> <h2 class="center">Neighbours list:</h2> <div class="sendToNeighboursList"></div>');
+			
+			$('.sendToFavouritesList', 'div#'+game+opt).html('<h3 class="center"><img src="gfx/loading.gif"><br />Waiting for the neighbours list to load... Please wait...</h3>');
+			$('.sendToNeighboursList', 'div#'+game+opt).html('<h3 class="center"><img src="gfx/loading.gif"><br />Loading heighbours... Please wait...</h3>');
+			
+			listGifts(gameID);
+			bkP.ListNeighbours(gameID);
+		}
+	}
+
+	function windowFocus()
+	{
+		bkP.newElements = 0;
+		bkP.updateIcon();
+		bkP.checkNotices();
+		bkP.giftlistFocus = true;
+	}
+	
+	function windowBlur()
+	{
+		bkP.giftlistFocus = false;
+	}
+	
+	
+	function resize()
+	{
+		var height = $(window).height();
+		var heightLeft = height - 400;
+		
+		var width = $(window).width();
+		var widthLeft = width - 400;
+		
+		console.log(new Date());
+		
+		var marginTop = Math.floor(heightLeft / 2);	
+		var marginLeft = Math.floor(widthLeft / 2);
+		$( "#dialog-loading" ).dialog('option', 'position', [marginLeft, marginTop]);
+	}
+	
+	var resizeInt;
+	
+	$(function()
+	{
+	
+	
+		$( "#dialog-loading" ).dialog({
+			resizable: false,
+			width: '400px',
+			height:'auto',
+			modal: true,
+			autoOpen: true
+		});
+		
+		resizeInt = setInterval(resize,100);
+		
+		$( "#progressbar" ).progressbar({
+			value: 0
+		});
+	
+		database.open(userID);
+	
+		$('#currentVersion').html('v. '+bkP.currentVersion);
+		parseNoticeData();
+
+		windowFocus();		
+		$(window).focus(windowFocus).blur(windowBlur);
+
+		$(window).unload( function () 
+		{
+			bkP.giftlistFocus = false;
+			bkP.clearTimeout(bkP.iChatTimeout);
+		});
+
+		
+		$('#checkBonusesTimeout > option[value="'+bkP.options.checkBonusesTimeout+'"]').attr('selected', 'selected');
+		$('#checkBonusesTimeout').change(function()
+		{
+			bkP.options.checkBonusesTimeout = $('option:selected', this).val();
+			bkP.restartBonuses();
+			bkP.saveOptions();
+		});
+		/*
+		$('#checkRequestsTimeout > option[value="'+bkP.options.checkRequestsTimeout+'"]').attr('selected', 'selected');
+		$('#checkRequestsTimeout').change(function()
+		{
+			bkP.restartRequests();
+			bkP.options.checkRequestsTimeout = $('option:selected', this).val();
+			bkP.saveOptions();
+		});	
+		*/
+		
+		$('#checkChatTimeout > option[value="'+bkP.options.checkChatTimeout+'"]').attr('selected', 'selected');
+		$('#checkChatTimeout').change(function()
+		{
+			bkP.options.checkChatTimeout = $('option:selected', this).val();
+			bkP.saveOptions();
+		});
+		
+		$('#deleteOlderThan > option[value="'+bkP.options.deleteOlderThan+'"]').attr('selected', 'selected');
+		$('#deleteOlderThan').change(function()
+		{
+			bkP.options.deleteOlderThan = $('option:selected', this).val();
+			bkP.saveOptions();
+		});
+		
+		$('#deleteHistoryOlderThan > option[value="'+bkP.options.deleteHistoryOlderThan+'"]').attr('selected', 'selected');
+		$('#deleteHistoryOlderThan').change(function()
+		{
+			bkP.options.deleteHistoryOlderThan = $('option:selected', this).val();
+			bkP.saveOptions();
+		});
+		
+		
+		
+		// zmiany opcji koniec //
+
+		for(var id in bkP.options.games)
+		{
+			var d =  gamesData[id];
+			var e =  bkP.options.games[id];
+			
+			
+			
+			$('#templateGame').clone().attr('id', d.systemName+'Game').insertBefore('#chat').find('h1.title').html(d.name+'<br style="clear: both" /><div class="checkOptions"></div><br style="clear: both" />');
+
+			$('<input type="radio" class="gameSelected" name="gameSelected" sysID="'+d.systemName+'" gameID="'+id+'" id="'+id+'Selected" /><label for="'+id+'Selected">'+d.name+'<br /><img src="icons/menu/'+d.systemName+'.png"><span class="badgeGames"></span></label>').appendTo('#gameSelector');
+			
+			
+			//if(e.enabled)
+			//{
+				
+			//}
+
+			$('<label><span>Game enabled</span><input type="checkbox" class="gameEnabledBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
+			$('<label><span>Default game</span><input type="checkbox" class="gameDefaultBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
+			$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
+			$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
+			switchEnabled(id);
+			createMenu(id);
+		}
+		
+		loadBonuses();
+		
+
+		$('<input type="radio" class="gameSelected" name="gameSelected" id="chatSelected" /><label for="chatSelected">Chat<br /><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
+
+		$("#gameSelector").children("input").click(function()
+		{
+			$('.gameContent').addClass('hide');
+			
+			if($(this).attr('id') == 'chatSelected')
+			{
+				$('#chat').removeClass('hide');
+				$('.shouts', '#chat').html('');
+				bkP.iChatTimeout = bkP.setTimeout('readChat(true)', 1);
+				return; 
+			}
+			else
+			{
+				$('#'+$(this).attr('sysID')+'Game').removeClass('hide');
+				bkP.clearTimeout(bkP.iChatTimeout);
+				return;
+			}
+		});
+
+		$('input', '.optionsMenu').click(function()
+		{
+			$(this).closest('.menu').siblings('.submenu').children('div').addClass('hide');
+			$('div#'+$(this).attr('id')+'SubMenu').removeClass('hide');
+			
+			$(this).closest('.menu').siblings('.contentListing').children('div').addClass('hide');
+			$('div#'+$(this).attr('id')+'List').removeClass('hide');
+		});
+
+		
+		$(".gameDefaultBox").click(function(a)
+		{
+			if($(this).is(':checked'))
+			{
+				bkP.options.defaultGame = $(this).attr('gameID');
+				$(".gameDefaultBox").not(this).removeAttr('checked');
+			}
+			else
+			{
+				bkP.options.defaultGame = 0;
+			}
+			bkP.saveOptions();
+		});
+		
+		$(".gameEnabledBox").click(function()
+		{
+			var game = gamesData[$(this).attr('gameID')].systemName;
+
+
+			bkP.options.games[$(this).attr('gameID')].enabled = $(this).is(':checked');
+			switchEnabled($(this).attr('gameID'), true);
+			bkP.saveOptions();
+			bkP.restartRequests();
+		});
+		
+		$(".gameLikeBonusBox").click(function()
+		{
+			bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
+			bkP.saveOptions();
+		});
+		
+		$(".gameCommentBonusBox").click(function()
+		{
+			bkP.options.games[$(this).attr('gameID')].commentBonus = $(this).is(':checked') ? true : false;
+			bkP.saveOptions();
+		});
+		
+		
+		$(".showContext").live('mouseenter', function()
+		{
+			if($(this).hasClass('hasContextMenu'))
+			{
+				return;
+			}
+			$(this).addClass('hasContextMenu').contextMenu({
+				menu: 'myMenu'
+			}, function(action, el, pos) {
+				
+				if(action == 'receive')
+				{
+					$(el).trigger('click');
+				}
+				else if(action == 'receiveSimilar')
+				{
+					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function(){
+						$(this).trigger('click');
+					});
+				}
+				else if(action == 'delete')
+				{
+					$(el).remove();
+					database.deleteItem('bonuses', $(el).attr('gameID'), $(el).attr('id'), 0);
+					updateCount($(el).attr('gameID'));
+				}
+				else if(action == 'deleteSimilar')
+				{
+					$('#dialog-confirm').dialog({
+						buttons:
+						{
+							"Delete all items": function()
+							{
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								{
+									$(this).remove();
+								});
+								database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								updateCount($(el).attr('gameID'));
+								
+								$( this ).dialog( "close" );
+							},
+							Cancel: function() {
+								$( this ).dialog( "close" );
+							}
+					}});
+					
+					$('#dialog-confirm').dialog('open');
+				}
+				else if(action == 'stopCollect')
+				{
+					$('#dialog-confirm').dialog({
+						buttons:
+						{
+							"Stop collecting": function()
+							{
+								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
+								bkP.saveOptions();
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								{
+									$(this).remove();
+								});
+								database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								updateCount($(el).attr('gameID'));
+								
+								$( this ).dialog( "close" );
+							},
+							Cancel: function() {
+								$( this ).dialog( "close" );
+							}
+					}});
+					
+					$('#dialog-confirm').dialog('open');
+				}
+				else if(action == 'debug')
+				{
+					bkP.chrome.tabs.create({url: $(el).attr('url'), selected: false});
+				}
+			});
+		});
+		
+		$(".showContextRequests").live('mouseenter', function()
+		{
+			if($(this).hasClass('hasContextMenu'))
+			{
+				return;
+			}
+			$(this).addClass('hasContextMenu').contextMenu({
+				menu: 'myMenuRequests'
+			}, function(action, el, pos) {
+				
+				if(action == 'receive')
+				{
+					$(el).trigger('click');
+				}
+				else if(action == 'receiveSimilar')
+				{
+					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+					{
+						$(this).trigger('click');
+					});
+				}
+				else if(action == 'delete')
+				{
+					var postData = $(el).attr('postData');
+					var i1 = postData.indexOf('&actions%5B');
+					
+					var postData = postData.slice(0,i1);
+					postData += '&actions[reject]=Ignore';
+					$(el).remove();
+					database.deleteItem('requests', $(el).attr('gameID'), $(el).attr('id'), 0);
+					updateCount($(el).attr('gameID'));
+					
+					bkP.emptyUnwantedGifts(postData);
+				}
+				else if(action == 'deleteSimilar')
+				{
+					$('#dialog-confirm').dialog({
+						buttons:
+						{
+							"Delete all items": function()
+							{
+
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								{
+									var postData = $(this).attr('postData');
+									var i1 = postData.indexOf('&actions%5B');
+									
+									var postData = postData.slice(0,i1);
+									postData += '&actions[reject]=Ignore';
+									$(this).remove();
+									bkP.emptyUnwantedGifts(postData);
+								});
+								
+								database.deleteItemByTitle('requests', $(el).attr('gameID'), $(el).attr('origTitle'), 0);
+								updateCount($(el).attr('gameID'));
+								
+								$( this ).dialog( "close" );
+							},
+							Cancel: function() {
+								$( this ).dialog( "close" );
+							}
+					}});
+					
+					$('#dialog-confirm').dialog('open');
+				}
+			});
+		});
+
+		$('input#'+bkP.options.defaultGame+'Selected').click();
+		$('input#'+bkP.options.defaultGame+'Default').click();
+		
+		
+		
+		for(var id in bkP.options.games)
+		{
+			selectFirstTab(id);
+		}
+		
+		$('.addToSendFav').live('click', function(e)
+		{
+			var gameID = $(this).siblings('input').attr('gameID');
+			
+			if(typeof(e.altKey) != 'undefined')
+			{
+				database.addFavourite(gameID, $(this).siblings('input').attr('neighID'));
+			}
+			
+			var prepEl = $(this).parent().parent().siblings('.sendToFavouritesList');
+
+			$(this).removeClass('addToSendFav').addClass('isFavourite').attr('src', 'icons/favourite.png').attr('title', 'Click to remove from favourites');
+			$(this).parent().clone().prependTo(prepEl);
+			$(this).parent().hide();
+		});
+		
+		$('.isFavourite').live('click', function(e)
+		{
+			var gameID = $(this).siblings('input').attr('gameID');
+			
+			var neighID = $(this).siblings('input').attr('neighID');
+			$(this).parent().remove();
+			
+			database.delFavourite(gameID, neighID);
+
+			var el = $('input[neighID="'+neighID+'"]').parent().show().children('img').removeClass('isFavourite').addClass('addToSendFav').attr('src', 'icons/favourite-bw.png').attr('title', 'Click to add to favourites');
+		});
+		
+
+		$('input[name="neighArr[]"]').live('click',function(a)
+		{
+			var gameID = $(this).attr('gameID');
+			var game = gamesData[gameID].systemName;
+			var opt = 'SendFreeGiftsList';
+
+			var count = parseInt($('input[name="neighArr[]"]:checked', 'div#'+game+opt).length);
+			
+			if(a.altKey === undefined)
+			{
+				count++;
+			}
+
+			if(count > 25)
+			{
+				return false;
+			}
+		});
+		
+		$("div.selectGiftToSend").live('click',function()
+		{
+			$("div.selectGiftToSend").removeClass('selected');
+			$(this).addClass('selected');
+		});
+		
+		$( "#dialog-confirm" ).dialog({
+			resizable: false,
+			autoOpen: false,
+			height:140,
+			modal: true
+		});
+		
+		$( "#dialog-error" ).dialog({
+			resizable: false,
+			autoOpen: false,
+			height:'auto',
+			modal: true
+		});
+
+		//$(".gameEnabledBox, .gameDefaultBox, .gameLikeBonusBox, .gameCommentBonusBox").button();
+		$('.menu > .optionsMenu').buttonset();
+		
+		$('.GameOptionsTab').click(function(){ processOptionsTab($(this).attr('gameID')) });
+
+		$('button', '.submenu').button().click(function()
+		{
+			eval($(this).attr('sysID')+'("'+$(this).attr('gameID')+'")');
+		});
+		$("#gameSelector").buttonset();
+	});
+	
+	setInterval('updateTimeAgo()', 15000);
+	
+	function processOptionsTab(gameID)
+	{
+		
+		var arr = bkP.options.games[gameID].filter;
+		
+		arr.sort();
+		
+		var opt = 'GameOptionsTabList';
+		
+		var html = '<div class="gameOptionsFiltersList"></div>';
+		var game = gamesData[gameID].systemName;
+		
+		
+		$('.deleteFilter').unbind('click');
+		
+		$('div#'+game+opt, '#'+game+'Game').html('');
+		
+		
+		$('div#'+game+opt, '#'+game+'Game').prepend(html);
+			
+		for(var i = 0; i < arr.length; i++)
+		{
+			var v = arr[i];
+			var html = '<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteFilter" title="Delete filter"> '+v+'</div>';
+			
+			$('div#'+game+opt, '#'+game+'Game').find('.gameOptionsFiltersList').prepend(html);
+		}
+		
+		$('.deleteFilter').click(function()
+		{
+			var gameID = $(this).attr('gameID');
+			
+			bkP.options.games[gameID].filter.splice($(this).attr('delIndex'),1);
+			bkP.saveOptions();
+			
+			$(this).parent().remove();
+			processOptionsTab(gameID);
+		});
+	}
+	
+	function compareTime(itemTime, olderThan)
+	{
+		var now = new Date().getTime();
+		var itemTime = new Date(itemTime*1000).getTime();
+		
+		var diff = now-itemTime;
+		var secs = Math.floor(diff.valueOf()/1000);		
+		return(secs > olderThan ? true : false);
+	}
+	
+	function updateTimeAgo()
+	{
+	
+		var olderThanTime = bkP.options.deleteHistoryOlderThan;
+		var olderBonusThanTime = bkP.options.deleteOlderThan;
+		
+		$('.updateTimeAgo').each(function()
+		{
+			var time = $(this).attr('time');
+			var timeAgo = format_time_ago(time)
+			$(this).find('.timeAgo').html(timeAgo);
+		
+			if($(this).hasClass('inProgress'))
+			{
+				return;
+			}
+				
+			
+			if($(this).hasClass('bonusItem'))
+			{
+				if($(this).hasClass('disabled'))
+				{
+					if(olderThanTime == 0)
+					{
+						return;
+					}
+					
+					if(compareTime($(this).attr('time'), olderThanTime))
+					{
+						$(this).remove();
+					}
+				}
+				else
+				{
+					if(olderBonusThanTime == 0)
+					{
+						return;
+					}
+					
+					if(compareTime($(this).attr('time'), olderBonusThanTime))
+					{
+						var gameIDtmp = $(this).attr('gameID');
+						$(this).remove();
+						updateCount(gameIDtmp);
+					}
+				}
+			}
+			else if($(this).hasClass('requestItem'))
+			{
+				if($(this).hasClass('disabled'))
+				{
+					if(olderThanTime == 0)
+					{
+						return;
+					}
+					
+					if(compareTime($(this).attr('time'), olderThanTime))
+					{
+						$(this).remove();
+					}
+				}
+			}
+			else if($(this).hasClass('freegiftHistory'))
+			{
+				if(olderThanTime == 0)
+				{
+					return;
+				}
+				
+				if(compareTime($(this).attr('time'), olderThanTime))
+				{
+					$(this).remove();
+				}
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div id="dialog-confirm" title="Delete?">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span class="text">Are you sure?</span></p>
+	</div>
+	
+	<div id="dialog-error" title="Error">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span class="text">There was an error with sending gifts. It could one of this: you reached facebook limit for sending gifts for this application, there was a connection error, or you choose gift that required level that you don't have. Try again.</span></p>
+	</div>
+	
+	<div id="dialog-loading" title="Loading Gifts and Bonuses List">
+		<h3 class="center"><img src="gfx/dl.gif"><br />FGS is loading... Please wait.</h3><br /><br />
+		<span>(It may take a few minutes if you've got many bonuses in the database. If it takes very long - consider using Panic Button option)</span><br />
+		<div id="progressbar"></div>
+	</div>
+
+	<div style="float: left; width: 25%;">
+		<div class="leftBox section">
+			<span style="font-weight: bold; margin-bottom: 10px;display: block;">Please donate, if you feel this extension deserves it:</span>
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHPwYJKoZIhvcNAQcEoIIHMDCCBywCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYAEFizunAwBxFiL4sFLBIotb535+ocEmKKtiS1IoOSJp/DaSTZPqVuO3htltMPtf0hoK9NCUR7b7gO5pAbe65gAppwFtiJt3pqXLddBOanG7s05Qa7XmvF7Grc7THou6uQg6FE9RU2LGpvH9uojTl4I+8sFL0EIlZxppuQ9Yn/7rTELMAkGBSsOAwIaBQAwgbwGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQImWNtK/DACmaAgZhilxW6eiEiPWoeKbLX4oP6TK5o8+kKJwQ0V3tn/l1nF2D+cUBnIBN+gHnFyIFfQYqGxZeLaF2VrKICUi+fiHrVE+2/9wOoJ3llbC/dCF5j1lb5dTI78woYa4k9tkq1Xq5RvhjLx+s6FKekeGnLIFDV6KZmAGCGLzf7PSzQFMbeDr9PUEMJClIEF2LP3s0LpMNf0WIL3np8vKCCA4cwggODMIIC7KADAgECAgEAMA0GCSqGSIb3DQEBBQUAMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTAeFw0wNDAyMTMxMDEzMTVaFw0zNTAyMTMxMDEzMTVaMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAwUdO3fxEzEtcnI7ZKZL412XvZPugoni7i7D7prCe0AtaHTc97CYgm7NsAtJyxNLixmhLV8pyIEaiHXWAh8fPKW+R017+EmXrr9EaquPmsVvTywAAE1PMNOKqo2kl4Gxiz9zZqIajOm1fZGWcGS0f5JQ2kBqNbvbg2/Za+GJ/qwUCAwEAAaOB7jCB6zAdBgNVHQ4EFgQUlp98u8ZvF71ZP1LXChvsENZklGswgbsGA1UdIwSBszCBsIAUlp98u8ZvF71ZP1LXChvsENZklGuhgZSkgZEwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tggEAMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAgV86VpqAWuXvX6Oro4qJ1tYVIT5DgWpE692Ag422H7yRIr/9j/iKG4Thia/Oflx4TdL+IFJBAyPK9v6zZNZtBgPBynXb048hsP16l2vi0k5Q2JKiPDsEfBhGI+HnxLXEaUWAcVfCsQFvd2A1sxRr67ip5y2wwBelUecP3AjJ+YcxggGaMIIBlgIBATCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwCQYFKw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTEwMDgwOTE3MTM1M1owIwYJKoZIhvcNAQkEMRYEFLMxIEFzo2VmIaZkEKz7rbQx4yf1MA0GCSqGSIb3DQEBAQUABIGAbrqa2E3YMzTBCCGIOLcxLi9DE2SybLdkFTb3dLE7Y2WNpzkJq/9tCFHKNU1D98oVKE28Ivh7MAfxZbp+PU/eRQoEonzdEvOWpOhQt00Gj1ClXpm9eFhH3InHSfAk+AMZb493hhYUXTdiKHKoPYrlmFk4++ar3Ts85AIXFDx3+Ts=-----END PKCS7-----">
+					<input style="width: 90px;background-color: transparent;border:0px;" type="image" src="gfx/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+
+				</form>
+				<span style="font-weight: bold; margin-bottom: 10px;display: block;">If you need to contact me, use these links:</span>
+				<a href="http://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="16" height="16" alt="Facebook"></a>
+				<a href="http://fvgr.rzadki.eu:81/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="16" height="16" alt="E-mail"></a>
+				<a href="http://flies.blip.pl" target="_blank" title="Go to my Blip profile"><img src="gfx/blip.png" width="16" height="16" alt="Blip.pl"></a>
+				<span style="font-weight: bold; margin-bottom: 10px;display: block;">If you encountered a problem, bug or want to file feature request, visit our message board:</span>
+				<a href="http://rzadki.eu/projects/fgs/board/" target="_blank" title="Go to FGS Board"><img src="gfx/forum.png" width="16" height="16" alt="Message Board"></a>
+				
+				<br /><br />
+				<div id="fbLike" style="margin: 0 auto; text-align:center">
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFGS%2F150480078326371&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+				</div>
+		</div>
+
+		<div class="section leftBox" id="options">
+			<h3>Options:</h3>
+			<br />
+				<h4>Bonuses check timeout</h4>
+					<select id="checkBonusesTimeout">
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+						<option value="300">5 minutes</option>
+						<option value="600">10 minutes</option>
+					</select>
+				<!--
+				<h4>Gifts check timeout</h4>
+					<select id="checkRequestsTimeout">
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+						<option value="300">5 minutes</option>
+						<option value="600">10 minutes</option>
+					</select>
+				-->
+				<h4>Chat check timeout</h4>
+					<select id="checkChatTimeout">
+						<option value="15">15 seconds</option>
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+					</select>
+				<h4>Delete bonuses older than</h4>
+					<select id="deleteOlderThan">
+						<option value="0">Don't</option>
+						<option value="1800">30 minutes</option>
+						<option value="3600">1 hour</option>
+						<option value="7200">2 hours</option>
+						<option value="10800">3 hours</option>
+						<option value="21600">6 hours</option>
+						<option value="43200">12 hours</option>
+						<option value="86400">1 day</option>
+						<option value="172800">2 days</option>
+						<option value="259200">3 days</option>
+					</select>
+				<h4>Delete history older than</h4>
+					<select id="deleteHistoryOlderThan">
+						<option value="0">Don't</option>
+						<option value="1800">30 minutes</option>
+						<option value="3600">1 hour</option>
+						<option value="7200">2 hours</option>
+						<option value="10800">3 hours</option>
+						<option value="21600">6 hours</option>
+						<option value="43200">12 hours</option>
+						<option value="86400">1 day</option>
+						<option value="172800">2 days</option>
+						<option value="259200">3 days</option>					
+					</select>				
+		</div>
+		
+		<div class="section leftBox" id="notices">
+			<h3>Notices:</h3>
+			<br />
+			<div id="noticesContent">
+			
+			</div>
+		</div>
+		
+	</div>
+	
+	
+	<div style="float: right;width: 75%">
+		<h1 class="icon" style="background-image: url(gfx/32px-icon.png); float: left;">Facebook Games Simplifier <span id="currentVersion"></span></h1>
+		
+		<div class="section" style="float: left;text-align: center;clear:left;">
+			<h3>Game selector:</h3>
+			<span id="gameSelector" style="display: block;text-align:center;">
+			</span>
+		</div>
+
+		<br style="clear: both" />
+		
+		
+		<div id="templateGame" class="section hide gameContent">
+			<h1 class="title"></h1>
+
+			<div class="notEnabledInfo" style="text-align: center">
+				Please enable this game to start collecting updates.
+			</div>
+			
+			<div class="content hide">
+				<div class="menu">
+					<span class="optionsMenu"></span>
+				</div>
+				
+				<div class="submenu">
+					
+				</div>
+				
+				<div class="contentListing">
+					
+				</div>			
+			</div>
+		</div>
+
+		<div id="chat" class="section hide gameContent">
+			
+			<h1 class="title">Chat</h1>
+			
+				<div align="left" id="chatDev" class="chatContent left">
+					<h2 style="text-align:center;border-bottom:1px dashed #000;padding-bottom:5px;">Chat with developer</h2>
+					<div class="shoutbox">
+						<div class="shouts"></div>
+					</div>
+
+					<div class="onlinelist">
+						<div class="onlineText"><strong>Users online:</strong></div>
+						<div class="users"></div>
+					</div>
+					
+					<div style="border-top: 1px dashed #000;padding-top: 10px;">
+						<form method="post" action="javascript:void(0);" onsubmit="send(this)" id="privateChat" autocomplete="off">
+							<img src="./gfx/act_indicator.gif" class="act_indicator" style="visibility: hidden; ">
+							<strong>Message:</strong> <input type="text" tabindex="1" disabled="disabled" name="message" class="message" value="Chat is disabled, because your userdata was not retrieved yet">
+								<!-- <input type="submit" class="sendChatBut button1" disabled="disabled" value="Send" name="submit" tabindex="6" accesskey="s">  -->
+						</form>
+					</div>
+				</div>
+				
+				<div align="left" id="chatUsers" class="chatContent right">
+					<h2 style="text-align:center;border-bottom:1px dashed #000;padding-bottom:5px;">All users Chat</h2>
+					<div class="shoutbox">
+						<div class="shouts"></div>
+					</div>
+					
+					<div class="onlinelist">
+						<div class="onlineText"><strong>Users online:</strong></div>
+						<div class="users"></div>
+					</div>
+					
+					<div style="border-top: 1px dashed #000;padding-top: 10px;">
+						<form method="post" action="javascript:void(0);" onsubmit="send(this)" id="publicChat" autocomplete="off">
+							<img src="./gfx/act_indicator.gif" class="act_indicator" style="visibility: hidden; ">
+							<strong>Message:</strong> <input type="text" tabindex="1" disabled="disabled" name="message" class="message" value="Chat is disabled, because your userdata was not retrieved yet">
+								<!-- <input type="submit" class="sendChatBut button1" disabled="disabled" value="Send" name="submit" tabindex="6" accesskey="s">  -->
+						</form>
+					</div>
+				</div>
+				<br style="clear: both" />
+		</div>
+	</div>	
+	
+	<ul id="myMenu" class="contextMenu">
+		<li class="receive"><a href="#receive">Receive this bonus</a></li>
+		<li class="receive"><a href="#receiveSimilar">Receive all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#delete">Delete this bonus</a></li>
+		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
+		<!--<li class="debug"><a href="#debug">Debug (for developer)</a></li>-->
+	</ul>
+	
+	<ul id="myMenuRequests" class="contextMenu">
+		<li class="receive"><a href="#receive">Receive this gift</a></li>
+		<li class="receive"><a href="#receiveSimilar">Receive all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#delete">Delete this gift</a></li>
+		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+	</ul>
+	
+	
+</body>
+</html>
