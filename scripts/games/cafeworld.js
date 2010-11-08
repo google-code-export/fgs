@@ -183,7 +183,7 @@ var cafeworldBonuses =
 			{
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
-				if(data.indexOf('There are no more servings left') != -1 || data.indexOf('Looks like all the prizes have') != -1 || data.indexOf('already claimed') != -1 || data.indexOf('You are either too late or you clicked here previously') != -1 || data.indexOf('You already received this bonus') != -1 || data.indexOf(' Perfect Servings once today!') != -1)
+				if(data.indexOf('There are no more servings left') != -1 || data.indexOf('Looks like all the prizes have') != -1 || data.indexOf('already claimed') != -1 || data.indexOf('You are either too late or you clicked here previously') != -1 || data.indexOf('You already received this bonus') != -1 || data.indexOf(' Perfect Servings once today!') != -1 || data.indexOf('already received all the help they could handle') != -1 || data.indexOf('You have already helped today!') != -1)
 				{
 					info.error = 'limit';
 					info.time = Math.round(new Date().getTime() / 1000);
@@ -193,38 +193,64 @@ var cafeworldBonuses =
 					return;
 				}
 				
+				if(data.indexOf('please pick a mystery gift as a thank you') != -1)
+				{
+					var newUrl = $('.lotto-container', data).children('a:first').attr('href');
+					cafeworldBonuses.Click(id, unescape(newUrl), true);
+					return;
+				}
 				
-				
-				
+				if(data.indexOf('give you some in return but they can') != -1)
+				{
+					var newUrl = $('#app101539264719_item_wrapper', data).find('a:first').attr('href');
+					cafeworldBonuses.Click(id, unescape(newUrl), true);
+					return;
+				}
+
 				try
 				{				
-					var URL = $('.two-button-container', data).children('a.ok').attr('href');
-
-					
-					if(typeof(URL) == 'undefined') 
+					if($('.one-button-container', data).length > 0)
 					{
-						var URL = $('div.center', data).find('a[href^="http://apps.facebook.com/cafeworld/track.php"]:first').attr('href');
+						var URL = $('.one-button-container', data).children('a.ok').attr('href');
+					}
+					else
+					{
+						var URL = $('.two-button-container', data).children('a.ok').attr('href');
+
 						
-						if(typeof(URL) == 'undefined')
+						if(typeof(URL) == 'undefined') 
 						{
-							var URL = $('div.center', data).find('a[href^="http://apps.facebook.com/cafeworld/accept"]:first').attr('href');
-							if(typeof(URL) == 'undefined') throw {message: 'No url'}
+							var URL = $('div.center', data).find('a[href^="http://apps.facebook.com/cafeworld/track.php"]:first').attr('href');
+							
+							if(typeof(URL) == 'undefined')
+							{
+								var URL = $('div.center', data).find('a[href^="http://apps.facebook.com/cafeworld/accept"]:first').attr('href');
+							}
 						}
 					}
 					
-					var URL = unescape(URL);
-				
 					if( $(".reward-image-container",data).length > 0)
 					{
-						info.image = $(".reward-image-container",data).children('img').attr("src");
+						if($('.reward-image-container', data).find('img').length > 3)
+						{
+							info.image = $('.reward-image-container-left', data).find('img:last').attr('src');
+						}
+						else
+						{
+							info.image = $(".reward-image-container",data).children('img').attr("src");
+						}
 					}
 					else if($(".page-title",data).find('img').length > 0)
 					{
 						info.image = $(".page-title",data).find('img').attr("src");
 					}
-					else
+					else if($("#app101539264719_item_wrapper",data).find('.left_cell').find('img').length > 0)
 					{
 						info.image = $("#app101539264719_item_wrapper",data).find('.left_cell').find('img').attr("src");
+					}
+					else
+					{
+						info.image = $('div.cell_wrapper', data).find('img:first').attr('src');
 					}
 					
 					
@@ -244,12 +270,21 @@ var cafeworldBonuses =
 						{
 							var gift = titleX.replace(' have been added to your gift box.','');
 						}
+						else if(titleX.indexOf('earned a big tip for great service') != -1)
+						{
+							var i1 = titleX.indexOf(' will get ');
+							var gift = titleX.slice(i1+10);
+						}
 						else
 						{
 							var gift = $(".reward-text-contents", data).text();
-							gift = gift.replace('You were first! Click the button below to claim a','');
+							gift = gift.replace('You were first! Click the button below to claim a ','');
+							gift = gift.replace('You were first! Click the button below to claim an','');
 							gift = gift.replace('You were first! Click the button below to claim','');
-							gift = gift.replace('You were the first! You got a','');
+							gift = gift.replace('You were the first! You got a ','');
+							gift = gift.replace('You were the first! You got an ','');
+							gift = gift.replace('Click the button below to claim a ','');
+							gift = gift.replace('Click the button below to claim an ','');
 							
 							if(gift.indexOf(' from ') != -1)
 							{
@@ -257,10 +292,38 @@ var cafeworldBonuses =
 								var gift = gift.slice(0,i1);
 							}
 							
+							if(gift.indexOf(' is giving out ') != -1)
+							{
+								var i1 = gift.indexOf(' is giving out ')+15;
+								var i2 = gift.indexOf(' in celebration!');
+								if(i2 != -1)
+								{
+									var gift = gift.slice(i1,i2);
+								}
+								else
+								{
+									var gift = gift.slice(0,i1);
+								}
+							}
+							
 						}
 						info.text  = $(".reward-text-contents", data).text();
 					}
-					else
+					else if($(".title-text-contents", data).length > 0)
+					{				
+						var titleX = $(".title-text-contents:last", data).text();
+						
+						if(titleX.indexOf(' will be added to your gift box!') != -1)
+						{
+							var gift = titleX.replace(' will be added to your gift box!','');
+						}
+						else
+						{
+							var gift = $(".title-text-contents:last", data).text();
+						}
+						info.text  = $(".reward-text-contents:first", data).text();
+					}
+					else if($("#app101539264719_item_wrapper",data).find('.right_cell').find('h3').length > 0)
 					{
 						var titleX = $("#app101539264719_item_wrapper",data).find('.right_cell').find('h3').text();
 						var i1 = titleX.indexOf('to claim ');
@@ -283,6 +346,34 @@ var cafeworldBonuses =
 						
 						info.text  = $("#app101539264719_item_wrapper",data).find('.right_cell').find('h3').text();
 					}
+					else if($('div.cell_wrapper', data).find('h1:first').length > 0)
+					{
+						var titleX = $('div.cell_wrapper', data).find('h1:first').text();
+						
+						info.text = titleX;
+						
+						var i1 = titleX.indexOf('completed a collection and shared');
+						if(i1 != -1)
+						{
+							titleX = titleX.slice(i1+33);
+						}
+						
+						if(titleX.indexOf('with you!') != -1)
+						{
+							var i1 = titleX.indexOf('with you!');
+							titleX = titleX.slice(0,i1);
+						}
+						var gift = titleX;
+					}
+					else
+					{
+						var gift = $("#app101539264719_item_wrapper",data).children('.pad:nth-child(1)').text();
+						info.text = $("#app101539264719_item_wrapper",data).children('.pad:nth-child(2)').text();
+						info.image = $("#app101539264719_item_wrapper",data).children('.pad:nth-child(3)').children('img').attr('src');
+					}
+					
+					
+					if(typeof(info.image) == 'undefined') throw {message: $("#app101539264719_item_wrapper",data).html()}
 					
 					info.title = gift;
 					info.time = Math.round(new Date().getTime() / 1000);
@@ -292,12 +383,16 @@ var cafeworldBonuses =
 					sendView('bonusSuccess', id, info);
 
 					console.log(info);
-
-					$.ajax({
-						type: "GET",
-						url: URL,
-						success: function(d){}
-					});
+					if(typeof(URL) !== 'undefined')
+					{
+						console.log('opening new url');
+						var URL = unescape(URL);
+						$.ajax({
+							type: "GET",
+							url: URL,
+							success: function(d){}
+						});
+					}
 				}
 				catch(err)
 				{

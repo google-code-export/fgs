@@ -66,13 +66,15 @@ function initializeDefaults()
 		
 		chatSessions: {},
 		
+		defaultCommentsMessages: [],
+		
 		checkChatTimeout: 60,
 		checkBonusesTimeout: 60,
 		deleteOlderThan: 0,
 		deleteHistoryOlderThan: 0,
 	}
 
-	defaultGameOptions = { enabled: false,		commentBonus: false,	likeBonus: false,	clearOlderID:	0, filter: [] };
+	defaultGameOptions = { enabled: false,	clearOlderID:	0, filter: [] };
 
 	for(var idd in gamesData)
 	{
@@ -294,6 +296,14 @@ function sendView(msg, data, data2, data3)
 			{
 				view.bonusSuccess(data, data2);
 			}
+			else if(msg == 'updateLike')
+			{
+				view.updateLike(data, data2);
+			}
+			else if(msg == 'updateComment')
+			{
+				view.updateComment(data, data2);
+			}
 			// bonusy off //
 	
 	
@@ -350,41 +360,49 @@ function likeBonus(bonusID)
 	{
 		tx.executeSql("SELECT * FROM bonuses where id = ?", [bonusID], function(tx2, res)
 		{
-				var v = res.rows.item(0);
-				var postData = { 
-					'charset_test': charset_test,
-					'post_form_id': post_form_id,
-					'fb_dtsg':	fb_dtsg,
-					'xhp_ufi': 1,
-					'like': '',
-					'feedback_params': v.feedback,
-					'add_comment_text': '',
-					'link_data': v.link_data,
-					'nctr[_mod]': 'pagelet_home_stream',
-					'lsd':	'',
-					'post_form_id_source':'AsyncRequest'	
-				};
-				
-				var postData = jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
-				
-				$.ajax({
-					type: "POST",
-					url: 'http://www.facebook.com/ajax/ufi/modify.php?__a=1',
-					data: postData,
-					dataType: 'text',
-					success: function(data)
+			var v = res.rows.item(0);
+			var postData = { 
+				'charset_test': charset_test,
+				'post_form_id': post_form_id,
+				'fb_dtsg':	fb_dtsg,
+				'xhp_ufi': 1,
+				'like': '',
+				'feedback_params': v.feedback,
+				'add_comment_text': '',
+				'link_data': v.link_data,
+				'nctr[_mod]': 'pagelet_home_stream',
+				'lsd':	'',
+				'post_form_id_source':'AsyncRequest'	
+			};
+			
+			var postData = jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
+			
+			$.ajax({
+				type: "POST",
+				url: 'http://www.facebook.com/ajax/ufi/modify.php?__a=1',
+				data: postData,
+				dataType: 'text',
+				success: function(data)
+				{
+					setTimeout(function()
 					{
-						setTimeout(function()
+						var str = data.substring(9);
+						var error = parseInt(JSON.parse(str).error);
+						
+						if(error == 0)
 						{
 							database.likeBonus(bonusID);
-						}, 3000);
-					}
-				});
+						}
+
+						sendView('updateLike', bonusID, error);
+					}, 3000);
+				}
+			});
 		});
 	});
 }
 
-function commentBonus(bonusID)
+function commentBonus(bonusID, comment)
 {
 	database.db.transaction(function(tx)
 	{
@@ -398,20 +416,35 @@ function commentBonus(bonusID)
 				'xhp_ufi': 1,
 				'comment': 'Add comment',
 				'feedback_params': v.feedback,
-				'add_comment_text': 'Thank you for this bonus!\n\nI\'ve collected it using Facebook Game Simplifier\n\http://chrome.google.com/extensions/detail/effhaohnpfmphdbipcijflpkkgpakcma',
+				'add_comment_text': comment,
 				'link_data': v.link_data,
 				'nctr[_mod]': 'pagelet_home_stream',
 				'lsd':	'',
 				'post_form_id_source':'AsyncRequest'	
 			};
 
+			var postData = jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
+			
 			$.ajax({
 				type: "POST",
 				url: 'http://www.facebook.com/ajax/ufi/modify.php?__a=1',
 				data: postData,
 				dataType: 'text',
 				success: function(data)
-				{}
+				{
+					setTimeout(function()
+					{
+						var str = data.substring(9);
+						var error = parseInt(JSON.parse(str).error);
+						
+						if(error == 0)
+						{
+							database.commentBonus(bonusID);
+						}
+
+						sendView('updateComment', bonusID, error);
+					}, 3000);
+				}
 			});
 		});
 	});
@@ -766,8 +799,6 @@ function checkBonuses(appID)
 		dataType: 'text',
 		success: function(data)
 		{
-		
-			//lightblue_box - wylaczony feed
 			try
 			{
 				var str = data.substring(9);
