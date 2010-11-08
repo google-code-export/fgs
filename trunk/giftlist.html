@@ -285,7 +285,8 @@
 		$(e.currentTarget).unbind('click');
 		var URI = $(e.currentTarget).attr('url');
 		$(e.currentTarget).remove();
-		database.deleteItem('bonuses', gameID, $(e.currentTarget).attr('id'), 0);		
+		database.deleteItem('bonuses', gameID, $(e.currentTarget).attr('id'), 0);
+		database.deleteItem('bonuses', gameID, $(e.currentTarget).attr('id'), 1);	
 		bkP.openURI(URI);
 		updateCount(gameID);
 	}
@@ -295,7 +296,8 @@
 		var gameID = $(e.currentTarget).attr('gameID');
 		$(e.currentTarget).unbind('click');
 		$(e.currentTarget).remove();
-		database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 0);	
+		database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 0);
+		database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 1);
 		bkP.getRequestLink($(e.currentTarget).attr('id'), $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
 		updateCount(gameID);
 	}
@@ -415,9 +417,17 @@
 		}
 		else
 		{
-			setTimeout(function() {
-				$('#'+id).prependTo('#'+game+'BonusesHistoryList');
+			setTimeout(function()
+			{
+				
+				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'BonusesHistoryList');
 				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				
+				if(data.error == 'receiving')
+				{
+					$('div#'+id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualBonusClick);
+				}
+				
 				updateCount(gameID);
 			}, 1000);
 		}
@@ -430,21 +440,14 @@
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
-		
-		if(bkP.options.games[gameID].likeBonus)
-		{
-			bkP.likeBonus(id);
-		}
-		
-		if(bkP.options.games[gameID].commentBonus)
-		{
-			bkP.commentBonus(id);
-		}
 				
 		setTimeout(function() {
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
 			$('#'+id).removeClass('inProgress').find('img:last').attr('src', data.image);
 			$('#'+id).find('.title').text(data.title);
+			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow);
+			
+			
 			if(data.text != '')
 			{
 				$('#'+id).find('.title').next('span').text(data.text);
@@ -452,6 +455,28 @@
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 			updateCount(gameID);
 		}, 1000);
+	}
+	
+	function addLikeRow(like, comm)
+	{
+		if(like == null || like == 0)
+		{
+			var img = 'gfx/like.png';
+		}
+		else
+		{
+			var img = 'gfx/like-off.png';
+		}
+		if(comm == null || comm == 0)
+		{
+			var img2 = 'gfx/comment.png';
+		}
+		else
+		{
+			var img2 = 'gfx/comment-off.png';
+		}
+		
+		return '<div style="float: left"><img src="'+img+'" class="likeBonus" title="Click to like this bonus" style="cursor: pointer"></div><div style="float: right"><img src="'+img2+'" class="commentBonus" title="Click to send random comment on this bonus" style="cursor: pointer"></div>';
 	}
 	
 	function requestError(id, data)
@@ -473,8 +498,14 @@
 		else
 		{
 			setTimeout(function() {
-				$('#'+id).prependTo('#'+game+'RequestsHistoryList');
+				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'RequestsHistoryList');
 				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				
+				if(data.error == 'receiving')
+				{
+					$('div#'+id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualRequestClick);
+				}				
+				
 				updateCount(gameID);
 			}, 1000);
 		}
@@ -933,15 +964,15 @@
 				$('.gameDefaultBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			}
 			
-			if(e.likeBonus)
-			{
-				$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			}
+			//if(e.likeBonus)
+			//{
+			//	$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			//}
 			
-			if(e.commentBonus)
-			{
-				$('.gameCommentBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			}
+			//if(e.commentBonus)
+			//{
+			//	$('.gameCommentBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			//}
 				
 				
 			$(el).removeClass('hide');
@@ -1126,9 +1157,6 @@
 
 			tx.executeSql("SELECT * FROM bonuses where status = '1' order by time ASC", [], function(tx, res)
 			{
-				var opt = 'BonusesHistoryList';
-				
-				
 				for(var i = 0; i < res.rows.length; i++)
 				{
 					var v = res.rows.item(i);
@@ -1139,21 +1167,13 @@
 						continue;
 					}
 					
-					var err = (v.error == '' ? '' : '('+v.error+' error)');
-					
-					var html = '<div id="'+v.id+'" time="'+v.time+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
-					
-					
-					var game = gamesData[gameID].systemName;
-					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+					getBonusHistoryRow(v);
 				}
 				updateLoaded();
 			}, database.onSuccess, database.onError);
 
 			tx.executeSql("SELECT * FROM requests where status = '1' order by time ASC", [], function(tx, res)
 			{
-				var opt = 'RequestsHistoryList';
-				
 				for(var i = 0; i < res.rows.length; i++)
 				{
 					var v = res.rows.item(i);
@@ -1162,14 +1182,9 @@
 					if(!bkP.options.games[gameID].enabled)
 					{
 						continue;
-					}					
+					}						
 					
-					var err = (v.error == '' ? '' : '('+v.error+' error)');		
-					
-					var html = '<div time="'+v.time+'" class="requestItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
-					
-					var game = gamesData[gameID].systemName;
-					$('div#'+game+opt, '#'+game+'Game').prepend(html);		
+					getRequestHistoryRow(v);	
 				}
 				updateLoaded();
 			}, database.onSuccess, database.onError);
@@ -1208,6 +1223,41 @@
 		});
 	}
 	
+	function getBonusHistoryRow(v)
+	{
+		var err = (v.error == '' ? '' : '('+v.error+' error)');
+		var opt = 'BonusesHistoryList';	
+		
+		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+
+		var game = gamesData[v.gameID].systemName;
+		$('div#'+game+opt, '#'+game+'Game').prepend(html);
+		
+		if(v.error == 'receiving')
+		{
+			$('div#'+v.id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualBonusClick);
+		}
+		else if(v.error == '')
+		{
+			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(v.like_bonus, v.comment_bonus));
+		}
+	}
+	
+	function getRequestHistoryRow(v)
+	{
+		var err = (v.error == '' ? '' : '('+v.error+' error)');
+		var opt = 'RequestsHistoryList';	
+		
+		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="requestItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+
+		var game = gamesData[v.gameID].systemName;
+		$('div#'+game+opt, '#'+game+'Game').prepend(html);
+		
+		if(v.error == 'receiving')
+		{
+			$('div#'+v.id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualRequestClick);
+		}
+	}	
 	function prepareNeighboursList(gameID)
 	{
 		var game = gamesData[gameID].systemName;
@@ -1246,8 +1296,6 @@
 		
 		var width = $(window).width();
 		var widthLeft = width - 400;
-		
-		console.log(new Date());
 		
 		var marginTop = Math.floor(heightLeft / 2);	
 		var marginLeft = Math.floor(widthLeft / 2);
@@ -1352,9 +1400,9 @@
 			
 			$('<label><span>Default game</span><input type="checkbox" class="gameDefaultBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
-			$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			//$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
-			$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			//$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
 			switchEnabled(id);
 			createMenu(id);
@@ -1364,6 +1412,8 @@
 		
 
 		$('<input type="radio" class="gameSelected" name="gameSelected" id="chatSelected" /><label for="chatSelected">Chat<br /><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
+		
+		$('<input type="radio" class="gameSelected" name="gameSelected" id="optionsSelected" /><label for="optionsSelected">Options<br /><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
 
 		$("#gameSelector").children("input").click(function()
 		{
@@ -1375,6 +1425,11 @@
 				$('.shouts', '#chat').html('');
 				bkP.iChatTimeout = bkP.setTimeout('readChat(true)', 1);
 				return; 
+			}
+			else if($(this).attr('id') == 'optionsSelected')
+			{
+				$('#options').removeClass('hide');
+				loadOptionsData();
 			}
 			else
 			{
@@ -1419,17 +1474,17 @@
 			bkP.restartRequests();
 		});
 		
-		$(".gameLikeBonusBox").click(function()
-		{
-			bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
-			bkP.saveOptions();
-		});
+		//$(".gameLikeBonusBox").click(function()
+		//{
+		//	bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
+		//	bkP.saveOptions();
+		//});
 		
-		$(".gameCommentBonusBox").click(function()
-		{
-			bkP.options.games[$(this).attr('gameID')].commentBonus = $(this).is(':checked') ? true : false;
-			bkP.saveOptions();
-		});
+		//$(".gameCommentBonusBox").click(function()
+		//{
+			//bkP.options.games[$(this).attr('gameID')].commentBonus = $(this).is(':checked') ? true : false;
+			//bkP.saveOptions();
+		//});
 		
 		
 		$(".showContext").live('mouseenter', function()
@@ -1639,11 +1694,59 @@
 			}
 		});
 		
+		
+		
+		$('img.likeBonus').live('click',function()
+		{
+			var bonusID = $(this).parent().parent().parent().attr('id');
+			$(this).attr('src', 'gfx/act_indicator.gif');
+			bkP.likeBonus(bonusID);
+		});
+		
+		$('img.commentBonus').live('click',function()
+		{
+			if(bkP.options.defaultCommentsMessages.length == 0)
+			{
+				alert('You must setup comment messages first in options tab');
+			}
+			else
+			{
+				var randNum = Math.floor(Math.random()*(bkP.options.defaultCommentsMessages.length));
+				var bonusID = $(this).parent().parent().parent().attr('id');
+				$(this).attr('src', 'gfx/act_indicator.gif');
+				bkP.commentBonus(bonusID, bkP.options.defaultCommentsMessages[randNum]);
+			}
+		});
+		
+		
+		
+		
 		$("div.selectGiftToSend").live('click',function()
 		{
 			$("div.selectGiftToSend").removeClass('selected');
 			$(this).addClass('selected');
 		});
+		
+		$('.saveNewComment').live('click', function(){
+			if($(this).prev('textarea').val() != '')
+			{
+				var msg = $(this).prev('textarea').val();
+				bkP.options.defaultCommentsMessages.push(msg);
+				bkP.saveOptions();
+				loadOptionsData();
+			}
+		});
+		
+		$('.deleteComment').live('click', function()
+		{
+			bkP.options.defaultCommentsMessages.splice($(this).attr('delIndex'),1);
+			bkP.saveOptions();
+			
+			$(this).parent().remove();
+			loadOptionsData();
+		});
+		
+		
 		
 		$( "#dialog-confirm" ).dialog({
 			resizable: false,
@@ -1670,6 +1773,43 @@
 		});
 		$("#gameSelector").buttonset();
 	});
+	
+
+	function loadOptionsData()
+	{
+		$('#defaultCommentsMessages').html('');
+		
+		$(bkP.options.defaultCommentsMessages).each(function(i,msg)
+		{
+			$('#defaultCommentsMessages').append('<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteComment" title="Delete comment"> '+msg+'</div>');
+		});
+		
+		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button class="saveNewComment">Add new comment</button>');
+	}
+	
+	function updateLike(bonusID, success)
+	{
+		if(success == 0)
+		{
+			$('img.likeBonus', '#'+bonusID).removeClass('likeBonus').attr('src', 'gfx/like-off.png').css('cursor', 'default').attr('title', 'You already liked this');
+		}
+		else
+		{
+			$('img.likeBonus', '#'+bonusID).attr('src', 'gfx/like.png');
+		}
+	}
+	
+	function updateComment(bonusID, success)
+	{
+		if(success == 0)
+		{
+			$('img.commentBonus', '#'+bonusID).removeClass('commentBonus').attr('src', 'gfx/comment-off.png').css('cursor', 'default').attr('title', 'You already commented this');
+		}
+		else
+		{
+			$('img.commentBonus', '#'+bonusID).attr('src', 'gfx/comment.png');
+		}
+	}
 	
 	setInterval('updateTimeAgo()', 15000);
 	
@@ -1837,62 +1977,6 @@
 				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFGS%2F150480078326371&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 				</div>
 		</div>
-
-		<div class="section leftBox" id="options">
-			<h3>Options:</h3>
-			<br />
-				<h4>Bonuses check timeout</h4>
-					<select id="checkBonusesTimeout">
-						<option value="30">30 seconds</option>
-						<option value="60">1 minute</option>
-						<option value="120">2 minutes</option>
-						<option value="300">5 minutes</option>
-						<option value="600">10 minutes</option>
-					</select>
-				<!--
-				<h4>Gifts check timeout</h4>
-					<select id="checkRequestsTimeout">
-						<option value="30">30 seconds</option>
-						<option value="60">1 minute</option>
-						<option value="120">2 minutes</option>
-						<option value="300">5 minutes</option>
-						<option value="600">10 minutes</option>
-					</select>
-				-->
-				<h4>Chat check timeout</h4>
-					<select id="checkChatTimeout">
-						<option value="15">15 seconds</option>
-						<option value="30">30 seconds</option>
-						<option value="60">1 minute</option>
-						<option value="120">2 minutes</option>
-					</select>
-				<h4>Delete bonuses older than</h4>
-					<select id="deleteOlderThan">
-						<option value="0">Don't</option>
-						<option value="1800">30 minutes</option>
-						<option value="3600">1 hour</option>
-						<option value="7200">2 hours</option>
-						<option value="10800">3 hours</option>
-						<option value="21600">6 hours</option>
-						<option value="43200">12 hours</option>
-						<option value="86400">1 day</option>
-						<option value="172800">2 days</option>
-						<option value="259200">3 days</option>
-					</select>
-				<h4>Delete history older than</h4>
-					<select id="deleteHistoryOlderThan">
-						<option value="0">Don't</option>
-						<option value="1800">30 minutes</option>
-						<option value="3600">1 hour</option>
-						<option value="7200">2 hours</option>
-						<option value="10800">3 hours</option>
-						<option value="21600">6 hours</option>
-						<option value="43200">12 hours</option>
-						<option value="86400">1 day</option>
-						<option value="172800">2 days</option>
-						<option value="259200">3 days</option>					
-					</select>				
-		</div>
 		
 		<div class="section leftBox" id="notices">
 			<h3>Notices:</h3>
@@ -1984,6 +2068,70 @@
 				</div>
 				<br style="clear: both" />
 		</div>
+		
+		<div id="options" class="section hide gameContent">
+			
+			<h1 class="title">Options</h1>
+		
+				<h4>Bonuses check timeout</h4>
+					<select id="checkBonusesTimeout">
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+						<option value="300">5 minutes</option>
+						<option value="600">10 minutes</option>
+					</select>
+				<!--
+				<h4>Gifts check timeout</h4>
+					<select id="checkRequestsTimeout">
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+						<option value="300">5 minutes</option>
+						<option value="600">10 minutes</option>
+					</select>
+				-->
+				<h4>Chat check timeout</h4>
+					<select id="checkChatTimeout">
+						<option value="15">15 seconds</option>
+						<option value="30">30 seconds</option>
+						<option value="60">1 minute</option>
+						<option value="120">2 minutes</option>
+					</select>
+				<h4>Delete bonuses older than</h4>
+					<select id="deleteOlderThan">
+						<option value="0">Don't</option>
+						<option value="1800">30 minutes</option>
+						<option value="3600">1 hour</option>
+						<option value="7200">2 hours</option>
+						<option value="10800">3 hours</option>
+						<option value="21600">6 hours</option>
+						<option value="43200">12 hours</option>
+						<option value="86400">1 day</option>
+						<option value="172800">2 days</option>
+						<option value="259200">3 days</option>
+					</select>
+				<h4>Delete history older than</h4>
+					<select id="deleteHistoryOlderThan">
+						<option value="0">Don't</option>
+						<option value="1800">30 minutes</option>
+						<option value="3600">1 hour</option>
+						<option value="7200">2 hours</option>
+						<option value="10800">3 hours</option>
+						<option value="21600">6 hours</option>
+						<option value="43200">12 hours</option>
+						<option value="86400">1 day</option>
+						<option value="172800">2 days</option>
+						<option value="259200">3 days</option>					
+					</select>
+				
+				<br /><br /><br /><br />
+				<h4>Default Comments Messages</h4>
+				<div id="defaultCommentsMessages"></div>
+			
+			
+			<br style="clear: both" />
+		</div>
 	</div>	
 	
 	<ul id="myMenu" class="contextMenu">
@@ -1992,7 +2140,7 @@
 		<li class="delete separator"><a href="#delete">Delete this bonus</a></li>
 		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
 		<li class="delete separator"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
-		<!--<li class="debug"><a href="#debug">Debug (for developer)</a></li>-->
+		<li class="debug"><a href="#debug">Debug (for developer)</a></li>
 	</ul>
 	
 	<ul id="myMenuRequests" class="contextMenu">

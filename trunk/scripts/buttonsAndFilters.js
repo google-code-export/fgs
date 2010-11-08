@@ -198,8 +198,8 @@ var gamesData =
 						name: 'Cafe World',		systemName: 'cafeworld',
 						filter:		
 						{
-							bonuses: ['Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy'],
-							bonusesNewWindow: [],
+							bonuses: [],
+							bonusesNewWindow: ['Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to'],
 							requests: [],
 							requestsNewWindow: []
 						},
