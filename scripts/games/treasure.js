@@ -217,6 +217,8 @@ var treasureBonuses =
 			url: url,
 			success: function(data)
 			{
+				var dataFull = data;
+				
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
 				try
@@ -278,11 +280,22 @@ var treasureBonuses =
 				}
 				catch(err)
 				{
-					console.log(err);
 					if(typeof(retry) == 'undefined')
 					{
-						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-						treasureBonuses.Click(id, url, true);
+						var i1 = dataFull.indexOf('URL=');
+						if(i1 != -1)
+						{
+							var i2 = dataFull.indexOf('" />', i1);
+							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
+							treasureBonuses.Click(id, decodeStrings(newUrl), true);
+						}
+						else
+						{
+							info.error = 'receiving';
+							info.time = Math.round(new Date().getTime() / 1000);
+							database.updateErrorItem('bonuses', id, info);
+							sendView('bonusError', id, info);
+						}
 					}
 					else
 					{
