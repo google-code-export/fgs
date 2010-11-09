@@ -173,66 +173,102 @@ var farmvilleBonuses =
 			url: url,
 			success: function(data)
 			{
-					data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
+				var dataFull = data;
+				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 
-					if($('.inputsubmit[value="OK"]',data).length > 0)
+				if($('.inputsubmit[value="OK"]',data).length > 0)
+				{
+					console.log(getCurrentTime()+'[B] Bonus already claimed - deleting bonus with ID: '+id);
+					
+					info.error = 'limit';
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateErrorItem('bonuses', id, info);
+					sendView('bonusError', id, info);						
+				}
+				else if($('.main_giftConfirm_cont', data).length > 0)
+				{
+				
+					var i1 = dataFull.indexOf('URL=');
+					if(i1 != -1)
 					{
-						console.log(getCurrentTime()+'[B] Bonus already claimed - deleting bonus with ID: '+id);
+						var i2 = dataFull.indexOf('" />', i1);
+						url = decodeStrings('http://apps.facebook.com'+dataFull.slice(i1+4,i2));
 						
-						info.error = 'limit';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						database.updateErrorItem('bonuses', id, info);
-						sendView('bonusError', id, info);						
+						var giftReceiveUrl = url;
 					}
 					else
 					{
-					
 						url = unescape(url);
 						url = url.substr(url.indexOf('next')+5);
+						
 						var giftReceiveUrl = 'http://apps.facebook.com/onthefarm/'+url;
-						
-						//if(options.games[farmvilleBonuses.APPID].sendGiftBack) { var num = 3; }	else { var num = 1; }
-						
-						//if($('input[name="sendThankYouGift"]', data).length == 0)
-						//{
-							var num = 1;
-						//}
+					}
+					
+					
+					var num = 1;
 
-						var giftReceivePost = $('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').serialize()+'&'+escape($('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').find('input[type="submit"]').attr('name'))+'='+$('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').find('input[type="submit"]').attr('value');
-						
-						info.title = $(".giftConfirm_name",data).children().text();
-						info.image = $(".giftConfirm_img",data).children().attr("src");
-						info.text  = $(".main_giftConfirm_cont", data).find('h3').text();
-						
-						$.ajax({
-							type: "POST",
-							data: giftReceivePost,
-							url: giftReceiveUrl,
-							success: function(d)
+					var giftReceivePost = $('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').serialize()+'&'+escape($('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').find('input[type="submit"]').attr('name'))+'='+$('.inner_giftConfirm_cont', data).find('form:nth-child('+num+')').find('input[type="submit"]').attr('value');
+					
+					info.title = $(".giftConfirm_name",data).children().text();
+					info.image = $(".giftConfirm_img",data).children().attr("src");
+					info.text  = $(".main_giftConfirm_cont", data).find('h3').text();
+					
+					$.ajax({
+						type: "POST",
+						data: giftReceivePost,
+						url: giftReceiveUrl,
+						success: function(d)
+						{
+							info.time = Math.round(new Date().getTime() / 1000);
+							
+							database.updateItem('bonuses', id, info);
+							sendView('bonusSuccess', id, info);
+							console.log(getCurrentTime()+'[B] Bonus collected SUCCESSFULLY - ID: '+id);
+						},
+						error: function()
+						{
+							if(typeof(retry) == 'undefined')
 							{
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								database.updateItem('bonuses', id, info);
-								sendView('bonusSuccess', id, info);
-								console.log(getCurrentTime()+'[B] Bonus collected SUCCESSFULLY - ID: '+id);
-							},
-							error: function()
-							{
-								if(typeof(retry) == 'undefined')
-								{
-									console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-									farmvilleBonuses.Click(id, url, true);
-								}
-								else
-								{
-									info.error = 'connection';
-									info.time = Math.round(new Date().getTime() / 1000);
-									sendView('bonusError', id, info);
-								}
+								console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+								farmvilleBonuses.Click(id, url, true);
 							}
-						});
-					}		
+							else
+							{
+								info.error = 'connection';
+								info.time = Math.round(new Date().getTime() / 1000);
+								sendView('bonusError', id, info);
+							}
+						}
+					});
+				}
+				else				
+				{
+					if(typeof(retry) == 'undefined')
+					{
+						var i1 = dataFull.indexOf('URL=');
+						if(i1 != -1)
+						{
+							var i2 = dataFull.indexOf('" />', i1);
+							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
+							farmvilleBonuses.Click(id, decodeStrings(newUrl), true);
+						}
+						else
+						{
+							info.error = 'receiving';
+							info.time = Math.round(new Date().getTime() / 1000);
+							database.updateErrorItem('bonuses', id, info);
+							sendView('bonusError', id, info);
+						}
+					}
+					else
+					{
+						info.error = 'receiving';
+						info.time = Math.round(new Date().getTime() / 1000);
+						database.updateErrorItem('bonuses', id, info);
+						sendView('bonusError', id, info);
+					}
+				}
 			},
 			error: function()
 			{

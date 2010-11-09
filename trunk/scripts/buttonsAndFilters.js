@@ -24,7 +24,8 @@ var gamesData =
 												},
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -58,7 +59,7 @@ var gamesData =
 						filter:
 						{	
 							bonuses: ['mission=fertilize', 'next=gifts\.php'],
-							bonusesNewWindow: [],
+							bonusesNewWindow: ['Send Watering Cans','Send Building Parts', 'Send a Bushel'],
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
 						},
@@ -77,7 +78,8 @@ var gamesData =
 												},
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -110,8 +112,8 @@ var gamesData =
 						name: 'Mafia Wars',		systemName: 'mafiawars',
 						filter:		
 						{	
-							bonuses: ['Play Mafia Wars', 'Send Mystery Bag', 'Send Satchel of Lira'],		
-							bonusesNewWindow: ['^Help','Play Slots'],
+							bonuses: ['Play Mafia Wars'],		
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now'],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',
@@ -134,7 +136,8 @@ var gamesData =
 												},
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -176,7 +179,8 @@ var gamesData =
 												},
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -218,7 +222,8 @@ var gamesData =
 												},
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',

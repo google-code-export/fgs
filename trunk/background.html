@@ -21,7 +21,7 @@ localStorage.removeItem('FarmVAIO.options');
 localStorage.removeItem('options');
 
 
-var currentVersion = '3.7.0';
+var currentVersion = '3.7.1';
 var portsByName = {};
 
 // zmienne
@@ -118,6 +118,28 @@ chrome.self.onConnect.addListener(function(port)
 		});
 	}
 });
+
+function decodeStrings(_str) {
+
+    var strTemp = _str;
+	/*
+    strTemp= strTemp.replace(/%20/g,  ' ');
+    strTemp= strTemp.replace(/%22/g,  '"');
+    strTemp= strTemp.replace(/%25/g,  '%');
+    strTemp= strTemp.replace(/%26/g,  '&');
+    strTemp= strTemp.replace(/%2C/g,  ',');
+    strTemp= strTemp.replace(/%2F/g,  '/');
+    strTemp= strTemp.replace(/%3A/g,  ':');
+    strTemp= strTemp.replace(/%3D/g,  '=');
+    strTemp= strTemp.replace(/%3F/g,  '?');
+    strTemp= strTemp.replace(/%5B/g,  '[');
+    strTemp= strTemp.replace(/%5D/g,  ']');
+    strTemp= strTemp.replace(/%7B/g,  '{');
+    strTemp= strTemp.replace(/%7D/g,  '}');
+	*/
+	strTemp= strTemp.replace(/&amp;/g,'&');
+    return strTemp;
+}
 
 function openURI(url)
 {
@@ -861,6 +883,14 @@ function checkBonuses(appID)
 					var elID = bonusData.fbid;
 					var actr = bonusData.actrs;
 					
+					
+					var targets = bonusData.targets;
+					
+					if(actr != targets)
+					{
+						console.log($(el));
+						console.log('Rozne id: '+actr+' i '+targets);
+					}
 					
 					if(secs > options.deleteOlderThan && options.deleteOlderThan != 0)
 					{

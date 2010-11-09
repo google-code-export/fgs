@@ -375,31 +375,53 @@ var mafiawarsBonuses =
 		
 		console.log(getCurrentTime()+'[B] Receiving bonus with ID: '+id);
 		
+		
+	
 		$.ajax({
 			type: "GET",
 			url: url,
 			success: function(data)
 			{
-					var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
-					
-                    try {
-                        var i1,i2, myUrl;
-                        var strTemp;
-                
-						var src = $('iframe[name="mafiawars"]', data).attr('src');
-						if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
+				var dataFull = data;
+				
+				var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
+				
+				try {
+					var i1,i2, myUrl;
+					var strTemp;
+			
+					var src = $('iframe[name="mafiawars"]', data).attr('src');
+					if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
 
-                        mafiawarsBonuses.Click2(id, src);
-                    } 
-					catch(err)
+					mafiawarsBonuses.Click2(id, src);
+				} 
+				catch(err)
+				{
+					if(typeof(retry) == 'undefined')
 					{
-						
-						console.log(err);
+						var i1 = dataFull.indexOf('URL=');
+						if(i1 != -1)
+						{
+							var i2 = dataFull.indexOf('" />', i1);
+							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
+							mafiawarsBonuses.Click(id, decodeStrings(newUrl), true);
+						}
+						else
+						{
+							info.error = 'receiving';
+							info.time = Math.round(new Date().getTime() / 1000);
+							database.updateErrorItem('bonuses', id, info);
+							sendView('bonusError', id, info);
+						}
+					}
+					else
+					{
 						info.error = 'receiving';
 						info.time = Math.round(new Date().getTime() / 1000);
 						database.updateErrorItem('bonuses', id, info);
 						sendView('bonusError', id, info);
-                    }
+					}
+				}
 			},
 			error: function()
 			{
@@ -508,9 +530,8 @@ var mafiawarsBonuses =
 				var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 
 				try {
-					var strTemp = data;
-					
-					if(strTemp.indexOf('Sorry, you already collected on this stash!') != -1 || strTemp.indexOf('secret stashes today, and have to wait') != -1 || strTemp.indexOf('You cannot claim this reward') != -1 || strTemp.indexOf('You have already received your free boost') != -1 || strTemp.indexOf('You have already helped') != -1 || strTemp.indexOf('has already paid out the bounty on this target') != -1 || strTemp.indexOf('This user has already received the maximum amount of help') != -1 || strTemp.indexOf('has already got their Energy Pack for today') != -1 || strTemp.indexOf('You cannot gift this item to people not in your mafia') != -1 || strTemp.indexOf('has received all the help allowed for today') != -1 || strTemp.indexOf('All of the available boosts have already been claimed') != -1 || strTemp.indexOf('This stash has already been found') != -1)
+					var strTemp = data;					
+					if(strTemp.indexOf('Sorry, you already collected on this stash!') != -1 || strTemp.indexOf('secret stashes today, and have to wait') != -1 || strTemp.indexOf('You cannot claim this reward') != -1 || strTemp.indexOf('You have already received your free boost') != -1 || strTemp.indexOf('You have already helped') != -1 || strTemp.indexOf('has already paid out the bounty on this target') != -1 || strTemp.indexOf('This user has already received the maximum amount of help') != -1 || strTemp.indexOf('has already got their Energy Pack for today') != -1 || strTemp.indexOf('You cannot gift this item to people not in your mafia') != -1 || strTemp.indexOf('has received all the help allowed for today') != -1 || strTemp.indexOf('All of the available boosts have already been claimed') != -1 || strTemp.indexOf('This stash has already been found') != -1 || strTemp.indexOf('has passed out all available') != -1 || strTemp.indexOf('You already helped this user') != -1 || strTemp.indexOf('You can only receive') != -1 || strTemp.indexOf('cannot receive any more parts') != -1 || strTemp.indexOf('has no more free boosts to hand out') != -1 || strTemp.indexOf(', come back tomorrow to help out more') != -1)
 					{
 					
 						// has passed out all available
@@ -521,10 +542,15 @@ var mafiawarsBonuses =
 						sendView('bonusError', id, info);
 						return;
 					}
+					
 					if(strTemp.indexOf('>Congratulations</div>') != -1) // Get Reward
 					{
 						var i1 = strTemp.indexOf('>Congratulations</div>');
 						var i2 = strTemp.indexOf('You Have Received', i1);
+						if(i2 == -1)
+						{
+							var i2 = strTemp.indexOf('You have received', i1);
+						}
 						var i3 = strTemp.indexOf('</div>', i2);
 											
 						info.image = 'gfx/90px-check.png';
@@ -605,11 +631,22 @@ var mafiawarsBonuses =
 							$.post(myUrl, params+'&ajax=1&liteload=1', function(){});				
 						}
 					}
+					else if(strTemp.indexOf('You collected a') != -1)
+					{
+						var i1 = strTemp.indexOf('You collected a');
+						var i2 = strTemp.indexOf('from', i1);
+						var i3 = strTemp.indexOf('</div>', i1);
+
+						info.text  = strTemp.slice(i1,i3);
+						info.image = $('td.message_body > div:nth-child(1)', data).find('img:first').attr('src');
+						info.title = strTemp.slice(i1+16,i2);
+					}
 					else
 					{
-						throw {message:"Don't know this error"}
+						throw {message:$('td.message_body', data).text()}
 					}
 					
+					console.log(info);
 					
 					
 					
@@ -679,6 +716,8 @@ var mafiawarsBonuses =
 					}
 					*/
 					
+					
+					
 					info.time  = Math.round(new Date().getTime() / 1000);
 					
 					database.updateItem('bonuses', id, info);
@@ -687,7 +726,7 @@ var mafiawarsBonuses =
 				}
 				catch(err)
 				{
-					console.log(err);
+					console.log(err.message);
 					info.error = 'receiving';
 					info.time = Math.round(new Date().getTime() / 1000);
 					database.updateErrorItem('bonuses', id, info);

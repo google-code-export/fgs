@@ -80,6 +80,15 @@ database.clearTable = function(table, gameID, status)
 	}
 }
 
+database.clearLimitErrors = function(gameID)
+{
+	database.db.transaction(function(tx)
+	{
+		tx.executeSql('DELETE FROM bonuses where status = 1 and gameID = ? and error = "limit"', [gameID], database.onSuccess, database.onError);
+	});
+}
+
+
 database.clearByGameID = function(gameID)
 {
 	database.db.transaction(function(tx)

@@ -266,7 +266,7 @@
 		var title = v.title;
 		title = title.replace(/'/gi, '');
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem updateTimeAgo manualBonus"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem showContextManual updateTimeAgo manualBonus"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualRequestRow(gameID, v)
@@ -580,7 +580,7 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'BonusesPendingList').html('');
+					$('#'+game+'BonusesPendingList').html('<br style="clear:both" />');
 					updateCount(gameID);
 					database.clearTable('bonuses', gameID, 0);
 					$( this ).dialog( "close" );
@@ -633,9 +633,35 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'BonusesHistoryList').html('');
+					$('#'+game+'BonusesHistoryList').html('<br style="clear:both" />');
 					updateCount(gameID);
 					database.clearTable('bonuses', gameID, 1);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearCollectedBonusesLimitError(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete limit errors": function()
+				{
+					var game = gamesData[gameID].systemName;
+					$('#'+game+'BonusesHistoryList').children('div').each(function(){
+						if($(this).find('.bonusError').text().indexOf('limit') != -1)
+						{
+							$(this).remove();
+						}
+					});
+					//('<br style="clear:both" />');
+					database.clearLimitErrors(gameID);
 					$( this ).dialog( "close" );
 				},
 				Cancel: function() {
@@ -654,7 +680,7 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'RequestsHistoryList').html('');
+					$('#'+game+'RequestsHistoryList').html('<br style="clear:both" />');
 					updateCount(gameID);
 					database.clearTable('requests', gameID, 1);
 					$( this ).dialog( "close" );
@@ -675,7 +701,7 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'SendFreeGiftsHistoryList').html('');
+					$('#'+game+'SendFreeGiftsHistoryList').html('<br style="clear:both" />');
 					database.clearTable('freegifts', gameID);
 					$( this ).dialog( "close" );
 				},
@@ -1568,6 +1594,43 @@
 			});
 		});
 		
+		$(".showContextManual").live('mouseenter', function()
+		{
+			if($(this).hasClass('hasContextMenu'))
+			{
+				return;
+			}
+			$(this).addClass('hasContextMenu').contextMenu({
+				menu: 'myMenuManualBonuses'
+			}, function(action, el, pos)
+			{
+				if(action == 'stopCollect')
+				{
+					$('#dialog-confirm').dialog({
+						buttons:
+						{
+							"Stop collecting": function()
+							{
+								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
+								bkP.saveOptions();
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								{
+									$(this).remove();
+								});
+								database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								updateCount($(el).attr('gameID'));
+								
+								$( this ).dialog( "close" );
+							},
+							Cancel: function() {
+								$( this ).dialog( "close" );
+							}
+					}});
+					$('#dialog-confirm').dialog('open');
+				}
+			});
+		});
+		
 		$(".showContextRequests").live('mouseenter', function()
 		{
 			if($(this).hasClass('hasContextMenu'))
@@ -2141,6 +2204,10 @@
 		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
 		<li class="delete separator"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
 		<li class="debug"><a href="#debug">Debug (for developer)</a></li>
+	</ul>
+	
+	<ul id="myMenuManualBonuses" class="contextMenu">
+		<li class="delete"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
 	</ul>
 	
 	<ul id="myMenuRequests" class="contextMenu">
