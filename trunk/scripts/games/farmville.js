@@ -1,131 +1,75 @@
 var farmvilleRequests = 
 {	
-	APPID: '102452128776',
-	
-	Click: function(id, dataPost, retry)
+	Click: function(id, URI, retry)
 	{
 		var info = {
 			image: 'gfx/90px-cancel.png'
 		}
 		
 		$.ajax({
-			type: "POST",
-			url: 'http://www.facebook.com/ajax/reqs.php?__a=1',
-			data: dataPost,
+			type: "GET",
+			url: URI,
 			dataType: 'text',
-			success: function(data)
+			success: function(data2)
 			{
-				try
+				var data = data2.substr(data2.indexOf('<body'),data2.lastIndexOf('</body'));
+				
+				var i1 = URI.indexOf('addneighbo');
+				
+				if(i1 != -1)
 				{
-					var strTemp = data;
-					var i1      =   strTemp.indexOf('goURI');
-					if (i1 == -1) throw {message:"Cannot find goURI in page"}
+					console.log('New neighbour');
 
-					var i2        =   strTemp.indexOf(');"]',i1);
-					strTemp   =   "'"+strTemp.slice(i1+6,i2)+"'";
-
-					eval("strTemp =" + strTemp);
-
-					var URI = JSON.parse(strTemp);
-					
-					$.ajax({
-						type: "GET",
-						url: URI,
-						dataType: 'text',
-						success: function(data2)
-						{
-							var data = data2.substr(data2.indexOf('<body'),data2.lastIndexOf('</body'));
-							
-							var i1 = URI.indexOf('addneighbo');
-							
-							if(i1 != -1)
-							{
-								console.log('New neighbour');
-
-								info.image = 'icons/reqs/noimage.png';
-								info.title = 'New neighbour';
-								info.text  = '';
-								info.time = Math.round(new Date().getTime() / 1000);
-																
-								database.updateItem('requests', id, info);
-								sendView('requestSuccess', id, info);
-								return;
-							}
-
-							if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length > 0)
-							{
-								//gift sukces
-								console.log('New gift');
-								
-								info.image = $(".giftConfirm_img",data).children().attr("src");
-								info.title = $(".giftConfirm_name",data).children().text();
-								info.text  = $(".giftFrom_name",data).children().text();
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								database.updateItem('requests', id, info);
-								sendView('requestSuccess', id, info);
-							}
-							else if($('.giftFrom_img', data).length == 0 && $(".giftConfirm_img",data).length > 0)
-							{
-								//gift sukces
-								console.log('New gift sent');
-								
-								info.image = $(".giftConfirm_img",data).children().attr("src");
-								info.title = $(".giftConfirm_name",data).children().text();
-								info.text  = $(".padding_content",data).find('h3').text();
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								database.updateItem('requests', id, info);
-								sendView('requestSuccess', id, info);
-							}
-							else if($('.giftLimit', data).length > 0)
-							{
-								info.error = 'limit';
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								database.updateErrorItem('requests', id, info);
-								sendView('requestError', id, info);
-							}
-							else
-							{
-								if(typeof(retry) == 'undefined')
-								{
-									console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-									farmvilleRequests.Click(id, dataPost, true);
-								}
-								else
-								{
-									info.error = 'receiving';
-									info.time = Math.round(new Date().getTime() / 1000);
-									
-									database.updateErrorItem('requests', id, info);
-									sendView('requestError', id, info);	
-								}
-							}
-						},
-						error: function()
-						{
-							if(typeof(retry) == 'undefined')
-							{
-								console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-								farmvilleRequests.Click(id, dataPost, true);
-							}
-							else
-							{
-								info.error = 'connection';
-								info.time = Math.round(new Date().getTime() / 1000);
-								sendView('requestError', id, info);
-							}
-						}
-					});
+					info.image = 'icons/reqs/noimage.png';
+					info.title = 'New neighbour';
+					info.text  = '';
+					info.time = Math.round(new Date().getTime() / 1000);
+													
+					database.updateItem('requests', id, info);
+					sendView('requestSuccess', id, info);
+					return;
 				}
-				catch(err)
+
+				if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length > 0)
 				{
-					console.log(err);
+					//gift sukces
+					console.log('New gift');
+					
+					info.image = $(".giftConfirm_img",data).children().attr("src");
+					info.title = $(".giftConfirm_name",data).children().text();
+					info.text  = $(".giftFrom_name",data).children().text();
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateItem('requests', id, info);
+					sendView('requestSuccess', id, info);
+				}
+				else if($('.giftFrom_img', data).length == 0 && $(".giftConfirm_img",data).length > 0)
+				{
+					//gift sukces
+					console.log('New gift sent');
+					
+					info.image = $(".giftConfirm_img",data).children().attr("src");
+					info.title = $(".giftConfirm_name",data).children().text();
+					info.text  = $(".padding_content",data).find('h3').text();
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateItem('requests', id, info);
+					sendView('requestSuccess', id, info);
+				}
+				else if($('.giftLimit', data).length > 0)
+				{
+					info.error = 'limit';
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateErrorItem('requests', id, info);
+					sendView('requestError', id, info);
+				}
+				else
+				{
 					if(typeof(retry) == 'undefined')
 					{
 						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-						farmvilleRequests.Click(id, dataPost, true);
+						farmvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -142,7 +86,7 @@ var farmvilleRequests =
 				if(typeof(retry) == 'undefined')
 				{
 					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					farmvilleRequests.Click(id, dataPost, true);
+					farmvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -158,8 +102,6 @@ var farmvilleRequests =
 
 var farmvilleBonuses = 
 {
-	APPID: '102452128776',
-
 	Click:	function(id, url, retry)
 	{
 		var info = {
@@ -173,7 +115,6 @@ var farmvilleBonuses =
 			url: url,
 			success: function(data)
 			{
-				var dataFull = data;
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 
 				if($('.inputsubmit[value="OK"]',data).length > 0)
@@ -189,22 +130,11 @@ var farmvilleBonuses =
 				else if($('.main_giftConfirm_cont', data).length > 0)
 				{
 				
-					var i1 = dataFull.indexOf('URL=');
-					if(i1 != -1)
-					{
-						var i2 = dataFull.indexOf('" />', i1);
-						url = decodeStrings('http://apps.facebook.com'+dataFull.slice(i1+4,i2));
+					url = unescape(url);
+					url = url.substr(url.indexOf('next')+5);
 						
-						var giftReceiveUrl = url;
-					}
-					else
-					{
-						url = unescape(url);
-						url = url.substr(url.indexOf('next')+5);
-						
-						var giftReceiveUrl = 'http://apps.facebook.com/onthefarm/'+url;
-					}
-					
+					var giftReceiveUrl = 'http://apps.facebook.com/onthefarm/'+url;
+
 					
 					var num = 1;
 
@@ -246,20 +176,8 @@ var farmvilleBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						var i1 = dataFull.indexOf('URL=');
-						if(i1 != -1)
-						{
-							var i2 = dataFull.indexOf('" />', i1);
-							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
-							farmvilleBonuses.Click(id, decodeStrings(newUrl), true);
-						}
-						else
-						{
-							info.error = 'receiving';
-							info.time = Math.round(new Date().getTime() / 1000);
-							database.updateErrorItem('bonuses', id, info);
-							sendView('bonusError', id, info);
-						}
+						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						farmvilleBonuses.Click(id, url+'&_fb_noscript=1', true);
 					}
 					else
 					{

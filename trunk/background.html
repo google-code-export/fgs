@@ -12,6 +12,8 @@
 <script type="text/javascript" src="scripts/games/treasure.js"></script>
 <script type="text/javascript" src="scripts/games/cafeworld.js"></script>
 <script type="text/javascript" src="scripts/games/ravenwood.js"></script>
+<script type="text/javascript" src="scripts/games/restaurant.js"></script>
+
 
 <script type="text/javascript" src="scripts/games/freegifts.js"></script>
 <script type="text/javascript" src="scripts/database.js"></script>
@@ -74,7 +76,7 @@ function initializeDefaults()
 		deleteHistoryOlderThan: 0,
 	}
 
-	defaultGameOptions = { enabled: false,	clearOlderID:	0, filter: [] };
+	defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, filter: [] };
 
 	for(var idd in gamesData)
 	{
@@ -107,7 +109,7 @@ chrome.self.onConnect.addListener(function(port)
 					chrome.browserAction.setBadgeText({text:"wait"});
 					chrome.browserAction.setTitle({title: "FGS is not yet loaded... Please wait..."});
 					FBloginError = null;
-					restartRequests();
+					startup();
 				}
 			}
 			else
@@ -118,28 +120,6 @@ chrome.self.onConnect.addListener(function(port)
 		});
 	}
 });
-
-function decodeStrings(_str) {
-
-    var strTemp = _str;
-	/*
-    strTemp= strTemp.replace(/%20/g,  ' ');
-    strTemp= strTemp.replace(/%22/g,  '"');
-    strTemp= strTemp.replace(/%25/g,  '%');
-    strTemp= strTemp.replace(/%26/g,  '&');
-    strTemp= strTemp.replace(/%2C/g,  ',');
-    strTemp= strTemp.replace(/%2F/g,  '/');
-    strTemp= strTemp.replace(/%3A/g,  ':');
-    strTemp= strTemp.replace(/%3D/g,  '=');
-    strTemp= strTemp.replace(/%3F/g,  '?');
-    strTemp= strTemp.replace(/%5B/g,  '[');
-    strTemp= strTemp.replace(/%5D/g,  ']');
-    strTemp= strTemp.replace(/%7B/g,  '{');
-    strTemp= strTemp.replace(/%7D/g,  '}');
-	*/
-	strTemp= strTemp.replace(/&amp;/g,'&');
-    return strTemp;
-}
 
 function openURI(url)
 {
@@ -316,6 +296,7 @@ function sendView(msg, data, data2, data3)
 			}
 			else if(msg == 'bonusSuccess')
 			{
+				likeBonus(data, true);
 				view.bonusSuccess(data, data2);
 			}
 			else if(msg == 'updateLike')
@@ -355,11 +336,11 @@ function sendView(msg, data, data2, data3)
 			
 			else if(msg == 'addNewBonus')
 			{
-				view.addNewBonus(data);
+				view.addNewBonus(data3);
 			}
 			else if(msg == 'addNewRequest')
 			{
-				view.addNewRequest(data);
+				view.addNewRequest(data3);
 			}
 			
 			else if(msg == 'hiddenFeed')
@@ -376,13 +357,79 @@ function sendView(msg, data, data2, data3)
 	}
 }
 
-function likeBonus(bonusID)
+function prepareLinkForGame(game, id, dataPost, retry)
+{
+	$.ajax({
+		type: "POST",
+		url: 'http://www.facebook.com/ajax/reqs.php?__a=1',
+		data: dataPost,
+		dataType: 'text',
+		success: function(data)
+		{
+			try
+			{
+				var strTemp = data;
+				var i1      =   strTemp.indexOf('goURI');
+				if (i1 == -1) throw {message:"Cannot find goURI in page"}
+
+				var i2        =   strTemp.indexOf(');"]',i1);
+				strTemp   =   "'"+strTemp.slice(i1+6,i2)+"'";
+
+				eval("strTemp =" + strTemp);
+
+				var URI = JSON.parse(strTemp);
+				
+				eval(game+'Requests.Click("'+id+'","'+URI+'")');
+			}
+			catch(err)
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					prepareLinkForGame(game, id, dataPost);
+				}
+				else
+				{
+					info.error = 'receiving';
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateErrorItem('requests', id, info);
+					sendView('requestError', id, info);	
+				}
+			}
+		},
+		error: function()
+		{
+			if(typeof(retry) == 'undefined')
+			{
+				prepareLinkForGame(game, id, dataPost)
+			}
+			else
+			{
+				info.error = 'connection';
+				info.time = Math.round(new Date().getTime() / 1000);
+				sendView('requestError', id, info);
+			}
+		}
+	});
+}
+				
+
+function likeBonus(bonusID, autolike)
 {
 	database.db.transaction(function(tx)
 	{
 		tx.executeSql("SELECT * FROM bonuses where id = ?", [bonusID], function(tx2, res)
 		{
 			var v = res.rows.item(0);
+			
+			if(typeof(autolike) != 'undefined')
+			{
+				if(!options.games[v.gameID].likeBonus)
+				{	
+					return;
+				}
+			}
+			
 			var postData = { 
 				'charset_test': charset_test,
 				'post_form_id': post_form_id,
@@ -622,41 +669,12 @@ function checkRequests()
 		
 			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 			
-			if($("#loginform", data).length > 0)
-			{
-				console.log(getCurrentTime()+'[R] Error: probably logged out');
-				stopAll();
-				return true;
-			}
-
-			// wczytac bazy
-			if(userID == null || userName == null)
-			{
-				console.log('Checking user_id...');
-				var i1 = data.indexOf('Env={user:')+10;
-				var i2 = data.indexOf(',', i1);
-				userID = data.slice(i1, i2);
-				userName = $('#navAccountName', data).text();
-			}
-			
-			if(databaseAlreadyOpen == false)
-			{
-				console.log('Opening database...');
-				database.open(userID);
-				database.createTable();
-				databaseAlreadyOpen = true;
-			}
-			
-			if(optionsLoaded == false)
-			{
-				console.log('Loading options...');
-				loadOptions(userID);
-				restartBonuses();
-			}
-			
-			FBloginError = false;
-			updateIcon();
-			
+			/*
+			var i1 = data.indexOf('big_pipe.onPageletArrive({"phase":1,"id":"pagelet_requests"');
+			var i2 = data.indexOf('}});</scrip', i1);
+			eval('var tempData = ' + data.slice(i1+25,i2+2));
+			data = tempData.content.pagelet_requests;
+			*/
 			
 			var FBdata = $('input[name="params\[app_id\]"]',data).parent('form:first');
 			
@@ -666,6 +684,9 @@ function checkRequests()
 				post_form_id = $(FBdata).children('input[name=post_form_id]').val();
 				charset_test = $(FBdata).children('input[name=charset_test]').val();
 			}
+			
+			
+			var giftArr = [];
 			
 			$('input[name="params\[app_id\]"]',data).parent('form').each(function()
 			{
@@ -751,13 +772,21 @@ function checkRequests()
 					var type = typeText.slice(i1, i2);
 				}
 
+				
 				var curTime = Math.round(new Date().getTime() / 1000);		
 				var bTitle = $(el).find('.UIImageBlock_SMALL_Content').find('a:first').text().replace(/'/gi, '');		
 				
 				var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime];
-
-				database.addRequest(gift);
+				
+				giftArr.push(gift);
+				
+				
 			});
+			
+			if(giftArr.length > 0)
+			{
+				database.addRequest(giftArr);
+			}
 			console.log(getCurrentTime()+'[R] Setting up new update in 10 minutes');
 		},
 		error: function(e)
@@ -867,6 +896,9 @@ function checkBonuses(appID)
 					sendView('hiddenFeed', appID);
 				}
 
+				
+				var bonusArr = [];
+				
 				$('li.uiStreamStory', htmlData).each(function()
 				{
 					var el = $(this);
@@ -953,8 +985,14 @@ function checkBonuses(appID)
 					
 					var bonus = [elID, appID, bTitle, $(el).find('.uiAttachmentTitle').text(), $(el).find('.uiStreamAttachments').find('img').attr('src'), $(el).find('.UIActionLinks_bottom > a:last').attr('href'), bonusTime, feedback, link_data];
 
-					database.addBonus(bonus);
+					bonusArr.push(bonus);
 				});
+				
+				if(bonusArr.length > 0)
+				{
+					database.addBonus(bonusArr);
+				}
+				
 				options.games[appID].clearOlderID = elIDNext;
 				saveOptions();
 				
@@ -1061,17 +1099,70 @@ function getCurrentTime()
 	return h+':'+m+':'+s+' - ';
 }
 
+function startup()
+{
+	$.ajax({
+		type: "GET",
+		url: 'http://www.facebook.com/help.php',
+		dataType: 'text',
+		success: function(data)
+		{
+			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
+			
+			if($("#loginform", data).length > 0)
+			{
+				console.log(getCurrentTime()+'[R] Error: probably logged out');
+				return true;
+			}
+			
+			if(userID == null || userName == null)
+			{
+				console.log('Checking user_id...');
+				var i1 = data.indexOf('Env={user:')+10;
+				var i2 = data.indexOf(',', i1);
+				userID = data.slice(i1, i2);
+				userName = $('#navAccountName', data).text();
+			}
+			
+			if(databaseAlreadyOpen == false)
+			{
+				console.log('Opening database...');
+				database.open(userID);
+				database.createTable();
+				databaseAlreadyOpen = true;
+			}
+			
+			if(optionsLoaded == false)
+			{
+				console.log('Loading options...');
+				loadOptions(userID);
+				restartBonuses();
+			}
+			
+			FBloginError = false;
+			updateIcon();
+			restartRequests();			
+		},
+		error: function()
+		{
+			setTimeout(startup, 3000);
+		}
+	});
+		
+		
+		
+}
+
 $(function()
 {
 	checkVersion();
 	initializeDefaults();
-	
 
 	//chrome.browserAction.onClicked.addListener(listenerCallback);
 	chrome.browserAction.setBadgeText({text:"wait"});
 	chrome.browserAction.setTitle({title: "FGS is not yet loaded... Please wait..."});
 
-	restartRequests();
+	startup();
 	
 	$(window).unload( function () 
 	{
