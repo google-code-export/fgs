@@ -15,7 +15,7 @@ database.onError = function(tx, e)
 
 database.onSuccess = function(tx, e) 
 {
-	console.log('Success');
+	console.log('Success ' + e.message );
 }
 
 database.createTable = function()
@@ -201,42 +201,48 @@ database.updateErrorItem = function(table, itemID, info)
 }
 
 // BACKGROUND.HTML
-database.addBonus = function(data)
+database.addBonus = function(data2)
 {
 	database.db.transaction(function(tx)
 	{
-		tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0)", data,
-		function(t,r)
+		$(data2).each(function(k, data)
 		{
-			if(r.rowsAffected === 1)
+			tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0)", data,
+			function(t,r)
 			{
-				if(giftlistFocus == false)
+				if(r.rowsAffected == 1)
 				{
-					newElements++;
+					if(giftlistFocus == false)
+					{
+						newElements++;
+					}
+					sendView('addNewBonus', '', '', data);
+					updateIcon();
 				}
-				sendView('addNewBonus', data);
-				updateIcon();
-			}
-		}, database.onError);
+			}, database.onSuccess, database.onError);
+		});
 	});
 }
 
-database.addRequest = function(data)
+database.addRequest = function(data2)
 {
 	database.db.transaction(function(tx)
 	{
-		tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?)", data,
-		function(t,r)
+		$(data2).each(function(k, data)
 		{
-			if(r.rowsAffected === 1)
+			tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?)", data,
+			function(t,r)
 			{
-				if(giftlistFocus == false)
+				if(r.rowsAffected == 1)
 				{
-					newElements++;
+					if(giftlistFocus == false)
+					{
+						newElements++;
+					}
+					sendView('addNewRequest', '', '',data);
+					updateIcon();
 				}
-				sendView('addNewRequest', data);
-				updateIcon();
-			}
-		}, database.onError);
+			}, database.onSuccess, database.onError);
+		});
 	});
 }

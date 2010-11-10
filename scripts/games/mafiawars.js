@@ -1,72 +1,14 @@
 var mafiawarsRequests = 
 {
-	APPID: '10979261223',
-
-	Click:	function(id, dataPost, retry)
+	Click:	function(id, URI, retry)
 	{
 		var info = {
 			image: 'gfx/90px-cancel.png'
 		}
-		
-		$.ajax({
-			type: "POST",
-			url: 'http://www.facebook.com/ajax/reqs.php?__a=1',
-			data: dataPost,
-			dataType: 'text',
-			success: function(data)
-			{
-				try
-				{
-					var strTemp = data;
-					var i1      =   strTemp.indexOf('goURI');
-					if (i1 == -1) throw {message:"Cannot find goURI in page"}
-
-					var i2        =   strTemp.indexOf(');"]',i1);
-					strTemp   =   "'"+strTemp.slice(i1+6,i2)+"'";
-
-					eval("strTemp =" + strTemp);
-					var URI = unescape(eval(strTemp));
-					
-					mafiawarsRequests.Click2(id, URI);
-				}
-				catch(err)
-				{
-					console.log(err);
-					info.error = 'receiving';
-					info.time = Math.round(new Date().getTime() / 1000);
-					
-					database.updateErrorItem('requests', id, info);
-					sendView('requestError', id, info);	
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					mafiawarsRequests.Click(id, dataPost, true);
-				}
-				else
-				{
-					info.error = 'connection';
-					info.time = Math.round(new Date().getTime() / 1000);
-					sendView('requestError', id, info);
-				}
-			}
-		});
-	},
-	
-	Click2:	function(id, url, retry)
-	{
-		var info = {
-			image: 'gfx/90px-cancel.png'
-		}
-		
-		console.log(getCurrentTime()+'[B] Part second MW: '+id);		
 		
 		$.ajax({
 			type: "GET",
-			url: url,
+			url: URI,
 			success: function(data)
 			{
 				var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
@@ -83,12 +25,19 @@ var mafiawarsRequests =
 				} 
 				catch(err)
 				{
-					
-					console.log(err);
-					info.error = 'receiving';
-					info.time = Math.round(new Date().getTime() / 1000);
-					database.updateErrorItem('requests', id, info);
-					sendView('requestError', id, info);
+					if(typeof(retry) == 'undefined')
+					{
+						console.log(getCurrentTime()+'[B] Connection error while receiving request, Retrying request with ID: '+id);
+						mafiawarsRequests.Click(id, URI+'&_fb_noscript=1', true);
+					}
+					else
+					{
+						console.log(err);
+						info.error = 'receiving';
+						info.time = Math.round(new Date().getTime() / 1000);
+						database.updateErrorItem('requests', id, info);
+						sendView('requestError', id, info);
+					}
 				}
 			},
 			error: function()
@@ -96,7 +45,7 @@ var mafiawarsRequests =
 				if(typeof(retry) == 'undefined')
 				{
 					console.log(getCurrentTime()+'[B] Connection error while receiving request, Retrying request with ID: '+id);
-					mafiawarsRequests.Click2(id, url, true);
+					mafiawarsRequests.Click(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -365,8 +314,6 @@ var mafiawarsRequests =
 
 var mafiawarsBonuses = 
 {
-	APPID: '10979261223',
-
 	Click:	function(id, url, retry)
 	{
 		var info = {
@@ -382,8 +329,6 @@ var mafiawarsBonuses =
 			url: url,
 			success: function(data)
 			{
-				var dataFull = data;
-				
 				var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
 				try {
@@ -399,20 +344,8 @@ var mafiawarsBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						var i1 = dataFull.indexOf('URL=');
-						if(i1 != -1)
-						{
-							var i2 = dataFull.indexOf('" />', i1);
-							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
-							mafiawarsBonuses.Click(id, decodeStrings(newUrl), true);
-						}
-						else
-						{
-							info.error = 'receiving';
-							info.time = Math.round(new Date().getTime() / 1000);
-							database.updateErrorItem('bonuses', id, info);
-							sendView('bonusError', id, info);
-						}
+						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						mafiawarsBonuses.Click(id, url+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -750,25 +683,3 @@ var mafiawarsBonuses =
 		});
 	},
 };
-
-
-
-function decodeStrings(_str) {
-
-    var strTemp = _str;
-    strTemp= strTemp.replace(/%20/g,  ' ');
-    strTemp= strTemp.replace(/%22/g,  '"');
-    strTemp= strTemp.replace(/%25/g,  '%');
-    strTemp= strTemp.replace(/%26/g,  '&');
-    strTemp= strTemp.replace(/%2C/g,  ',');
-    strTemp= strTemp.replace(/%2F/g,  '/');
-    strTemp= strTemp.replace(/%3A/g,  ':');
-    strTemp= strTemp.replace(/%3D/g,  '=');
-    strTemp= strTemp.replace(/%3F/g,  '?');
-    strTemp= strTemp.replace(/%5B/g,  '[');
-    strTemp= strTemp.replace(/%5D/g,  ']');
-    strTemp= strTemp.replace(/%7B/g,  '{');
-    strTemp= strTemp.replace(/%7D/g,  '}');
-
-    return strTemp;
-}

@@ -304,6 +304,7 @@
 	
 	function addNewBonus(data)
 	{
+	
 		var gameID = data[1];
 		var game = gamesData[gameID].systemName;
 		var opt = 'BonusesPendingList';	
@@ -379,8 +380,9 @@
 		var game =  gamesData[gameID].systemName;
 		
 		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
-		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'})
-		eval('bkP.'+game+'Requests.Click("'+$(e.currentTarget).attr('id')+'","'+$(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg+'")');
+		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
+		
+		bkP.prepareLinkForGame(game,$(e.currentTarget).attr('id'), $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
 	}
 	
 	function ReceivePendingBonuses(gameID)
@@ -736,8 +738,12 @@
 			var html = getNewRequestRow(gameID, v);
 			var manual = false;
 		}
+
+		
 		
 		var list = $('div#'+game+opt, '#'+game+'Game').children('div');
+		
+		var found = false;
 		
 		if(list.length > 0)
 		{
@@ -745,10 +751,15 @@
 			{
 				if(parseInt($(this).attr('time')) < v.time)
 				{
+					found = true;
 					$(this).before(html);
 					return false;
 				}
 			});
+			if(!found)
+			{
+				$('div#'+game+opt, '#'+game+'Game').children('br').before(html);
+			}
 		}
 		else
 		{
@@ -972,6 +983,7 @@
 			
 			if(typeof(reload) != 'undefined')
 			{
+				delete bkP.bonusLoadingProgress[gameID];
 				database.clearByGameID(gameID);
 				$('div.bonusItem, div.requestItem, div.freegiftHistory, div.manualItem', $('#'+game+'Game')).remove();
 				updateCount();
@@ -990,10 +1002,10 @@
 				$('.gameDefaultBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			}
 			
-			//if(e.likeBonus)
-			//{
-			//	$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			//}
+			if(e.likeBonus)
+			{
+				$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
+			}
 			
 			//if(e.commentBonus)
 			//{
@@ -1426,7 +1438,7 @@
 			
 			$('<label><span>Default game</span><input type="checkbox" class="gameDefaultBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
-			//$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
 			//$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
@@ -1500,11 +1512,11 @@
 			bkP.restartRequests();
 		});
 		
-		//$(".gameLikeBonusBox").click(function()
-		//{
-		//	bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
-		//	bkP.saveOptions();
-		//});
+		$(".gameLikeBonusBox").click(function()
+		{
+			bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
+			bkP.saveOptions();
+		});
 		
 		//$(".gameCommentBonusBox").click(function()
 		//{

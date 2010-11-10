@@ -113,7 +113,7 @@ var gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
-							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now'],
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now'],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',
@@ -243,6 +243,51 @@ var gamesData =
 					},
 	120563477996213: 	{ 
 						name: 'Ravenwood Fair',		systemName: 'ravenwood',
+						filter:		
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons:	
+						{
+							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
+													submenu: {
+																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
+																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
+															}
+												},
+							*/
+							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
+													submenu: {
+																'ClearManualBonuses': { name: 'Clear all bonuses' },
+															}
+												},
+							/*
+							'BonusesHistory': 	{	name: 'Show collected bonuses',
+													submenu: {
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+															}
+												},
+							*/
+							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
+													submenu: {
+																'ReceivePendingRequests': { name: 'Receive all gifts' },
+																'ClearPendingRequests': 	{ name: 'Clear all requests' },
+															}
+												}, 
+							'RequestsHistory':	{	name: 'Show collected gifts',
+													submenu: {
+																'ClearCollectedRequests': { name: 'Clear gifts history' },
+															}
+												},
+							'GameOptionsTab':	{	name: 'Filters',
+							},
+						}
+					},
+	43016202276: 	{ 
+						name: 'Restaurant City',		systemName: 'restaurant',
 						filter:		
 						{
 							bonuses: [],

@@ -184,9 +184,18 @@ function ListNeighbours(gameID)
 		eval(game+'GetZyngaVars(params)');
 }
 
-function farmvilleGetZyngaVars(params)
+function farmvilleGetZyngaVars(params, retry)
 {
-	$.get('http://apps.facebook.com/onthefarm/', { params: params }, function(data)
+	if(typeof(retry) !== 'undefined')
+	{
+		var params2 = '_fb_noscript=1';
+	}
+	else
+	{
+		var params2 = '';
+	}
+	
+	$.get('http://apps.facebook.com/onthefarm/', params2, function(data)
 	{
 		try
 		{
@@ -222,12 +231,29 @@ function farmvilleGetZyngaVars(params)
 		
 		$('iframe', data).each(function()
 		{
-			if($(this).attr('src').indexOf('farmville.com/flash.php') != -1)
+			var testData = $(this).attr('src');
+			if(typeof(testData) == 'undefined')	 return;
+			
+			
+			if(testData.indexOf('farmville.com/flash.php') != -1)
 			{
 				nextUrl = $(this).attr('src');
 				return false;
 			}
 		});
+		
+		if(nextUrl == '')
+		{
+			if(typeof(retry) == 'undefined')
+			{
+				farmvilleGetZyngaVars(params, true);
+			}
+			else
+			{
+				sendView('errorUpdatingNeighbours');
+			}
+			return;
+		}
 		
 		
 		
@@ -279,6 +305,7 @@ function farmvilleGetZyngaVars(params)
 						params.myParms = myParms;
 						
 						getFBML(params);
+						
 					}
 					catch(e)
 					{
@@ -573,7 +600,6 @@ function getFBML(params, retry)
 				var param2 = '';
 
 				params.items = items;
-				
 				
 				
 				//console.log(params);

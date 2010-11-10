@@ -1,124 +1,66 @@
 var treasureRequests = 
 {	
-	APPID: '234860566661',
-	
-	Click: function(id, dataPost, retry)
+	Click: function(id, URI, retry)
 	{
 		var info = {
 			image: 'gfx/90px-cancel.png'
 		}
 		
 		$.ajax({
-			type: "POST",
-			url: 'http://www.facebook.com/ajax/reqs.php?__a=1',
-			data: dataPost,
+			type: "GET",
+			url: URI,
 			dataType: 'text',
-			success: function(data)
+			success: function(data2)
 			{
-				try
+				var data = data2.substr(data2.indexOf('<body'),data2.lastIndexOf('</body'));
+
+				if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length == 0)
 				{
-					var strTemp = data;
-					var i1      =   strTemp.indexOf('goURI');
-					if (i1 == -1) throw {message:"Cannot find goURI in page"}
-
-					var i2        =   strTemp.indexOf(');"]',i1);
-					strTemp   =   "'"+strTemp.slice(i1+6,i2)+"'";
-
-					eval("strTemp =" + strTemp);
-
-					var URI = JSON.parse(strTemp);
+				
+					if(data.indexOf('You helped train the Dragon') != -1)
+					{
+						info.image = $(".giftFrom_img",data).children().attr("src");
+						info.title = 'Train the Dragon';
+						info.text  = 'You helped train the Dragon!';
+						info.time = Math.round(new Date().getTime() / 1000);
+					}
+					else
+					{
+						info.image = $(".giftFrom_img",data).children().attr("src");
+						info.title = 'New neighbour';
+						info.text  = $(".giftFrom_name",data).children().text();
+						info.time = Math.round(new Date().getTime() / 1000);
+					}
 					
-					$.ajax({
-						type: "GET",
-						url: URI,
-						dataType: 'text',
-						success: function(data2)
-						{
-							var data = data2.substr(data2.indexOf('<body'),data2.lastIndexOf('</body'));
-							
-
-							if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length == 0)
-							{
-							
-								if(data.indexOf('You helped train the Dragon') != -1)
-								{
-									info.image = $(".giftFrom_img",data).children().attr("src");
-									info.title = 'Train the Dragon';
-									info.text  = 'You helped train the Dragon!';
-									info.time = Math.round(new Date().getTime() / 1000);
-								}
-								else
-								{
-									info.image = $(".giftFrom_img",data).children().attr("src");
-									info.title = 'New neighbour';
-									info.text  = $(".giftFrom_name",data).children().text();
-									info.time = Math.round(new Date().getTime() / 1000);
-								}
-								
-								database.updateItem('requests', id, info);
-								sendView('requestSuccess', id, info);
-							}
-							else if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length > 0)
-							{
-								console.log('New gift');
-								
-								info.image = $(".giftConfirm_img",data).children().attr("src");
-								info.title = $(".giftConfirm_img",data).siblings('p').text();
-								info.text  = $(".giftFrom_img",data).siblings('p').text();
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								database.updateItem('requests', id, info);
-								sendView('requestSuccess', id, info);
-							}
-							else
-							{
-								if(data.indexOf("explorer's pack?") != -1)
-								{
-									var URL = unescape($('.acceptButtons', data).children('a:first').attr('href'));
-																	
-									treasureRequests.Click2(id, URL);
-									return;
-								}
-								
-								if(typeof(retry) == 'undefined')
-								{
-									console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-									treasureRequests.Click(id, dataPost, true);
-								}
-								else
-								{
-									info.error = 'receiving';
-									info.time = Math.round(new Date().getTime() / 1000);
-									
-									database.updateErrorItem('requests', id, info);
-									sendView('requestError', id, info);	
-								}
-							}
-						},
-						error: function()
-						{
-							if(typeof(retry) == 'undefined')
-							{
-								console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-								treasureRequests.Click(id, dataPost, true);
-							}
-							else
-							{
-								info.error = 'connection';
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								sendView('requestError', id, info);
-							}
-						}
-					});
+					database.updateItem('requests', id, info);
+					sendView('requestSuccess', id, info);
 				}
-				catch(err)
+				else if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length > 0)
 				{
-					console.log(err);
+					console.log('New gift');
+					
+					info.image = $(".giftConfirm_img",data).children().attr("src");
+					info.title = $(".giftConfirm_img",data).siblings('p').text();
+					info.text  = $(".giftFrom_img",data).siblings('p').text();
+					info.time = Math.round(new Date().getTime() / 1000);
+					
+					database.updateItem('requests', id, info);
+					sendView('requestSuccess', id, info);
+				}
+				else
+				{
+					if(data.indexOf("explorer's pack?") != -1)
+					{
+						var URL = unescape($('.acceptButtons', data).children('a:first').attr('href'));
+														
+						treasureRequests.Click2(id, URL);
+						return;
+					}
+					
 					if(typeof(retry) == 'undefined')
 					{
 						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-						treasureRequests.Click(id, dataPost, true);
+						treasureRequests.Click(id, URI+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -135,12 +77,13 @@ var treasureRequests =
 				if(typeof(retry) == 'undefined')
 				{
 					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					treasureRequests.Click(id, dataPost, true);
+					treasureRequests.Click(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
 					info.error = 'connection';
 					info.time = Math.round(new Date().getTime() / 1000);
+					
 					sendView('requestError', id, info);
 				}
 			}
@@ -217,8 +160,7 @@ var treasureBonuses =
 			url: url,
 			success: function(data)
 			{
-				var dataFull = data;
-				
+			
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
 				try
@@ -282,20 +224,8 @@ var treasureBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						var i1 = dataFull.indexOf('URL=');
-						if(i1 != -1)
-						{
-							var i2 = dataFull.indexOf('" />', i1);
-							var newUrl = 'http://apps.facebook.com'+dataFull.slice(i1+4,i2);
-							treasureBonuses.Click(id, decodeStrings(newUrl), true);
-						}
-						else
-						{
-							info.error = 'receiving';
-							info.time = Math.round(new Date().getTime() / 1000);
-							database.updateErrorItem('bonuses', id, info);
-							sendView('bonusError', id, info);
-						}
+							console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+							treasureBonuses.Click(id, url+'&_fb_noscript=1', true);
 					}
 					else
 					{
