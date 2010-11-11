@@ -23,7 +23,7 @@ localStorage.removeItem('FarmVAIO.options');
 localStorage.removeItem('options');
 
 
-var currentVersion = '3.7.2';
+var currentVersion = '3.7.2.1';
 var portsByName = {};
 
 // zmienne
@@ -1109,9 +1109,10 @@ function startup()
 		{
 			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 			
-			if($("#loginform", data).length > 0)
+			if($("#login_form", data).length > 0)
 			{
 				console.log(getCurrentTime()+'[R] Error: probably logged out');
+				stopAll();
 				return true;
 			}
 			
@@ -1119,6 +1120,7 @@ function startup()
 			{
 				console.log('Checking user_id...');
 				var i1 = data.indexOf('Env={user:')+10;
+				
 				var i2 = data.indexOf(',', i1);
 				userID = data.slice(i1, i2);
 				userName = $('#navAccountName', data).text();
@@ -1147,10 +1149,7 @@ function startup()
 		{
 			setTimeout(startup, 3000);
 		}
-	});
-		
-		
-		
+	});		
 }
 
 $(function()
