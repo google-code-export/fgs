@@ -3,27 +3,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/chat.js"></script>
-<script type="text/javascript" src="scripts/notices.js"></script>
+<script type="text/javascript" src="scripts/chat.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/notices.js?version=3.7.5"></script>
 
-<script type="text/javascript" src="scripts/games/frontierville.js"></script>
-<script type="text/javascript" src="scripts/games/farmville.js"></script>
-<script type="text/javascript" src="scripts/games/mafiawars.js"></script>
-<script type="text/javascript" src="scripts/games/treasure.js"></script>
-<script type="text/javascript" src="scripts/games/cafeworld.js"></script>
-<script type="text/javascript" src="scripts/games/ravenwood.js"></script>
-<script type="text/javascript" src="scripts/games/restaurant.js"></script>
+<script type="text/javascript" src="scripts/games/frontierville.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/farmville.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/mafiawars.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/treasure.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/cafeworld.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/ravenwood.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/restaurant.js?version=3.7.5"></script>
 
 
-<script type="text/javascript" src="scripts/games/freegifts.js"></script>
-<script type="text/javascript" src="scripts/database.js"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js"></script>
+<script type="text/javascript" src="scripts/games/freegifts.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.5"></script>
 <script type="text/javascript">
 localStorage.removeItem('FarmVAIO.options');
 localStorage.removeItem('options');
 
+// ?version=3.7.5
 
-var currentVersion = '3.7.2.1';
+
+var currentVersion = '3.7.5';
 var portsByName = {};
 
 // zmienne
@@ -327,11 +329,22 @@ function sendView(msg, data, data2, data3)
 			}
 			else if(msg == 'errorWithSend')
 			{
+				console.log(data);
+				if(data != '')
+				{
+					view.updateSendback(data, false);
+				}
 				view.freegiftError();
 			}		
 			else if(msg == 'freegiftSuccess')
 			{
-				view.freegiftSuccess(data);
+				console.log(data);
+				console.log(data2);
+				if(data2 != '')
+				{
+					view.updateSendback(data2, true);
+				}
+				view.freegiftSuccess(data, data2);
 			}	
 			
 			else if(msg == 'addNewBonus')
@@ -385,7 +398,7 @@ function prepareLinkForGame(game, id, dataPost, retry)
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					prepareLinkForGame(game, id, dataPost);
+					prepareLinkForGame(game, id, dataPost, true);
 				}
 				else
 				{
