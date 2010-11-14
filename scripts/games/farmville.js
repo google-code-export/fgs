@@ -65,7 +65,7 @@ var farmvilleRequests =
 								gift: giftName,
 								destInt: giftRecipient,
 								destName: $('.giftFrom_name', data).text()
-							
+							}							
 							return false;
 						}
 					});
