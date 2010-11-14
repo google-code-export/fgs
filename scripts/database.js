@@ -23,19 +23,25 @@ database.createTable = function()
 	database.db.transaction(function(tx)
 	{
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
-                  'bonuses (id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, url TEXT, time INTEGER, feedback TEXT, link_data TEXT, like_bonus INTEGER, comment_bonus INTEGER)', [],  database.onSuccess, database.onError);
+                  'bonuses (id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, url TEXT, time INTEGER, feedback TEXT, link_data TEXT, like_bonus INTEGER, comment_bonus INTEGER, resend_gift TEXT)', [],  database.onSuccess, database.onError);
 		
 		tx.executeSql('ALTER TABLE bonuses ADD COLUMN comment_bonus INTEGER', [],  database.onSuccess, database.onError);
+		tx.executeSql('ALTER TABLE bonuses ADD COLUMN resend_gift TEXT', [],  database.onSuccess, database.onError);
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
-        		'requests(id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, post TEXT, time INTEGER)', [],  database.onSuccess, database.onError);
+				'requests(id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, post TEXT, time INTEGER, resend_gift TEXT)', [],  database.onSuccess, database.onError);
+				
+		tx.executeSql('ALTER TABLE requests ADD COLUMN resend_gift TEXT', [],  database.onSuccess, database.onError);
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
                   'neighbours(autoID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, id INTEGER, gameID INTEGER)', [], database.onSuccess, database.onError);
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
-                  'freegifts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, gameID INTEGER, friend TEXT, gift TEXT, time INTEGER)', [], database.onSuccess, database.onError);
-				  
+                  'freegifts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, gameID INTEGER, friend TEXT, gift TEXT, time INTEGER, is_thank_you INTEGER)', [], database.onSuccess, database.onError);
+		
+		tx.executeSql('ALTER TABLE freegifts ADD COLUMN is_thank_you INTEGER', [],  database.onSuccess, database.onError);
+		
+		
 //tx.executeSql('DELETE FROM freegifts', [], database.onSuccess, database.onError);
 //tx.executeSql('DELETE FROM bonuses', [], database.onSuccess, database.onError);
 //tx.executeSql('DELETE FROM requests', [], database.onSuccess, database.onError);
@@ -151,11 +157,12 @@ database.delFavourite = function(gameID, neighID)
 }
 
 
-database.addFreegift = function(gameID, friend, gift, time)
+database.addFreegift = function(gameID, friend, gift, time, thankYou)
 {
 	database.db.transaction(function(tx)
 	{
-		tx.executeSql('INSERT INTO freegifts (gameID, friend, gift, time) VALUES(?,?,?,?)', [gameID, friend, gift, time], database.onSuccess, database.onError);
+		var isThankYou = (thankYou == 'undefined' ? 0 : 1);
+		tx.executeSql('INSERT INTO freegifts (gameID, friend, gift, time, is_thank_you) VALUES(?,?,?,?,?)', [gameID, friend, gift, time, isThankYou], database.onSuccess, database.onError);
 	});
 }
 
@@ -168,6 +175,7 @@ database.updateItem = function(table, itemID, info)
 		var textQry = '';
 		var titleQry = '';
 		var imageQry = '';
+		var thanksQry = '';
 		
 		
 		if(info.text !== '')
@@ -187,7 +195,31 @@ database.updateItem = function(table, itemID, info)
 			arrQry.push(info.image);
 		}
 		
-		tx.executeSql('UPDATE '+table+' SET status = 1, time = ? '+textQry+' '+titleQry+' '+imageQry+'  where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
+		if(typeof(info.thanks) !== 'undefined')
+		{
+			thanksQry = ', resend_gift = ?';
+			arrQry.push(JSON.stringify(info.thanks));
+		}
+
+
+		tx.executeSql('UPDATE '+table+' SET status = 1, time = ? '+textQry+' '+titleQry+' '+imageQry+' '+thanksQry+' where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
+	});
+}
+
+		
+database.updateItemGiftBack = function(table, itemID)
+{
+
+	database.db.transaction(function(tx)
+	{
+	
+		console.log(table);
+		console.log(itemID);
+		
+		var temp = {sent: true};
+		var tempStr = JSON.stringify(temp);
+		
+		tx.executeSql('UPDATE '+table+' SET resend_gift = ? where id = "'+itemID+'"', [tempStr], database.onSuccess, database.onError);
 	});
 }
 
@@ -207,7 +239,7 @@ database.addBonus = function(data2)
 	{
 		$(data2).each(function(k, data)
 		{
-			tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0)", data,
+			tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0,'')", data,
 			function(t,r)
 			{
 				if(r.rowsAffected == 1)
@@ -230,7 +262,7 @@ database.addRequest = function(data2)
 	{
 		$(data2).each(function(k, data)
 		{
-			tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?)", data,
+			tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?,'')", data,
 			function(t,r)
 			{
 				if(r.rowsAffected == 1)

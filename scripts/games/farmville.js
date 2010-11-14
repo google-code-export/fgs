@@ -40,6 +40,53 @@ var farmvilleRequests =
 					info.text  = $(".giftFrom_name",data).children().text();
 					info.time = Math.round(new Date().getTime() / 1000);
 					
+					
+					var sendInfo = '';
+					
+					$('form', data).each(function()
+					{
+					
+						var tmpStr = unescape($(this).attr('action'));
+						
+						if(tmpStr.indexOf('sendThankYou') != -1)
+						{
+							var i1 = tmpStr.indexOf('&giftRecipient=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftRecipient = tmpStr.slice(i1+15,i2);
+							
+							var i1 = tmpStr.indexOf('&gift=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftName = tmpStr.slice(i1+6,i2);
+							
+							
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $('.giftFrom_name', data).text()
+							
+							return false;
+						}
+					});
+					
+					if(sendInfo == '')
+					{
+						var tmpStr = unescape(URI);
+											
+						var i1 = tmpStr.indexOf('&gift=');
+						var i2 = tmpStr.indexOf('&', i1+1);
+						
+						var giftName = tmpStr.slice(i1+6,i2);
+						
+						sendInfo = {
+							gift: giftName,
+							destInt: $('.giftFrom_img', data).find('img').attr('uid'),
+							destName: $('.giftFrom_img', data).find('img').attr('title'),
+						}
+					}
+					info.thanks = sendInfo;
+					
 					database.updateItem('requests', id, info);
 					sendView('requestSuccess', id, info);
 				}
@@ -52,6 +99,9 @@ var farmvilleRequests =
 					info.title = $(".giftConfirm_name",data).children().text();
 					info.text  = $(".padding_content",data).find('h3').text();
 					info.time = Math.round(new Date().getTime() / 1000);
+					
+					
+
 					
 					database.updateItem('requests', id, info);
 					sendView('requestSuccess', id, info);

@@ -2,17 +2,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=3.7.5" rel="stylesheet" />
 <title>Facebook Games Simplifier</title>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js"></script>
-<script type="text/javascript" src="scripts/time.js"></script>
-<script type="text/javascript" src="scripts/database.js"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/time.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.5"></script>
 <script type="text/javascript">
+
+// ?version=3.7.5
+
+
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
 	
@@ -152,11 +155,11 @@
 	}
 	
 	
-	function freegiftSuccess(data)
+	function freegiftSuccess(data, data2)
 	{
 		var gameID = data.gameID;
 		var game = gamesData[gameID].systemName;
-		$(getGiftHistoryRow(gameID, data)).prependTo('#'+game+'SendFreeGiftsHistoryList');
+		$(getGiftHistoryRow(gameID, data, data2)).prependTo('#'+game+'SendFreeGiftsHistoryList');
 	}
 	
 	function freegiftError()
@@ -174,10 +177,19 @@
 	}
 
 	
-	function getGiftHistoryRow(gameID, v)
+	function getGiftHistoryRow(gameID, v, thankYou)
 	{
 		var game = gamesData[gameID].systemName;
-		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+v.gift+'.png"><div style="font-size: 11px;">'+v.friend+'</div></div>'
+		
+		if(thankYou != '' && thankYou != 0)
+		{
+			var thankText = '<br /><br />Thank you gift';
+		}
+		else
+		{
+			var thankText = '';
+		}		
+		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+v.gift+'.png"><div style="font-size: 11px;">'+v.friend+''+thankText+'</div></div>'
 	}
 	
 	function checkIfBonusIsManual(gameID, typeText)
@@ -447,7 +459,15 @@
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
 			$('#'+id).removeClass('inProgress').find('img:last').attr('src', data.image);
 			$('#'+id).find('.title').text(data.title);
-			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow);
+			
+			var infoAdd = '';
+			
+			if(typeof(data.thanks) != 'undefined')
+			{
+				infoAdd = JSON.stringify(data.thanks);
+			}
+			
+			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false));
 			
 			
 			if(data.text != '')
@@ -459,26 +479,60 @@
 		}, 1000);
 	}
 	
-	function addLikeRow(like, comm)
+	function addLikeRow(like, sendBack, comm, isRequest)
 	{
-		if(like == null || like == 0)
+		
+		var sendBackHtml = '';
+
+		if(sendBack != '' && sendBack != null)
 		{
-			var img = 'gfx/like.png';
-		}
-		else
-		{
-			var img = 'gfx/like-off.png';
-		}
-		if(comm == null || comm == 0)
-		{
-			var img2 = 'gfx/comment.png';
-		}
-		else
-		{
-			var img2 = 'gfx/comment-off.png';
+			var sendBackJson = JSON.parse(sendBack);
+			
+			if(typeof(sendBackJson.sent) == 'undefined')
+			{
+				var img3 = 'gfx/sendback.png';
+				var enabled = 'true';
+				var cursor = 'cursor: pointer';
+				var className = 'sendBack';
+				var desc = 'Click to send Thank You Gift';
+			}
+			else
+			{
+				var img3 = 'gfx/sendback-off.png';
+				var enabled = 'false';
+				var cursor = '';
+				var className = '';
+				var desc = 'You already sent gift back';
+			}
+			sendBackHtml = '<img src="'+img3+'" class="'+className+'" isEnabled="'+enabled+'" title="" style="'+cursor+'"><span style="display: none">'+sendBack+'</span>';
 		}
 		
-		return '<div style="float: left"><img src="'+img+'" class="likeBonus" title="Click to like this bonus" style="cursor: pointer"></div><div style="float: right"><img src="'+img2+'" class="commentBonus" title="Click to send random comment on this bonus" style="cursor: pointer"></div>';
+		if(typeof(isRequest) != 'undefined')
+		{
+			return '<div style="position: relative"><div style="position: absolute;left:48;">'+sendBackHtml+'</div></div>';
+		}
+		else
+		{
+			if(like == false || like == 0)
+			{
+				var img = 'gfx/like.png';
+			}
+			else
+			{
+				var img = 'gfx/like-off.png';
+			}
+			
+			if(comm == false || comm == 0)
+			{
+				var img2 = 'gfx/comment.png';
+			}
+			else
+			{
+				var img2 = 'gfx/comment-off.png';
+			}
+		
+			return '<div style="position: relative"><div style="position: absolute;left:0;"><img src="'+img+'" class="likeBonus" title="Click to like this bonus" style="cursor: pointer"></div><div style="position: absolute;left:60;">'+sendBackHtml+'</div><div style="position: absolute;right:0;"><img src="'+img2+'" class="commentBonus" title="Click to send random comment on this bonus" style="cursor: pointer"></div></div>';
+		}
 	}
 	
 	function requestError(id, data)
@@ -539,6 +593,18 @@
 			{
 				$('#'+id).find('.title').text(data.title);
 			}
+
+			
+			var infoAdd = '';
+			
+			if(typeof(data.thanks) != 'undefined')
+			{
+				infoAdd = JSON.stringify(data.thanks);
+			}
+			
+			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false, true));
+			
+			
 			$('#'+id).find('.title').next('span').text(data.text);
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 			updateCount(gameID);
@@ -1241,7 +1307,7 @@
 						continue;
 					}
 					
-					var html = getGiftHistoryRow(gameID, res.rows.item(i));
+					var html = getGiftHistoryRow(gameID, res.rows.item(i), res.rows.item(i).is_thank_you);
 					
 					var game = gamesData[gameID].systemName;
 					$('div#'+game+opt, '#'+game+'Game').prepend(html);
@@ -1277,7 +1343,7 @@
 		}
 		else if(v.error == '')
 		{
-			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(v.like_bonus, v.comment_bonus));
+			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(v.like_bonus, v.resend_gift, v.comment_bonus));
 		}
 	}
 	
@@ -1294,6 +1360,10 @@
 		if(v.error == 'receiving')
 		{
 			$('div#'+v.id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualRequestClick);
+		}
+		else if(v.error == '')
+		{
+			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(false, v.resend_gift, false, true));
 		}
 	}	
 	function prepareNeighboursList(gameID)
@@ -1773,7 +1843,7 @@
 		
 		$('img.likeBonus').live('click',function()
 		{
-			var bonusID = $(this).parent().parent().parent().attr('id');
+			var bonusID = $(this).parent().parent().parent().parent().attr('id');
 			$(this).attr('src', 'gfx/act_indicator.gif');
 			bkP.likeBonus(bonusID);
 		});
@@ -1787,10 +1857,32 @@
 			else
 			{
 				var randNum = Math.floor(Math.random()*(bkP.options.defaultCommentsMessages.length));
-				var bonusID = $(this).parent().parent().parent().attr('id');
+				var bonusID = $(this).parent().parent().parent().parent().attr('id');
 				$(this).attr('src', 'gfx/act_indicator.gif');
 				bkP.commentBonus(bonusID, bkP.options.defaultCommentsMessages[randNum]);
 			}
+		});
+		
+		$('img.sendBack').live('click',function()
+		{
+			var bonusID = $(this).parent().parent().parent().parent().attr('id');
+			var gameID =  $(this).parent().parent().parent().parent().attr('gameID');
+			
+			$(this).attr('src', 'gfx/act_indicator.gif');
+			var tempData = JSON.parse($(this).next().text());
+			
+			var params = {
+				gift: tempData.gift,
+				gameID:	gameID,
+				sendTo: [tempData.destInt],
+				thankYou: true,
+				bonusID: bonusID,	
+				isRequest: $(this).parent().parent().parent().parent().hasClass('bonusItem') ? false : true
+			};
+			
+			var game = gamesData[gameID].systemName;
+			
+			eval('bkP.'+game+'GetZyngaVars(params)');
 		});
 		
 		
@@ -1860,6 +1952,19 @@
 		});
 		
 		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button class="saveNewComment">Add new comment</button>');
+	}
+	
+	
+	function updateSendback(bonusID, success)
+	{
+		if(success)
+		{
+			$('img.sendBack', '#'+bonusID).removeClass('sendBack').attr('src', 'gfx/sendback-off.png').css('cursor', 'default').attr('title', 'You already sent gift back');
+		}
+		else
+		{
+			$('img.sendBack', '#'+bonusID).attr('src', 'gfx/sendback.png');
+		}
 	}
 	
 	function updateLike(bonusID, success)

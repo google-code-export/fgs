@@ -1,15 +1,16 @@
 var giftsArray = {
 	'201278444497':
 	{
+		"gift_mystery1": { name: 'Mystery Gift 1'},
+		"gift_mystery2": { name: 'Mystery Gift 2'},
+		"gift_mystery3": { name: 'Mystery Gift 3'},
+		"gift_mystery4": { name: 'Mystery Gift 4'},
+		
 		"meal1": { name: 'Light snack'},
 		"meal2": { name: 'Breakfast (lvl 15)'},
 		"meal3": { name: 'Lunch (lvl 40)'},
 		"meal4": { name: 'Dinner (lvl 100)'},
 		"ribbon": { name: 'Ribbon'},
-		"gift_mystery1": { name: 'Mystery Gift 1'},
-		"gift_mystery2": { name: 'Mystery Gift 2'},
-		"gift_mystery3": { name: 'Mystery Gift 3'},
-		"gift_mystery4": { name: 'Mystery Gift 4'},
 		"hammer": { name: 'Hammer'},
 		"nails": { name: 'Nails'},
 		"bricks": { name: 'Brick'},
@@ -47,10 +48,15 @@ var giftsArray = {
 	},
 	'102452128776':
 	{
-		"halloween_candy": { name: 'Halloween Candy'},
+		"mysterygift": { name: 'Mystery Gift'},
+		
 		"shovel_item_01": { name: '2 Shovels'},
-		"spookytombstone2": { name: 'Tomb Stone'},
-
+		
+		"roseblack_seedpackage": { name: '20 Black Rose Seeds'},
+		"reindeer_randall": { name: 'Clumsy Reindeer'},
+		"mumsyellow": { name: 'Yellow Mums' },
+		
+		
 		"vehiclepart": { name: 'Vehicle Part'},
 		"brick": { name: 'Brick'},
 		"woodenboard": { name: 'Wooden Board'},
@@ -58,6 +64,8 @@ var giftsArray = {
 		"beehive_bee": { name: 'Honeybee'},
 		"smoker": { name: 'Smoker'},		
 		"beeswax": { name: 'Beeswax'},
+		"roseblack_seedpackage": { name: '20 Black Rose Seeds'},
+		"wateringcan": { name: 'Watering Can'},
 		"horseshoe": { name: 'Horseshoe'},
 		"harness": { name: 'Harness'},
 		"blanket": { name: 'Blanket'},
@@ -77,7 +85,7 @@ var giftsArray = {
 
 		"consume_kibble": { name: 'Puppy Kibble'},
 		"consume_treat": { name: 'Dog Treat'},
-		"mysterygift": { name: 'Mystery Gift'},
+
 		"hilltiny": { name: 'Small Hill'},
 		"hangingflowers": { name: 'Hanging Flower'},
 		"fencemodern": { name: 'Black Iron Fence'},
@@ -223,7 +231,7 @@ function farmvilleGetZyngaVars(params, retry)
 			}
 			else
 			{
-				sendView('errorWithSend');
+				sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 			}
 		}
 		
@@ -277,8 +285,6 @@ function farmvilleGetZyngaVars(params, retry)
 				
 				console.log(getCurrentTime()+'[Z] Zynga params updated');
 
-				
-				
 				$.get('http://'+domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+'#overlay',  { params: params }, function(data)
 				{
 					try 
@@ -316,7 +322,7 @@ function farmvilleGetZyngaVars(params, retry)
 						}
 						else
 						{
-							sendView('errorWithSend');
+							sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 						}
 					}
 				});
@@ -331,7 +337,7 @@ function farmvilleGetZyngaVars(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}		
 		});
@@ -415,7 +421,7 @@ function frontiervilleGetZyngaVars(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		},
@@ -433,7 +439,7 @@ function frontiervilleGetZyngaVars(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		}
@@ -487,7 +493,7 @@ function frontiervilleGetFBMLinfo(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		},
@@ -505,7 +511,7 @@ function frontiervilleGetFBMLinfo(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		}
@@ -642,7 +648,7 @@ function getFBML(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		},
@@ -660,7 +666,7 @@ function getFBML(params, retry)
 				}
 				else
 				{
-					sendView('errorWithSend');
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				}
 			}
 		}
@@ -683,7 +689,7 @@ function sendGift(params, retry)
 			
 			if(str2 > 0)
 			{
-				sendView('errorWithSend');
+				sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 				return;
 			}
 			
@@ -710,8 +716,15 @@ function sendGift(params, retry)
 								friend: v.name,
 								time: curTime
 							};
-							database.addFreegift(params.gameID, v.name, params.gift, curTime);
-							sendView('freegiftSuccess', sendHistory);
+							database.addFreegift(params.gameID, v.name, params.gift, curTime, typeof(params.thankYou));
+							
+							if(typeof(params.thankYou) != 'undefined')
+							{
+								database.updateItemGiftBack((params.isRequest ? 'requests' : 'bonuses'), params.bonusID);
+							}
+							
+							sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
+							
 							delete params.items[u];
 							continue;
 						}
@@ -727,7 +740,7 @@ function sendGift(params, retry)
 					}
 					else
 					{
-						sendView('errorWithSend');
+						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 					}
 				}
 			});
@@ -740,7 +753,7 @@ function sendGift(params, retry)
 			}
 			else
 			{
-				sendView('errorWithSend');
+				sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 			}
 		}
 	});
