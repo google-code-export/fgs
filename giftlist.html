@@ -2,18 +2,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=3.7.5" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=3.7.6" rel="stylesheet" />
 <title>Facebook Games Simplifier</title>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/time.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/database.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/time.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.6"></script>
 <script type="text/javascript">
 
-// ?version=3.7.5
+// ?version=3.7.6
 
 
 	var bkP = chrome.extension.getBackgroundPage();
@@ -383,7 +383,16 @@
 		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
 		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
 		
-		eval('bkP.'+game+'Bonuses.Click("'+$(e.currentTarget).attr('id')+'","'+$(e.currentTarget).attr('url')+'")');
+		var obj = {
+					id: $(e.currentTarget).attr('id'),
+					url: $(e.currentTarget).attr('url'),
+					game: game,
+					type: 'bonus'
+				}
+		
+		bkP.xhrQueue.push(obj);
+		
+		//eval('bkP.'+game+'Bonuses.Click("'+$(e.currentTarget).attr('id')+'","'+$(e.currentTarget).attr('url')+'")');
 	}
 	
 	function processRequestsClick(e)
@@ -394,7 +403,16 @@
 		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
 		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
 		
-		bkP.prepareLinkForGame(game,$(e.currentTarget).attr('id'), $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
+		var obj = {
+					id: $(e.currentTarget).attr('id'),
+					post: $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg,
+					game: game,
+					type: 'request'
+				}
+		
+		bkP.xhrQueue.push(obj);
+		
+		//bkP.prepareLinkForGame(game,$(e.currentTarget).attr('id'), );
 	}
 	
 	function ReceivePendingBonuses(gameID)

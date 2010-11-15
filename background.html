@@ -3,29 +3,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/chat.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/notices.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/chat.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/notices.js?version=3.7.6"></script>
 
-<script type="text/javascript" src="scripts/games/frontierville.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/farmville.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/mafiawars.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/treasure.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/cafeworld.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/ravenwood.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/games/restaurant.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/frontierville.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/farmville.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/mafiawars.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/treasure.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/cafeworld.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/ravenwood.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/restaurant.js?version=3.7.6"></script>
 
 
-<script type="text/javascript" src="scripts/games/freegifts.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/database.js?version=3.7.5"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.5"></script>
+<script type="text/javascript" src="scripts/games/freegifts.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.6"></script>
 <script type="text/javascript">
 localStorage.removeItem('FarmVAIO.options');
 localStorage.removeItem('options');
 
-// ?version=3.7.5
+// ?version=3.7.6
 
 
-var currentVersion = '3.7.5';
+var currentVersion = '3.7.6';
 var portsByName = {};
 
 // zmienne
@@ -44,9 +44,11 @@ var giftlistFocus,
 	userID,
 	userName,
 	newElements,
-	bonusLoadingProgress;
-
-
+	bonusLoadingProgress,
+	xhrQueue,
+	xhrWorking,
+	xhrInterval;
+	
 function initializeDefaults()
 {
 	giftlistFocus = false;
@@ -92,6 +94,9 @@ function initializeDefaults()
 	userName			= null;
 	newElements = 0;
 	bonusLoadingProgress = {};
+	xhrQueue = [];
+	xhrWorking = 0;
+	xhrInterval = null;
 }
 
 chrome.self.onConnect.addListener(function(port)
@@ -258,6 +263,7 @@ function sendView(msg, data, data2, data3)
 	var viewTabUrl = chrome.extension.getURL('giftlist.html');
 						
 	var views = chrome.extension.getViews();
+	
 	for (var i = 0; i < views.length; i++)
 	{
 		var view = views[i];
@@ -329,7 +335,6 @@ function sendView(msg, data, data2, data3)
 			}
 			else if(msg == 'errorWithSend')
 			{
-				console.log(data);
 				if(data != '')
 				{
 					view.updateSendback(data, false);
@@ -338,8 +343,6 @@ function sendView(msg, data, data2, data3)
 			}		
 			else if(msg == 'freegiftSuccess')
 			{
-				console.log(data);
-				console.log(data2);
 				if(data2 != '')
 				{
 					view.updateSendback(data2, true);
@@ -366,6 +369,35 @@ function sendView(msg, data, data2, data3)
 				view.location.reload();
 			}
 			break;
+		}
+	}
+	if(msg == 'requestError' || msg == 'bonusError' || msg == 'requestSuccess' || msg == 'bonusSuccess')
+	{
+		console.log('Stopping '+xhrQueue[0].type+' '+xhrQueue[0].id);
+		xhrWorking--;
+	}
+}
+
+function checkXhrQueue()
+{
+	if(xhrWorking < 5)
+	{
+		if(xhrQueue.length > 0)
+		{
+			if(xhrQueue[0].type == 'request')
+			{
+				console.log('Starting request '+xhrQueue[0].id);
+				prepareLinkForGame(xhrQueue[0].game, xhrQueue[0].id, xhrQueue[0].post);
+				xhrQueue = xhrQueue.slice(1);
+				xhrWorking++;
+			}
+			else if(xhrQueue[0].type == 'bonus')
+			{
+				console.log('Starting bonus '+xhrQueue[0].id);
+				eval(xhrQueue[0].game+'Bonuses.Click("'+xhrQueue[0].id+'","'+xhrQueue[0].url+'")');
+				xhrQueue = xhrQueue.slice(1);
+				xhrWorking++;
+			}
 		}
 	}
 }
@@ -1086,6 +1118,9 @@ function stopAll()
 		stopBonusesForGame(id);
 	}
 	
+	if(xhrInterval !== null)
+	clearInterval(xhrInterval);
+
 	if(iChatTimeout !== null) console.log(getCurrentTime()+'[C] Stopping');
 	clearTimeout(iChatTimeout);
 	
@@ -1156,7 +1191,8 @@ function startup()
 			
 			FBloginError = false;
 			updateIcon();
-			restartRequests();			
+			xhrInterval = setInterval(checkXhrQueue,100);
+			restartRequests();		
 		},
 		error: function()
 		{
