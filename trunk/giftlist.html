@@ -15,7 +15,6 @@
 
 // ?version=3.7.6
 
-
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
 	
@@ -666,9 +665,14 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'BonusesPendingList').html('<br style="clear:both" />');
+					$('#'+game+'BonusesPendingList').children('div').not('.inProgress').each(function()
+					{
+						database.deleteItem('bonuses', gameID, $(this).attr('id'), 0);
+						$(this).remove();
+					});
 					updateCount(gameID);
-					database.clearTable('bonuses', gameID, 0);
+					
+					
 					$( this ).dialog( "close" );
 				},
 				Cancel: function() {
@@ -688,7 +692,7 @@
 				{
 					var game = gamesData[gameID].systemName;
 		
-					$('#'+game+'RequestsPendingList').children('div').each(function()
+					$('#'+game+'RequestsPendingList').children('div').not('.inProgress').each(function()
 					{
 						var postData = $(this).attr('postData');
 						var i1 = postData.indexOf('&actions%5B');
@@ -697,8 +701,9 @@
 						postData += '&actions[reject]=Ignore';
 						$(this).remove();
 						bkP.emptyUnwantedGifts(postData);
+						database.deleteItem('bonuses', gameID, $(this).attr('id'), 0);
 					});
-					database.clearTable('requests', gameID, 0);
+					
 					updateCount(gameID);
 
 					$( this ).dialog( "close" );
