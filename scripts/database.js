@@ -230,17 +230,27 @@ database.updateErrorItem = function(table, itemID, info)
 	{
 		var arrQry = [info.error, info.time, info.image];
 		
-		var limitReasonQry = '';
-		
-		if(info.text !== '')
+		var errorQry = '';
+
+		if(typeof(info.error_text) !== 'undefined')
 		{
-			limitReasonQry = ', text = ?';
-			arrQry.push(info.text);
+			errorQry = ', error_text = ?';
+			arrQry.push(info.error_text);
 		}
+
 		//have any room to store that bushel
 		
 		
-		tx.executeSql('UPDATE '+table+' SET status = 1, error = ?, time = ?, image = ? '+limitReasonQry+' where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
+		tx.executeSql('UPDATE '+table+' SET status = 1, error = ?, time = ?, image = ? '+errorQry+' where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
+	});
+}
+
+
+database.updateErrorText = function(table, itemID, text)
+{
+	database.db.transaction(function(tx)
+	{
+		tx.executeSql('UPDATE '+table+' SET error_text = ? where id = "'+itemID+'"', [text], database.onSuccess, database.onError);
 	});
 }
 

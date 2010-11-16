@@ -1040,8 +1040,12 @@ function checkBonuses(appID)
 					
 					if(actr != targets)
 					{
-						console.log($(el));
-						console.log('Rozne id: '+actr+' i '+targets+' userid: '+userID);
+						if(userID != targets)
+						{
+							console.log('Rozne id: '+actr+' i '+targets+' userid: '+userID);
+							return;
+						}
+						
 						
 					}
 					
@@ -1223,7 +1227,7 @@ function getCurrentTime()
 	if (m.length == 1) m = "0" + m;
 	if (s.length == 1) s = "0" + s;
 
-	return h+':'+m+':'+s+' - ';
+	return h+':'+m+':'+s;
 }
 
 function startup()
