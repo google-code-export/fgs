@@ -228,7 +228,18 @@ database.updateErrorItem = function(table, itemID, info)
 	database.db.transaction(function(tx)
 	{
 		var arrQry = [info.error, info.time, info.image];
-		tx.executeSql('UPDATE '+table+' SET status = 1, error = ?, time = ?, image = ? where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
+		
+		var limitReasonQry = '';
+		
+		if(info.text !== '')
+		{
+			limitReasonQry = ', text = ?';
+			arrQry.push(info.text);
+		}
+		//have any room to store that bushel
+		
+		
+		tx.executeSql('UPDATE '+table+' SET status = 1, error = ?, time = ?, image = ? '+limitReasonQry+' where id = "'+itemID+'"', arrQry, database.onSuccess, database.onError);
 	});
 }
 

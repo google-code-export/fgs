@@ -386,7 +386,8 @@
 					id: $(e.currentTarget).attr('id'),
 					url: $(e.currentTarget).attr('url'),
 					game: game,
-					type: 'bonus'
+					type: 'bonus',
+					title: $(e.currentTarget).attr('title')
 				}
 		
 		bkP.xhrQueue.push(obj);
@@ -406,7 +407,8 @@
 					id: $(e.currentTarget).attr('id'),
 					post: $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg,
 					game: game,
-					type: 'request'
+					type: 'request',
+					title: $(e.currentTarget).attr('title')
 				}
 		
 		bkP.xhrQueue.push(obj);

@@ -234,6 +234,7 @@ function loadOptions(userID)
 	{
 		options = $.extend(true,{}, defaultOptions, 	JSON.parse(lastOptions));
 	}
+	console.log(options);
 	
 	optionsLoaded = true;
 }
@@ -371,9 +372,59 @@ function sendView(msg, data, data2, data3)
 			break;
 		}
 	}
+	
+	if(msg == 'resetBonuses')
+	{
+		
+		var resetIds = [];
+		resetIds.push(data); // element ktory problem dal
+		
+		var newArray = [];
+		
+		for(var ind in xhrQueue)
+		{
+			var v = xhrQueue[ind];
+			
+			
+			
+			var checkStr = jQuery.trim(v.title);
+			
+			
+			var delItem = false;
+			
+			for(var ind2 in data2)
+			{
+				var fil = data2[ind2];
+				
+				if(checkStr == fil)
+				{
+					delItem = true;
+					break;
+				}
+			}
+
+			if(!delItem)
+			{
+				newArray.push(v);
+			}
+			else
+			{
+				resetIds.push(v.id);
+			}
+		}
+		xhrQueue = newArray;
+		
+		if(resetIds.length > 0)
+		{
+
+		}		
+		xhrWorking--;
+	}
+	
+	
 	if(msg == 'requestError' || msg == 'bonusError' || msg == 'requestSuccess' || msg == 'bonusSuccess')
 	{
-		console.log('Stopping '+xhrQueue[0].type+' '+xhrQueue[0].id);
+
 		xhrWorking--;
 	}
 }
@@ -386,14 +437,12 @@ function checkXhrQueue()
 		{
 			if(xhrQueue[0].type == 'request')
 			{
-				console.log('Starting request '+xhrQueue[0].id);
 				prepareLinkForGame(xhrQueue[0].game, xhrQueue[0].id, xhrQueue[0].post);
 				xhrQueue = xhrQueue.slice(1);
 				xhrWorking++;
 			}
 			else if(xhrQueue[0].type == 'bonus')
 			{
-				console.log('Starting bonus '+xhrQueue[0].id);
 				eval(xhrQueue[0].game+'Bonuses.Click("'+xhrQueue[0].id+'","'+xhrQueue[0].url+'")');
 				xhrQueue = xhrQueue.slice(1);
 				xhrWorking++;
@@ -966,7 +1015,8 @@ function checkBonuses(appID)
 					if(actr != targets)
 					{
 						console.log($(el));
-						console.log('Rozne id: '+actr+' i '+targets);
+						console.log('Rozne id: '+actr+' i '+targets+' userid: '+userID);
+						
 					}
 					
 					if(secs > options.deleteOlderThan && options.deleteOlderThan != 0)
@@ -992,11 +1042,13 @@ function checkBonuses(appID)
 					
 					var ret = false;
 					
+					var checkString = jQuery.trim($(el).find('.UIActionLinks_bottom > a:last').text());
+					
 					$(gamesData[appID].filter.bonuses).each(function(k,v)
 					{
-						var re = new RegExp(v, "i") ;
+						var re = new RegExp(v, "i");
 						
-						if(re.test($(el).find('.UIActionLinks_bottom > a:last').text()))
+						if(re.test(checkString))
 						{
 							ret = true;
 							return false;

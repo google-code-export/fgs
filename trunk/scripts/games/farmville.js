@@ -160,16 +160,49 @@ var farmvilleBonuses =
 	
 		console.log(getCurrentTime()+'[B] Receiving bonus with ID: '+id);
 		
+		
+		var otherLimits = 
+		{
+			'have any room to store that bushel': ['Get a Bushel', 'Take a Bushel'],
+		}
+		
+		
 		$.ajax({
 			type: "GET",
 			url: url,
 			success: function(data)
 			{
+				var dataFull = data;
+				
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 
 				if($('.inputsubmit[value="OK"]',data).length > 0)
 				{
 					console.log(getCurrentTime()+'[B] Bonus already claimed - deleting bonus with ID: '+id);
+					
+					
+					var stop = false;
+					for(var checkStr in otherLimits)
+					{
+						var arr = otherLimits[checkStr];
+						
+						try
+						{
+							if($(".main_giftConfirm_cont", data).find('h3').text().indexOf(checkStr) != -1)
+							{
+								info.error = 'other';
+								info.time = Math.round(new Date().getTime() / 1000);
+								
+								sendView('resetBonuses', id, arr, info);
+								sendView('newInfo', id, $(".main_giftConfirm_cont", data).find('h3').text());
+								stop = true;
+								return;
+							}
+						}
+						catch(e){}					
+					}
+					if(stop) return;
+
 					
 					info.error = 'limit';
 					info.time = Math.round(new Date().getTime() / 1000);
@@ -179,12 +212,29 @@ var farmvilleBonuses =
 				}
 				else if($('.main_giftConfirm_cont', data).length > 0)
 				{
-				
-					url = unescape(url);
-					url = url.substr(url.indexOf('next')+5);
-						
-					var giftReceiveUrl = 'http://apps.facebook.com/onthefarm/'+url;
+					var newUrl = '';
+					
+					if($('.inner_giftConfirm_cont > form', data).length > 0)
+					{
+						var i1 = dataFull.indexOf('media="handheld" href="');
+						if(i1 != -1)
+						{
+							var i2 = dataFull.indexOf('"', i1+23);
+							newUrl = dataFull.slice(i1+23,i2);
+						}					
+					}
+					
+					if(newUrl == '')
+					{
+						newUrl = unescape(newUrl);
+						newUrl = newUrl.substr(newUrl.indexOf('next')+5);
 
+						var giftReceiveUrl = 'http://apps.facebook.com/onthefarm/'+newUrl;
+					}
+					else
+					{
+						var giftReceiveUrl = newUrl;
+					}
 					
 					var num = 1;
 
