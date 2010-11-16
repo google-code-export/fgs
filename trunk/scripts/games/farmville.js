@@ -191,9 +191,9 @@ var farmvilleBonuses =
 							{
 								info.error = 'other';
 								info.time = Math.round(new Date().getTime() / 1000);
-								
-								sendView('resetBonuses', id, arr, info);
-								sendView('newInfo', id, $(".main_giftConfirm_cont", data).find('h3').text());
+								info.errorText = $(".main_giftConfirm_cont", data).find('h3').text();
+								sendView('bonusError', id, info);
+								//sendView('resetBonuses', id, arr, info);
 								stop = true;
 								break;
 							}

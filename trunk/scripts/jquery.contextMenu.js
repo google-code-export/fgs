@@ -70,7 +70,7 @@ if(jQuery)( function() {
 							// Show the menu
 							$(document).unbind('click');
 							
-							var countBonus = $(el).parent().find('div[title="'+$(el).attr('title')+'"]').not('.inProgress').length;
+							var countBonus = $(el).parent().find('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').length;
 							
 							$(menu).find('.bonusName').text($(el).attr('title'));
 							$(menu).find('.bonusNameCount').text(countBonus);
