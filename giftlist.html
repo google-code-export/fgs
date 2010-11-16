@@ -1429,7 +1429,16 @@
 		var err = (v.error == '' ? '' : '('+v.error+' error)'+error_text);
 		var opt = 'BonusesHistoryList';	
 		
-		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		if(v.image == 'undefined')
+		{
+			var showImage = 'gfx/90px-check.png';
+		}
+		else
+		{
+			var showImage = v.image;
+		}
+		
+		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 
 		var game = gamesData[v.gameID].systemName;
 		$('div#'+game+opt, '#'+game+'Game').prepend(html);
