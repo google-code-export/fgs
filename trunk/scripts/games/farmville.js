@@ -164,6 +164,7 @@ var farmvilleBonuses =
 		var otherLimits = 
 		{
 			'have any room to store that bushel': ['Get a Bushel', 'Take a Bushel'],
+			'need to use some of your fuel to be eligible to find more': [],
 		}
 		
 		
@@ -178,8 +179,9 @@ var farmvilleBonuses =
 
 				if($('.inputsubmit[value="OK"]',data).length > 0)
 				{
-					console.log(getCurrentTime()+'[B] Bonus already claimed - deleting bonus with ID: '+id);
-					
+				
+					console.log('farmvilleBonus', $(".main_giftConfirm_cont", data).find('h3').text(), dataFull);
+
 					var stop = false;
 					for(var checkStr in otherLimits)
 					{
@@ -191,7 +193,7 @@ var farmvilleBonuses =
 							{
 								info.error = 'other';
 								info.time = Math.round(new Date().getTime() / 1000);
-								info.errorText = $(".main_giftConfirm_cont", data).find('h3').text();
+								info.error_text = $(".main_giftConfirm_cont", data).find('h3').text();
 								sendView('bonusError', id, info);
 								//sendView('resetBonuses', id, arr, info);
 								stop = true;
@@ -205,6 +207,7 @@ var farmvilleBonuses =
 					
 					info.error = 'limit';
 					info.time = Math.round(new Date().getTime() / 1000);
+					info.error_text = $(".main_giftConfirm_cont", data).find('h3').text();
 					
 					database.updateErrorItem('bonuses', id, info);
 					sendView('bonusError', id, info);						

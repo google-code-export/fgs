@@ -430,7 +430,7 @@
 	function ReceivePendingBonuses(gameID)
 	{
 		var game = gamesData[gameID].systemName;
-		$('#'+game+'BonusesPendingList').children('div:visible').each(function(){
+		$('#'+game+'BonusesPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function(){
 			$(this).trigger('click');
 		});
 	}
@@ -438,18 +438,20 @@
 	function ReceivePendingRequests(gameID)
 	{
 		var game = gamesData[gameID].systemName;
-		$('#'+game+'RequestsPendingList').children('div:visible').each(function(){
+		$('#'+game+'RequestsPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function(){
 			$(this).trigger('click');
 		});
 	}
 	
 	function bonusError(id, data)
 	{
+		console.log(data);
+		
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
 		
-		var errorText = (typeof(data.errorText) != 'undefined' ? ' <img src="gfx/info.png" title="'+data.errorText+'" />' : '');
+		var error_text = (typeof(data.error_text) != 'undefined' ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
 		
-		$('#'+id).find('.bonusError').html('('+data.error+' error)'+errorText);
+		$('#'+id).find('.bonusError').html('('+data.error+' error)'+error_text);
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
@@ -707,7 +709,7 @@
 		
 		database.db.transaction(function(tx)
 		{
-			$('#'+game+'ManualBonusesList').children('div:visible').each(function()
+			$('#'+game+'ManualBonusesList').children('div').not('.hideScreenLocked').each(function()
 			{
 				var elID = $(this).attr('id');
 				if($(this).hasClass('manualRequest'))
@@ -738,7 +740,7 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'BonusesPendingList').children('div:visible').not('.inProgress').each(function()
+					$('#'+game+'BonusesPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function()
 					{
 						database.deleteItem('bonuses', gameID, $(this).attr('id'), 0);
 						$(this).remove();
@@ -765,7 +767,7 @@
 				{
 					var game = gamesData[gameID].systemName;
 		
-					$('#'+game+'RequestsPendingList').children('div:visible').not('.inProgress').each(function()
+					$('#'+game+'RequestsPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function()
 					{
 						var postData = $(this).attr('postData');
 						var i1 = postData.indexOf('&actions%5B');
@@ -1229,9 +1231,9 @@
 			
 			var totCount = 0;
 			
-			var bCount = $('#'+game+'BonusesPendingList > div:visible').length;
-			var rCount = $('#'+game+'RequestsPendingList > div:visible').length;
-			var mCount = $('#'+game+'ManualBonusesList > div:visible').length;
+			var bCount = $('#'+game+'BonusesPendingList > div').not('.hideScreenLocked').length;
+			var rCount = $('#'+game+'RequestsPendingList > div').not('.hideScreenLocked').length;
+			var mCount = $('#'+game+'ManualBonusesList > div').not('.hideScreenLocked').length;
 			
 			totCount += bCount;
 			totCount += rCount;
@@ -1422,7 +1424,9 @@
 	
 	function getBonusHistoryRow(v)
 	{
-		var err = (v.error == '' ? '' : '('+v.error+' error)');
+		var error_text = (typeof(v.error_text) != 'undefined' ? ' <img src="gfx/info.png" title="'+v.error_text+'" />' : '');		
+		
+		var err = (v.error == '' ? '' : '('+v.error+' error)'+error_text);
 		var opt = 'BonusesHistoryList';	
 		
 		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
@@ -1712,7 +1716,7 @@
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function(){
+					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function(){
 						$(this).trigger('click');
 					});
 				}
@@ -1729,7 +1733,7 @@
 						{
 							"Delete all items": function()
 							{
-								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1754,7 +1758,7 @@
 							{
 								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
 								bkP.saveOptions();
-								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1796,7 +1800,7 @@
 							{
 								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
 								bkP.saveOptions();
-								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1830,7 +1834,7 @@
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 					{
 						$(this).trigger('click');
 					});
@@ -1856,7 +1860,7 @@
 							"Delete all items": function()
 							{
 
-								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									var postData = $(this).attr('postData');
 									var i1 = postData.indexOf('&actions%5B');
@@ -2029,6 +2033,28 @@
 			height:'auto',
 			modal: true
 		});
+		
+		$( "#dialog-html" ).dialog({
+			resizable: false,
+			autoOpen: false,
+			height:'auto',
+			width: '1000px',
+			modal: false,
+			buttons:
+			{
+				"OK": function()
+				{
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		
+		$('.viewHtml').live('click',function()
+		{
+			var text = bkP.debugLog[$(this).attr('logID')].html.replace(/.js/g,'').replace(/.css/g,'').replace(/refresh/g,'');
+					
+			$('#dialog-html').html(text).dialog('open');
+		});
 
 		//$(".gameEnabledBox, .gameDefaultBox, .gameLikeBonusBox, .gameCommentBonusBox").button();
 		$('.menu > .optionsMenu').buttonset();
@@ -2085,7 +2111,10 @@
 				
 		$(tempArr).each(function(k,info)
 		{
-			$('#debugLogs > tbody').append('<tr><td class="first">'+info.time+'</td><td>'+info.type+'</td><td>'+info.text+'</td><td class="last"><a href="#" class="emptyDB"></a></td></tr>');
+			var linkA = info.html == '' ? '' : 'View html';
+			
+	
+			$('#debugLogs > tbody').append('<tr><td class="first">'+info.time+'</td><td>'+info.type+'</td><td>'+info.text+'</td><td class="last"><div logID="'+k+'" class="viewHtml">'+linkA+'</div></td></tr>');
 		});
 		
 		$('#debug').append('<br style="clear:both" />');
@@ -2198,7 +2227,7 @@
 			}
 				
 			
-			if($(this).hasClass('bonusItem'))
+			if($(this).hasClass('bonusItem') || $(this).hasClass('manualBonus'))
 			{
 				if($(this).hasClass('disabled'))
 				{
@@ -2261,6 +2290,10 @@
 <body>
 	<div id="dialog-confirm" title="Delete?">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span class="text">Are you sure?</span></p>
+	</div>
+	
+	<div id="dialog-html" title="View HTML">
+		
 	</div>
 	
 	<div id="dialog-error" title="Error">

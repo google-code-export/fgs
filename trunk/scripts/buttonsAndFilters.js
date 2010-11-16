@@ -59,7 +59,7 @@ var gamesData =
 						filter:
 						{	
 							bonuses: ['Fertilize their crops', 'Play Farmville Now'],
-							bonusesNewWindow: ['Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey'],
+							bonusesNewWindow: ['Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble'],
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
 						},
