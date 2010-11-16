@@ -414,10 +414,16 @@ function sendView(msg, data, data2, data3)
 		}
 		xhrQueue = newArray;
 		
+		console.log(resetIds);
+		
 		if(resetIds.length > 0)
 		{
-
-		}		
+			for(var ind in resetIds)
+			{
+				var id = resetIds[ind];
+				sendView('bonusError', id, data3);
+			}
+		}
 		xhrWorking--;
 	}
 	
@@ -1042,13 +1048,14 @@ function checkBonuses(appID)
 					
 					var ret = false;
 					
-					var checkString = jQuery.trim($(el).find('.UIActionLinks_bottom > a:last').text());
+					var bTitle = jQuery.trim($(el).find('.UIActionLinks_bottom > a:last').text().replace(/'/gi, ''));
+
 					
 					$(gamesData[appID].filter.bonuses).each(function(k,v)
 					{
 						var re = new RegExp(v, "i");
 						
-						if(re.test(checkString))
+						if(re.test(bTitle))
 						{
 							ret = true;
 							return false;
@@ -1060,7 +1067,7 @@ function checkBonuses(appID)
 					var feedback = $(el).find('input[name="feedback_params"]').val();
 					var link_data = $(el).attr('data-ft');			
 					
-					var bTitle = $(el).find('.UIActionLinks_bottom > a:last').text().replace(/'/gi, '');
+					
 					
 					
 					//sprawdzanie filtrow usera

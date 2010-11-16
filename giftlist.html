@@ -441,7 +441,7 @@
 		var game = gamesData[gameID].systemName;
 		
 		
-		if(data.error == 'connection')
+		if(data.error == 'connection' || data.error == 'other')
 		{
 			setTimeout(function() {
 				$('#'+id).enableContextMenu().click(processBonusClick).removeClass('inProgress');
