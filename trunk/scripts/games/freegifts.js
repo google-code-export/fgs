@@ -49,7 +49,7 @@ var giftsArray = {
 	'102452128776':
 	{
 		"mysterygift": { name: 'Mystery Gift'},
-		
+		"socialplumbingmysterygift": { name: 'Special Delivery' },
 		"shovel_item_01": { name: '2 Shovels'},
 		
 		"roseblack_seedpackage": { name: '20 Black Rose Seeds'},

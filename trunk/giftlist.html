@@ -2,18 +2,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=3.7.6" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=3.8.0" rel="stylesheet" />
 <title>Facebook Games Simplifier</title>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/time.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/database.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/time.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.8.0"></script>
 <script type="text/javascript">
 
-// ?version=3.7.6
+// ?version=3.8.0
 
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
@@ -1630,7 +1630,7 @@
 		
 		$('<input type="radio" class="gameSelected" name="gameSelected" id="optionsSelected" /><label for="optionsSelected">Options<br /><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
 		
-		$('<input type="radio" class="gameSelected" name="gameSelected" id="debugSelected" /><label for="debugSelected">Debug logs<br /><img src="icons/menu/debug.png"></label>').appendTo('#gameSelector');
+		//$('<input type="radio" class="gameSelected" name="gameSelected" id="debugSelected" /><label for="debugSelected">Debug logs<br /><img src="icons/menu/debug.png"></label>').appendTo('#gameSelector');
 
 		$("#gameSelector").children("input").click(function()
 		{
