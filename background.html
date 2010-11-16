@@ -3,26 +3,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/chat.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/notices.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/chat.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/notices.js?version=3.8.0"></script>
 
-<script type="text/javascript" src="scripts/games/frontierville.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/farmville.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/mafiawars.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/treasure.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/cafeworld.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/ravenwood.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/games/restaurant.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/frontierville.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/farmville.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/mafiawars.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/treasure.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/cafeworld.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/ravenwood.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/games/restaurant.js?version=3.8.0"></script>
 
 
-<script type="text/javascript" src="scripts/games/freegifts.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/database.js?version=3.7.6"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.7.6"></script>
+<script type="text/javascript" src="scripts/games/freegifts.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/database.js?version=3.8.0"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=3.8.0"></script>
 <script type="text/javascript">
 localStorage.removeItem('FarmVAIO.options');
 localStorage.removeItem('options');
 
-// ?version=3.7.6
+// ?version=3.8.0
 
 var console =
 {
@@ -42,7 +42,7 @@ var console =
 	}
 };
 
-var currentVersion = '3.7.6';
+var currentVersion = '3.8.0';
 var portsByName = {};
 
 // zmienne
@@ -783,18 +783,19 @@ function checkRequests()
 	
 	$.ajax({
 		type: "GET",
-		url: 'http://www.facebook.com/reqs.php',
+		url: 'http://www.facebook.com/games',
 		success: function(data)
 		{
-		
 			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 			
-			/*
-			var i1 = data.indexOf('big_pipe.onPageletArrive({"phase":1,"id":"pagelet_requests"');
-			var i2 = data.indexOf('}});</scrip', i1);
-			eval('var tempData = ' + data.slice(i1+25,i2+2));
-			data = tempData.content.pagelet_requests;
-			*/
+			if(data.indexOf('"content":{"pagelet_requests":"') != -1)
+			{
+				var i1 = data.indexOf('"content":{"pagelet_requests":"')+10;
+				var i2 = data.indexOf('"}});', i1)+2;				
+				eval('var tempD = '+data.slice(i1,i2));
+				
+				data = tempD.pagelet_requests;				
+			}
 			
 			var FBdata = $('input[name="params\[app_id\]"]',data).parent('form:first');
 			

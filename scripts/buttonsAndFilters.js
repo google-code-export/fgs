@@ -203,7 +203,7 @@ var gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to'],
+							bonusesNewWindow: ['Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice'],
 							requests: [],
 							requestsNewWindow: []
 						},

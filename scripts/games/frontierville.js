@@ -128,6 +128,7 @@ var frontiervilleBonuses =
 					
 					info.error = 'limit';
 					info.time = Math.round(new Date().getTime() / 1000);
+					info.error_text = $('.fail_message', data).text();
 					
 					database.updateErrorItem('bonuses', id, info);
 					sendView('bonusError', id, info);						
@@ -142,14 +143,14 @@ var frontiervilleBonuses =
 					
 					if(testStr == 'ToHelp' || testStr == 'To Help')
 					{
-						info.title = $(".morePending_cont > div.text:first", data).text().replace('Help out and receive', '');
+						var tempTitle = $(".morePending_cont > div.text:first", data).text().replace('Help out and receive', '');
 					}
 					else
 					{
-						info.title = $(".giftConfirm_name",data).children().text();
+						var tempTitle = $(".giftConfirm_name",data).children().text();
 					}
 					
-					info.image = $(".giftConfirm_img",data).children().attr("src");
+					var tempImage = $(".giftConfirm_img",data).children().attr("src");
 					
 					$.ajax({
 						type: "POST",
@@ -157,14 +158,28 @@ var frontiervilleBonuses =
 						url: giftReceiveUrl,
 						success: function(d)
 						{
-							info.text = '';
-							info.time = Math.round(new Date().getTime() / 1000);
+							if(d.indexOf('giftLimit') != -1)
+							{
+								info.error = 'other';
+								info.time = Math.round(new Date().getTime() / 1000);
+								
+								var i1 = d.indexOf('class="giftLimit')+18;
+								var i2 = d.indexOf('div>', i1)-2;
+								
+								info.error_text = jQuery.trim(d.slice(i1,i2));
+								sendView('bonusError', id, info);
+							}
+							else
+							{
+								info.title = tempTitle;
+								info.image = tempImage;
+								info.text = '';
+								info.time = Math.round(new Date().getTime() / 1000);
 							
-							database.updateItem('bonuses', id, info);
-							sendView('bonusSuccess', id, info);
-							
-							
-							console.log(getCurrentTime()+'[B] Bonus collected SUCCESSFULLY - ID: '+id);
+								database.updateItem('bonuses', id, info);
+								sendView('bonusSuccess', id, info);
+								console.log(getCurrentTime()+'[B] Bonus collected SUCCESSFULLY - ID: '+id);
+							}
 						},
 						error: function()
 						{
