@@ -20,6 +20,9 @@
 	
 	var loaded = 0;	
 	
+	var isScreenLocked = false;
+
+	
 	function updateLoaded()
 	{
 		loaded++;
@@ -251,7 +254,9 @@
 			var newUrl = v.url;
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)
@@ -269,7 +274,9 @@
 			var url = 'icons/reqs/'+game+'/'+v.image+'.png';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -277,7 +284,9 @@
 		var title = v.title;
 		title = title.replace(/'/gi, '');
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem showContextManual updateTimeAgo manualBonus"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem '+classHide+' showContextManual updateTimeAgo manualBonus"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualRequestRow(gameID, v)
@@ -285,8 +294,10 @@
 		var game = gamesData[gameID].systemName;
 		var title = v.title;
 		title = title.replace(/'/gi, '');
+		
+		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem updateTimeAgo manualRequest"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="icons/reqs/'+game+'/'+v.image+'.png" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="icons/reqs/'+game+'/'+v.image+'.png" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	
@@ -419,7 +430,7 @@
 	function ReceivePendingBonuses(gameID)
 	{
 		var game = gamesData[gameID].systemName;
-		$('#'+game+'BonusesPendingList').children('div').each(function(){
+		$('#'+game+'BonusesPendingList').children('div:visible').each(function(){
 			$(this).trigger('click');
 		});
 	}
@@ -427,7 +438,7 @@
 	function ReceivePendingRequests(gameID)
 	{
 		var game = gamesData[gameID].systemName;
-		$('#'+game+'RequestsPendingList').children('div').each(function(){
+		$('#'+game+'RequestsPendingList').children('div:visible').each(function(){
 			$(this).trigger('click');
 		});
 	}
@@ -435,11 +446,28 @@
 	function bonusError(id, data)
 	{
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
-		$('#'+id).find('.bonusError').text('('+data.error+' error)');
+		
+		var errorText = (typeof(data.errorText) != 'undefined' ? ' <img src="gfx/info.png" title="'+data.errorText+'" />' : '');
+		
+		$('#'+id).find('.bonusError').html('('+data.error+' error)'+errorText);
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
 		
+		
+		bonusErrorFinish(id, data);
+	}
+	
+	function bonusErrorFinish(id, data)
+	{
+		if(isScreenLocked)
+		{
+			setTimeout(function() { bonusErrorFinish(id, data) }, 1000);
+			return;
+		}
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
 		
 		if(data.error == 'connection' || data.error == 'other')
 		{
@@ -473,7 +501,21 @@
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
-				
+		
+		bonusSuccessFinish(id, data);
+	}
+	
+	function bonusSuccessFinish(id, data)
+	{
+		if(isScreenLocked)
+		{
+			setTimeout(function() { bonusSuccessFinish(id, data) }, 1000);
+			return;
+		}
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+	
 		setTimeout(function() {
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
 			$('#'+id).removeClass('inProgress').find('img:last').attr('src', data.image);
@@ -562,6 +604,19 @@
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
 		
+		requestErrorFinish(id, data);
+	}
+	
+	function requestErrorFinish(id, data)
+	{
+		if(isScreenLocked)
+		{
+			setTimeout(function() { requestErrorFinish(id, data) }, 1000);
+			return;
+		}
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
 		
 		if(data.error == 'connection')
 		{
@@ -590,6 +645,21 @@
 	{
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-check.png');
 		$('#'+id).find('.bonusError').text('');
+		
+		var gameID = $('#'+id).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		
+		requestSuccessFinish(id, data);
+	}
+	
+	
+	function requestSuccessFinish(id, data)
+	{
+		if(isScreenLocked)
+		{
+			setTimeout(function() { requestSuccessFinish(id, data) }, 1000);
+			return;
+		}
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
@@ -629,14 +699,15 @@
 			updateCount(gameID);
 		}, 1000);
 	}
-
+	
+	
 	function ClearManualBonuses(gameID)
 	{
 		var game = gamesData[gameID].systemName;
 		
 		database.db.transaction(function(tx)
 		{
-			$('#'+game+'ManualBonusesList').children('div').each(function()
+			$('#'+game+'ManualBonusesList').children('div:visible').each(function()
 			{
 				var elID = $(this).attr('id');
 				if($(this).hasClass('manualRequest'))
@@ -667,7 +738,7 @@
 				"Delete all items": function()
 				{
 					var game = gamesData[gameID].systemName;
-					$('#'+game+'BonusesPendingList').children('div').not('.inProgress').each(function()
+					$('#'+game+'BonusesPendingList').children('div:visible').not('.inProgress').each(function()
 					{
 						database.deleteItem('bonuses', gameID, $(this).attr('id'), 0);
 						$(this).remove();
@@ -694,7 +765,7 @@
 				{
 					var game = gamesData[gameID].systemName;
 		
-					$('#'+game+'RequestsPendingList').children('div').not('.inProgress').each(function()
+					$('#'+game+'RequestsPendingList').children('div:visible').not('.inProgress').each(function()
 					{
 						var postData = $(this).attr('postData');
 						var i1 = postData.indexOf('&actions%5B');
@@ -868,8 +939,6 @@
 		updateCount(gameID);
 	}
 	
-	
-	
 	function createMenu(gameID)
 	{
 		var game = 	gamesData[gameID].systemName;
@@ -1021,7 +1090,7 @@
 	{
 		if($('.message','#privateChat').attr('disabled') !== false || $('.message','#publicChat').attr('disabled') !== false)
 		{
-			$('.message','#privateChat').val('').removeAttr('disabled');
+			//$('.message','#privateChat').val('').removeAttr('disabled');
 			$('.message','#publicChat').val('').removeAttr('disabled');
 		}
 		
@@ -1133,7 +1202,6 @@
 			$('.optionsMenu', $('#'+game+'Game')).buttonset('refresh');
 		}
 	}
-
 	
 	function updateCount(gameID)
 	{
@@ -1161,9 +1229,9 @@
 			
 			var totCount = 0;
 			
-			var bCount = $('#'+game+'BonusesPendingList > div').length;
-			var rCount = $('#'+game+'RequestsPendingList > div').length;
-			var mCount = $('#'+game+'ManualBonusesList > div').length;
+			var bCount = $('#'+game+'BonusesPendingList > div:visible').length;
+			var rCount = $('#'+game+'RequestsPendingList > div:visible').length;
+			var mCount = $('#'+game+'ManualBonusesList > div:visible').length;
 			
 			totCount += bCount;
 			totCount += rCount;
@@ -1390,7 +1458,8 @@
 		{
 			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(false, v.resend_gift, false, true));
 		}
-	}	
+	}
+	
 	function prepareNeighboursList(gameID)
 	{
 		var game = gamesData[gameID].systemName;
@@ -1547,6 +1616,8 @@
 		$('<input type="radio" class="gameSelected" name="gameSelected" id="chatSelected" /><label for="chatSelected">Chat<br /><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
 		
 		$('<input type="radio" class="gameSelected" name="gameSelected" id="optionsSelected" /><label for="optionsSelected">Options<br /><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
+		
+		$('<input type="radio" class="gameSelected" name="gameSelected" id="debugSelected" /><label for="debugSelected">Debug logs<br /><img src="icons/menu/debug.png"></label>').appendTo('#gameSelector');
 
 		$("#gameSelector").children("input").click(function()
 		{
@@ -1563,6 +1634,11 @@
 			{
 				$('#options').removeClass('hide');
 				loadOptionsData();
+			}
+			else if($(this).attr('id') == 'debugSelected')
+			{
+				$('#debug').removeClass('hide');
+				loadDebugData();
 			}
 			else
 			{
@@ -1636,7 +1712,7 @@
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function(){
+					$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function(){
 						$(this).trigger('click');
 					});
 				}
@@ -1653,7 +1729,7 @@
 						{
 							"Delete all items": function()
 							{
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1678,7 +1754,7 @@
 							{
 								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
 								bkP.saveOptions();
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1720,7 +1796,7 @@
 							{
 								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
 								bkP.saveOptions();
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
@@ -1754,7 +1830,7 @@
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+					$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
 					{
 						$(this).trigger('click');
 					});
@@ -1780,7 +1856,7 @@
 							"Delete all items": function()
 							{
 
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
+								$(el).parent().children('div:visible[title="'+$(el).attr('title')+'"]').not('.inProgress').each(function()
 								{
 									var postData = $(this).attr('postData');
 									var i1 = postData.indexOf('&actions%5B');
@@ -1964,6 +2040,25 @@
 			eval($(this).attr('sysID')+'("'+$(this).attr('gameID')+'")');
 		});
 		$("#gameSelector").buttonset();
+		$('#lockScreen').button().click(function()
+		{
+			isScreenLocked = $(this).is(':checked');
+			
+			if($(this).is(':checked'))
+			{
+				$(this).button('option', 'label', 'Screen is: LOCKED (no new bonuses will show until you unlock it)');
+			}
+			else
+			{
+				$(this).button('option', 'label', 'Screen is: UNLOCKED (click to lock)');
+				$('div.hideScreenLocked').removeClass('hideScreenLocked');
+				updateCount();
+			}
+		});
+		
+		
+		
+		//Screen is: UNLOCKED (click to lock)
 	});
 	
 
@@ -1977,6 +2072,23 @@
 		});
 		
 		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button class="saveNewComment">Add new comment</button>');
+	}
+	
+	function loadDebugData()
+	{
+		$('#debug').html('');
+		
+		$('#debug').prepend('<table id="debugLogs" style="margin: 0 auto; margin-top: 15px;" width="75%"><caption>Logs from your current session (send only when requested!!!)</caption><thead><tr><th scope="col" class="first">Time</th><th scope="col">Type</th><th scope="col">Text</th><th scope="col" class="last">HTML</th></tr></thead><tbody></tbody></table>');
+				
+		var tempArr = bkP.debugLog;
+		tempArr = tempArr.reverse();
+				
+		$(tempArr).each(function(k,info)
+		{
+			$('#debugLogs > tbody').append('<tr><td class="first">'+info.time+'</td><td>'+info.type+'</td><td>'+info.text+'</td><td class="last"><a href="#" class="emptyDB"></a></td></tr>');
+		});
+		
+		$('#debug').append('<br style="clear:both" />');
 	}
 	
 	
@@ -2205,6 +2317,12 @@
 
 		<br style="clear: both" />
 		
+		<h2 style="text-align: center">
+			<input type="checkbox" id="lockScreen" /><label for="lockScreen">Screen is: UNLOCKED (click to lock)</label>
+		</h2>
+		
+		<br style="clear: both" />
+		
 		
 		<div id="templateGame" class="section hide gameContent">
 			<h1 class="title"></h1>
@@ -2243,11 +2361,9 @@
 						<div class="users"></div>
 					</div>
 					
-					<div style="border-top: 1px dashed #000;padding-top: 10px;">
+					<div style="border-top: 1px dashed #000;padding-top: 10px;text-align:center;">
 						<form method="post" action="javascript:void(0);" onsubmit="send(this)" id="privateChat" autocomplete="off">
-							<img src="./gfx/act_indicator.gif" class="act_indicator" style="visibility: hidden; ">
-							<strong>Message:</strong> <input type="text" tabindex="1" disabled="disabled" name="message" class="message" value="Chat is disabled, because your userdata was not retrieved yet">
-								<!-- <input type="submit" class="sendChatBut button1" disabled="disabled" value="Send" name="submit" tabindex="6" accesskey="s">  -->
+							Chat with developer is disabled. It will be removed next version.
 						</form>
 					</div>
 				</div>
@@ -2336,6 +2452,10 @@
 			
 			
 			<br style="clear: both" />
+		</div>
+		
+		<div id="debug" class="section hide gameContent">
+		
 		</div>
 	</div>	
 	

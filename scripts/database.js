@@ -10,12 +10,12 @@ database.open = function(userID)
 
 database.onError = function(tx, e) 
 {
-	console.log('Something unexpected happened: ' + e.message );
+	//console.log('Something unexpected happened: ' + e.message );
 }
 
 database.onSuccess = function(tx, e) 
 {
-	console.log('Success ' + e.message );
+	//console.log('Success ' + e.message );
 }
 
 database.createTable = function()
@@ -23,10 +23,12 @@ database.createTable = function()
 	database.db.transaction(function(tx)
 	{
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
-                  'bonuses (id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, url TEXT, time INTEGER, feedback TEXT, link_data TEXT, like_bonus INTEGER, comment_bonus INTEGER, resend_gift TEXT)', [],  database.onSuccess, database.onError);
+                  'bonuses (id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, url TEXT, time INTEGER, feedback TEXT, link_data TEXT, like_bonus INTEGER, comment_bonus INTEGER, resend_gift TEXT, error_text TEXT)', [],  database.onSuccess, database.onError);
 		
 		tx.executeSql('ALTER TABLE bonuses ADD COLUMN comment_bonus INTEGER', [],  database.onSuccess, database.onError);
 		tx.executeSql('ALTER TABLE bonuses ADD COLUMN resend_gift TEXT', [],  database.onSuccess, database.onError);
+		tx.executeSql('ALTER TABLE bonuses ADD COLUMN error_text TEXT', [],  database.onSuccess, database.onError);
+		
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
 				'requests(id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, post TEXT, time INTEGER, resend_gift TEXT)', [],  database.onSuccess, database.onError);
@@ -209,7 +211,6 @@ database.updateItem = function(table, itemID, info)
 		
 database.updateItemGiftBack = function(table, itemID)
 {
-
 	database.db.transaction(function(tx)
 	{
 	
@@ -250,7 +251,7 @@ database.addBonus = function(data2)
 	{
 		$(data2).each(function(k, data)
 		{
-			tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0,'')", data,
+			tx.executeSql("INSERT OR IGNORE INTO bonuses VALUES (?,?,0,'',?,?,?,?,?,?,?,0,0,'','')", data,
 			function(t,r)
 			{
 				if(r.rowsAffected == 1)

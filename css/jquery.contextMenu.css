@@ -14,9 +14,43 @@ body
 	font-size: 10px;
 }
 
+table
+{
+	border-bottom: 3px solid #B2B2B2;
+	margin: 0px 0px 2em;
+	font-size: 10px;
+}
+
+caption 
+{
+	background: #EEE;
+	border: solid #B2B2B2;
+	border-width: 1px 0px 2px;
+	font: normal normal normal 1.1em/normal Georgia, Times, serif;
+	padding: 0.25em;
+}
+
+thead th
+{
+	text-align: left;
+	text-transform: uppercase;
+}
+
+th, td
+{
+	border: solid #CCC;
+	border-width: 0px 1px 1px;
+	padding: 0.25em 0.5em;
+}
+
 #gameSelector > label
 {
 	/*min-width: 100px;*/
+}
+
+.hideScreenLocked
+{
+	display: none;
 }
 
 .icon

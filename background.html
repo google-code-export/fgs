@@ -24,6 +24,23 @@ localStorage.removeItem('options');
 
 // ?version=3.7.6
 
+var console =
+{
+	log: function(type, text, html)
+	{
+		
+		if(typeof(text) == 'undefined')
+		{
+			var text = type;
+			var type = '';
+		}
+		
+		if(typeof(html) == 'undefined')
+			var html = '';
+
+		debugLog.push({time: getCurrentTime(), type: type, text: text, html: html});
+	}
+};
 
 var currentVersion = '3.7.6';
 var portsByName = {};
@@ -47,8 +64,10 @@ var giftlistFocus,
 	bonusLoadingProgress,
 	xhrQueue,
 	xhrWorking,
-	xhrInterval;
-	
+	xhrInterval,
+	debugLog;
+
+
 function initializeDefaults()
 {
 	giftlistFocus = false;
@@ -97,6 +116,7 @@ function initializeDefaults()
 	xhrQueue = [];
 	xhrWorking = 0;
 	xhrInterval = null;
+	debugLog = [];
 }
 
 chrome.self.onConnect.addListener(function(port)
