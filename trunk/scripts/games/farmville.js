@@ -180,7 +180,6 @@ var farmvilleBonuses =
 				{
 					console.log(getCurrentTime()+'[B] Bonus already claimed - deleting bonus with ID: '+id);
 					
-					
 					var stop = false;
 					for(var checkStr in otherLimits)
 					{
@@ -196,10 +195,10 @@ var farmvilleBonuses =
 								sendView('resetBonuses', id, arr, info);
 								sendView('newInfo', id, $(".main_giftConfirm_cont", data).find('h3').text());
 								stop = true;
-								return;
+								break;
 							}
 						}
-						catch(e){}					
+						catch(e){}			
 					}
 					if(stop) return;
 
@@ -233,7 +232,7 @@ var farmvilleBonuses =
 					}
 					else
 					{
-						var giftReceiveUrl = newUrl;
+						var giftReceiveUrl = newUrl.replace(/&amp;/g,'&');;
 					}
 					
 					var num = 1;
