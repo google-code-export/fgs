@@ -170,13 +170,71 @@ var giftsArray = {
 		"acornsquashbushel": { name: 'AcornSquash (-.-.W)'},
 		"yellowmelonbushel": { name: 'YellowMelon (-.-.W)'},
 		"watermelonbushel": { name: 'Watermelon (-.-.W)'},
+	},
+	'234860566661':
+	{
+		"mystery_gift": { name: 'Mystery Gift'},
+		"fishing_bait_uncommon": { name: 'Good Bait'},
+		"fishing_bait_common": { name: 'Basic Bait'},
+		"key_excavations": { name: 'Golden Ticket (lvl 4)'},
+		"halloween_treat": { name: 'Halloween Treat'},
+		"halloween_trick_10": { name: 'Apple Core'},
+		"halloween_trick_3": { name: 'Trick Candy'},
+		"halloween_trick_5": { name: 'Circus peanuts'},
+		"construction_gears": { name: 'Gears'},
+		"construction_rock": { name: 'Rock'},
+		"construction_aquavitae": { name: 'Aqua Vitae'},
+		"construction_marble": { name: 'Marble'},
+		"construction_nails": { name: 'Nails'},
+		"construction_cloth": { name: 'Cloth'},
+		"construction_fire": { name: 'Fire'},
+		"construction_metal": { name: 'Metal'},
+		"construction_oil": { name: 'Oil'},
+		"construction_bolts": { name: 'Bolts'},
+		"construction_dye": { name: 'Dye'},
+		"construction_glue": { name: 'Glue'},
+		"construction_rope": { name: 'Rope'},
+		"construction_seed": { name: 'Seeds'},
+		"construction_paint": { name: 'Paint'},
+		"construction_plank": { name: 'Planks'},
+		"construction_ectoplasm": { name: 'Ectoplasm'},
+		"construction_pillar": { name: 'Pillars'},
+		"construction_resin": { name: 'Resin'},
+		"construction_shell": { name: 'Shells'},
+		"construction_gold": { name: 'Gold'},
+		"coins_gift_100": { name: '100 coins'},
+		"map_fragment": { name: 'Map Fragment (lvl 15)'},
+		"fruit_chocolatebar": { name: 'Monka Bar'},
+		"gem_orange": { name: 'Orange Gem'},
+		"gem_green": { name: 'Green Gem'},
+		"gem_purple": { name: 'Purple Gem'},
+		"gem_red": { name: 'Red Gem'},
+		"gem_blue": { name: 'Blue Gem'},
+		"fruit_kiwi": { name: 'Kiwis (lvl 3)'},
+		"fruit_banana": { name: 'Bananas (lvl 10)'},
+		"fruit_mango": { name: 'Mangoes (lvl 15)'},
+		"fruit_lavamango": { name: 'Lava Mango'},
+		"deco_poppyfield": { name: 'Poppyfield'},
+		"deco_mnkpillar": { name: 'Short Pillar'},
+		"deco_happyyellowflower": { name: 'Yellow Flower'},
+		"deco_happypinkflower": { name: 'Pink Flower'},
+		"deco_mnkpillartall": { name: 'Tall Pillar'},
+		"deco_tallpillarvertical": { name: 'Torch Pillar'},
+		"animal_plover": { name: 'Plover'},
+		"deco_royalmnkpostrope2": { name: 'Royal Post Endcap'},
+		"deco_royalmnkpostrope": { name: 'Royal Post'},
+		"shrub_redbeachplant": { name: 'Red Beach Plant'},
 	}
 };
+
+
+
 
 var freeGiftForGame =
 {
 	201278444497: 'meal1',
-	102452128776: 'brick',	
+	102452128776: 'brick',
+	234860566661: 'construction_gears',
 }
 
 function ListNeighbours(gameID)
@@ -192,6 +250,158 @@ function ListNeighbours(gameID)
 		eval(game+'GetZyngaVars(params)');
 }
 
+function treasureGetZyngaVars(params, retry)
+{
+	if(typeof(retry) !== 'undefined')
+	{
+		var params2 = '_fb_noscript=1';
+	}
+	else
+	{
+		var params2 = '';
+	}
+	
+	$.get('http://apps.facebook.com/treasureisle/', 'crt=&aff=tab&src=direct&newUser=&sendkey=&ref=tab', function(data)
+	{
+		try
+		{
+			i1          =   data.indexOf('post_form_id:"')
+			if (i1 == -1) throw {message:'Cannot post_form_id in page'}
+			i1			+=	14;
+			i2          =   data.indexOf('"',i1);
+			
+			params.post_form_id = data.slice(i1,i2);
+			
+			
+			i1          =   data.indexOf('fb_dtsg:"',i1)
+			if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
+			i1			+=	9;
+			i2          = data.indexOf('"',i1);
+			params.fb_dtsg		= data.slice(i1,i2);
+		}
+		catch(e)
+		{
+			console.log(getCurrentTime()+'[Z] Error: '+e.message);
+			
+			if(typeof(params.sendTo) == 'undefined')
+			{
+				sendView('errorUpdatingNeighbours');
+			}
+			else
+			{
+				sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+			}
+		}
+		
+		var nextUrl = '';
+		
+		$('iframe', data).each(function()
+		{
+			var testData = $(this).attr('src');
+			if(typeof(testData) == 'undefined')	 return;
+			
+			
+			if(testData.indexOf('treasure.zynga.com/flash.php') != -1)
+			{
+				nextUrl = $(this).attr('src');
+				return false;
+			}
+		});
+		
+		if(nextUrl == '')
+		{
+			if(typeof(retry) == 'undefined')
+			{
+				treasureGetZyngaVars(params, true);
+			}
+			else
+			{
+				sendView('errorUpdatingNeighbours');
+			}
+			return;
+		}
+		
+		
+		$.get(nextUrl, params2, function(data){
+			try
+			{
+				var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+				var domain = nextUrl.match(re)[1].toString();
+
+				var i1 = data.indexOf('new ZY({');
+				if (i1 == -1) throw {message:'Cannot zyparams in page'}
+				i1 += 7;
+				i2 = data.indexOf('"},', i1)+2;
+				var dataStr	= data.slice(i1,i2);				
+				
+				eval('var dataStrTmp = '+dataStr);
+				
+				params.zyParam = jQuery.param(dataStrTmp);
+				
+				
+				console.log(getCurrentTime()+'[Z] Zynga params updated');
+
+				$.get('http://'+domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+'#overlay', '', function(data)
+				{
+					try 
+					{
+						var i1,i2, myParms;
+						var strTemp = data;
+
+						i1       =  strTemp.indexOf('FB.init("');
+						if (i1 == -1) throw {message:"Cannot find FB.init"}
+						i1 += 9;
+						i2       =  strTemp.indexOf('"',i1);
+
+						myParms  =  'app_key='+strTemp.slice(i1,i2);
+						i1     =  i2 +1;
+						i1       =  strTemp.indexOf('"',i1)+1;
+						i2       =  strTemp.indexOf('"',i1);
+						
+						myParms +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
+
+						i1       =  strTemp.indexOf('<fb:fbml>');
+						i2       =  strTemp.indexOf('/script>',i1)-1;
+						myParms +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
+						
+						params.myParms = myParms;
+						
+						getFBML(params);
+						
+					}
+					catch(e)
+					{
+						console.log(getCurrentTime()+'[Z] Error: '+e.message);
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							sendView('errorUpdatingNeighbours');
+						}
+						else
+						{
+							sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				});
+			}
+			catch(e)
+			{
+				console.log(getCurrentTime()+'[Z] Error: '+e.message);
+				
+				if(typeof(params.sendTo) == 'undefined')
+				{
+					sendView('errorUpdatingNeighbours');
+				}
+				else
+				{
+					sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+				}
+			}		
+		});
+		
+	});
+}
+
+//treasureisle
 function farmvilleGetZyngaVars(params, retry)
 {
 	if(typeof(retry) !== 'undefined')
