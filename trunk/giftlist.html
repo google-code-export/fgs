@@ -67,13 +67,20 @@
 	{
 		var game = gamesData[gameID].systemName;
 		var opt = 'SendFreeGiftsList';
-
+		
 		for(var id in bkP.giftsArray[gameID])
 		{
 			var v = bkP.giftsArray[gameID][id];
-			$('.sendToGiftsList','div#'+game+opt).append('<div class="selectGiftToSend" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+id+'.png"><div style="font-size: 11px;">'+v.name+'</div></div>');
+			$('.sendToGiftsList','div#'+game+opt).append('<div class="selectGiftToSend" gameID="'+gameID+'" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="icons/reqs/'+game+'/'+id+'.png"><div style="font-size: 11px;">'+v.name+'</div></div>');
 		}
-		$('.sendToGiftsList','div#'+game+opt).children('div:first').addClass('selected');
+		if(bkP.options.games[gameID].defaultGift == 0)
+		{
+			$('.sendToGiftsList','div#'+game+opt).children('div:first').addClass('selected');
+		}
+		else
+		{
+			$('.sendToGiftsList','div#'+game+opt).children('div[giftID="'+bkP.options.games[gameID].defaultGift+'"]').addClass('selected');
+		}
 		$('.sendToGiftsList','div#'+game+opt).append('<br class="clear" style="clear:both"/>');
 	}
 	
@@ -449,7 +456,7 @@
 		
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
 		
-		var error_text = (typeof(data.error_text) != 'undefined' ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
+		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
 		
 		$('#'+id).find('.bonusError').html('('+data.error+' error)'+error_text);
 		
@@ -1424,12 +1431,12 @@
 	
 	function getBonusHistoryRow(v)
 	{
-		var error_text = (typeof(v.error_text) != 'undefined' ? ' <img src="gfx/info.png" title="'+v.error_text+'" />' : '');		
+		var error_text = (v.error_text != '' ? ' <img src="gfx/info.png" title="'+v.error_text+'" />' : '');		
 		
 		var err = (v.error == '' ? '' : '('+v.error+' error)'+error_text);
 		var opt = 'BonusesHistoryList';	
 		
-		if(v.image == 'undefined')
+		if(v.image == 'undefined' && err != '')
 		{
 			var showImage = 'gfx/90px-check.png';
 		}
@@ -1827,6 +1834,30 @@
 			});
 		});
 		
+		$(".selectGiftToSend").live('mouseenter', function()
+		{
+			if($(this).hasClass('hasContextMenu'))
+			{
+				return;
+			}
+			$(this).addClass('hasContextMenu').contextMenu({
+				menu: 'myMenuDefaultGift'
+			}, function(action, el, pos)
+			{
+				if(action == 'selectDefault')
+				{
+					$(el).siblings(".selectGiftToSend").removeClass('selected');
+					$(el).addClass('selected');
+					
+					bkP.options.games[$(el).attr('gameID')].defaultGift = $(el).attr('giftID');					
+					bkP.saveOptions();
+				}
+			}).click(function(){
+				$(this).siblings("div.selectGiftToSend").removeClass('selected');
+				$(this).addClass('selected');
+			});
+		});
+		
 		$(".showContextRequests").live('mouseenter', function()
 		{
 			if($(this).hasClass('hasContextMenu'))
@@ -1999,14 +2030,6 @@
 			eval('bkP.'+game+'GetZyngaVars(params)');
 		});
 		
-		
-		
-		
-		$("div.selectGiftToSend").live('click',function()
-		{
-			$("div.selectGiftToSend").removeClass('selected');
-			$(this).addClass('selected');
-		});
 		
 		$('.saveNewComment').live('click', function(){
 			if($(this).prev('textarea').val() != '')
@@ -2519,6 +2542,10 @@
 		<li class="receive"><a href="#receiveSimilar">Receive all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
 		<li class="delete separator"><a href="#delete">Delete this gift</a></li>
 		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+	</ul>
+	
+	<ul id="myMenuDefaultGift" class="contextMenu">
+		<li class="receive"><a href="#selectDefault">Select as default gift</a></li>
 	</ul>
 	
 	

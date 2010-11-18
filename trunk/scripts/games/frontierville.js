@@ -37,8 +37,6 @@ var frontiervilleRequests =
 					
 					var tmpStr = unescape(URI);
 					
-					console.log(tmpStr);
-											
 					var i1 = tmpStr.indexOf('&gift=');
 					if(i1 != -1)
 					{
@@ -57,9 +55,6 @@ var frontiervilleRequests =
 							destName: $('.giftFrom_img', data).find('img').attr('title'),
 							}
 					}
-						
-						
-						
 					info.thanks = sendInfo;					
 					
 					info.image = $(".giftConfirm_img",data).children().attr("src");

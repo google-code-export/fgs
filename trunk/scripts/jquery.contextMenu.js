@@ -70,10 +70,13 @@ if(jQuery)( function() {
 							// Show the menu
 							$(document).unbind('click');
 							
-							var countBonus = $(el).parent().find('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').length;
-							
-							$(menu).find('.bonusName').text($(el).attr('title'));
-							$(menu).find('.bonusNameCount').text(countBonus);
+							if($(menu).find('.bonusName') != 0)
+							{
+								var countBonus = $(el).parent().find('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').length;
+								
+								$(menu).find('.bonusName').text($(el).attr('title'));
+								$(menu).find('.bonusNameCount').text(countBonus);
+							}
 							
 							$(menu).css({ top: y, left: x }).fadeIn(o.inSpeed);
 							// Hover events

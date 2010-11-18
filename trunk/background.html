@@ -99,7 +99,7 @@ function initializeDefaults()
 		deleteHistoryOlderThan: 0,
 	}
 
-	defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, filter: [] };
+	defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, filter: [], defaultGift: 0 };
 
 	for(var idd in gamesData)
 	{
@@ -254,9 +254,9 @@ function loadOptions(userID)
 	{
 		options = $.extend(true,{}, defaultOptions, 	JSON.parse(lastOptions));
 	}
-	console.log(options);
-	
+
 	optionsLoaded = true;
+
 }
 
 
@@ -889,6 +889,10 @@ function checkRequests()
 				{
 					var searchStr = 'item_id';
 				}
+				else if(APPID == 101539264719)
+				{
+					var searchStr = 'gid';
+				}				
 				else
 				{
 					var searchStr = 'gift';

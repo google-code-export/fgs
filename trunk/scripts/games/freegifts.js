@@ -224,10 +224,35 @@ var giftsArray = {
 		"deco_royalmnkpostrope2": { name: 'Royal Post Endcap'},
 		"deco_royalmnkpostrope": { name: 'Royal Post'},
 		"shrub_redbeachplant": { name: 'Red Beach Plant'},
-	}
+	},
+	'101539264719':
+	{
+		"2548": { name: 'Special Delivery'},
+		"2714": { name: 'Tassimo Coffee'},
+		"1174": { name: 'Spice Shelf'},
+		"1177": { name: 'Spice Small Jar'},
+		"1875": { name: 'Lotto Ticket'},
+		"1836": { name: 'Tesla Coil'},
+		"1835": { name: 'Science Book'},
+		"1837": { name: 'Small Energy Boost'},
+		"2266": { name: 'Pita and Dolmas'},
+		"2404": { name: 'Ranch Beans'},
+		"2450": { name: 'Tempura Udon'},
+		"2480": { name: 'Pan Dulce'},
+		"2773": { name: 'Tea Party'},
+		"2540": { name: 'In Flight Meal'},
+		"2677": { name: 'Skull Cookies'},
+		"2774": { name: 'Drink Me Elixir'},
+		"2541": { name: 'Sky Nuts'},
+		"1793": { name: 'Falafel'},
+		"1600": { name: 'Spring Rolls'},
+		"1559": { name: 'Popcorn Shrimp'},
+		"601": { name: 'Kung Pao Stir Fry'},
+		"473": { name: 'Tahitian Punch'},
+		"603": { name: 'Overstuffed Peppers'},
+		"638": { name: 'Lucky Fortune Cookie'},
+	}	
 };
-
-
 
 
 var freeGiftForGame =
@@ -235,6 +260,7 @@ var freeGiftForGame =
 	201278444497: 'meal1',
 	102452128776: 'brick',
 	234860566661: 'construction_gears',
+	101539264719: '2548',
 }
 
 function ListNeighbours(gameID)
@@ -247,8 +273,21 @@ function ListNeighbours(gameID)
 	};
 	
 	if(options.games[gameID].enabled)
-		eval(game+'GetZyngaVars(params)');
+	{
+		if(gameID == '101539264719')
+			eval(game+'Freegifts.Click(params)');
+		else
+			eval(game+'GetZyngaVars(params)');
+	}
 }
+
+
+function cafeworldGetZyngaVars(params, retry)
+{
+	cafeworldFreegifts.Click(params);
+}
+
+
 
 function treasureGetZyngaVars(params, retry)
 {
@@ -340,8 +379,10 @@ function treasureGetZyngaVars(params, retry)
 				
 				
 				console.log(getCurrentTime()+'[Z] Zynga params updated');
-
-				$.get('http://'+domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+'#overlay', '', function(data)
+				
+				
+				
+				$.get('http://'+domain+'/gifts_send.php?overlayed=1&gift='+params.gift+'&'+unescape(params.zyParam), '', function(data)
 				{
 					try 
 					{
@@ -364,6 +405,16 @@ function treasureGetZyngaVars(params, retry)
 						i2       =  strTemp.indexOf('/script>',i1)-1;
 						myParms +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
 						
+						i1 		 =  strTemp.indexOf(' exclude_ids="');
+						if (i1 == -1)
+							var exclArr = [];
+						else
+						{
+							i2 = strTemp.indexOf('"', i1+14);
+							eval('var exclArr = ['+strTemp.slice(i1+14, i2)+']');
+						}
+						
+						params.exclude = exclArr;
 						params.myParms = myParms;
 						
 						getFBML(params);
@@ -475,7 +526,7 @@ function farmvilleGetZyngaVars(params, retry)
 		
 		
 		
-		$.get(nextUrl, { params: params }, function(data){
+		$.get(nextUrl, '', function(data){
 			try
 			{
 				var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
@@ -495,7 +546,7 @@ function farmvilleGetZyngaVars(params, retry)
 				
 				console.log(getCurrentTime()+'[Z] Zynga params updated');
 
-				$.get('http://'+domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+'#overlay',  { params: params }, function(data)
+				$.get('http://'+domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+'#overlay',  '', function(data)
 				{
 					try 
 					{
@@ -730,9 +781,20 @@ function frontiervilleGetFBMLinfo(params, retry)
 
 function getFBML(params, retry)
 {
+	if(typeof(params.cafeUrl) != 'undefined')
+	{
+		var thisUrl = params.cafeUrl;
+		var thisMethod = 'get';
+	}
+	else
+	{
+		var thisUrl = 'http://www.connect.facebook.com/widgets/serverfbml.php';
+		var thisMethod = 'post';
+	}
+
 	$.ajax({
-		type: "POST",
-		url: 'http://www.connect.facebook.com/widgets/serverfbml.php',
+		type: thisMethod,
+		url: thisUrl,
 		cache: false,
 		headers: {
 			'Accept':           'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -759,13 +821,27 @@ function getFBML(params, retry)
 				myParms     +=  '&request_type='  +escape(aTemp["request_type"]);
 				myParms     +=  '&invite='      +aTemp["invite"];
 
-				i1           =  strTemp.indexOf('content=\\"');
-				if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
-				i1			+=  10;
-				i2           =  strTemp.indexOf('"',i1)-1;
+				if(typeof(params.cafeUrl) != 'undefined')
+				{
+					i1           =  strTemp.indexOf('.php" content="');
+					if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
+					i1			+=  15;
+					i2           =  strTemp.indexOf('"',i1)-1;
+					strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
+					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
+					
+				}
+				else
+				{
+					i1           =  strTemp.indexOf('content=\\"');
+					if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
+					i1			+=  10;
+					i2           =  strTemp.indexOf('"',i1)-1;
+					strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
+					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
+				}
+				
 
-				strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
-				myParms     +=  '&content='     +encodeURIComponent(strTemp2);
 
 				myParms     +=  '&preview=false';
 				myParms     +=  '&is_multi='    +aTemp["is_multi"];
@@ -781,7 +857,15 @@ function getFBML(params, retry)
 				i2          =   strTemp.indexOf('"',i1);
 				myParms    +=  '&post_form_id='+strTemp.slice(i1,i2)
 
-				i1          =   strTemp.indexOf('fb_dtsg:"',i1);
+				if(typeof(params.cafeUrl) != 'undefined')
+				{
+					i1          =   strTemp.indexOf('fb_dtsg:"');
+				}
+				else
+				{
+					i1          =   strTemp.indexOf('fb_dtsg:"',i1);
+				}
+				
 				if (i1 == -1) throw {message:'Cannot find fb_dtsg:" in page'}
 				i1		   += 9;
 				i2          =   strTemp.indexOf('"',i1);
@@ -803,23 +887,34 @@ function getFBML(params, retry)
 
 				eval('var items = {'+ slice + '};');
 				
+				var tempParams = '';
+				if(typeof(params.cafeUrl) != 'undefined')
+				{
+					$('form', data).each(function(){
+						if( $(this).serialize().indexOf('cmfs_type') != -1)
+						{
+							tempParams = $(this).serialize()+'&';
+							return false;
+						}
+					});
+					
+					myUrl2		= 'http://apps.facebook.com/cafeworld/send_request.php';
+				}
+				else
+				{
+					i1          =   strTemp.indexOf('<form action="')
+					if (i1 == -1) throw {message:'Cannot find <form action=" in page'}
+					i1			+=	14;
+					i2          =   strTemp.indexOf('"',i1);
+					myUrl2      =   strTemp.slice(i1,i2);
+					myUrl2      =   myUrl2.replace(/&amp;/g,'&');
+				}
 				
-				i1          =   strTemp.indexOf('<form action="')
-				if (i1 == -1) throw {message:'Cannot find <form action=" in page'}
-				i1			+=	14;
-				i2          =   strTemp.indexOf('"',i1);
 
-				myUrl2      =   strTemp.slice(i1,i2);
-				myUrl2      =   myUrl2.replace(/&amp;/g,'&');
-				
 				
 				var param2 = '';
 
 				params.items = items;
-				
-				
-				//console.log(params);
-				
 				
 				if(typeof(params.sendTo) == 'undefined')
 				{
@@ -838,6 +933,10 @@ function getFBML(params, retry)
 					
 					myParms     +=  '&to_ids['+j+']='   +v;
 					param2 += 'ids[]='+v+'&';
+					
+					if(typeof(params.cafeUrl) != 'undefined')
+						tempParams += 'ids[]='+v+'&';
+					
 					j++;
 				}
 				param2 += 'cmfs_typeahead_'+aTemp["request_form"]+'=start';
@@ -845,6 +944,15 @@ function getFBML(params, retry)
 				params.myParms = myParms;
 				params.myUrl = myUrl2;
 				params.param2 = param2;
+				
+				if(typeof(params.cafeUrl) != 'undefined')
+				{
+					params.param2 = tempParams;
+				}
+				
+				console.log(params.param2);
+				
+				//console.log(params);
 				
 				
 				sendGift(params);
@@ -886,6 +994,9 @@ function getFBML(params, retry)
 
 function sendGift(params, retry)
 {
+
+
+
 	$.ajax({
 		type: "POST",
 		url: 'http://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
@@ -903,8 +1014,17 @@ function sendGift(params, retry)
 				return;
 			}
 			
+			if(typeof(params.cafeUrl) != 'undefined')
+			{
+				var reqMethod = 'GET';
+			}
+			else
+			{
+				var reqMethod = 'POST';
+			}
+			
 			$.ajax({
-				type: "POST",
+				type: reqMethod,
 				url: params.myUrl,
 				dataType: 'text',
 				data: params.param2,
