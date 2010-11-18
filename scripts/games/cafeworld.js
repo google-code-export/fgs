@@ -1,3 +1,110 @@
+var cafeworldFreegifts = 
+{
+	Click: function(params, retry)
+	{
+		if(typeof(retry) !== 'undefined')
+		{
+			var params2 = '_fb_noscript=1';
+		}
+		else
+		{
+			var params2 = '';
+		}
+		
+		$.get('http://apps.facebook.com/cafeworld/', params2, function(data)
+		{
+			try
+			{
+				i1          =   data.indexOf('post_form_id:"')
+				if (i1 == -1) throw {message:'Cannot post_form_id in page'}
+				i1			+=	14;
+				i2          =   data.indexOf('"',i1);
+				
+				params.post_form_id = data.slice(i1,i2);
+				
+				
+				i1          =   data.indexOf('fb_dtsg:"',i1)
+				if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
+				i1			+=	9;
+				i2          = data.indexOf('"',i1);
+				params.fb_dtsg		= data.slice(i1,i2);
+				
+				cafeworldFreegifts.Click2(params);
+				
+			}
+			catch(e)
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					cafeworldFreegifts.Click(params, true);
+				}
+				else
+				{
+					console.log(getCurrentTime()+'[Z] Error: '+e.message);
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						sendView('errorUpdatingNeighbours');
+					}
+					else
+					{
+						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}		
+		});
+	},
+	Click2: function(params, retry)
+	{
+		if(typeof(retry) !== 'undefined')
+		{
+			var params2 = '_fb_noscript=1';
+		}
+		else
+		{
+			var params2 = '';
+		}
+	
+		$.get('http://apps.facebook.com/cafeworld/view_gift.php?ref=tab', params2, function(data){
+			try
+			{
+				var nextUrl = $('#app101539264719_frmGifts', data).attr('action');
+				
+				var formParam = $('#app101539264719_frmGifts', data).serialize();
+				
+				console.log(getCurrentTime()+'[Z] Zynga params updated');
+				
+				var tempUrl = nextUrl+'?'+formParam;
+				
+				var i1 = tempUrl.indexOf('gid=');
+				
+				params.cafeUrl = tempUrl.slice(0, i1+4)+params.gift+'&view=cafe';
+				getFBML(params);
+			}
+			catch(e)
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					cafeworldFreegifts.Click2(params, true);
+				}
+				else
+				{
+					console.log(getCurrentTime()+'[Z] Error: '+e.message);
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						sendView('errorUpdatingNeighbours');
+					}
+					else
+					{
+						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}		
+		});
+	}
+};
+
 var cafeworldRequests = 
 {	
 	Click: function(id, URI, retry)
@@ -128,6 +235,7 @@ var cafeworldBonuses =
 			url: url,
 			success: function(data)
 			{
+				var dataFull = data;
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
 				if(data.indexOf('There are no more servings left') != -1 || data.indexOf('Looks like all the prizes have') != -1 || data.indexOf('already claimed') != -1 || data.indexOf('You are either too late or you clicked here previously') != -1 || data.indexOf('You already received this bonus') != -1 || data.indexOf(' Perfect Servings once today!') != -1 || data.indexOf('already received all the help they could handle') != -1 || data.indexOf('You have already helped today!') != -1)
@@ -347,10 +455,25 @@ var cafeworldBonuses =
 					if(typeof(retry) == 'undefined')
 					{
 						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-						cafeworldBonuses.Click(id, url+'&_fb_noscript=1', true);
+						
+						var i1 = dataFull.indexOf('window.location.replace("');
+						
+						if(i1 != -1)
+						{
+							i2 = dataFull.indexOf('");',i1);
+							var newUrl = dataFull.slice(i1+25,i2);
+							newUrl = newUrl.replace(/\\/g,'');
+
+							cafeworldBonuses.Click(id, newUrl+'&_fb_noscript=1', true);
+						}
+						else
+						{
+							cafeworldBonuses.Click(id, url+'&_fb_noscript=1', true);
+						}
 					}
 					else
 					{
+						info.image = 'gfx/90px-cancel.png';
 						info.error = 'receiving';
 						info.time = Math.round(new Date().getTime() / 1000);
 						

@@ -39,6 +39,30 @@ var treasureRequests =
 				{
 					console.log('New gift');
 					
+					var sendInfo = '';
+					
+					
+					var tmpStr = unescape(URI);					
+					var i1 = tmpStr.indexOf('&gift=');
+					if(i1 != -1)
+					{
+						var i2 = tmpStr.indexOf('&', i1+1);
+							
+						var giftName = tmpStr.slice(i1+6,i2);
+						
+						var i1 = tmpStr.indexOf('&senderId=1:');
+						var i2 = tmpStr.indexOf('&', i1+1);
+						
+						var giftRecipient = tmpStr.slice(i1+12,i2);						
+							
+						sendInfo = {
+							gift: giftName,
+							destInt: giftRecipient,
+							destName: $(".giftFrom_img",data).siblings('p').text(),
+							}
+					}
+					info.thanks = sendInfo;	
+					
 					info.image = $(".giftConfirm_img",data).children().attr("src");
 					info.title = $(".giftConfirm_img",data).siblings('p').text();
 					info.text  = $(".giftFrom_img",data).siblings('p').text();
