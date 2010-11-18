@@ -70,7 +70,7 @@ if(jQuery)( function() {
 							// Show the menu
 							$(document).unbind('click');
 							
-							if($(menu).find('.bonusName') != 0)
+							if($(menu).find('.bonusName').length != 0)
 							{
 								var countBonus = $(el).parent().find('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').length;
 								

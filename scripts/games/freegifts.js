@@ -52,6 +52,13 @@ var giftsArray = {
 		"socialplumbingmysterygift": { name: 'Special Delivery' },
 		"shovel_item_01": { name: '2 Shovels'},
 		
+		"fruitcake": { name: 'Fruit Cake' },
+		"spicedcider": { name: 'Spiced Cider' },
+		"leafcandle": { name: 'Leaf Candle' },
+		"stuffing": { name: 'Stuffing' },
+		"casserole": { name: 'Casserole' },
+		
+		
 		"roseblack_seedpackage": { name: '20 Black Rose Seeds'},
 		"reindeer_randall": { name: 'Clumsy Reindeer'},
 		"mumsyellow": { name: 'Yellow Mums' },
