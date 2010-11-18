@@ -180,7 +180,7 @@ var farmvilleBonuses =
 				if($('.inputsubmit[value="OK"]',data).length > 0)
 				{
 				
-					console.log('farmvilleBonus', $(".main_giftConfirm_cont", data).find('h3').text(), dataFull);
+					//console.log('farmvilleBonus', $(".main_giftConfirm_cont", data).find('h3').text(), dataFull);
 
 					var stop = false;
 					for(var checkStr in otherLimits)
