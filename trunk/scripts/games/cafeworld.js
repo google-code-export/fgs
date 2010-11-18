@@ -174,6 +174,31 @@ var cafeworldRequests =
 						var from = $('#app101539264719_gift_items', data).find('h1:first').text();
 					}
 					
+					
+					var sendInfo = '';
+
+					var tmpStr = unescape(URI);					
+					var i1 = tmpStr.indexOf('&gid=');
+					if(i1 != -1)
+					{
+						var i2 = tmpStr.indexOf('&', i1+1);
+							
+						var giftName = tmpStr.slice(i1+5,i2);
+						
+						var i1 = tmpStr.indexOf('&from=');
+						var i2 = tmpStr.indexOf('&', i1+1);
+						
+						var giftRecipient = tmpStr.slice(i1+6,i2);						
+							
+						sendInfo = {
+							gift: giftName,
+							destInt: giftRecipient,
+							destName: from,
+							}
+					}
+					info.thanks = sendInfo;	
+					
+					
 					info.image = $('#app101539264719_gift_items', data).find('img:first').attr("src");
 					info.title = gift;
 					info.text  = from;
@@ -429,6 +454,10 @@ var cafeworldBonuses =
 					
 					
 					if(typeof(info.image) == 'undefined') throw {message: $("#app101539264719_item_wrapper",data).html()}
+					
+					
+					
+					
 					
 					info.title = gift;
 					info.time = Math.round(new Date().getTime() / 1000);
