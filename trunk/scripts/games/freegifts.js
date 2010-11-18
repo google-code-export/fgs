@@ -1001,9 +1001,6 @@ function getFBML(params, retry)
 
 function sendGift(params, retry)
 {
-
-
-
 	$.ajax({
 		type: "POST",
 		url: 'http://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
@@ -1042,6 +1039,9 @@ function sendGift(params, retry)
 					
 					var curTime = Math.round(new Date().getTime() / 1000);
 					
+					
+					var found = false;
+					
 					for(u in params.items)
 					{
 						var v = params.items[u];
@@ -1062,11 +1062,31 @@ function sendGift(params, retry)
 							
 							sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
 							
+							found = true;
+							
 							delete params.items[u];
 							continue;
 						}
 						i++;
 					}
+					
+					if(!found && typeof(params.thankYou) != 'undefined')
+					{
+						//thank you gift
+						var sendHistory = {
+							gift: params.gift,
+							gameID: params.gameID,
+							friend: params.sendToName,
+							time: curTime
+						};
+						
+						database.addFreegift(params.gameID, params.sendToName, params.gift, curTime, typeof(params.thankYou));
+						database.updateItemGiftBack((params.isRequest ? 'requests' : 'bonuses'), params.bonusID);
+						
+						sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
+					
+					}		
+					
 					sendView('updateNeighbours', params.gameID, params.items);
 				},
 				error: function()
