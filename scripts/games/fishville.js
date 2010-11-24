@@ -109,7 +109,7 @@ var fishvilleRequests =
 							destName: $(".giftFrom_name",data).children().text(),
 							}
 					}
-					info.thanks = sendInfo;					
+					//info.thanks = sendInfo;					
 					
 					info.image = $(".giftConfirm_img",data).children().attr("src");
 					info.title = $(".giftConfirm_name",data).children().text();
