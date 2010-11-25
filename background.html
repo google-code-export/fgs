@@ -927,12 +927,7 @@ function checkRequests()
 				
 				dataPost += '&'+escape($(el).find('input[type="submit"]:first').attr('name'))+'='+$(el).find('input[type="submit"]:first').attr('value');
 				
-				
-				if(APPID == 10979261223)
-				{
-					var searchStr = 'ztrack_category';
-				}
-				else if(APPID == 120563477996213)
+				if(APPID == 120563477996213)
 				{
 					var searchStr = 'item_id';
 				}
@@ -948,6 +943,7 @@ function checkRequests()
 				var typeText = unescape(typeText);
 				
 				var i1 = typeText.indexOf('&'+searchStr+'=');
+				
 				if(i1 == -1)
 				{
 					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1)
@@ -956,7 +952,26 @@ function checkRequests()
 					}
 					else
 					{
-						var type = 'unknown';
+						if(APPID == 10979261223)
+						{
+						
+							var typeText = unescape(typeText);
+							var i1 = typeText.indexOf('"item_id":"');
+							if(i1 == -1)
+							{
+								var type = 'unknown';
+							}
+							else
+							{
+								i1 += 11;
+								i2 = typeText.indexOf('"', i1);
+								var type = typeText.slice(i1, i2);
+							}
+						}
+						else
+						{
+							var type = 'unknown';
+						}
 					}
 				}
 				else
@@ -1369,6 +1384,7 @@ $(function()
 	chrome.browserAction.setTitle({title: "FGS is not yet loaded... Please wait..."});
 
 	startup();
+
 	
 	$(window).unload( function () 
 	{
