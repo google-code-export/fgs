@@ -9,7 +9,7 @@ var gamesData =
 							requests: ['r4r'],
 							requestsNewWindow: [],
 						},
-						buttons:	
+						buttons:
 						{
 							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
 													submenu: {
