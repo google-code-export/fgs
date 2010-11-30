@@ -91,12 +91,10 @@ var giftsArray = {
 		"gloves": { name: 'Gloves'},
 		"purpleemperorbutterfly": { name: 'Emperor Butterfly'},
 		"greenfeather": { name: 'Green Plume'},
-		"fallacorn": { name: 'Acorn'},
-		"fallmapleleaf": { name: 'Maple Leaf'},
-		"fallpumpkin": { name: 'Pumpkin'},
-		"fallcornucopia": { name: 'Cornucopia'},
-		"fallharvestmoontoken": { name: 'Moon Token'},
-		"fallturkeyfeather": { name: 'Feather'},
+		
+		
+		
+		
 
 		"consume_kibble": { name: 'Puppy Kibble'},
 		"consume_treat": { name: 'Dog Treat'},
