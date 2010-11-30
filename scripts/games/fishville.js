@@ -1,3 +1,131 @@
+var fishvilleFreegifts = 
+{
+	Click: function(params, retry)
+	{
+		if(typeof(retry) !== 'undefined')
+		{
+			var params2 = '_fb_noscript=1';
+		}
+		else
+		{
+			var params2 = '';
+		}
+		
+		$.get('http://apps.facebook.com/fishville/', params2, function(data)
+		{
+			try
+			{
+				i1          =   data.indexOf('post_form_id:"')
+				if (i1 == -1) throw {message:'Cannot post_form_id in page'}
+				i1			+=	14;
+				i2          =   data.indexOf('"',i1);
+				
+				params.post_form_id = data.slice(i1,i2);
+				
+				
+				i1          =   data.indexOf('fb_dtsg:"',i1)
+				if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
+				i1			+=	9;
+				i2          = data.indexOf('"',i1);
+				params.fb_dtsg		= data.slice(i1,i2);
+				
+				
+				
+				var paramTmp = $('span.fb_protected_wrapper > iframe', data).attr('src');
+				
+				var i1 = paramTmp.lastIndexOf('/')+2;
+				
+				
+				params.step2params = paramTmp.slice(i1);
+				fishvilleFreegifts.Click2(params);
+				
+			}
+			catch(e)
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					fishvilleFreegifts.Click(params, true);
+				}
+				else
+				{
+					console.log(getCurrentTime()+'[Z] Error: '+e.message);
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						sendView('errorUpdatingNeighbours');
+					}
+					else
+					{
+						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}		
+		});
+	},
+	Click2: function(params, retry)
+	{
+		if(typeof(retry) !== 'undefined')
+		{
+			var params2 = '_fb_noscript=1';
+		}
+		else
+		{
+			var params2 = '';
+		}
+	
+		$.get('http://facebook.fishville.zynga.com/public/gifts_send.php?gift='+params.gift+'&view=fishville&appRef=preload_gifts&secAppRef=&reqType=gift&partial=true&'+params.step2params, params2, function(data){
+			try
+			{
+				var i1,i2, myParms;
+				var strTemp = data;
+
+				i1       =  strTemp.indexOf('FB.init("');
+				if (i1 == -1) throw {message:"Cannot find FB.init"}
+				i1 += 9;
+				i2       =  strTemp.indexOf('"',i1);
+
+				myParms  =  'app_key='+strTemp.slice(i1,i2);
+				i1     =  i2 +1;
+				i1       =  strTemp.indexOf('"',i1)+1;
+				i2       =  strTemp.indexOf('"',i1);
+				
+				myParms +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
+
+				i1       =  strTemp.indexOf('<fb:fbml>');
+				i2       =  strTemp.indexOf('/script>',i1)-1;
+				myParms +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
+				
+				params.myParms = myParms;
+				
+				console.log(getCurrentTime()+'[Z] FBMLinfo - OK');
+				
+				getFBML(params);
+			}
+			catch(e)
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					fishvilleFreegifts.Click2(params, true);
+				}
+				else
+				{
+					console.log(getCurrentTime()+'[Z] Error: '+e.message);
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						sendView('errorUpdatingNeighbours');
+					}
+					else
+					{
+						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}		
+		});
+	},
+};
+
+
 var fishvilleRequests = 
 {	
 	Click: function(id, URI, retry)

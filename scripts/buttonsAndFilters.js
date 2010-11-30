@@ -317,6 +317,17 @@ var gamesData =
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
 															}
 												},
+							'SendFreeGifts':	{	name: 'Send free gifts',
+													submenu: {
+																'SelectFavourites': { name: 'Select favourites' },
+																'SendGifts': { name: 'Send free gifts' },
+															}
+												}, 
+							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
+													submenu: {
+																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
+															}
+												},
 							'GameOptionsTab':	{	name: 'Filters',
 							},
 						}
@@ -405,6 +416,17 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+															}
+												},
+							'SendFreeGifts':	{	name: 'Send free gifts',
+													submenu: {
+																'SelectFavourites': { name: 'Select favourites' },
+																'SendGifts': { name: 'Send free gifts' },
+															}
+												}, 
+							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
+													submenu: {
+																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
 															}
 												},
 							'GameOptionsTab':	{	name: 'Filters',
