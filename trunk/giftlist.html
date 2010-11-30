@@ -1655,9 +1655,8 @@
 			
 			$('#templateGame').clone().attr('id', d.systemName+'Game').insertBefore('#chat').find('h1.title').html(d.name+'<br style="clear: both" /><div class="checkOptions"></div><br style="clear: both" />');
 
-			$('<input type="radio" class="gameSelected" name="gameSelected" sysID="'+d.systemName+'" gameID="'+id+'" id="'+id+'Selected" /><label for="'+id+'Selected">'+d.name+'<br /><img src="icons/menu/'+d.systemName+'.png"><span class="badgeGames"></span></label>').appendTo('#gameSelector');
-			
-			
+			$('<input type="radio" class="gameSelected'+(e.hiddenIcon ? ' hideAtStart' : '')+'" name="gameSelected" sysID="'+d.systemName+'" gameID="'+id+'" id="'+id+'Selected" /><label for="'+id+'Selected">'+d.name+'<br /><img src="icons/menu/'+d.systemName+'.png"><span class="badgeGames"></span></label>').appendTo('#gameSelector');
+
 			//if(e.enabled)
 			//{
 				
@@ -1674,7 +1673,6 @@
 			switchEnabled(id);
 			createMenu(id);
 		}
-		
 		loadBonuses();
 		
 
@@ -1875,6 +1873,29 @@
 							}
 					}});
 					$('#dialog-confirm').dialog('open');
+				}
+			});
+		});
+		
+		$("#gameSelector > label").live('mouseenter', function()
+		{
+			if($(this).hasClass('hasContextMenu2'))
+			{
+				return;
+			}
+			$(this).addClass('hasContextMenu2').contextMenu({
+				menu: 'myMenuGameIcon'
+			}, function(action, el, pos)
+			{
+				if(action == 'hideIcon')
+				{
+					var gameID = $(el).prev().attr('gameID');
+					$(el).addClass('hide');
+					bkP.options.games[gameID].hiddenIcon = true;					
+					bkP.saveOptions();
+					
+					if(!$('#options').hasClass('hide'))
+						loadOptionsData();					
 				}
 			});
 		});
@@ -2095,9 +2116,7 @@
 			$(this).parent().remove();
 			loadOptionsData();
 		});
-		
-		
-		
+
 		$( "#dialog-confirm" ).dialog({
 			resizable: false,
 			autoOpen: false,
@@ -2144,6 +2163,16 @@
 			eval($(this).attr('sysID')+'("'+$(this).attr('gameID')+'")');
 		});
 		$("#gameSelector").buttonset();
+		
+		$('#gameSelector > label').each(function()
+		{
+			if($(this).prev().hasClass('hideAtStart'))
+			{
+				$(this).prev().removeClass('hideAtStart');
+				$(this).addClass('hide');
+			}
+		});
+		
 		$('#lockScreen').button().click(function()
 		{
 			isScreenLocked = $(this).is(':checked');
@@ -2165,6 +2194,15 @@
 		//Screen is: UNLOCKED (click to lock)
 	});
 	
+	function unhideGameIcon()
+	{
+		console.log($(this).attr('gameID'));
+		bkP.options.games[$(this).attr('gameID')].hiddenIcon = false;
+		bkP.saveOptions();
+		
+		$('#gameSelector > input[gameID="'+$(this).attr('gameID')+'"]').next().removeClass('hide');
+		loadOptionsData();
+	}
 
 	function loadOptionsData()
 	{
@@ -2176,6 +2214,21 @@
 		});
 		
 		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button class="saveNewComment">Add new comment</button>');
+		
+		$('.hiddenIconList').html('');
+		
+		for(var gameID in bkP.options.games)
+		{
+			if(bkP.options.games[gameID].hiddenIcon)
+			{
+				var gameName = gamesData[gameID].name;
+				$('.hiddenIconList').append('<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="unhideGameIcon'+gameID+'" title="Unhide game icon"> '+gameName+'</div>');
+				
+				$('.unhideGameIcon'+gameID).click(unhideGameIcon);
+				
+			}
+		}
+		$('.hiddenIconList').append('<br style="clear:both" /><br />');
 	}
 	
 	function loadDebugData()
@@ -2486,6 +2539,9 @@
 		<div id="options" class="section hide gameContent">
 			
 			<h1 class="title">Options</h1>
+			
+				<h4>Hidden game icons (right click icon to hide it)</h4>
+				<div class="hiddenIconList"></div>
 		
 				<h4>Bonuses check timeout</h4>
 					<select id="checkBonusesTimeout">
@@ -2574,6 +2630,10 @@
 	
 	<ul id="myMenuDefaultGift" class="contextMenu">
 		<li class="receive"><a href="#selectDefault">Select as default gift</a></li>
+	</ul>
+	
+	<ul id="myMenuGameIcon" class="contextMenu">
+		<li class="delete"><a href="#hideIcon">Hide this game icon</a></li>
 	</ul>
 	
 	

@@ -95,8 +95,14 @@ var socialcityRequests =
 					var i1 = tmpdata.indexOf('|');
 					var auth_key = tmpdata.slice(0, i1);
 					var auth_time = tmpdata.slice(i1+1);
+					
+					var landing = jQuery.unparam(src).landing;
+					
+					var i1 = landing.indexOf('_');
+					var page = landing.slice(0, i1);
+					var aaa =  landing.slice(i1+1);
 
-					var newUrl = 'http://city-fb-apache-active-vip.playdom.com/lib/playdom/facebook/facebook_iframe.php?'+jQuery.param(postParams)+'&extra='+JSON.stringify(extra)+'&rtype=ajax&p=gifts&a=landing&auth_key='+auth_key+'&auth_time='+auth_time+'&ts='+new Date().getTime();
+					var newUrl = 'http://city-fb-apache-active-vip.playdom.com/lib/playdom/facebook/facebook_iframe.php?'+jQuery.param(postParams)+'&extra='+JSON.stringify(extra)+'&rtype=ajax&p='+page+'&a='+aaa+'&auth_key='+auth_key+'&auth_time='+auth_time+'&ts='+new Date().getTime();
 
 					socialcityRequests.Click3(id, newUrl);
 				}
@@ -141,21 +147,31 @@ var socialcityRequests =
 				try
 				{
 					var data = eval('var dataHtml = '+data.slice(data.indexOf('{'),data.lastIndexOf('}')+1));
-					
-					console.log(dataHtml.html);
-					
 					data = dataHtml.html;
+					
 					
 					//var sendInfo = '';
 					//info.thanks = sendInfo;	
 					
-					
-					info.image = $('#acceptInfo', data).children('img').attr('src');
-					info.title = $("#infoText > .highlight",data).text();
-					var txt =  $("#infoText", data).text();
-					var i1 = txt.indexOf('from');
-					
-					info.text  = txt.slice(i1+5);
+					if($('#neighbor_title', data).length > 0)
+					{
+						info.image = $('#neighbor_image', data).children('img').attr('src');
+						
+						var tmpTitle = $('#neighbor_title > h1', data).text();
+						var i1 = tmpTitle.indexOf('with');
+						info.title = 'New neighbour';
+						info.text = tmpTitle.slice(i1+5);
+					}
+					else
+					{
+
+						info.image = $('#acceptInfo', data).children('img').attr('src');
+						info.title = $("#infoText > .highlight",data).text();
+						var txt =  $("#infoText", data).text();
+						var i1 = txt.indexOf('from');
+						
+						info.text  = txt.slice(i1+5);
+					}
 					info.time = Math.round(new Date().getTime() / 1000);
 					
 					database.updateItem('requests', id, info);
