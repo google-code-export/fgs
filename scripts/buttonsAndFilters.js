@@ -27,6 +27,7 @@ var gamesData =
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -38,6 +39,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												}, 
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -82,6 +84,7 @@ var gamesData =
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -93,6 +96,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -140,6 +144,7 @@ var gamesData =
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -151,6 +156,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -194,6 +200,7 @@ var gamesData =
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -205,6 +212,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -248,6 +256,7 @@ var gamesData =
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 															}
 												},
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
@@ -259,6 +268,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -315,6 +325,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -371,6 +382,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'GameOptionsTab':	{	name: 'Filters',
@@ -416,6 +428,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'SendFreeGifts':	{	name: 'Send free gifts',
@@ -427,6 +440,7 @@ var gamesData =
 							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
 													submenu: {
 																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'GameOptionsTab':	{	name: 'Filters',
@@ -472,6 +486,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'GameOptionsTab':	{	name: 'Filters',
@@ -516,6 +531,7 @@ var gamesData =
 							'RequestsHistory':	{	name: 'Show collected gifts',
 													submenu: {
 																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
 							'GameOptionsTab':	{	name: 'Filters',
