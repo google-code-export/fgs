@@ -535,7 +535,7 @@
 			
 			var infoAdd = '';
 			
-			if(typeof(data.thanks) != 'undefined')
+			if(typeof(data.thanks) != 'undefined' && data.thanks != '')
 			{
 				infoAdd = JSON.stringify(data.thanks);
 			}
@@ -557,7 +557,7 @@
 		
 		var sendBackHtml = '';
 
-		if(sendBack != '' && sendBack != null)
+		if(sendBack != '' && sendBack != null && sendBack != '""')
 		{
 			var sendBackJson = JSON.parse(sendBack);
 			
@@ -698,7 +698,7 @@
 			
 			var infoAdd = '';
 			
-			if(typeof(data.thanks) != 'undefined')
+			if(typeof(data.thanks) != 'undefined' && data.thanks != '')
 			{
 				infoAdd = JSON.stringify(data.thanks);
 			}
