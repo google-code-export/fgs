@@ -1676,11 +1676,11 @@
 		loadBonuses();
 		
 
-		$('<input type="radio" class="gameSelected" name="gameSelected" id="chatSelected" /><label for="chatSelected">Chat<br /><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
+		$('<input type="radio" class="gameSelected isOptionsTab" name="gameSelected" id="chatSelected" /><label for="chatSelected">Chat<br /><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
 		
-		$('<input type="radio" class="gameSelected" name="gameSelected" id="optionsSelected" /><label for="optionsSelected">Options<br /><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
+		$('<input type="radio" class="gameSelected isOptionsTab" name="gameSelected" id="optionsSelected" /><label for="optionsSelected">Options<br /><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
 		
-		//$('<input type="radio" class="gameSelected" name="gameSelected" id="debugSelected" /><label for="debugSelected">Debug logs<br /><img src="icons/menu/debug.png"></label>').appendTo('#gameSelector');
+		//$('<input type="radio" class="gameSelected isOptionsTab" name="gameSelected" id="debugSelected" /><label for="debugSelected">Debug logs<br /><img src="icons/menu/debug.png"></label>').appendTo('#gameSelector');
 
 		$("#gameSelector").children("input").click(function()
 		{
@@ -1879,7 +1879,7 @@
 		
 		$("#gameSelector > label").live('mouseenter', function()
 		{
-			if($(this).hasClass('hasContextMenu2'))
+			if($(this).hasClass('hasContextMenu2') || $(this).prev().hasClass('isOptionsTab'))
 			{
 				return;
 			}
@@ -1896,6 +1896,11 @@
 					
 					if(!$('#options').hasClass('hide'))
 						loadOptionsData();					
+				}
+				else if(action == 'goToGame')
+				{
+					var gameID = $(el).prev().attr('gameID');
+					bkP.chrome.tabs.create({url: gamesData[gameID].link});
 				}
 			});
 		});
@@ -2633,6 +2638,7 @@
 	</ul>
 	
 	<ul id="myMenuGameIcon" class="contextMenu">
+		<li class="goToGame"><a href="#goToGame"><strong>Go to this game!</strong></a></li>
 		<li class="delete"><a href="#hideIcon">Hide this game icon</a></li>
 	</ul>
 	

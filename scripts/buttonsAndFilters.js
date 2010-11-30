@@ -1,7 +1,7 @@
 var gamesData = 
 {
 	201278444497: 	{ 	
-						name: 'FrontierVille',	systemName: 'frontierville',
+						name: 'FrontierVille',	systemName: 'frontierville', link: 'http://apps.facebook.com/frontierville/',
 						filter:		
 						{	
 							bonuses: ['Go see my gift', 'Go Play FrontierVille', 'Go to FrontierVille', 'Send items'],		
@@ -56,7 +56,7 @@ var gamesData =
 						}
 					},
 	102452128776: 	{ 	
-						name: 'FarmVille',		systemName: 'farmville',
+						name: 'FarmVille',		systemName: 'farmville', link: 'http://apps.facebook.com/onthefarm/',
 						filter:
 						{	
 							bonuses: ['Fertilize their crops', 'Play Farmville Now'],
@@ -111,7 +111,7 @@ var gamesData =
 						}
 					},
 	10979261223: 	{ 	
-						name: 'Mafia Wars',		systemName: 'mafiawars',
+						name: 'Mafia Wars',		systemName: 'mafiawars', link: 'http://apps.facebook.com/inthemafia/',
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
@@ -169,7 +169,7 @@ var gamesData =
 						}
 					},
 	234860566661: 	{ 	
-						name: 'Treasure Isle',		systemName: 'treasure',
+						name: 'Treasure Isle',		systemName: 'treasure', link: 'http://apps.facebook.com/treasureisle/',
 						filter:		
 						{	
 							bonuses: ['Play Treasure Isle'],	
@@ -223,7 +223,7 @@ var gamesData =
 						}
 					},
 	101539264719: 	{ 
-						name: 'Cafe World',		systemName: 'cafeworld',
+						name: 'Cafe World',		systemName: 'cafeworld', link: 'http://apps.facebook.com/cafeworld/',
 						filter:		
 						{
 							bonuses: [],
@@ -277,7 +277,7 @@ var gamesData =
 						}
 					},
 	120563477996213: 	{ 
-						name: 'Ravenwood Fair',		systemName: 'ravenwood',
+						name: 'Ravenwood Fair',		systemName: 'ravenwood', link: 'http://apps.facebook.com/ravenwoodfair/',
 						filter:		
 						{
 							bonuses: [],
@@ -333,7 +333,7 @@ var gamesData =
 						}
 					},
 	43016202276: 	{ 
-						name: 'Restaurant City',		systemName: 'restaurant',
+						name: 'Restaurant City',		systemName: 'restaurant', link: 'http://apps.facebook.com/restaurantcity/',
 						filter:		
 						{
 							bonuses: [],
@@ -378,7 +378,7 @@ var gamesData =
 						}
 					},
 	151044809337: 	{ 
-						name: 'Fishville',		systemName: 'fishville',
+						name: 'Fishville',		systemName: 'fishville', link: 'http://apps.facebook.com/fishville/',
 						filter:		
 						{
 							bonuses: [],
@@ -434,7 +434,7 @@ var gamesData =
 						}
 					},
 	21526880407: 	{ 
-						name: 'Yoville',		systemName: 'yoville',
+						name: 'Yoville',		systemName: 'yoville', link: 'http://apps.facebook.com/yoville/',
 						filter:		
 						{
 							bonuses: [],
@@ -478,7 +478,7 @@ var gamesData =
 							},
 						}
 					},
-	163965423072: 	{ 	name: 'Social City',		systemName: 'socialcity',
+	163965423072: 	{ 	name: 'Social City',		systemName: 'socialcity', link: 'http://apps.facebook.com/socialcity/',
 						filter:		
 						{
 							bonuses: [],
