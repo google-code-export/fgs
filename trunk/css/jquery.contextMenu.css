@@ -338,6 +338,7 @@ div.leftBox
 
 .contextMenu LI.receive A { background-image: url(../context/receive.png); }
 .contextMenu LI.delete A { background-image: url(../context/delete.png); }
+.contextMenu LI.goToGame A { background-image: url(../context/goToGame.png); }
 
 .bonusName
 {
