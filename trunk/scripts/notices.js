@@ -2,7 +2,7 @@ function readNotices()
 {
 	$.ajax({
 		type: "GET",
-		url: 'http://rzadki.eu/projects/chat/notices2.php',
+		url: 'http://rzadki.eu/projects/chat/notices.php',
 		cache: false,
 		dataType: 'json',
 		success: function(data)
@@ -26,8 +26,8 @@ function readNotices()
 
 function checkNotices()
 {
-	//if(new Date().getTime() - options.developerNoticesLastUpdate > 1800000)
-	//{
+	if(new Date().getTime() - options.developerNoticesLastUpdate > 1800000)
+	{
 		readNotices();
-	//}
+	}
 }
