@@ -865,6 +865,14 @@ function checkRequests()
 				
 				data = tempD.pagelet_requests;				
 			}
+			else if(data.indexOf("content: {pagelet_requests: '") != -1)
+			{
+				var i1 = data.indexOf("content: {pagelet_requests: '")+9;
+				var i2 = data.indexOf("'}});", i1)+2;
+				eval('var tempD = '+data.slice(i1,i2));
+
+				data = tempD.pagelet_requests;	
+			}
 			
 			var FBdata = $('input[name="params\[app_id\]"]',data).parent('form:first');
 			
