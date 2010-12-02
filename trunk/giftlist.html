@@ -2357,7 +2357,7 @@
 		
 		var opt = 'GameOptionsTabList';
 		
-		var html = '<div class="gameOptionsFiltersList"></div><br style="clear: both" />';
+		var html = '<div class="gameOptionsFiltersList"><br style="clear: both" /></div>';
 		var game = gamesData[gameID].systemName;
 		
 		
@@ -2372,7 +2372,7 @@
 		{
 			var v = arr[i];
 			var html = '<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteFilter" title="Delete filter"> '+v+'</div>';
-			
+
 			$('div#'+game+opt, '#'+game+'Game').find('.gameOptionsFiltersList').prepend(html);
 		}
 		
