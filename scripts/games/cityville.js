@@ -63,20 +63,24 @@ var cityvilleRequests =
 			{
 				try
 				{
-					var URL = $('#flashiframe', data).attr('src');
+					var URL = url;
 					
 					var i1 = 0;
 					var i2 = URL.lastIndexOf('/')+1;
 					
 					var nextUrl = URL.slice(i1,i2);
 
-					var i1 = data.indexOf('ZYFrameManager.gotoTab');
-					var i2 = data.indexOf(",'", i1)+2;
+					var i1 = data.indexOf('ZYFrameManager.navigateTo(');
+					
+					if(i1 == -1) throw {}
+					
+					var i2 = data.indexOf("'", i1)+1;
 					var i3 = data.indexOf("'", i2);
 					
-					nextUrl = nextUrl+data.slice(i2,i3);
+					var nextUrl2 = data.slice(i2,i3).replace(nextUrl, '');
 					
-					
+					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
+
 					cityvilleRequests.Click3(id, nextUrl);
 				}
 				catch(err)
@@ -119,22 +123,49 @@ var cityvilleRequests =
 				
 				try
 				{
-					if($('.reqFrom_img', data).length > 0 && $(".giftConfirm_img",data).length == 0)
-					{
-						console.log('New neighbour');
+				
+					if($('.errorMessage', data).length > 0)
+					{ 
+						info.error = 'limit';
+						info.time = Math.round(new Date().getTime() / 1000);
+						info.error_text = jQuery.trim($('.errorMessage', data).text());
+						
+						
+						database.updateErrorItem('requests', id, info);
+						sendView('requestError', id, info);	
+						return;
+					}
+					
+					
+					
+					info.title = $(".giftConfirm_name",data).children().text();
+					info.time = Math.round(new Date().getTime() / 1000);
 
-						info.image = $(".reqFrom_img",data).children().attr("src");
+					if($('h3.gift_title', data).text().indexOf('are now neighbors') != -1)
+					{
+						info.image = $(".giftFrom_img",data).children().attr("src");
 						info.title = 'New neighbour';
-						info.text  = $(".reqFrom_name",data).children().text();
+						info.text  = $(".giftFrom_name",data).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
 						database.updateItem('requests', id, info);
 						sendView('requestSuccess', id, info);
 					}
-					else if($('.giftFrom_img', data).length > 0 && $(".giftConfirm_img",data).length > 0)
+					else if($('h3.gift_title', data).text().indexOf('have been made') != -1)
+					{
+						info.image = $(".giftConfirm_img",data).children().attr("src");
+						info.title = $(".giftConfirm_name",data).children().html();
+						info.text  = $('h3.gift_title', data).text();
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						database.updateItem('requests', id, info);
+						sendView('requestSuccess', id, info);
+					}
+					else
 					{
 						var sendInfo = '';
 						
+						/*
 						var tmpStr = unescape(url);
 						
 						var i1 = tmpStr.indexOf('&gift=');
@@ -155,19 +186,17 @@ var cityvilleRequests =
 								destName: $('.giftFrom_name', data).children().text()
 								}
 						}
+						*/
 						//info.thanks = sendInfo;					
+						
 						
 						info.image = $(".giftConfirm_img",data).children().attr("src");
 						info.title = $(".giftConfirm_name",data).children().text();
-						info.text  = $(".giftFrom_name",data).children().text();
+						info.text = $(".giftFrom_name",data).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
 						database.updateItem('requests', id, info);
 						sendView('requestSuccess', id, info);
-					}
-					else
-					{
-						throw {}
 					}
 				}
 				catch(err)
