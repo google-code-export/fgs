@@ -371,8 +371,18 @@ var giftsArray = {
 	
 	291549705119: 
 	{
+		"energy_1": { name: '+1 Energy'},
+		"energy_2": { name: '+2 Energy'},
+		"energy_3": { name: '+3 Energy'},
+		"permits": { name: 'Zoning Permit'},
 		"material_ribbon": { name: 'Ribbon'},
-	
+		"material_permit": { name: 'Building Grant'},
+		"material_gold_plating": { name: 'Gold Plating'},
+		"deco_flowerPatchOrange": { name: 'Orange Flowers'},
+		"deco_fence01": { name: 'Fence'},
+		"Animal_duck1": { name: 'Duck'},
+		"Animal_pig1": { name: 'Pig'},
+		"Animal_Rabbit1": { name: 'White Bunny'},
 	},
 };
 
