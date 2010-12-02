@@ -2367,7 +2367,12 @@
 		
 		
 		$('div#'+game+opt, '#'+game+'Game').prepend(html);
-			
+
+		if(arr.length == 0)
+		{
+			$('div#'+game+opt, '#'+game+'Game').find('.gameOptionsFiltersList').prepend('<h4>You have currently no filters.</h4>To add some: Right click unwanted bonus and select "Don\'t collect this type of bonuses"</h4>');
+		}
+		
 		for(var i = 0; i < arr.length; i++)
 		{
 			var v = arr[i];
