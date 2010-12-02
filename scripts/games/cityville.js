@@ -123,7 +123,7 @@ var cityvilleRequests =
 				
 				try
 				{
-				
+					
 					if($('.errorMessage', data).length > 0)
 					{ 
 						info.error = 'limit';
@@ -154,7 +154,7 @@ var cityvilleRequests =
 					else if($('h3.gift_title', data).text().indexOf('have been made') != -1)
 					{
 						info.image = $(".giftConfirm_img",data).children().attr("src");
-						info.title = $(".giftConfirm_name",data).children().html();
+						info.title = $(".giftConfirm_name",data).children().html().replace('<br>', ' ').replace('<br \/>', ' ');
 						info.text  = $('h3.gift_title', data).text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
