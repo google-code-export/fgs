@@ -582,35 +582,32 @@ var gamesData =
 							},
 						}
 				},
-	11609831134: 	{ 	name: 'Pet Society',	systemName: 'petsociety', 	link: 'http://apps.facebook.com/petsociety/',
+	291549705119: 	{ 	name: 'CityVille',	systemName: 'cityville', 	link: 'http://apps.facebook.com/cityville/',
 						filter:		
 						{
-							bonuses: [],
-							bonusesNewWindow: ['(.*)'],
+							bonuses: ['Start your business', 'Send collectables', 'Send collectibles', 'iAbre tu negocio'],
+							bonusesNewWindow: [],
 							requests: [],
 							requestsNewWindow: []
 						},
 						buttons:	
 						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
+							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
 													submenu: {
 																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
 																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
 															}
 												},
-							*/
 							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
 													submenu: {
 																'ClearManualBonuses': { name: 'Clear all bonuses' },
 															}
 												},
-							/*
 							'BonusesHistory': 	{	name: 'Show collected bonuses',
 													submenu: {
 																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
 															}
 												},
-							*/
 							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
 													submenu: {
 																'ReceivePendingRequests': { name: 'Receive all gifts' },

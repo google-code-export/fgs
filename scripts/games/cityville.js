@@ -1,4 +1,4 @@
-var petvilleRequests = 
+var cityvilleRequests = 
 {	
 	Click: function(id, URI, retry)
 	{
@@ -15,15 +15,15 @@ var petvilleRequests =
 				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
 				
 				try {
-					var src = $('#app_content_163576248142', data).find('iframe:first').attr('src');
+					var src = $('#app_content_291549705119', data).find('iframe:first').attr('src');
 					if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
-					petvilleRequests.Click2(id, src);
+					cityvilleRequests.Click2(id, src);
 				} 
 				catch(err)
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						petvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
+						cityvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -38,7 +38,7 @@ var petvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
+					cityvilleRequests.Click(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -77,7 +77,7 @@ var petvilleRequests =
 					nextUrl = nextUrl+data.slice(i2,i3);
 					
 					
-					petvilleRequests.Click3(id, nextUrl);
+					cityvilleRequests.Click3(id, nextUrl);
 				}
 				catch(err)
 				{
@@ -92,7 +92,7 @@ var petvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleRequests.Click2(id, url, true);
+					cityvilleRequests.Click2(id, url, true);
 				}
 				else
 				{
@@ -183,7 +183,7 @@ var petvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleRequests.Click3(id, url, true);
+					cityvilleRequests.Click3(id, url, true);
 				}
 				else
 				{
@@ -197,7 +197,7 @@ var petvilleRequests =
 	},
 };
 
-var petvilleBonuses = 
+var cityvilleBonuses = 
 {	
 	Click: function(id, URI, retry)
 	{
@@ -214,15 +214,16 @@ var petvilleBonuses =
 				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
 				
 				try {
-					var src = $('#app_content_163576248142', data).find('iframe:first').attr('src');
+					var src = $('#app_content_291549705119', data).find('iframe:first').attr('src');
 					if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
-					petvilleBonuses.Click2(id, src);
+					
+					cityvilleBonuses.Click2(id, src);
 				} 
 				catch(err)
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						petvilleBonuses.Click(id, URI+'&_fb_noscript=1', true);
+						cityvilleBonuses.Click(id, URI+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -237,7 +238,7 @@ var petvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleBonuses.Click(id, URI+'&_fb_noscript=1', true);
+					cityvilleBonuses.Click(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -262,26 +263,25 @@ var petvilleBonuses =
 			{
 				try
 				{
-					var URL = $('#flashiframe', data).attr('src');
+					var URL = url;
 					
 					var i1 = 0;
 					var i2 = URL.lastIndexOf('/')+1;
 					
 					var nextUrl = URL.slice(i1,i2);
 
-					var i1 = data.indexOf('ZYFrameManager.gotoTab');
+					var i1 = data.indexOf('ZYFrameManager.navigateTo(');
 					
 					if(i1 == -1) throw {}
 					
-					var i2 = data.indexOf(",'", i1)+2;
+					var i2 = data.indexOf("'", i1)+1;
 					var i3 = data.indexOf("'", i2);
 					
-					var nextUrl2 = data.slice(i2,i3).replace('http://fb-client-0.petville.zynga.com/current/', '');
+					var nextUrl2 = data.slice(i2,i3).replace(nextUrl, '');
 					
 					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
 					
-					
-					petvilleBonuses.Click3(id, nextUrl);
+					cityvilleBonuses.Click3(id, nextUrl);
 				}
 				catch(err)
 				{
@@ -296,7 +296,7 @@ var petvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleBonuses.Click2(id, url, true);
+					cityvilleBonuses.Click2(id, url, true);
 				}
 				else
 				{
@@ -323,105 +323,22 @@ var petvilleBonuses =
 				
 				try
 				{
-					var out = jQuery.trim($('.main_giftConfirm_cont', data).text());
-					
-					if(out.indexOf('You already claimed') != -1 ||  out.indexOf('The item is all gone') != -1  || out.indexOf('already received') != -1 || out.indexOf('the celebration has ended') != -1 || out.indexOf('you cannot claim the celebration') != -1 || out.indexOf('this feed is only for friends') != -1)
+					if($('.errorMessage', data).length > 0)
 					{ 
 						info.error = 'limit';
 						info.time = Math.round(new Date().getTime() / 1000);
-						info.error_text = out;
+						info.error_text = jQuery.trim($('.errorMessage', data).text());
 						
 						
 						database.updateErrorItem('bonuses', id, info);
 						sendView('bonusError', id, info);	
-					
 						return;
 					}
 					
-					if(out.indexOf('cannot claim more than') != -1 || out.indexOf('Claim more tomorrow') != -1)
-					{
-						info.error = 'other';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						info.error_text = out;
 					
-						sendView('bonusError', id, info);
-						return;						
-					}
-					
-					var outText = '';
-					
-					if(out.indexOf('been offered') != -1)
-					{
-						var i1 = out.indexOf(' been offered')+13;
-						var i2 = out.indexOf('.', i1);
-						var i3 = out.indexOf('!', i1);
-						if(i3 != -1)
-							if(i3 < i2 || i2 == -1)
-								i2 = i3;
-								
-						outText = out.slice(i1,i2);
-					}
-					else if(out.indexOf('has shared a') != -1)
-					{
-						var i1 = out.indexOf('has shared a')+13;
-						var i2 = out.indexOf('!', i1);
-						var i3 = out.indexOf('with', i1);
-						if(i3 != -1)
-							if(i3 < i2 || i2 == -1)
-								i2 = i3;
-						
-						outText = out.slice(i1,i2);						
-						
-						outText = outText.replace('bonus of', '');
-					}
-					else if(out.indexOf('want to claim') != -1)
-					{
-						var i1 = out.indexOf('want to claim')+13;
-						var i2 = out.indexOf('?', i1);
-						outText = out.slice(i1,i2);						
-					}
-					else if(out.indexOf('You recieved a') != -1)
-					{
-						var i1 = out.indexOf('You recieved a')+15;
-						var i2 = out.indexOf('from', i1);
-						outText = out.slice(i1,i2);						
-					}
-					else if(out.indexOf('You found a') != -1)
-					{
-						var i1 = out.indexOf('You found a')+12;
-						var i2 = out.indexOf(',', i1);
-						outText = out.slice(i1,i2);						
-					}
-					else if(out.indexOf('Here are ') != -1)
-					{
-						var i1 = out.indexOf('Here are ')+9;
-						var i2 = out.indexOf('for', i1);
-						outText = out.slice(i1,i2);						
-					}
-					else if(out.indexOf('Thank you for offering ') != -1)
-					{
-						outText = out;
-					}
-					else
-					{
-						outText = out;
-					}
-					
-					var postUrl = $('.main_giftConfirm_cont', data).find('form').attr('action');
-					var postData = $('.main_giftConfirm_cont', data).find('form').serialize();
-					
-					console.log(postData);
-					console.log(postUrl);
-					
-					$.post(postUrl, postData);
-					
-					
-
-					info.text  = outText;
-					info.image = 'gfx/90px-check.png';
-					info.title = 'New bonus';
-					
+					info.text = $('h3.gift_title', data).text();
+					info.title = $(".giftConfirm_name",data).children().text();
+					info.image = $(".giftConfirm_img",data).children().attr("src");
 					info.time = Math.round(new Date().getTime() / 1000);
 					
 					database.updateItem('bonuses', id, info);
@@ -440,7 +357,7 @@ var petvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					petvilleBonuses.Click3(id, url, true);
+					cityvilleBonuses.Click3(id, url, true);
 				}
 				else
 				{
