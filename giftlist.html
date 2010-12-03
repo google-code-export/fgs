@@ -62,7 +62,7 @@
 		
 		$('input[name="neighArr[]"]', 'div#'+game+opt).removeAttr('checked');
 		
-		$('input[name="neighArr[]"]:lt(20)', 'div#'+game+opt).trigger('click');
+		$('input[name="neighArr[]"]:lt(25)', 'div#'+game+opt).trigger('click');
 	}
 	
 	function listGifts(gameID)
@@ -138,7 +138,7 @@
 					var nameText = v.name;
 				}
 				
-				var html = '<div style="float: left; width: 250px;margin-right: 10px;"><input type="checkbox" neighName="'+v.name+'" gameID="'+gameID+'" neighID="'+id+'" value="'+id+'"name="neighArr[]"> <img src="icons/favourite-bw.png" class="addToSendFav" title="Click to add to favourites"> '+nameText+'</div>';
+				var html = '<div style="float: left; width: 250px;margin-right: 10px;"><input type="checkbox" neighName="'+v.name+'" gameID="'+gameID+'" neighID="'+id+'" value="'+id+'" class="neighborCheckbox" name="neighArr[]"> <img src="icons/favourite-bw.png" class="addToSendFav" title="Click to add to favourites"> '+nameText+'</div>';
 
 				if(i == initialLength)
 				{
@@ -151,6 +151,8 @@
 			//};
 			//$.queue2.add(doBind, id);
 		}
+		$('.neighborCheckbox', 'div#'+game+opt).click(processSelectSendTo);		
+		$('.addToSendFav','div#'+game+opt).click(processAddFavourite);
 		
 		
 		//var doBind2 = function()
@@ -2083,36 +2085,7 @@
 			selectFirstTab(id);
 		}
 		
-		$('.addToSendFav').live('click', function(e)
-		{
-			var gameID = $(this).siblings('input').attr('gameID');
-			
-			if(typeof(e.altKey) != 'undefined')
-			{
-				database.addFavourite(gameID, $(this).siblings('input').attr('neighID'));
-			}
-			
-			var prepEl = $(this).parent().parent().siblings('.sendToFavouritesList');
-
-			$(this).removeClass('addToSendFav').addClass('isFavourite').attr('src', 'icons/favourite.png').attr('title', 'Click to remove from favourites');
-			$(this).parent().clone().prependTo(prepEl);
-			$(this).parent().hide();
-		});
-		
-		$('.isFavourite').live('click', function(e)
-		{
-			var gameID = $(this).siblings('input').attr('gameID');
-			
-			var neighID = $(this).siblings('input').attr('neighID');
-			$(this).parent().remove();
-			
-			database.delFavourite(gameID, neighID);
-
-			var el = $('input[neighID="'+neighID+'"]').parent().show().children('img').removeClass('isFavourite').addClass('addToSendFav').attr('src', 'icons/favourite-bw.png').attr('title', 'Click to add to favourites');
-		});
-		
-
-		$('input[name="neighArr[]"]').live('click',function(a)
+		function processSelectSendTo(a)
 		{
 			var gameID = $(this).attr('gameID');
 			var game = gamesData[gameID].systemName;
@@ -2129,27 +2102,8 @@
 			{
 				return false;
 			}
-		});
+		}		
 		
-
-		$('.saveNewComment').live('click', function(){
-			if($(this).prev('textarea').val() != '')
-			{
-				var msg = $(this).prev('textarea').val();
-				bkP.options.defaultCommentsMessages.push(msg);
-				bkP.saveOptions();
-				loadOptionsData();
-			}
-		});
-		
-		$('.deleteComment').live('click', function()
-		{
-			bkP.options.defaultCommentsMessages.splice($(this).attr('delIndex'),1);
-			bkP.saveOptions();
-			
-			$(this).parent().remove();
-			loadOptionsData();
-		});
 
 		$( "#dialog-confirm" ).dialog({
 			resizable: false,
@@ -2225,6 +2179,54 @@
 		//Screen is: UNLOCKED (click to lock)
 	});
 	
+	function processSaveNewComment()
+	{
+		if($(this).prev('textarea').val() != '')
+		{
+			var msg = $(this).prev('textarea').val();
+			bkP.options.defaultCommentsMessages.push(msg);
+			bkP.saveOptions();
+			loadOptionsData();
+		}
+	}
+	
+	function processDeleteComment()
+	{
+		bkP.options.defaultCommentsMessages.splice($(this).attr('delIndex'),1);
+		bkP.saveOptions();
+		
+		$(this).parent().remove();
+		loadOptionsData();
+	}
+	
+	
+	function processAddFavourite(e)
+	{
+		var gameID = $(this).siblings('input').attr('gameID');
+		
+		if(typeof(e.altKey) != 'undefined')
+		{
+			database.addFavourite(gameID, $(this).siblings('input').attr('neighID'));
+		}
+		
+		var prepEl = $(this).parent().parent().siblings('.sendToFavouritesList');
+
+		$(this).removeClass('addToSendFav').addClass('isFavourite').attr('src', 'icons/favourite.png').attr('title', 'Click to remove from favourites').unbind('click').click(processRemoveFavourite);
+		$(this).parent().clone().prependTo(prepEl);
+		$(this).parent().hide();
+	}
+	
+	function processRemoveFavourite(e)
+	{
+		var gameID = $(this).siblings('input').attr('gameID');
+		
+		var neighID = $(this).siblings('input').attr('neighID');
+		$(this).parent().remove();
+		
+		database.delFavourite(gameID, neighID);
+
+		var el = $('input[neighID="'+neighID+'"]').parent().show().children('img').removeClass('isFavourite').addClass('addToSendFav').attr('src', 'icons/favourite-bw.png').attr('title', 'Click to add to favourites');
+	}
 	
 	function processLikeBonus()
 	{
@@ -2295,8 +2297,11 @@
 		{
 			$('#defaultCommentsMessages').append('<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteComment" title="Delete comment"> '+msg+'</div>');
 		});
+		$('.deleteComment', '#defaultCommentsMessages').click(processDeleteComment);
 		
-		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button class="saveNewComment">Add new comment</button>');
+
+		$('#defaultCommentsMessages').append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button id="saveNewComment">Add new comment</button>');
+		$('#saveNewComment').click(processSaveNewComment);
 		
 		$('.hiddenIconList').html('');
 		
