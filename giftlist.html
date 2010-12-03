@@ -151,8 +151,8 @@
 			//};
 			//$.queue2.add(doBind, id);
 		}
-		$('.neighborCheckbox', 'div#'+game+opt).click(processSelectSendTo);		
-		$('.addToSendFav','div#'+game+opt).click(processAddFavourite);
+		$('.neighborCheckbox', 'div#'+game+opt).click(processSelectSendTo);	
+		$('.addToSendFav',$('.sendToNeighboursList','div#'+game+opt)).bind('click',processAddFavourite);
 		
 		
 		//var doBind2 = function()
@@ -2084,26 +2084,6 @@
 		{
 			selectFirstTab(id);
 		}
-		
-		function processSelectSendTo(a)
-		{
-			var gameID = $(this).attr('gameID');
-			var game = gamesData[gameID].systemName;
-			var opt = 'SendFreeGiftsList';
-
-			var count = parseInt($('input[name="neighArr[]"]:checked', 'div#'+game+opt).length);
-			
-			if(a.altKey === undefined)
-			{
-				count++;
-			}
-
-			if(count > 25)
-			{
-				return false;
-			}
-		}		
-		
 
 		$( "#dialog-confirm" ).dialog({
 			resizable: false,
@@ -2199,6 +2179,24 @@
 		loadOptionsData();
 	}
 	
+	function processSelectSendTo(a)
+	{
+		var gameID = $(this).attr('gameID');
+		var game = gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+
+		var count = parseInt($('input[name="neighArr[]"]:checked', 'div#'+game+opt).length);
+		
+		if(a.altKey === undefined)
+		{
+			count++;
+		}
+
+		if(count > 25)
+		{
+			return false;
+		}
+	}	
 	
 	function processAddFavourite(e)
 	{
@@ -2211,8 +2209,8 @@
 		
 		var prepEl = $(this).parent().parent().siblings('.sendToFavouritesList');
 
-		$(this).removeClass('addToSendFav').addClass('isFavourite').attr('src', 'icons/favourite.png').attr('title', 'Click to remove from favourites').unbind('click').click(processRemoveFavourite);
-		$(this).parent().clone().prependTo(prepEl);
+		$(this).unbind('click', processAddFavourite).bind('click',processRemoveFavourite).removeClass('addToSendFav').addClass('isFavourite').attr('src', 'icons/favourite.png').attr('title', 'Click to remove from favourites');
+		$(this).parent().clone(true).prependTo(prepEl);
 		$(this).parent().hide();
 	}
 	
@@ -2225,7 +2223,7 @@
 		
 		database.delFavourite(gameID, neighID);
 
-		var el = $('input[neighID="'+neighID+'"]').parent().show().children('img').removeClass('isFavourite').addClass('addToSendFav').attr('src', 'icons/favourite-bw.png').attr('title', 'Click to add to favourites');
+		var el = $('input[neighID="'+neighID+'"]').parent().show().children('img').removeClass('isFavourite').addClass('addToSendFav').unbind('click', processRemoveFavourite).bind('click',processAddFavourite).attr('src', 'icons/favourite-bw.png').attr('title', 'Click to add to favourites');
 	}
 	
 	function processLikeBonus()
