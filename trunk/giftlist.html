@@ -551,7 +551,9 @@
 			}
 			
 			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false));
-			
+			$('#'+id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
+			$('#'+id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
+			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);	
 			
 			if(data.text != '')
 			{
@@ -714,7 +716,9 @@
 			}
 			
 			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false, true));
-			
+			$('#'+id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
+			$('#'+id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
+			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);			
 			
 			$('#'+id).find('.title').next('span').text(data.text);
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
@@ -1564,6 +1568,9 @@
 		else if(v.error == '')
 		{
 			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(v.like_bonus, v.resend_gift, v.comment_bonus));
+			$('#'+v.id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
+			$('#'+v.id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
+			$('#'+v.id).find('.bonusError').find('.sendBack').click(processSendBack);	
 		}
 	}
 	
@@ -1584,6 +1591,9 @@
 		else if(v.error == '')
 		{
 			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(false, v.resend_gift, false, true));
+			$('#'+v.id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
+			$('#'+v.id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
+			$('#'+v.id).find('.bonusError').find('.sendBack').click(processSendBack);	
 		}
 	}
 	
@@ -2121,54 +2131,7 @@
 			}
 		});
 		
-		
-		
-		$('img.likeBonus').live('click',function()
-		{
-			var bonusID = $(this).parent().parent().parent().parent().attr('id');
-			$(this).attr('src', 'gfx/act_indicator.gif');
-			bkP.likeBonus(bonusID);
-		});
-		
-		$('img.commentBonus').live('click',function()
-		{
-			if(bkP.options.defaultCommentsMessages.length == 0)
-			{
-				alert('You must setup comment messages first in options tab');
-			}
-			else
-			{
-				var randNum = Math.floor(Math.random()*(bkP.options.defaultCommentsMessages.length));
-				var bonusID = $(this).parent().parent().parent().parent().attr('id');
-				$(this).attr('src', 'gfx/act_indicator.gif');
-				bkP.commentBonus(bonusID, bkP.options.defaultCommentsMessages[randNum]);
-			}
-		});
-		
-		$('img.sendBack').live('click',function()
-		{
-			var bonusID = $(this).parent().parent().parent().parent().attr('id');
-			var gameID =  $(this).parent().parent().parent().parent().attr('gameID');
-			
-			$(this).attr('src', 'gfx/act_indicator.gif');
-			var tempData = JSON.parse($(this).next().text());
-			
-			var params = {
-				gift: tempData.gift,
-				gameID:	gameID,
-				sendTo: [tempData.destInt],
-				sendToName: tempData.destName,
-				thankYou: true,
-				bonusID: bonusID,	
-				isRequest: $(this).parent().parent().parent().parent().hasClass('bonusItem') ? false : true
-			};
-			
-			var game = gamesData[gameID].systemName;
-			
-			eval('bkP.'+game+'GetZyngaVars(params)');
-		});
-		
-		
+
 		$('.saveNewComment').live('click', function(){
 			if($(this).prev('textarea').val() != '')
 			{
@@ -2261,6 +2224,58 @@
 		});
 		//Screen is: UNLOCKED (click to lock)
 	});
+	
+	
+	function processLikeBonus()
+	{
+		var bonusID = $(this).parent().parent().parent().parent().attr('id');
+		$(this).attr('src', 'gfx/act_indicator.gif');
+		bkP.likeBonus(bonusID);
+	}
+
+	function processCommentBonus()
+	{
+		if(bkP.options.defaultCommentsMessages.length == 0)
+		{
+			alert('You must setup comment messages first in options tab');
+		}
+		else
+		{
+			var randNum = Math.floor(Math.random()*(bkP.options.defaultCommentsMessages.length));
+			var bonusID = $(this).parent().parent().parent().parent().attr('id');
+			$(this).attr('src', 'gfx/act_indicator.gif');
+			bkP.commentBonus(bonusID, bkP.options.defaultCommentsMessages[randNum]);
+		}
+	}
+	
+	function processSendBack()
+	{
+			var bonusID = $(this).parent().parent().parent().parent().attr('id');
+			var gameID =  $(this).parent().parent().parent().parent().attr('gameID');
+			
+			$(this).attr('src', 'gfx/act_indicator.gif');
+			var tempData = JSON.parse($(this).next().text());
+			
+			var params = {
+				gift: tempData.gift,
+				gameID:	gameID,
+				sendTo: [tempData.destInt],
+				sendToName: tempData.destName,
+				thankYou: true,
+				bonusID: bonusID,	
+				isRequest: $(this).parent().parent().parent().parent().hasClass('bonusItem') ? false : true
+			};
+			
+			var game = gamesData[gameID].systemName;
+			
+			eval('bkP.'+game+'GetZyngaVars(params)');
+	}
+	
+	
+	
+	
+	
+	
 	
 	function unhideGameIcon()
 	{
