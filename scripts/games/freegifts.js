@@ -985,18 +985,22 @@ function getFBML(params, retry)
 					i2           =  strTemp.indexOf('"',i1)-1;
 					strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
 					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
-					
 				}
 				else
 				{
+					
+					strTemp2 = $('form[content]:first', data).attr('content');
+					/*					
 					i1           =  strTemp.indexOf('content=\\"');
 					if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
 					i1			+=  10;
 					i2           =  strTemp.indexOf('"',i1)-1;
 					strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
+					*/
+					
+					if(typeof(strTemp2) == 'undefined') throw {message:"Cannot find  content=\\ in page"};
 					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
 				}
-				
 
 
 				myParms     +=  '&preview=false';
@@ -1056,6 +1060,11 @@ function getFBML(params, retry)
 					
 					myUrl2		= 'http://apps.facebook.com/cafeworld/send_request.php';
 				}
+				else
+				{
+					myUrl2 = $('form[content]', data).attr('action');
+				}
+				/*
 				else if(params.gameID == '10979261223')
 				{
 					myUrl2 = $('form[type="Mafia Wars gift"]', data).attr('action');
@@ -1077,6 +1086,7 @@ function getFBML(params, retry)
 					myUrl2      =   strTemp.slice(i1,i2);
 					myUrl2      =   myUrl2.replace(/&amp;/g,'&');
 				}
+				*/
 				
 
 				

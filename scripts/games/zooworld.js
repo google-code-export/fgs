@@ -146,14 +146,30 @@ var zooworldBonuses =
 					var i2 = url.lastIndexOf('/')+1;
 					var domain = url.slice(i1,i2);
 					
+					var lastPos = 0;
 					
-					var ii1 = data.indexOf('var serviceObj =');
-					var i1  = data.indexOf('data:', ii1);
-					if(i1 == -1) throw {}
-					i1+=5;
-					var i2 = data.indexOf('},', i1)+1;
 					
-					eval('var tempVars = '+data.slice(i1,i2));
+					var count = data.match(/var serviceObj/g);
+					
+					
+					
+					for(var i = 0; i < count.length; i++)
+					{
+						var ii1 = data.indexOf('var serviceObj =', lastPos);
+						var i1  = data.indexOf('data:', ii1);
+						if(i1 == -1) continue;
+						i1+=5;
+						var i2 = data.indexOf('},', i1)+1;
+						lastPos = i2;
+						
+						if(data.slice(i1, i2).indexOf('zooparent') != -1)
+						{
+							eval('var tempVars = '+data.slice(i1,i2));
+							break;
+						}
+					}
+					
+					if(typeof(tempVars) == 'undefined') throw{}
 					
 					var getStr = '?oauth_consumer_key=facebook.com&oauth_signature=1&vip&version=100';
 					
