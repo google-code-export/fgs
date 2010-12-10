@@ -145,14 +145,11 @@ var zooworldBonuses =
 					var i1 = 0;
 					var i2 = url.lastIndexOf('/')+1;
 					var domain = url.slice(i1,i2);
-					
+
 					var lastPos = 0;
-					
-					
+
 					var count = data.match(/var serviceObj/g);
-					
-					
-					
+
 					for(var i = 0; i < count.length; i++)
 					{
 						var ii1 = data.indexOf('var serviceObj =', lastPos);
