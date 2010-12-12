@@ -60,6 +60,18 @@ var giftsArray = {
 		"socialplumbingmysterygift": { name: 'Special Delivery' },
 		"shovel_item_01": { name: '2 Shovels'},
 		
+		"holidaytree2010_gift_1": {name: 'Holiday Gift'},
+		"holidaytree2010_gift_2": {name: 'Holiday Gift'},
+		"holidaytree2010_gift_3": {name: 'Holiday Gift'},
+		"holidaytree2010_gift_4": {name: 'Holiday Gift'},
+		"holidaytree2010_gift_5": {name: 'Holiday Gift'},
+		
+		
+		
+		
+		
+		
+		
 		"fruitcake": { name: 'Fruit Cake' },
 		"spicedcider": { name: 'Spiced Cider' },
 		"leafcandle": { name: 'Leaf Candle' },
