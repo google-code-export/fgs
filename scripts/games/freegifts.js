@@ -383,6 +383,15 @@ var giftsArray = {
 		"Animal_duck1": { name: 'Duck'},
 		"Animal_pig1": { name: 'Pig'},
 		"Animal_Rabbit1": { name: 'White Bunny'},
+		
+		
+		"material_marble": { name: 'Marble'},
+		"material_city_seal": { name: 'City Seal'},
+		"tree_poinciana": { name: 'Poinciana Tree - lvl 15'},
+		"Animal_cow1": { name: 'White Cow - lvl 15'},
+		"Animal_horse1": { name: 'Horse - lvl 20'},
+		"tree_willow": { name: 'Willow Tree - lvl 30'},
+		"deco_fountain01": { name: 'Fountain - lvl 40'},		
 	},
 };
 
