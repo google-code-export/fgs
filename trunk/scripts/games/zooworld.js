@@ -46,7 +46,7 @@ var zooworldFreegifts =
 				}
 				
 				postParams['service'] 	= 'dsplygiftinvite';
-				postParams['giftId'] 	= '562';
+				postParams['giftId'] 	= params.gift;
 				postParams['appname']	= 'zooparent';
 				postParams['appId'] 	= '74';
 				postParams['straightToGift'] = '1';
