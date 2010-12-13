@@ -480,10 +480,7 @@ function ListNeighbours(gameID)
 	
 	if(options.games[gameID].enabled)
 	{
-		if(gameID == '101539264719' || gameID == '10979261223' || gameID == '120563477996213' || gameID == '151044809337' || gameID == '291549705119')
-			eval(game+'Freegifts.Click(params)');		
-		else
-			eval(game+'GetZyngaVars(params)');
+		eval(game+'GetZyngaVars(params)');
 	}
 }
 
@@ -491,6 +488,11 @@ function ListNeighbours(gameID)
 function cafeworldGetZyngaVars(params, retry)
 {
 	cafeworldFreegifts.Click(params);
+}
+
+function zooworldGetZyngaVars(params, retry)
+{
+	zooworldFreegifts.Click(params);
 }
 
 function mafiawarsGetZyngaVars(params, retry)
