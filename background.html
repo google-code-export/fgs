@@ -19,7 +19,7 @@
 <script type="text/javascript" src="scripts/games/petville.js?version=3.8.9"></script>
 <script type="text/javascript" src="scripts/games/cityville.js?version=3.8.9"></script>
 <script type="text/javascript" src="scripts/games/zooworld.js?version=3.8.9"></script>
-
+<script type="text/javascript" src="scripts/games/vampirewars.js?version=3.8.9"></script>
 
 <script type="text/javascript" src="scripts/games/freegifts.js?version=3.8.9"></script>
 
@@ -930,7 +930,7 @@ function checkRequests()
 					
 					if(re.test(typeText))
 					{
-						dataPost += '&'+escape($(el).find('input[type="submit"]:last').attr('name'))+'='+$(el).find('input[type="submit"]:last').attr('value')+'&post_form_id='+post_form_id+'&fb_dtsg='+fb_dtsg;
+						dataPost += '&actions[reject]=Ignore&post_form_id='+post_form_id+'&fb_dtsg='+fb_dtsg;
 						emptyUnwantedGifts(dataPost);
 						ret = true;
 						return false;
@@ -1400,8 +1400,6 @@ $(function()
 	chrome.browserAction.setTitle({title: "FGS is not yet loaded... Please wait..."});
 
 	startup();
-	
-	//zooworldFreegifts.Click({});
 	
 	$(window).unload( function () 
 	{
