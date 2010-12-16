@@ -243,7 +243,9 @@ var zooworldBonuses =
 			dataType: 'text',
 			success: function(data)
 			{
-			
+				
+				var redirectUrl = checkForLocationReload(data);
+				
 				if(redirectUrl != false)
 				{
 					if(typeof(retry) == 'undefined')
