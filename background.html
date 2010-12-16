@@ -1073,7 +1073,7 @@ function checkBonuses(appID)
 
 	if(bonusLoadingProgress[appID].loaded == false)
 	{
-		var number = 300;
+		var number = 10;
 	}
 	else
 	{
@@ -1108,8 +1108,9 @@ function checkBonuses(appID)
 
 				var data = JSON.parse(str).onload.toString();
 
-				var i1 = data.indexOf('HTML("')+6;
-				var i2 = data.indexOf('"))');
+				var i0 = data.indexOf('"#app_stories"');
+				var i1 = data.indexOf('HTML("', i0)+6;
+				var i2 = data.indexOf('"))',i1);
 				
 				var data = data.slice(i1,i2);
 				
