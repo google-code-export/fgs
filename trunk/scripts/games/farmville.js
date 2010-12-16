@@ -170,6 +170,26 @@ var farmvilleBonuses =
 			url: url,
 			success: function(data)
 			{
+				var redirectUrl = checkForLocationReload(data);
+				
+				if(redirectUrl != false)
+				{
+					if(typeof(retry) == 'undefined')
+					{
+						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						farmvilleBonuses.Click(id, redirectUrl, true);
+					}
+					else
+					{
+						info.error = 'receiving';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						database.updateErrorItem('bonuses', id, info);
+						sendView('bonusError', id, info);	
+					}
+					return;
+				}
+			
 				var dataFull = data;
 				
 				data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));

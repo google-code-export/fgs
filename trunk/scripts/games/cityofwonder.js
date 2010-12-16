@@ -22,7 +22,7 @@ var cityofwonderRequests =
 				{							
 					if(typeof(retry) == 'undefined')
 					{
-						//cityofwonderRequests.Click(id, URI+'&_fb_noscript=1', true);
+						cityofwonderRequests.Click(id, URI+'&_fb_noscript=1', true);
 						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
 					}
 					else
@@ -30,7 +30,7 @@ var cityofwonderRequests =
 						info.error = 'receiving';
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						//database.updateErrorItem('requests', id, info);
+						database.updateErrorItem('requests', id, info);
 						sendView('requestError', id, info);	
 					}
 				}
@@ -69,13 +69,7 @@ var cityofwonderRequests =
 					var i1 =  data2.indexOf('<fb:fbml>');
 					var i2 =  data2.indexOf('/script>',i1)-1;
 					var data = data2.slice(i1,i2);
-				
-				
-				
-				
-				
-				
-				
+
 					info.image = $('.ally_accept', data).find('img:first').attr('src');
 					var txt = $('.ally_accept', data).find('h1').text();
 					
@@ -115,7 +109,7 @@ var cityofwonderRequests =
 				{							
 					if(typeof(retry) == 'undefined')
 					{
-						//cityofwonderRequests.Click2(id, URI+'&_fb_noscript=1', true);
+						cityofwonderRequests.Click2(id, URI+'&_fb_noscript=1', true);
 						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
 					}
 					else
@@ -123,7 +117,7 @@ var cityofwonderRequests =
 						info.error = 'receiving';
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						//database.updateErrorItem('requests', id, info);
+						database.updateErrorItem('requests', id, info);
 						sendView('requestError', id, info);	
 					}
 				}
@@ -133,7 +127,7 @@ var cityofwonderRequests =
 				if(typeof(retry) == 'undefined')
 				{
 					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					//cityofwonderRequests.Click2(id, URI+'&_fb_noscript=1', true);
+					cityofwonderRequests.Click2(id, URI+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -160,6 +154,26 @@ var cityofwonderBonuses =
 			dataType: 'text',
 			success: function(data)
 			{
+				var redirectUrl = checkForLocationReload(data);
+				
+				if(redirectUrl != false)
+				{
+					if(typeof(retry) == 'undefined')
+					{
+						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						cityofwonderBonuses.Click(id, redirectUrl, true);
+					}
+					else
+					{
+						info.error = 'receiving';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						database.updateErrorItem('bonuses', id, info);
+						sendView('bonusError', id, info);	
+					}
+					return;
+				}
+			
 				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
 				
 				try {
