@@ -233,6 +233,27 @@ var mafiawarsRequests =
 			url: URI,
 			success: function(data)
 			{
+				var redirectUrl = checkForLocationReload(data);
+				
+				if(redirectUrl != false)
+				{
+					if(typeof(retry) == 'undefined')
+					{
+						console.log(getCurrentTime()+'[B] Connection error while receiving gift, Retrying bonus with ID: '+id);
+						mafiawarsRequests.Click(id, redirectUrl, true);
+					}
+					else
+					{
+						info.error = 'receiving';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						database.updateErrorItem('requests', id, info);
+						sendView('requestError', id, info);	
+					}
+					return;
+				}
+				
+				
 				var data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
 				
 				try {
