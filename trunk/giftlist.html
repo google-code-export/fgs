@@ -1393,45 +1393,9 @@
 				updateLoaded();
 			}, database.onSuccess, database.onError);
 
-			tx.executeSql("SELECT * FROM bonuses where status = '1' order by time ASC", [], function(tx, res)
+			tx.executeSql("SELECT * FROM bonuses where status = '1' order by time DESC", [], function(tx, res)
 			{
-				for(var i = 0; i < res.rows.length; i++)
-				{
-					var v = res.rows.item(i);
-					var gameID = v.gameID;
-
-					if(!bkP.options.games[gameID].enabled)
-					{
-						continue;
-					}
-					
-					getBonusHistoryRow(v);
-				}
-				updateLoaded();
-			}, database.onSuccess, database.onError);
-
-			tx.executeSql("SELECT * FROM requests where status = '1' order by time ASC", [], function(tx, res)
-			{
-				for(var i = 0; i < res.rows.length; i++)
-				{
-					var v = res.rows.item(i);
-					var gameID = v.gameID;
-
-					if(!bkP.options.games[gameID].enabled)
-					{
-						continue;
-					}						
-					
-					getRequestHistoryRow(v);	
-				}
-				updateLoaded();
-			}, database.onSuccess, database.onError);
-
-			tx.executeSql("SELECT * FROM freegifts order by time ASC", [], function(tx, res)
-			{
-				var opt = 'SendFreeGiftsHistoryList';
-				
-				
+				var htmls = {};
 				
 				for(var i = 0; i < res.rows.length; i++)
 				{
@@ -1443,10 +1407,100 @@
 						continue;
 					}
 					
-					var html = getGiftHistoryRow(gameID, res.rows.item(i), res.rows.item(i).is_thank_you);
+					if(typeof(htmls[gameID]) == 'undefined')
+					{
+						htmls[gameID] = '';
+					}
 					
-					var game = gamesData[gameID].systemName;
-					$('div#'+game+opt, '#'+game+'Game').prepend(html);
+					
+					htmls[gameID] += getBonusHistoryRow(v);
+				}
+				
+				for(var tmp in htmls)
+				{
+					var game = gamesData[tmp].systemName;
+					
+					$('div#'+game+'BonusesHistoryList').prepend(htmls[tmp]);
+					
+					
+					$('div#'+game+'BonusesHistoryList').children('div.receivingErrorClass').removeClass('receivingErrorClass').css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualBonusClick);
+					
+					$('div#'+game+'BonusesHistoryList').children('div.noErrorClass').find('.bonusError').css('height', '23px');
+					$('div#'+game+'BonusesHistoryList').children('div.noErrorClass').find('.likeBonus').click(processLikeBonus);
+					$('div#'+game+'BonusesHistoryList').children('div.noErrorClass').find('.commentBonus').click(processCommentBonus);
+					$('div#'+game+'BonusesHistoryList').children('div.noErrorClass').find('.sendBack').click(processSendBack);	
+										
+					$('div#'+game+'BonusesHistoryList').children('div.noErrorClass').removeClass('noErrorClass');
+				}
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM requests where status = '1' order by time DESC", [], function(tx, res)
+			{
+				var htmls = {};				
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+					
+					if(typeof(htmls[gameID]) == 'undefined')
+					{
+						htmls[gameID] = '';
+					}
+
+					htmls[gameID] += getRequestHistoryRow(v);
+				}
+
+				for(var tmp in htmls)
+				{
+					var game = gamesData[tmp].systemName;
+					
+					$('div#'+game+'RequestsHistoryList').prepend(htmls[tmp]);
+
+					$('div#'+game+'RequestsHistoryList').children('div.receivingErrorClass').removeClass('receivingErrorClass').css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualRequestClick);
+					
+					$('div#'+game+'RequestsHistoryList').children('div.noErrorClass').find('.bonusError').css('height', '23px');
+					$('div#'+game+'RequestsHistoryList').children('div.noErrorClass').find('.sendBack').click(processSendBack);	
+					$('div#'+game+'RequestsHistoryList').children('div.noErrorClass').removeClass('noErrorClass');
+				}
+
+				updateLoaded();
+			}, database.onSuccess, database.onError);
+
+			tx.executeSql("SELECT * FROM freegifts order by time DESC", [], function(tx, res)
+			{
+				
+				var htmls = {};
+				
+				for(var i = 0; i < res.rows.length; i++)
+				{
+					var v = res.rows.item(i);
+					var gameID = v.gameID;
+
+					if(!bkP.options.games[gameID].enabled)
+					{
+						continue;
+					}
+					
+					if(typeof(htmls[gameID]) == 'undefined')
+					{
+						htmls[gameID] = '';
+					}
+					
+					htmls[gameID] += getGiftHistoryRow(gameID, res.rows.item(i), res.rows.item(i).is_thank_you);
+				}
+
+				for(var tmp in htmls)
+				{
+					var game = gamesData[tmp].systemName;
+					
+					$('div#'+game+'SendFreeGiftsHistoryList').prepend(htmls[tmp]);
 				}
 				updateLoaded();
 			}, database.onSuccess, database.onError);
@@ -1467,8 +1521,7 @@
 	{
 		var error_text = (v.error_text != '' ? ' <img src="gfx/info.png" title="'+v.error_text+'" />' : '');		
 		
-		var err = (v.error == error_text ? '' : '('+v.error+' error)'+error_text);
-		var opt = 'BonusesHistoryList';	
+		var err = (v.error == error_text ? addLikeRow(v.like_bonus, v.resend_gift, v.comment_bonus) : '('+v.error+' error)'+error_text);
 		
 		if(v.image == 'undefined' && err == '')
 		{
@@ -1479,45 +1532,36 @@
 			var showImage = v.image;
 		}
 		
-		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
-
-		var game = gamesData[v.gameID].systemName;
-		$('div#'+game+opt, '#'+game+'Game').prepend(html);
+		var addClass = '';
+		
 		
 		if(v.error == 'receiving')
 		{
-			$('div#'+v.id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualBonusClick);
+			addClass = ' receivingErrorClass ';
 		}
 		else if(v.error == '')
 		{
-			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(v.like_bonus, v.resend_gift, v.comment_bonus));
-			$('#'+v.id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
-			$('#'+v.id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
-			$('#'+v.id).find('.bonusError').find('.sendBack').click(processSendBack);	
+			addClass = ' noErrorClass ';
 		}
+		
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" class="bonusItem disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getRequestHistoryRow(v)
 	{
-		var err = (v.error == '' ? '' : '('+v.error+' error)');
-		var opt = 'RequestsHistoryList';	
+		var err = (v.error == '' ? addLikeRow(false, v.resend_gift, false, true) : '('+v.error+' error)');
 		
-		var html = '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="requestItem disabled updateTimeAgo"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
-
-		var game = gamesData[v.gameID].systemName;
-		$('div#'+game+opt, '#'+game+'Game').prepend(html);
-		
+		var addClass = '';
 		if(v.error == 'receiving')
 		{
-			$('div#'+v.id).css('cursor', 'pointer !important').attr('title', 'Click to manually receive').click(processManualRequestClick);
+			addClass = ' receivingErrorClass ';
 		}
 		else if(v.error == '')
 		{
-			$('div#'+v.id).find('.bonusError').css('height', '23px').html(addLikeRow(false, v.resend_gift, false, true));
-			$('#'+v.id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
-			$('#'+v.id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
-			$('#'+v.id).find('.bonusError').find('.sendBack').click(processSendBack);	
+			addClass = ' noErrorClass ';
 		}
+		
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function prepareNeighboursList(gameID)
