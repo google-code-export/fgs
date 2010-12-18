@@ -1115,7 +1115,30 @@ function getFBML(params, retry)
 					var slice = strTemp.slice(i1,i2)
 				}
 
-				eval('var items = {'+ slice + '};');
+				var arr = [];
+				var i0 = 0;
+				var i1 = slice.indexOf('},"', i0);		
+				
+				while(i1 != -1)
+				{
+					var item = slice.slice(i0, i1+1);
+					eval('var tmpItm = {'+item+'}');
+					arr.push(tmpItm);
+					
+					i0 = i1+2;
+					i1 = slice.indexOf('},"', i0);	
+				}
+				
+				i0 = slice.lastIndexOf('},"')+2;
+				if(i0 != 1)
+				{
+					i1 = slice.length;
+					var item = slice.slice(i0, i1);
+					eval('var tmpItm = {'+item+'}');
+					arr.push(tmpItm);
+				}
+				
+				var items = arr;
 				
 				var tempParams = '';
 				if(typeof(params.cafeUrl) != 'undefined')
@@ -1157,9 +1180,7 @@ function getFBML(params, retry)
 					myUrl2      =   myUrl2.replace(/&amp;/g,'&');
 				}
 				*/
-				
 
-				
 				var param2 = '';
 
 				params.items = items;
