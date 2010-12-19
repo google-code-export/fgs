@@ -1223,7 +1223,7 @@ function getFBML(params, retry)
 				}
 				
 
-				params.myParms = myParms;
+				params.myParms = myParms+'&lsd=';
 				params.myUrl = myUrl2;
 				params.param2 = param2;
 				
@@ -1316,10 +1316,17 @@ function sendGift(params, retry)
 					
 					var found = false;
 					
-					for(u in params.items)
+					ListNeighbours(params.gameID);
+					
+					$(params.items).each(function(k,val)
 					{
-						var v = params.items[u];
-						if(jQuery.inArray(u, params.sendTo) > -1)
+						for(var i in val)
+						{
+							var id = i;
+						}
+						var v = val[id];					
+						
+						if(jQuery.inArray(id, params.sendTo) > -1)
 						{
 							var sendHistory = {
 								gift: params.gift,
@@ -1337,12 +1344,9 @@ function sendGift(params, retry)
 							sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
 							
 							found = true;
-							
-							delete params.items[u];
-							continue;
 						}
 						i++;
-					}
+					});
 					
 					if(!found && typeof(params.thankYou) != 'undefined')
 					{
@@ -1358,10 +1362,7 @@ function sendGift(params, retry)
 						database.updateItemGiftBack((params.isRequest ? 'requests' : 'bonuses'), params.bonusID);
 						
 						sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
-					
-					}		
-					
-					sendView('updateNeighbours', params.gameID, params.items);
+					}
 				},
 				error: function()
 				{

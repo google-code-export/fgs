@@ -322,8 +322,7 @@ database.addRequest = function(data2)
 	{
 		var outArr = [];
 
-		var total = data2.length;
-		
+		var total = data2.length;		
 		
 		$(data2).each(function(k, data)
 		{
@@ -341,7 +340,10 @@ database.addRequest = function(data2)
 				}
 				if(total == 0)
 				{
-					sendView('addNewRequest', '', '',outArr);
+					if(outArr.length > 0)
+					{
+						sendView('addNewRequest', '', '', outArr);
+					}
 					updateIcon();
 				}		
 			}, database.onSuccess, database.onError);
