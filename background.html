@@ -21,7 +21,7 @@
 <script type="text/javascript" src="scripts/games/zooworld.js?version=4.0.0.2"></script>
 <script type="text/javascript" src="scripts/games/vampirewars.js?version=4.0.0.2"></script>
 <script type="text/javascript" src="scripts/games/cityofwonder.js?version=4.0.0.2"></script>
-
+<script type="text/javascript" src="scripts/games/poker.js?version=4.0.0.2"></script>
 
 <script type="text/javascript" src="scripts/games/freegifts.js?version=4.0.0.2"></script>
 
@@ -571,12 +571,11 @@ function prepareLinkForGame(game, id, dataPost, retry)
 
 				var URI = JSON.parse(strTemp);
 				
-				console.log(URI);
-				
 				eval(game+'Requests.Click("'+id+'","'+URI+'")');
 			}
 			catch(err)
 			{
+				console.log(err);
 				if(typeof(retry) == 'undefined')
 				{
 					prepareLinkForGame(game, id, dataPost, true);

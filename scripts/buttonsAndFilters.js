@@ -773,8 +773,64 @@ var gamesData =
 																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 															}
 												},
+							'SendFreeGifts':	{	name: 'Send free gifts',
+													submenu: {
+																'SelectFavourites': { name: 'Select favourites' },
+																'SendGifts': { name: 'Send free gifts' },
+															}
+												}, 
+							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
+													submenu: {
+																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
+															}
+												},
 							'GameOptionsTab':	{	name: 'Filters',
 							},
 						}
 				},
+	2389801228:	{ 	name: 'Texas HoldEm Poker',		systemName: 'poker', link: 'http://apps.facebook.com/texas_holdem/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons:	
+						{
+							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
+													submenu: {
+																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
+																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
+															}
+												},
+							*/
+							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
+													submenu: {
+																'ClearManualBonuses': { name: 'Clear all bonuses' },
+															}
+												},
+							/*
+							'BonusesHistory': 	{	name: 'Show collected bonuses',
+													submenu: {
+																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
+															}
+												},
+							*/
+							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
+													submenu: {
+																'ReceivePendingRequests': { name: 'Receive all gifts' },
+																'ClearPendingRequests': 	{ name: 'Clear all requests' },
+															}
+												}, 
+							'RequestsHistory':	{	name: 'Show collected gifts',
+													submenu: {
+																'ClearCollectedRequests': { name: 'Clear gifts history' },
+																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
+															}
+												},
+							'GameOptionsTab':	{	name: 'Filters',
+							},
+						}
+					},
 };
