@@ -2,19 +2,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.0.1" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.0.2" rel="stylesheet" />
 <title>Facebook Games Simplifier</title>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.0.1"></script>
-<script type="text/javascript" src="scripts/time.js?version=4.0.0.1"></script>
-<script type="text/javascript" src="scripts/database.js?version=4.0.0.1"></script>
-<script type="text/javascript" src="scripts/queue.js?version=4.0.0.1"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.0.1"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.0.2"></script>
+<script type="text/javascript" src="scripts/time.js?version=4.0.0.2"></script>
+<script type="text/javascript" src="scripts/database.js?version=4.0.0.2"></script>
+<script type="text/javascript" src="scripts/queue.js?version=4.0.0.2"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.0.2"></script>
 <script type="text/javascript">
 
-// ?version=4.0.0.1
+// ?version=4.0.0.2
 
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
@@ -956,34 +956,43 @@
 	
 	function addNewRequest(data2)
 	{
-		var gameID = data2[0][1];
-		var game = gamesData[gameID].systemName;
-	
-		var html = '';
-		var htmlManual = '';
-			
+		var htmls = {};
+		var htmlsManual = {};
+		
 		$(data2).each(function(ind,data)
 		{
 			var v = {	id: data[0],	title: data[2],	text: data[3],	image: data[4], post: data[5],	time: data[6]	}
 			
-					
+			var gameID = data[1];
+			
+			if(typeof(htmls[gameID]) == 'undefined')
+			{
+				htmls[gameID] = '';
+				htmlsManual[gameID] = '';
+			}			
+			
 			if(checkIfRequestIsManual(gameID, v.text))
 			{
-				htmlManual += getNewManualRequestRow(gameID, v);
+				htmlsManual[gameID] += getNewManualRequestRow(gameID, v);
 			}
 			else
 			{		
-				html += getNewRequestRow(gameID, v);
+				htmls[gameID] += getNewRequestRow(gameID, v);
 			}
 		});
+
 		
-		$('div#'+game+'ManualBonusesList').prepend(htmlManual);
-		$('div#'+game+'ManualBonusesList').children('div.manualRequest.awaitingClick').removeClass('awaitingClick').click(processManualRequestClick);
-		
-		$('div#'+game+'RequestsPendingList').prepend(html);
-		$('div#'+game+'RequestsPendingList').children('div.awaitingClick').removeClass('awaitingClick').click(processRequestsClick);
-		
-		updateCount(gameID);
+		for(var tmp in htmls)
+		{
+			var game = gamesData[tmp].systemName;
+			$('div#'+game+'ManualBonusesList').prepend(htmlsManual[tmp]);
+			$('div#'+game+'ManualBonusesList').children('div.manualRequest.awaitingClick').removeClass('awaitingClick').click(processManualRequestClick);
+			
+			$('div#'+game+'RequestsPendingList').prepend(htmls[tmp]);
+			$('div#'+game+'RequestsPendingList').children('div.awaitingClick').removeClass('awaitingClick').click(processRequestsClick);
+		}
+
+		updateLoaded();
 	}
 	
 	function createMenu(gameID)
