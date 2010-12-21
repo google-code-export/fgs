@@ -10,52 +10,16 @@ var gamesData =
 							requestsNewWindow: [],
 						},
 						buttons:
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-																'ClearPendingBonusesOtherError': { name: 'Clear bonuses with "Other error"' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												}, 
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						[	
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						]
 					},
 	102452128776: 	{ 	
 						name: 'FarmVille',		systemName: 'farmville', link: 'http://apps.facebook.com/onthefarm/',
@@ -66,53 +30,16 @@ var gamesData =
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-																'ClearPendingBonusesOtherError': { name: 'Clear bonuses with "Other error"' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons:
+						[	'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						]
 					},
 	10979261223: 	{ 	
 						name: 'Mafia Wars',		systemName: 'mafiawars', link: 'http://apps.facebook.com/inthemafia/',
@@ -127,52 +54,16 @@ var gamesData =
 								'needs your skills as (.*) to complete an important mission',
 							],
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	291549705119: 	{ 	name: 'CityVille',	systemName: 'cityville', 	link: 'http://apps.facebook.com/cityville/',
 						filter:		
@@ -182,50 +73,16 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	163576248142:	{ 	name: 'PetVille',		systemName: 'petville', link: 'http://apps.facebook.com/petvillegame/',
 						filter:		
@@ -235,41 +92,16 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 				},
 	234860566661: 	{ 	
 						name: 'Treasure Isle',		systemName: 'treasure', link: 'http://apps.facebook.com/treasureisle/',
@@ -280,52 +112,16 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: [],
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	101539264719: 	{ 
 						name: 'Cafe World',		systemName: 'cafeworld', link: 'http://apps.facebook.com/cafeworld/',
@@ -336,52 +132,16 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	120563477996213: 	{ 
 						name: 'Ravenwood Fair',		systemName: 'ravenwood', link: 'http://apps.facebook.com/ravenwoodfair/',
@@ -392,53 +152,14 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	43016202276: 	{ 
 						name: 'Restaurant City',		systemName: 'restaurant', link: 'http://apps.facebook.com/restaurantcity/',
@@ -449,42 +170,12 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
 					},
 	151044809337: 	{ 
 						name: 'Fishville',		systemName: 'fishville', link: 'http://apps.facebook.com/fishville/',
@@ -495,54 +186,14 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	21526880407: 	{ 
 						name: 'Yoville',		systemName: 'yoville', link: 'http://apps.facebook.com/yoville/',
@@ -553,42 +204,12 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
 					},
 	163965423072: 	{ 	name: 'Social City',		systemName: 'socialcity', link: 'http://apps.facebook.com/socialcity/',
 						filter:		
@@ -598,42 +219,12 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
 					},
 	167746316127: 	{ 	name: 'Zoo World',		systemName: 'zooworld', link: 'http://apps.facebook.com/playzoo/zoo/home.php',
 						filter:		
@@ -643,50 +234,16 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'SendFreeGifts':	{	name: 'Send free gifts',
-													submenu: {
-																'SelectFavourites': { name: 'Select favourites' },
-																'SendGifts': { name: 'Send free gifts' },
-															}
-												}, 
-							'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
-													submenu: {
-																'ClearSentFreeGifts': { name: 'Clear send gifts history' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
 					},
 	25287267406: 	{ 	name: 'Vampire Wars',		systemName: 'vampirewars', link: 'http://apps.facebook.com/vampiresgame/',
 						filter:	
@@ -696,42 +253,12 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
 					},
 	114335335255741: { 	name: 'City of Wonder',		systemName: 'cityofwonder', link: 'http://apps.facebook.com/cityofwonder/',
 						filter:		
@@ -741,41 +268,14 @@ var gamesData =
 							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-																'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-																'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
-															}
-												},
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',
+							'GameOptionsTab'
+						],
 				},
 	2389801228:	{ 	name: 'Texas HoldEm Poker',		systemName: 'poker', link: 'http://apps.facebook.com/texas_holdem/',
 						filter:	
@@ -783,43 +283,80 @@ var gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['(.*)'],
 							requests: [],
+							requestsNewWindow: ['a Mystery collectible', 'holiday gift']
+						},
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'GameOptionsTab'
+						],
+					},
+	338051018849:	{ 	name: 'Baking life',		systemName: 'bakinglife', link: 'http://apps.facebook.com/bakinglife/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
 							requestsNewWindow: []
 						},
-						buttons:	
-						{
-							/*'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
-													submenu: {
-																'ReceivePendingBonuses': { name: 'Receive all bonuses' },
-																'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
-															}
-												},
-							*/
-							'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
-													submenu: {
-																'ClearManualBonuses': { name: 'Clear all bonuses' },
-															}
-												},
-							/*
-							'BonusesHistory': 	{	name: 'Show collected bonuses',
-													submenu: {
-																'ClearCollectedBonuses': { name: 'Clear bonuses history' }
-															}
-												},
-							*/
-							'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
-													submenu: {
-																'ReceivePendingRequests': { name: 'Receive all gifts' },
-																'ClearPendingRequests': 	{ name: 'Clear all requests' },
-															}
-												}, 
-							'RequestsHistory':	{	name: 'Show collected gifts',
-													submenu: {
-																'ClearCollectedRequests': { name: 'Clear gifts history' },
-																'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
-															}
-												},
-							'GameOptionsTab':	{	name: 'Filters',
-							},
-						}
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
 					},
 };
+
+var submenuButtons =
+{
+	'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
+							submenu: {
+										'ReceivePendingBonuses': { name: 'Receive all bonuses' },
+										'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
+										'ClearPendingBonusesOtherError': { name: 'Clear bonuses with "Other error"' },
+									}
+						},
+	'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
+							submenu: {
+										'ClearManualBonuses': { name: 'Clear all bonuses' },
+									}
+						},
+	'BonusesHistory': 	{	name: 'Show collected bonuses',
+							submenu: {
+										'ClearCollectedBonuses': { name: 'Clear bonuses history' },
+										'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+										'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
+									}
+						},
+	'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
+							submenu: {
+										'ReceivePendingRequests': { name: 'Receive all gifts' },
+										'ClearPendingRequests': 	{ name: 'Clear all requests' },
+									}
+						}, 
+	'RequestsHistory':	{	name: 'Show collected gifts',
+							submenu: {
+										'ClearCollectedRequests': { name: 'Clear gifts history' },
+										'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
+									}
+						}, 
+	'SendFreeGifts':	{	name: 'Send free gifts',
+							submenu: {
+										'SelectFavourites': { name: 'Select favourites' },
+										'SendGifts': { name: 'Send free gifts' },
+									}
+						}, 
+	'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
+							submenu: {
+										'ClearSentFreeGifts': { name: 'Clear send gifts history' },
+									}
+						},
+	'GameOptionsTab':	{	name: 'Filters',
+	},
+}
