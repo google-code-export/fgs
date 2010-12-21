@@ -117,22 +117,6 @@ var zooworldFreegifts =
 				console.log(getCurrentTime()+'[Z] FBMLinfo - OK');
 				
 				getFBML(params);
-				
-				
-				/*
-				var nextUrl = $('#app101539264719_frmGifts', data).attr('action');
-				
-				var formParam = $('#app101539264719_frmGifts', data).serialize();
-				
-				console.log(getCurrentTime()+'[Z] Zynga params updated');
-				
-				var tempUrl = nextUrl+'?'+formParam;
-				
-				var i1 = tempUrl.indexOf('gid=');
-				
-				params.cafeUrl = tempUrl.slice(0, i1+4)+params.gift+'&view=cafe';
-				*/
-				//getFBML(params);
 			}
 			catch(e)
 			{
@@ -518,22 +502,8 @@ var zooworldBonuses =
 					
 					info.title = out;
 					info.text = body;
-					
-					
-					console.log(data);
-					console.log(data.return_data.dialogData.bodyText);
-					//var postUrl = $('.main_giftConfirm_cont', data).find('form').attr('action');
-					//var postData = $('.main_giftConfirm_cont', data).find('form').serialize();
-					
-					//console.log(postData);
-					//console.log(postUrl);
-					
-					//$.post(postUrl, postData);
-					info.image = image;
-					
+					info.image = image;					
 					info.time = Math.round(new Date().getTime() / 1000);
-					
-					console.log(info);
 					
 					database.updateItem('bonuses', id, info);
 					sendView('bonusSuccess', id, info);

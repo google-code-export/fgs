@@ -450,11 +450,13 @@ var giftsArray = {
 		"24": { name: 'Siberian Tiger'},
 		"15": { name: 'Tree Frog'},
 		"22": { name: 'Zebra'},
+	},
+	2389801228:
+	{
+		"chips": { name: "Chips" }
 	}
+	
 };
-
-
-
 
 var freeGiftForGame =
 {
@@ -467,6 +469,7 @@ var freeGiftForGame =
 	151044809337: 'mysterybox',
 	291549705119: 'energy_1',
 	167746316127: '886',
+	2389801228: 'chips',
 }
 
 function ListNeighbours(gameID)
@@ -513,6 +516,11 @@ function fishvilleGetZyngaVars(params, retry)
 function cityvilleGetZyngaVars(params, retry)
 {
 	cityvilleFreegifts.Click(params);
+}
+
+function pokerGetZyngaVars(params, retry)
+{
+	pokerFreegifts.Click(params);
 }
 
 function treasureGetZyngaVars(params, retry)
@@ -1137,6 +1145,8 @@ function getFBML(params, retry)
 					eval('var tmpItm = {'+item+'}');
 					arr.push(tmpItm);
 				}
+				
+				
 				
 				var items = arr;
 				
