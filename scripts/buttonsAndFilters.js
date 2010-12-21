@@ -98,8 +98,6 @@ var gamesData =
 							'BonusesHistory', 
 							'RequestsPending',
 							'RequestsHistory',	
-							'SendFreeGifts',
-							'SendFreeGiftsHistory',
 							'GameOptionsTab'
 						],
 				},
