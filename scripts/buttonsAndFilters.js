@@ -106,7 +106,7 @@ var gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Treasure Isle'],	
-							bonusesNewWindow: [],							
+							bonusesNewWindow: ['Send Gift'],							
 							requests: [],
 							requestsNewWindow: [],
 						},
