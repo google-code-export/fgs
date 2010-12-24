@@ -426,7 +426,6 @@ var zooworldBonuses =
 					
 						if(out.indexOf('<b>') == -1)
 						{
-							
 							info.error = 'limit';
 							info.time = Math.round(new Date().getTime() / 1000);
 							if(out == 'Thank You for Trying!' || out == 'Try Again!' || out == 'You cannot claim this drum!' || jQuery.trim(out) == '')

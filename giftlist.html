@@ -700,9 +700,11 @@
 				{
 					tx.executeSql('DELETE FROM bonuses where id = ? and gameID = ?', [elID, gameID], database.onSuccess, database.onError);
 				}
+				
 			
 				$(this).remove();
-			});	
+			});
+			updateCount(gameID);			
 		});
 	}
 	
@@ -722,12 +724,15 @@
 						$(this).remove();
 					});
 					
-					if(delArr.length > 0)
+					while(delArr.length > 0)
 					{
-						var str = ' where id = "'+delArr.join('" or id = "')+'" ';
+						var tmpArr = delArr.slice(0,500);
+						
+						var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
 						database.deleteItemArray('bonuses', gameID, str, 0);
+						
+						delArr = delArr.slice(500);						
 					}
-					
 					updateCount(gameID);
 					
 					
@@ -764,10 +769,14 @@
 						delArr.push($(this).attr('id'));
 					});
 					
-					if(delArr.length > 0)
+					while(delArr.length > 0)
 					{
-						var str = ' where id = "'+delArr.join('" or id = "')+'" ';
+						var tmpArr = delArr.slice(0,500);
+						
+						var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
 						database.deleteItemArray('requests', gameID, str, 0);
+						
+						delArr = delArr.slice(500);						
 					}
 					
 					updateCount(gameID);
@@ -823,10 +832,14 @@
 						}
 					});
 					
-					if(delArr.length > 0)
+					while(delArr.length > 0)
 					{
-						var str = ' where id = "'+delArr.join('" or id = "')+'" ';
+						var tmpArr = delArr.slice(0,500);
+						
+						var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
 						database.deleteItemArray('bonuses', gameID, str, 0);
+						
+						delArr = delArr.slice(500);						
 					}
 					updateCount(gameID);
 					
@@ -2375,7 +2388,7 @@
 	
 	function processOptionsTab(gameID)
 	{
-		
+	
 		var arr = bkP.options.games[gameID].filter;
 		
 		arr.sort();
@@ -2433,6 +2446,8 @@
 	
 		var olderThanTime = bkP.options.deleteHistoryOlderThan;
 		var olderBonusThanTime = bkP.options.deleteOlderThan;
+		
+		
 		
 		$('.updateTimeAgo').each(function()
 		{
