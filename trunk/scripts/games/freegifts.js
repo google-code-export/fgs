@@ -294,6 +294,7 @@ var giftsArray = {
 		"425": { name: 'Beats by Dre'},
 		"426": { name: 'Doctors Orders'},
 		"427": { name: 'Certified Platinum'},
+		"429": { name: 'Holiday Sack'},
 		"423": { name: 'Time Capsule'},
 		"405": { name: 'Mystery Shipment'},
 		"211": { name: 'Engine'},

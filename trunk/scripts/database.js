@@ -10,7 +10,7 @@ database.open = function(userID)
 
 database.onError = function(tx, e) 
 {
-	//console.log('Something unexpected happened: ' + e.message );
+	console.log('Something unexpected happened: ' + e.message );
 }
 
 database.onSuccess = function(tx, e) 

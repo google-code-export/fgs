@@ -26,7 +26,7 @@ var gamesData =
 						filter:
 						{	
 							bonuses: ['Fertilize their crops', 'Play Farmville Now'],
-							bonusesNewWindow: ['Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble'],
+							bonusesNewWindow: ['Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Get some slop', 'Help', 'Retaliate', 'Get Revenge'],
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
 						},
@@ -68,7 +68,7 @@ var gamesData =
 	291549705119: 	{ 	name: 'CityVille',	systemName: 'cityville', 	link: 'http://apps.facebook.com/cityville/',
 						filter:		
 						{
-							bonuses: ['Start your business', 'Send collectables', 'Send collectibles', 'iAbre tu negocio', 'Visit CityVille'],
+							bonuses: ['Start your business', 'Send collectables', 'Send collectibles', 'iAbre tu negocio', 'Visit CityVille', 'Collectable wanted'],
 							bonusesNewWindow: [],
 							requests: [],
 							requestsNewWindow: []
@@ -126,7 +126,7 @@ var gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery'],
+							bonusesNewWindow: ['Get Energy', 'Get Energy Refill', 'Get a Mastery Boost', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery'],
 							requests: [],
 							requestsNewWindow: []
 						},
@@ -228,7 +228,7 @@ var gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Send the material', 'Claim and share', '^Send'],
+							bonusesNewWindow: ['Claim Juice and Share', 'Send the material', 'Claim and share', '^Send', 'Start Team Race'],
 							requests: [],
 							requestsNewWindow: []
 						},
@@ -321,6 +321,21 @@ var gamesData =
 							'BonusesPending',
 							'ManualBonuses',
 							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+	46755028429: 	{ 	name: 'Castle Age',		systemName: 'castleage', link: 'http://apps.facebook.com/castle_age/',
+						filter:
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'ManualBonuses',
 							'RequestsPending',
 							'RequestsHistory',	
 							'GameOptionsTab'
