@@ -75,7 +75,7 @@ var zooworldFreegifts =
 						sendView('errorWithSend', (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 					}
 				}
-			}		
+			}	
 		});
 	},
 	Click2: function(params, retry)
@@ -175,8 +175,7 @@ var zooworldRequests =
 						sendView('requestError', id, info);	
 					}
 					return;
-				}
-				
+				}				
 				
 				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
 				
