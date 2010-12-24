@@ -46,7 +46,7 @@ var gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
-							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil','Join Operation'],
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty'],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',
@@ -293,6 +293,23 @@ var gamesData =
 						],
 					},
 	338051018849:	{ 	name: 'Baking life',		systemName: 'bakinglife', link: 'http://apps.facebook.com/bakinglife/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+	129547877091100:	{ 	name: 'Crime City',		systemName: 'crimecity', link: 'http://apps.facebook.com/crimecitygame/',
 						filter:	
 						{
 							bonuses: [],

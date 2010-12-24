@@ -23,6 +23,7 @@
 <script type="text/javascript" src="scripts/games/cityofwonder.js?version=4.0.0.7"></script>
 <script type="text/javascript" src="scripts/games/poker.js?version=4.0.0.7"></script>
 <script type="text/javascript" src="scripts/games/bakinglife.js?version=4.0.0.7"></script>
+<script type="text/javascript" src="scripts/games/crimecity.js?version=4.0.0.7"></script>
 
 
 <script type="text/javascript" src="scripts/games/freegifts.js?version=4.0.0.7"></script>
@@ -664,6 +665,19 @@ function likeBonus(bonusID, autolike)
 			});
 		});
 	});
+}
+
+function gup( name , url)
+{
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var results = regex.exec( url );
+	
+	if( results == null )
+		return "";
+	else
+		return results[1];
 }
 
 function commentBonus(bonusID, comment)

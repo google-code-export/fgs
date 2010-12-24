@@ -308,7 +308,10 @@ database.addBonus = function(data2)
 				}
 				if(total == 0)
 				{
-					sendView('addNewBonus', '', '', outArr);
+					if(outArr.length > 0)
+					{
+						sendView('addNewBonus', '', '', outArr);
+					}
 					updateIcon();
 				}				
 			}, database.onSuccess, database.onError);
