@@ -915,12 +915,15 @@ function checkRequests()
 			
 			var FBdata = $('input[name="params\[app_id\]"]',data).parent('form:first');
 			
-			if(post_form_id == '' || fb_dtsg == '' || charset_test == '')
-			{
-				fb_dtsg = $(FBdata).children('input[name=fb_dtsg]').val();
+			if(post_form_id == '')
 				post_form_id = $(FBdata).children('input[name=post_form_id]').val();
+			
+			if( fb_dtsg == '' )
+				fb_dtsg = $(FBdata).children('input[name=fb_dtsg]').val();
+			
+			if(charset_test == '')
 				charset_test = $(FBdata).children('input[name=charset_test]').val();
-			}
+			
 			
 			var giftArr = [];
 			
@@ -1408,7 +1411,13 @@ function startup()
 				console.log('Loading options...');
 				loadOptions(userID);
 				restartBonuses();
-			}			
+			}		
+
+			if(post_form_id == '' || fb_dtsg == '')
+			{
+				fb_dtsg 		= $('input[name="fb_dtsg"]', data).val();
+				post_form_id 	= $('input[name="post_form_id"]', data).val();
+			}
 			
 			FBloginError = false;
 			updateIcon();
