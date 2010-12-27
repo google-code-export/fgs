@@ -2,19 +2,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.0.9" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.1.0" rel="stylesheet" />
 <title>Facebook Games Simplifier</title>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.0.9"></script>
-<script type="text/javascript" src="scripts/time.js?version=4.0.0.9"></script>
-<script type="text/javascript" src="scripts/database.js?version=4.0.0.9"></script>
-<script type="text/javascript" src="scripts/queue.js?version=4.0.0.9"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.0.9"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.1.0"></script>
+<script type="text/javascript" src="scripts/time.js?version=4.0.1.0"></script>
+<script type="text/javascript" src="scripts/database.js?version=4.0.1.0"></script>
+<script type="text/javascript" src="scripts/queue.js?version=4.0.1.0"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.1.0"></script>
 <script type="text/javascript">
 
-// ?version=4.0.0.9
+// ?version=4.0.1.0
 
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
@@ -1620,7 +1620,7 @@
 			$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Favourites send to list:</h2> <div class="sendToFavouritesList"></div> <h2 class="center">Gifts list:</h2> <div class="sendToGiftsList"></div> <h2 class="center">Neighbours list:</h2> <div class="sendToNeighboursList"></div>');
 			
 			$('.sendToFavouritesList', 'div#'+game+opt).html('<h3 class="center"><img src="gfx/loading.gif"><br />Waiting for the neighbours list to load... Please wait...</h3>');
-			$('.sendToNeighboursList', 'div#'+game+opt).html('<h3 class="center"><img src="gfx/loading.gif"><br />Loading heighbours... Please wait...</h3>');
+			$('.sendToNeighboursList', 'div#'+game+opt).html('<h3 class="center"><img src="gfx/loading.gif"><br />Loading neighbours... Please wait...</h3>');
 			
 			listGifts(gameID);
 			bkP.ListNeighbours(gameID);

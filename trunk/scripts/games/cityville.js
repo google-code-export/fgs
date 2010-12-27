@@ -65,23 +65,53 @@ var cityvilleFreegifts =
 		{
 			var params2 = '';
 		}
+		
+		if(typeof(params.nextClick2) == 'undefined')
+		{
+			var URLik = params.step2url;
+		}
+		else
+		{
+			var URLik = params.nextClick2;
+		}
 	
-		$.get(params.step2url, params2, function(data){
+		$.get(URLik, params2, function(data){
 			try
 			{
+			
+			
+				var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+				params.domain = params.step2url.match(re)[1].toString();
+				
+				
+				var nextUrl = 'http://'+params.domain+'/';
+				
+				var i1 = data.indexOf("ZYFrameManager.navigateTo('");
+				
+				if(i1 != -1)
+				{
+					var i2 = data.indexOf("'", i1)+1;
+					var i3 = data.indexOf("'", i2);
+				
+					params.nextClick2 = nextUrl+data.slice(i2,i3).replace(nextUrl, '');
+					cityvilleFreegifts.Click2(params, true);
+					return;
+				}
+				
+				
 				var dataStr = '';
 
-				
 				var i1 = data.indexOf('new ZY(');
 				if(i1 == -1) throw {}
 				i1+=7;				
-				var i2 = data.indexOf('},')+1;
+				var i2 = data.indexOf('},', i1)+1;
 				
 				eval('var zyParam ='+data.slice(i1,i2));
 				
 				var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 				params.domain = params.step2url.match(re)[1].toString();
 				params.zyParam = jQuery.param(zyParam);
+				//	params.zyParam = ''; //jQuery.param(zyParam);
 				
 				cityvilleFreegifts.Click3(params);
 			}
@@ -117,8 +147,11 @@ var cityvilleFreegifts =
 		{
 			var params2 = '';
 		}
+		
+		var URLik = 'http://'+params.domain+'/gifts.php?action=chooseRecipient&gift='+params.gift+'&view=app&ref=&'+params.zyParam;
+
 	
-		$.get('http://'+params.domain+'/gifts.php?action=chooseRecipient&gift='+params.gift+'&view=app&ref=&'+params.zyParam, params2, function(data){
+		$.get(URLik, params2, function(data){
 			try
 			{
 			
@@ -126,6 +159,23 @@ var cityvilleFreegifts =
 				var strTemp = data;
 				
 				myParms = 'api_key=291549705119&locale=en_US&sdk=joey';
+				
+				
+				var nextUrl = 'http://'+params.domain+'/';
+				
+				var i1 = data.indexOf("ZYFrameManager.navigateTo('");
+				
+				if(i1 != -1)
+				{
+					var i2 = data.indexOf("'", i1)+1;
+					var i3 = data.indexOf("'", i2);
+				
+					params.nextClick3 = data.slice(i2,i3).replace(nextUrl, '');
+					cityvilleFreegifts.Click3(params, true);
+					return;
+				}
+				
+				
 
 				/*
 				i1       =  strTemp.indexOf('FB.init("');
@@ -361,7 +411,7 @@ var cityvilleRequests =
 					
 					var nextUrl = URL.slice(i1,i2);
 
-					var i1 = data.indexOf('ZYFrameManager.navigateTo(');
+					var i1 = data.indexOf("ZYFrameManager.navigateTo('");
 					
 					if(i1 == -1) throw {}
 					
@@ -612,7 +662,7 @@ var cityvilleBonuses =
 					
 					var nextUrl = URL.slice(i1,i2);
 
-					var i1 = data.indexOf('ZYFrameManager.navigateTo(');
+					var i1 = data.indexOf("ZYFrameManager.navigateTo('");
 					
 					if(i1 == -1) throw {}
 					
