@@ -30,7 +30,6 @@
 
 <script type="text/javascript" src="scripts/games/freegifts.js?version=4.0.1.0"></script>
 
-<script type="text/javascript" src="scripts/queue.js?version=4.0.1.0"></script>
 <script type="text/javascript" src="scripts/database.js?version=4.0.1.0"></script>
 <script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.1.0"></script>
 <script type="text/javascript">
@@ -1166,7 +1165,7 @@ function checkBonuses(appID)
 					var el = $(this);
 
 					var data = $(this).find('input[name="feedback_params"]').val();
-
+					
 					eval('var bonusData = '+data);
 					
 					var bonusTimeTmp = new Date($(el).find('abbr').attr('data-date')).getTime();					
@@ -1208,7 +1207,11 @@ function checkBonuses(appID)
 						elIDNext = elID;
 					}
 					
-					if(actr == userID)	return; // wlasne bonusy
+					if(actr == userID)	
+					{
+						console.log('Wlasny bonus');
+						return;
+					}
 					
 					
 					var ret = false;
