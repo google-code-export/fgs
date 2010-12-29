@@ -100,9 +100,6 @@ function initializeDefaults()
 		defaultGame: '0',
 		games: {},
 		lastVisit: 0,
-		developerNotices: {},
-		developerNoticesLastUpdate: 0,
-		
 		chatSessions: {},
 		
 		defaultCommentsMessages: [],
@@ -111,6 +108,8 @@ function initializeDefaults()
 		checkBonusesTimeout: 60,
 		deleteOlderThan: 0,
 		deleteHistoryOlderThan: 0,
+		displayXbonuses: 0,
+		collectXbonusesAtTheSameTime: 5,
 	}
 
 	defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, filter: [], defaultGift: 0, hiddenIcon: false };
@@ -275,7 +274,6 @@ function showChangelog()
 	chrome.tabs.create({url:'http://rzadki.eu/projects/fgs/#changelog'});
 }
 
-
 function loadOptions(userID)
 {
 	var lastOptions = localStorage.getItem('options_'+userID);
@@ -288,11 +286,9 @@ function loadOptions(userID)
 	{
 		options = $.extend(true,{}, defaultOptions, 	JSON.parse(lastOptions));
 	}
-
+	
 	optionsLoaded = true;
-
 }
-
 
 function openFacebook()
 {
@@ -343,15 +339,7 @@ function sendView(msg, data, data2, data3)
 				view.close();
 			}
 			// chat off/
-			
-			//notices //
-			else if(msg == 'refreshNoticesData')
-			{
-				view.parseNoticeData();
-			}
-			//notices off //
-			
-			
+
 			// bonusy //
 			else if(msg == 'bonusError')
 			{
@@ -479,10 +467,8 @@ function sendView(msg, data, data2, data3)
 		xhrWorking--;
 	}
 	
-	
 	if(msg == 'requestError' || msg == 'bonusError' || msg == 'requestSuccess' || msg == 'bonusSuccess')
 	{
-
 		xhrWorking--;
 	}
 }
@@ -500,7 +486,7 @@ function checkForLocationReload(data)
 
 function checkXhrQueue()
 {
-	if(xhrWorking < 5)
+	if(xhrWorking < options.collectXbonusesAtTheSameTime)
 	{
 		if(xhrQueue.length > 0)
 		{
@@ -512,21 +498,12 @@ function checkXhrQueue()
 			}
 			else if(xhrQueue[0].type == 'bonus')
 			{
-			
-				//checkForLocationReload(xhrQueue[0].game, xhrQueue[0].id, xhrQueue[0].url);
-				
 				eval(xhrQueue[0].game+'Bonuses.Click("'+xhrQueue[0].id+'","'+xhrQueue[0].url+'")');
 				xhrQueue = xhrQueue.slice(1);
 				xhrWorking++;
 			}
 		}
 	}
-}
-
-function html_entity_decode(str)
-{
-	$('#testURL').html(str.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
-	return unescape($('#testURL').val());
 }
 
 function prepareLinkForGame(game, id, dataPost, retry)
@@ -609,7 +586,6 @@ function prepareLinkForGame(game, id, dataPost, retry)
 		}
 	});
 }
-				
 
 function likeBonus(bonusID, autolike)
 {
@@ -982,7 +958,11 @@ function checkRequests()
 				else if(APPID == 101539264719)
 				{
 					var searchStr = 'gid';
-				}				
+				}
+				else if(APPID == 167746316127)
+				{
+					var searchStr = 'giftId';
+				}
 				else
 				{
 					var searchStr = 'gift';
@@ -1100,13 +1080,17 @@ function checkBonuses(appID)
 		var number = timeoutToNumber();
 	}
 	
+	var downAppID = appID;
+	
+	if(appID == '167746316127')
+		downAppID = appID+'_2345673396';
+	
 	console.log(getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
 	
 	$.ajax({
 		type: "GET",
 		url: 'http://www.facebook.com/ajax/apps/app_stories.php',
-		data: '__a=1&is_game=1&app_ids='+appID+'&max_stories='+number+'&user_action=1',
-		dataType: 'text',
+		data: '__a=1&is_game=1&app_ids='+downAppID+'&max_stories='+number+'&user_action=1',		dataType: 'text',
 		success: function(data)
 		{
 			try
@@ -1311,7 +1295,6 @@ function stopBonusesForGame(gameID)
 
 function restartBonuses()
 {
-	checkNotices();
 	console.log(getCurrentTime()+'[B] Restarting bonuses');
 	
 	for(var id in iBonusTimeout)

@@ -275,14 +275,18 @@ var zooworldBonuses =
 				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
 				
 				try {
-				
-					if($('#app_content_167746316127', data).text().indexOf('No Thanks') != -1)
+					if($('#app_content_167746316127', data).length > 0)
+						var el = $('#app_content_167746316127', data);
+					else
+						var el = $('#app_content_2345673396', data);
+					
+					if($(el).text().indexOf('No Thanks') != -1)
 					{
 						console.log(URI);
 					}
 					else
 					{
-						var src = $('#app_content_167746316127', data).find('iframe:first').attr('src');
+						var src = $(el).find('iframe:first').attr('src');
 						
 						if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
 						zooworldBonuses.Click2(id, src);
@@ -290,6 +294,7 @@ var zooworldBonuses =
 				} 
 				catch(err)
 				{
+					console.log(err);
 					if(typeof(retry) == 'undefined')
 					{
 						zooworldBonuses.Click(id, URI+'&_fb_noscript=1', true);
@@ -349,7 +354,7 @@ var zooworldBonuses =
 						var i2 = data.indexOf('},', i1)+1;
 						lastPos = i2;
 						
-						if(data.slice(i1, i2).indexOf('zooparent') != -1)
+						if(data.slice(i1, i2).indexOf('zooparent') != -1 || data.slice(i1, i2).indexOf('"hugme"') != -1)
 						{
 							eval('var tempVars = '+data.slice(i1,i2));
 							break;
