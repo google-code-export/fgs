@@ -30,8 +30,7 @@ var cityvilleFreegifts =
 				params.fb_dtsg		= data.slice(i1,i2);
 				
 				params.step2url = $('#app_content_291549705119', data).find('iframe:first').attr('src');
-				cityvilleFreegifts.Click2(params);
-				
+				cityvilleFreegifts.Click2(params);				
 			}
 			catch(e)
 			{
@@ -602,10 +601,10 @@ var cityvilleBonuses =
 					return;
 				}
 				
-				
-				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
-				
-				try {
+				try 
+				{
+					var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
+					
 					var src = $('#app_content_291549705119', data).find('iframe:first').attr('src');
 					if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
 					
@@ -613,6 +612,7 @@ var cityvilleBonuses =
 				} 
 				catch(err)
 				{
+					console.log(err);
 					if(typeof(retry) == 'undefined')
 					{
 						cityvilleBonuses.Click(id, URI+'&_fb_noscript=1', true);
@@ -700,19 +700,18 @@ var cityvilleBonuses =
 			}
 		});
 	},
-	
+
 	Click3:	function(id, url, retry)
 	{
 		var info = {
 			image: 'gfx/90px-cancel.png'
-		}	
+		}
 		
 		$.ajax({
 			type: "GET",
 			url: url,
 			success: function(data)
 			{
-				
 				try
 				{
 					if($('.errorMessage', data).length > 0)
@@ -726,7 +725,6 @@ var cityvilleBonuses =
 						sendView('bonusError', id, info);	
 						return;
 					}
-					
 					
 					info.text = $('h3.gift_title', data).text();
 					info.title = $(".giftConfirm_name",data).children().text();
