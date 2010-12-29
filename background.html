@@ -311,6 +311,11 @@ function openFacebook()
 
 function sendView(msg, data, data2, data3)
 {
+	if(msg == 'requestError' || msg == 'requestSuccess' || msg == 'bonusError' || msg == 'bonusSuccess')
+	{
+		xhrWorking--;
+	}
+
 	var viewTabUrl = chrome.extension.getURL('giftlist.html');
 						
 	var views = chrome.extension.getViews();
@@ -417,7 +422,6 @@ function sendView(msg, data, data2, data3)
 	
 	if(msg == 'resetBonuses')
 	{
-		
 		var resetIds = [];
 		resetIds.push(data); // element ktory problem dal
 		
@@ -466,22 +470,24 @@ function sendView(msg, data, data2, data3)
 		}
 		xhrWorking--;
 	}
-	
-	if(msg == 'requestError' || msg == 'bonusError' || msg == 'requestSuccess' || msg == 'bonusSuccess')
-	{
-		xhrWorking--;
-	}
 }
 
 function checkForLocationReload(data)
 {
-	var i1 = data.indexOf('script>window.location.replace("');
-	if(i1 == -1) return false;
-	var i2 = data.indexOf('"', i1+32);
-	var text = data.slice(i1+32,i2).replace(/\\/g,'');
-	var url = $('<a href="'+text+'"></a>');
-	
-	return $(url).attr('href');
+	try
+	{
+		var i1 = data.indexOf('script>window.location.replace("');
+		if(i1 == -1) return false;
+		var i2 = data.indexOf('"', i1+32);
+		var text = data.slice(i1+32,i2).replace(/\\/g,'');
+		var url = $('<a href="'+text+'"></a>');
+		return $(url).attr('href');
+	}
+	catch(err)
+	{
+		console.log(err);
+		return false;
+	}
 }
 
 function checkXhrQueue()
@@ -867,6 +873,7 @@ function checkRequests()
 	$.ajax({
 		type: "GET",
 		url: 'http://www.facebook.com/games',
+		timeout: 180000,
 		success: function(data)
 		{
 			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
@@ -1091,6 +1098,7 @@ function checkBonuses(appID)
 		type: "GET",
 		url: 'http://www.facebook.com/ajax/apps/app_stories.php',
 		data: '__a=1&is_game=1&app_ids='+downAppID+'&max_stories='+number+'&user_action=1',		dataType: 'text',
+		timeout: 180000,
 		success: function(data)
 		{
 			try
@@ -1363,6 +1371,7 @@ function startup()
 		type: "GET",
 		url: 'http://www.facebook.com/help/',
 		dataType: 'text',
+		timeout: 30000,
 		success: function(data)
 		{
 			data = data.substr(data.indexOf('<body'),data.lastIndexOf('</body'));
@@ -1419,6 +1428,11 @@ function startup()
 
 $(function()
 {
+	$.ajaxSetup({
+		timeout: 120000,
+	});
+	
+	
 	checkVersion();
 	initializeDefaults();
 

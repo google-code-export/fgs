@@ -242,6 +242,8 @@
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
+		
+		
 		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
@@ -410,8 +412,7 @@
 	
 	function bonusError(id, data)
 	{
-		console.log(data);
-		
+	
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
 		
 		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
@@ -459,7 +460,6 @@
 				
 				if($('div#'+game+'BonusesPendingList:visible').length > 0)
 				{
-					console.log('klik error');
 					$('.optionsMenu', $('#'+game+'Game')).children('input:nth-child(1)').attr('checked', 'checked').trigger('click');
 					$('.optionsMenu', $('#'+game+'Game')).buttonset('refresh');
 				}				
@@ -518,7 +518,6 @@
 			
 			if($('div#'+game+'BonusesPendingList:visible').length > 0)
 			{
-				console.log('klik sukces');
 				$('.optionsMenu', $('#'+game+'Game')).children('input:nth-child(1)').attr('checked', 'checked').trigger('click');
 				$('.optionsMenu', $('#'+game+'Game')).buttonset('refresh');
 			}
@@ -1367,7 +1366,6 @@
 					$('div#'+game+'BonusesPendingList').prepend(htmls[tmp]);
 					$('div#'+game+'BonusesPendingList').children('div').removeClass('awaitingClick').click(processBonusClick);
 					
-					console.log('wybierz menu');
 					selectFirstTab(tmp);
 				}
 				
@@ -2335,7 +2333,6 @@
 	
 	function unhideGameIcon()
 	{
-		console.log($(this).attr('gameID'));
 		bkP.options.games[$(this).attr('gameID')].hiddenIcon = false;
 		bkP.saveOptions();
 		
