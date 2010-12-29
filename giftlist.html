@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.1.0" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=4.0.2" rel="stylesheet" />
 <link rel="shortcut icon" href="gfx/favicon.ico" />
 
 
@@ -10,14 +10,14 @@
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.1.0"></script>
-<script type="text/javascript" src="scripts/time.js?version=4.0.1.0"></script>
-<script type="text/javascript" src="scripts/database.js?version=4.0.1.0"></script>
-<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.1.0"></script>
-<script type="text/javascript" src="scripts/notices.js?version=4.0.1.0"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.2"></script>
+<script type="text/javascript" src="scripts/time.js?version=4.0.2"></script>
+<script type="text/javascript" src="scripts/database.js?version=4.0.2"></script>
+<script type="text/javascript" src="scripts/buttonsAndFilters.js?version=4.0.2"></script>
+<script type="text/javascript" src="scripts/notices.js?version=4.0.2"></script>
 <script type="text/javascript">
 
-// ?version=4.0.1.0
+// ?version=4.0.2
 
 	var bkP = chrome.extension.getBackgroundPage();
 	var userID = bkP.userID;
@@ -241,6 +241,7 @@
 		var newUrl = v.url;
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
+		
 		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
@@ -2187,6 +2188,30 @@
 				updateCount();
 			}
 		});
+		
+		$('#receiveBonusesAllGames').button().click(function()
+		{
+			for(var idd in bkP.options.games)
+			{
+				if(bkP.options.games[idd].enabled)
+				{
+					ReceivePendingBonuses(idd);
+				}
+			}
+		});
+		
+		$('#receiveGiftsAllGames').button().click(function()
+		{
+			for(var idd in bkP.options.games)
+			{
+				if(bkP.options.games[idd].enabled)
+				{
+					ReceivePendingRequests(idd);
+				}
+			}
+		});
+		
+		
 		//Screen is: UNLOCKED (click to lock)
 	});
 	
@@ -2607,7 +2632,9 @@
 		<br style="clear: both" />
 		
 		<h2 style="text-align: center">
+			<button style="font-size: 0.8em;" id="receiveBonusesAllGames">Receive bonuses from all games</button>
 			<input type="checkbox" id="lockScreen" /><label for="lockScreen">Screen is: UNLOCKED (click to lock)</label>
+			<button style="font-size: 0.8em;" id="receiveGiftsAllGames">Receive gifts from all games</button>
 		</h2>
 		
 		<br style="clear: both" />
