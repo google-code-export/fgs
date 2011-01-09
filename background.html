@@ -41,24 +41,6 @@ localStorage.removeItem('options');
 var currentVersion = '4.0.2';
 var portsByName = {};
 
-var console2 =
-{
-	log: function(type, text, html)
-	{
-		
-		if(typeof(text) == 'undefined')
-		{
-			var text = type;
-			var type = '';
-		}
-		
-		if(typeof(html) == 'undefined')
-			var html = '';
-
-		debugLog.push({time: getCurrentTime(), type: type, text: text, html: html});
-	}
-};
-
 // zmienne
 var giftlistFocus,
 	FBloginError,
@@ -271,7 +253,7 @@ function checkVersion()
 
 function showChangelog()
 {
-	chrome.tabs.create({url:'http://rzadki.eu/projects/fgs/#changelog'});
+	//chrome.tabs.create({url:'http://rzadki.eu/projects/fgs/#changelog'});
 }
 
 function loadOptions(userID)
@@ -798,22 +780,6 @@ function updateIcon()
 	{
 		chrome.browserAction.setTitle({title: "FGS: Click to login to Facebook"});
 		chrome.browserAction.setBadgeText({text:"x"});
-	}
-}
-
-function listenerCallback()
-{
-	if(FBloginError === null)
-	{
-		return;
-	}
-	else if(FBloginError === true)
-	{
-		openFacebook();
-	}
-	else
-	{
-		openGiftList();
 	}
 }
 
@@ -1386,10 +1352,11 @@ function startup()
 			if(userID == null || userName == null)
 			{
 				console.log('Checking user_id...');
-				var i1 = data.indexOf('Env={user:')+10;
-				
-				var i2 = data.indexOf(',', i1);
-				userID = data.slice(i1, i2);
+				var i1 = data.indexOf('Env={')+4;
+				var i2 = data.indexOf('};', i1)+1;
+				eval('var tmpObj = '+data.slice(i1,i2)+';');
+				userID = tmpObj.user;
+				//userID = data.slice(i1, i2);
 				userName = $('#navAccountName', data).text();
 			}
 			
@@ -1436,7 +1403,6 @@ $(function()
 	checkVersion();
 	initializeDefaults();
 
-	//chrome.browserAction.onClicked.addListener(listenerCallback);
 	chrome.browserAction.setBadgeText({text:"wait"});
 	chrome.browserAction.setTitle({title: "FGS is not yet loaded... Please wait..."});
 
