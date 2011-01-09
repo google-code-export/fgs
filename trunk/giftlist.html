@@ -60,7 +60,6 @@
 		var opt = 'SendFreeGiftsList';
 		
 		$('input[name="neighArr[]"]', 'div#'+game+opt).removeAttr('checked');
-		
 		$('input[name="neighArr[]"]:lt(25)', 'div#'+game+opt).trigger('click');
 	}
 	
@@ -492,7 +491,8 @@
 		var gameID = $('#'+id).attr('gameID');
 		var game = gamesData[gameID].systemName;
 	
-		setTimeout(function() {
+		setTimeout(function() 
+		{
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
 			$('#'+id).removeClass('hide').removeClass('inProgress').find('img:last').attr('src', data.image);
 			$('#'+id).find('.title').text(data.title);
