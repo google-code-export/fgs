@@ -1,4 +1,4 @@
-var gamesData = 
+FGS.gamesData = 
 {
 	201278444497: 	{ 	
 						name: 'FrontierVille',	systemName: 'frontierville', link: 'http://apps.facebook.com/frontierville/',
@@ -358,7 +358,7 @@ var gamesData =
 					},
 };
 
-var submenuButtons =
+FGS.submenuButtons =
 {
 	'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
 							submenu: {
