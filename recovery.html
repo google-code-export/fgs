@@ -8,21 +8,21 @@
 
 	function appendDB(gameID, num, name)
 	{
-		database.db.transaction(function(tx)
+		FGS.database.db.transaction(function(tx)
 		{
 			if(gameID == null)
 			{
 				tx.executeSql("SELECT COUNT(*) as count FROM "+name, [], function(tx2, res2)
 				{
 					$('#totals > tbody').append('<tr><td class="first">'+num+'.</td><td>'+name+'</td><td>'+res2.rows.item(0).count+'</td><td class="last"><a href="#" table="'+name+'" class="emptyDB">Empty</a></td></tr>');
-				}, database.onSuccess, database.onError);
+				}, FGS.database.onSuccess, FGS.database.onError);
 			}
 			else
 			{
 				tx.executeSql("SELECT COUNT(*) as count FROM "+name+ " where gameID = ?", [gameID], function(tx2, res2)
 				{
 					$('#'+gameID+' > tbody').append('<tr><td class="first">'+num+'.</td><td>'+name+'</td><td>'+res2.rows.item(0).count+'</td><td class="last"><a href="#" table="'+name+'" gameID="'+gameID+'" class="emptyDB">Empty</a></td></tr>');
-				}, database.onSuccess, database.onError);
+				}, FGS.database.onSuccess, FGS.database.onError);
 			}
 		});
 	}
@@ -30,7 +30,7 @@
 	
 	function listDb()
 	{
-		database.db.transaction(function(tx)
+		FGS.database.db.transaction(function(tx)
 		{
 			tx.executeSql("SELECT * FROM sqlite_master where type = 'table'", [], function(tx, res)
 			{
@@ -63,13 +63,13 @@
 						}					
 					}
 				}
-			}, database.onSuccess, database.onError);
+			}, FGS.database.onSuccess, FGS.database.onError);
 		});
 	}
 	
 	$(function()
 	{
-		database.open(bkP.userID);
+		FGS.database.open(bkP.userID);
 		listDb();
 		
 		$('.emptyDB').live('click',function()
@@ -79,9 +79,9 @@
 			
 			if(typeof(gameID) == "undefined")
 			{
-				database.db.transaction(function(tx)
+				FGS.database.db.transaction(function(tx)
 				{
-					tx.executeSql('DELETE FROM '+table, [], database.onSuccess, database.onError);
+					tx.executeSql('DELETE FROM '+table, [], FGS.database.onSuccess, FGS.database.onError);
 					bkP.newElements = 0;
 					bkP.updateIcon();
 					$('body').html('');
@@ -90,9 +90,9 @@
 			}
 			else
 			{
-				database.db.transaction(function(tx)
+				FGS.database.db.transaction(function(tx)
 				{
-					tx.executeSql('DELETE FROM '+table+' where gameID = ?', [gameID], database.onSuccess, database.onError);
+					tx.executeSql('DELETE FROM '+table+' where gameID = ?', [gameID], FGS.database.onSuccess, FGS.database.onError);
 					bkP.newElements = 0;
 					bkP.updateIcon();
 					$('body').html('');

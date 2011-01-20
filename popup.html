@@ -8,18 +8,18 @@
 	function updateButton()
 	{
 		$('#wait, #login, #menu').hide();
-		if(bkP.FBloginError === null)
+		if(bkP.FGS.FBloginError === null)
 		{
 			$("#wait").show();
 		}
-		else if(bkP.FBloginError === true)
+		else if(bkP.FGS.FBloginError === true)
 		{
 			$("#login").show();
 		}
 		else
 		{
 			$("#menu").show();
-			$("#giftlist > span > span").text("("+bkP.newElements+")");
+			$("#giftlist > span > span").text("("+bkP.FGS.newElements+")");
 		}				
 		setTimeout(updateButton, 100);
 	}
@@ -27,14 +27,14 @@
 	$(function()
 	{
 		$("#giftlist").click(function(){
-			bkP.openGiftList();
+			bkP.FGS.openGiftList();
 		});
 		$("#panic").click(function(){
-			bkP.openRecovery();
+			bkP.FGS.openRecovery();
 		});
 		
 		$('#login').click(function(){
-			bkP.openFacebook();
+			bkP.FGS.openFacebook();
 		});
 
 		updateButton();

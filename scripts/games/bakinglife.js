@@ -1,58 +1,53 @@
-var bakinglifeRequests = 
-{	
-	Click: function(id, URI, retry)
+FGS.bakinglifeRequests = 
+{
+	Click: function(currentType, id, currentURL, retry)
 	{
-		var info = {
-			image: 'gfx/90px-cancel.png'
-		}
+		var $ = FGS.jQuery;
+		$retry 	= arguments.callee;
+		$type	= currentType;
+		var info = {}
 		
 		$.ajax({
 			type: "GET",
-			url: URI,
+			url: currentURL,
 			dataType: 'text',
-			success: function(data2)
+			success: function(dataStr)
 			{
-			
-				var redirectUrl = checkForLocationReload(data2);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						console.log(getCurrentTime()+'[B] Connection error while receiving gift, Retrying bonus with ID: '+id);
-						bakinglifeRequests.Click(id, redirectUrl, true);
+						$retry(currentType, id, redirectUrl, true);
 					}
 					else
 					{
-						info.error = 'receiving';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						database.updateErrorItem('requests', id, info);
-						sendView('requestError', id, info);	
+						FGS.endWithError('receiving', $type, id);
 					}
 					return;
 				}
 				
-				var dataFull = data2;
-				var data = data2.substr(data2.indexOf('<body'),data2.lastIndexOf('</body'));
-				
-				if($('#app338051018849_iframe_canvas', data). length > 0)
+				try
 				{
-					bakinglifeRequests.Click2(id, $('#app338051018849_iframe_canvas', data).attr('src'));
+					var src = FGS.findIframeAfterId('#app_content_338051018849', dataStr);
+					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					
+					FGS.bakinglifeRequests.Click2(currentType, id, src);
 				}
-				else
-				{							
+				catch(err)
+				{
+					dump(err);
+					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						bakinglifeRequests.Click(id, URI+'&_fb_noscript=1', true);
-						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
-						info.error = 'receiving';
-						info.time = Math.round(new Date().getTime() / 1000);
-						database.updateErrorItem('requests', id, info);
-						sendView('requestError', id, info);	
+						FGS.endWithError('receiving', $type, id);
 					}
 				}
 			},
@@ -60,94 +55,82 @@ var bakinglifeRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					bakinglifeRequests.Click(id, URI+'&_fb_noscript=1', true);
+					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
-					info.error = 'connection';
-					info.time = Math.round(new Date().getTime() / 1000);
-					sendView('requestError', id, info);
+					FGS.endWithError('connection', $type, id);
 				}
 			}
 		});
 	},
-	Click2: function(id, URI, retry)
+	
+	Click2: function(currentType, id, currentURL, retry)
 	{
-		var info = {
-			image: 'gfx/90px-cancel.png'
-		}
+		var $ = FGS.jQuery;
+		$retry 	= arguments.callee;
+		$type	= currentType;
+		var info = {}
 		
 		$.ajax({
 			type: "GET",
-			url: URI,
+			url: currentURL,
 			dataType: 'text',
-			success: function(data2)
+			success: function(dataStr)
 			{
-				
+				var dataHTML = FGS.HTMLParser(dataStr);
 				
 				try
 				{
-					if(data2.indexOf('Make sure you click on the request within one week') != -1)
+					if(dataStr.indexOf('Make sure you click on the request within one week') != -1)
 					{
-						info.error = 'limit';
-						info.time = Math.round(new Date().getTime() / 1000);
-						info.error_text = 'Make sure you click on the request within one week.';
-						
-						database.updateErrorItem('requests', id, info);
-						sendView('requestError', id, info);
+						var error_text = 'Make sure you click on the request within one week.';
+						FGS.endWithError('limit', $type, id, error_text);
 						return;
 					}
 					
-					var data = data2;
-					
-					if($('.gift', data).length > 0)
+					if($('.gift', dataHTML).length > 0)
 					{
-						info.image = $(".gift",data).children('img').attr("src");
-						info.title = $(".gift",data).children('img').attr("alt");
-						info.text  = $(".friendContainer2",data).find('b:first').text();
+						info.image = $(".gift",dataHTML).children('img').attr("src");
+						info.title = $(".gift",dataHTML).children('img').attr("alt");
+						info.text  = $(".friendContainer2",dataHTML).find('b:first').text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						database.updateItem('requests', id, info);
-						sendView('requestSuccess', id, info);						
+						FGS.endWithSuccess($type, id, info);
 					}
-					else if($('td.boxPadding', data).find('h1').length > 0)
+					else if($('td.boxPadding', dataHTML).find('h1').length > 0)
 					{
-						info.image = $('td.boxPadding', data).find('img:first').attr('src');
+						info.image = $('td.boxPadding', dataHTML).find('img:first').attr('src');
 						
-						if($('td.boxPadding', data).find('.bigGreen').length > 0)
+						if($('td.boxPadding', dataHTML).find('.bigGreen').length > 0)
 						{
-							info.title = $('td.boxPadding', data).find('.bigGreen').text();
+							info.title = $('td.boxPadding', dataHTML).find('.bigGreen').text();
 						}
 						else
 						{
-							info.title = $('td.boxPadding', data).find('h1:first').text();
+							info.title = $('td.boxPadding', dataHTML).find('h1:first').text();
 						}
-						info.text  = jQuery.trim($('td.boxPadding', data).find('p:first').text());
+						info.text  = $.trim($('td.boxPadding', dataHTML).find('p:first').text());
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						database.updateItem('requests', id, info);
-						sendView('requestSuccess', id, info);
+						FGS.endWithSuccess($type, id, info);
 					}
 					else
 					{
-						throw{}
+						throw {message: dataStr}
 					}
 				}
-				catch(e)
-				{							
+				catch(err)
+				{
+					dump(err);
+					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						bakinglifeRequests.Click2(id, URI+'&_fb_noscript=1', true);
-						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
+						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
-						info.error = 'receiving';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						database.updateErrorItem('requests', id, info);
-						sendView('requestError', id, info);	
+						FGS.endWithError('receiving', $type, id);
 					}
 				}
 			},
@@ -155,73 +138,66 @@ var bakinglifeRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					console.log(getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-					bakinglifeRequests.Click2(id, URI+'&_fb_noscript=1', true);
+					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
-					info.error = 'connection';
-					info.time = Math.round(new Date().getTime() / 1000);
-					sendView('requestError', id, info);
+					FGS.endWithError('connection', $type, id);
 				}
 			}
 		});
 	}
 };
 
-var bakinglifeBonuses = 
-{	
-	Click: function(id, URI, retry)
+FGS.bakinglifeBonuses = 
+{
+	Click: function(currentType, id, currentURL, retry)
 	{
-		var info = {
-			image: 'gfx/90px-cancel.png'
-		}
+		var $ = FGS.jQuery;
+		$retry 	= arguments.callee;
+		$type	= currentType;
+		var info = {}
+		
 		
 		$.ajax({
 			type: "GET",
-			url: URI,
+			url: currentURL,
 			dataType: 'text',
-			success: function(data)
+			success: function(dataStr)
 			{
-				var redirectUrl = checkForLocationReload(data);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						console.log(getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-						bakinglifeBonuses.Click(id, redirectUrl, true);
+						$retry(currentType, id, redirectUrl, true);
 					}
 					else
 					{
-						info.error = 'receiving';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						database.updateErrorItem('bonuses', id, info);
-						sendView('bonusError', id, info);	
+						FGS.endWithError('receiving', $type, id);
 					}
 					return;
 				}
-			
-				var data = data.slice(data.indexOf('<body'),data.lastIndexOf('</body')+7);
-				
-				try {
-					var src = $('#app338051018849_iframe_canvas', data).attr('src');
-					if (typeof(src) == 'undefined') throw {message:"Cannot find <iframe src= in page"}
-					bakinglifeBonuses.Click2(id, src);
-				} 
+								
+				try 
+				{
+					var src = FGS.findIframeAfterId('#app_content_338051018849', dataStr);
+					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					FGS.bakinglifeBonuses.Click2(currentType, id, src);
+				}
 				catch(err)
 				{
+					dump(err);
+					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						bakinglifeBonuses.Click(id, URI+'&_fb_noscript=1', true);
+						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
-						info.error = 'receiving';
-						info.time = Math.round(new Date().getTime() / 1000);
-						database.updateErrorItem('bonuses', id, info);
-						sendView('bonusError', id, info);
+						FGS.endWithError('receiving', $type, id);
 					}
 				}
 			},
@@ -229,83 +205,80 @@ var bakinglifeBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					bakinglifeBonuses.Click(id, URI+'&_fb_noscript=1', true);
+					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
-					info.error = 'connection';
-					info.time = Math.round(new Date().getTime() / 1000);
-					sendView('bonusError', id, info);
+					FGS.endWithError('connection', $type, id);
 				}
 			}
 		});
 	},
 	
-	Click2:	function(id, url, retry)
+	Click2:	function(currentType, id, currentURL, retry)
 	{
-		var info = {
-			image: 'gfx/90px-cancel.png'
-		}
-
+		var $ = FGS.jQuery;
+		$retry 	= arguments.callee;
+		$type	= currentType;
+		var info = {}
+		
 		$.ajax({
 			type: "GET",
-			url: url,
-			success: function(data)
+			url: currentURL,
+			success: function(dataStr)
 			{
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
 				try
 				{
-					var out = jQuery.trim($('td.boxPadding', data).find('p:first').text());
-					var out2 = jQuery.trim($('td.boxPadding', data).find('h1:first').text());
+					var out = $.trim($('td.boxPadding', dataHTML).find('p:first').text());
+					var out2 = $.trim($('td.boxPadding', dataHTML).find('h1:first').text());
 					
 					if(out.indexOf('already received') != -1 || out.indexOf('Make sure you click on the story within') != -1 || out2.indexOf('Bad News!') != -1 || out2.indexOf('Oops!') != -1)
 					{
-						info.error = 'limit';
-						info.time = Math.round(new Date().getTime() / 1000);
-						info.error_text = out;
-
-						database.updateErrorItem('bonuses', id, info);
-						sendView('bonusError', id, info);	
-					
+						var error_text = out;
+						FGS.endWithError('limit', 'bonuses', id, error_text);						
 						return;
 					}
 					
-					info.image = $('td.boxPadding', data).find('img:first').attr('src');
+					info.image = $('td.boxPadding', dataHTML).find('img:first').attr('src');
 					
-					if($('td.boxPadding', data).find('.bigGreen').length > 0)
+					if($('td.boxPadding', dataHTML).find('.bigGreen').length > 0)
 					{
-						info.title = $('td.boxPadding', data).find('.bigGreen').text();
+						info.title = $('td.boxPadding', dataHTML).find('.bigGreen').text();
 					}
 					else
 					{
-						info.title = $('td.boxPadding', data).find('h1:first').text();
+						info.title = $('td.boxPadding', dataHTML).find('h1:first').text();
 					}
-					info.text  = jQuery.trim(out);
+					info.text  = $.trim(out);
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					
-					database.updateItem('bonuses', id, info);
-					sendView('bonusSuccess', id, info);
+					FGS.endWithSuccess($type, id, info);
 				}
 				catch(err)
 				{
-					console.log(err);
-					info.error = 'receiving';
-					info.time = Math.round(new Date().getTime() / 1000);
-					database.updateErrorItem('bonuses', id, info);
-					sendView('bonusError', id, info);
+					dump(err);
+					dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', $type, id);
+					}
 				}
 			},
 			error: function()
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					bakinglifeBonuses.Click2(id, url, true);
+					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
-					info.error = 'connection';
-					info.time = Math.round(new Date().getTime() / 1000);
-					sendView('bonusError', id, info);
+					FGS.endWithError('connection', $type, id);
 				}
 			}
 		});
