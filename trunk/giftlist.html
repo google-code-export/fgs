@@ -484,12 +484,23 @@
 			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false));
 			$('#'+id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
 			$('#'+id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
-			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);	
+			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);
+			
+			if(typeof $('#'+id).attr('isLiked') !== 'undefined')
+			{
+				updateLikeState('#'+id, 0);
+			}
+			
+			if(typeof $('#'+id).attr('isCommented') !== 'undefined')
+			{
+				updateCommentState('#'+id, 0);
+			}
 			
 			if(data.text != '')
 			{
 				$('#'+id).find('.title').next('span').text(data.text);
 			}
+			
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 			updateCount(gameID);
 			
@@ -2183,27 +2194,62 @@
 		}
 	}
 	
-	function updateLike(bonusID, success)
+	function updateLike(bonusID, error)
 	{
-		if(success == 0)
+		
+		var img = $('img.likeBonus', '#'+bonusID);
+		
+		if(img.length > 0)
 		{
-			$('img.likeBonus', '#'+bonusID).addClass('disabledLike').removeClass('likeBonus').attr('src', 'gfx/like-off.png').css('cursor', 'default').attr('title', 'You already liked this');
+			updateLikeState('#'+bonusID, error);
 		}
 		else
 		{
-			$('img.likeBonus', '#'+bonusID).attr('src', 'gfx/like.png');
+			if(error == 0)
+			{
+				$('#'+bonusID).attr('isLiked', 1);
+			}
 		}
 	}
 	
-	function updateComment(bonusID, success)
+	function updateLikeState(selector, error)
 	{
-		if(success == 0)
+		if(error == 0)
 		{
-			$('img.commentBonus', '#'+bonusID).addClass('disabledComment').removeClass('commentBonus').attr('src', 'gfx/comment-off.png').css('cursor', 'default').attr('title', 'You already commented this');
+			$('img.likeBonus', selector).addClass('disabledLike').removeClass('likeBonus').attr('src', 'gfx/like-off.png').css('cursor', 'default').attr('title', 'You already liked this');
 		}
 		else
 		{
-			$('img.commentBonus', '#'+bonusID).attr('src', 'gfx/comment.png');
+			$('img.likeBonus', selector).attr('src', 'gfx/like.png');
+		}
+	}
+	
+	function updateCommentState(selector, error)
+	{
+		if(error == 0)
+		{
+			$('img.commentBonus', selector).addClass('disabledComment').removeClass('commentBonus').attr('src', 'gfx/comment-off.png').css('cursor', 'default').attr('title', 'You already commented this');
+		}
+		else
+		{
+			$('img.commentBonus', selector).attr('src', 'gfx/comment.png');
+		}
+	}
+	
+	function updateComment(bonusID, error)
+	{
+		var img = $('img.commentBonus', '#'+bonusID);
+		
+		if(img.length > 0)
+		{
+			updateCommentState('#'+bonusID, error);
+		}
+		else
+		{
+			if(error == 0)
+			{
+				$('#'+bonusID).attr('isCommented', 1);
+			}
 		}
 	}
 	
