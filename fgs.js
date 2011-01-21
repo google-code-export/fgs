@@ -1,5 +1,5 @@
 var FGS = {
-	currentVersion: '1.0.3',
+	currentVersion: '4.0.3',
 	alreadyOpened: false,
 	
 	initializeDefaults: function ()
@@ -31,7 +31,7 @@ var FGS = {
 			checkBonusesTimeout: 60,
 			deleteOlderThan: 0,
 			deleteHistoryOlderThan: 0,
-			displayXbonuses: 0,
+			displayXbonuses: 300,
 			collectXbonusesAtTheSameTime: 5,
 		}
 
