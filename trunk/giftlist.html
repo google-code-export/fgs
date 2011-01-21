@@ -5,13 +5,13 @@
 <link type="text/css" href="css/jquery.contextMenu.css?version=4.0.2" rel="stylesheet" />
 <link rel="shortcut icon" href="gfx/favicon.ico" />
 <title>Facebook Games Simplifier</title>
-<script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
 <script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.2"></script>
 <script type="text/javascript" src="scripts/time.js?version=4.0.2"></script>
 <script type="text/javascript" src="scripts/notices.js?version=4.0.2"></script>
-<script type="text/javascript" src="scripts/browser.js?version=4.0.2"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=4.0.2"></script>
 <script type="text/javascript">
 	var loaded = 0;	
 	
@@ -38,6 +38,47 @@
 		{
 			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds. To unhide it, follow steps in this link:<br /><br /><a href="http://www.kimwoodbridge.com/updated-how-to-unhide-a-facebook-application-or-page/" target="_blank">LINK</a>.</h3>');
 		}
+	}
+	
+	function ListNeighbours(gameID, neigh)
+	{
+		var game = bkP.gamesData[gameID].systemName;
+		var opt = 'SendFreeGiftsList';
+	
+		$('.sendToNeighboursList','div#'+game+opt).html('<br style="clear:both" />');
+
+		var html = '';
+		
+		$(neigh).each(function(k,val)
+		{
+			for(var i in val)
+			{
+				var id = i;
+			}
+			var v = val[id];
+			
+			
+			if(v.name.length > 20)
+			{
+				var nameText = v.name.substring(0,20)+'...';
+			}
+			else
+			{
+				var nameText = v.name;
+			}
+			
+			html += '<div style="float: left; width: 250px;margin-right: 10px;"><input type="checkbox" neighName="'+v.name+'" gameID="'+gameID+'" neighID="'+id+'" value="'+id+'" class="neighborCheckbox" name="neighArr[]"> <img src="icons/favourite-bw.png" class="addToSendFav" title="Click to add to favourites"> '+nameText+'</div>';
+		});
+		
+		$('.sendToNeighboursList','div#'+game+opt).children('br').before(html);
+
+		
+		$('.neighborCheckbox', 'div#'+game+opt).click(processSelectSendTo);	
+		$('.addToSendFav',$('.sendToNeighboursList','div#'+game+opt)).bind('click',processAddFavourite);
+		
+		$('.sendToFavouritesList','div#'+game+opt).html('');
+		
+		loadNeighboursFromDatabase(gameID, game, opt);
 	}
 
 	function capitaliseFirstLetter(string)
@@ -630,6 +671,57 @@
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 			updateCount(gameID);
 		}, 1000);
+	}
+	
+	function ClearManualBonuses(gameID)
+	{
+		var game = bkP.gamesData[gameID].systemName;
+		
+		
+		var delReqArr = delBonArr = [];
+
+		$('#'+game+'ManualBonusesList').children('div').not('.hideScreenLocked').each(function()
+		{
+			var elID = $(this).attr('id');
+			if($(this).hasClass('manualRequest'))
+			{
+				var postData = $(this).attr('postData');
+				var i1 = postData.indexOf('&actions%5B');
+				
+				var postData = postData.slice(0,i1);
+				postData += '&actions[reject]=Ignore';
+				bkP.emptyUnwantedGifts(postData);
+				
+				delReqArr.push(elID);
+			}
+			else
+			{
+				delBonArr.push(elID);
+			}
+			
+			$(this).remove();
+		});
+		updateCount(gameID);
+		
+		while(delReqArr.length > 0)
+		{
+			var tmpArr = delReqArr.slice(0,500);
+			
+			var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
+			bkP.database.deleteItemArray('requests', gameID, str, 0);
+			
+			delReqArr = delReqArr.slice(500);						
+		}
+		
+		while(delBonArr.length > 0)
+		{
+			var tmpArr = delBonArr.slice(0,500);
+			
+			var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
+			bkP.database.deleteItemArray('bonuses', gameID, str, 0);
+			
+			delBonArr = delBonArr.slice(500);						
+		}
 	}
 	
 	function ClearPendingBonuses(gameID)
