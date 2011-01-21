@@ -128,6 +128,7 @@ FGS.likeBonus = function (bonusID, autolike)
 
 FGS.sendView = function (msg, data, data2, data3)
 {
+	dump(msg);
 	if(msg == 'requestError' || msg == 'requestSuccess' || msg == 'bonusError' || msg == 'bonusSuccess')
 	{
 		FGS.xhrWorking--;
