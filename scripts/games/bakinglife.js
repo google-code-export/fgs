@@ -25,7 +25,7 @@ FGS.bakinglifeRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -47,7 +47,7 @@ FGS.bakinglifeRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -59,7 +59,7 @@ FGS.bakinglifeRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -85,7 +85,7 @@ FGS.bakinglifeRequests =
 					if(dataStr.indexOf('Make sure you click on the request within one week') != -1)
 					{
 						var error_text = 'Make sure you click on the request within one week.';
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -96,7 +96,7 @@ FGS.bakinglifeRequests =
 						info.text  = $(".friendContainer2",dataHTML).find('b:first').text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else if($('td.boxPadding', dataHTML).find('h1').length > 0)
 					{
@@ -113,7 +113,7 @@ FGS.bakinglifeRequests =
 						info.text  = $.trim($('td.boxPadding', dataHTML).find('p:first').text());
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -130,7 +130,7 @@ FGS.bakinglifeRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -142,7 +142,7 @@ FGS.bakinglifeRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -176,7 +176,7 @@ FGS.bakinglifeBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -197,7 +197,7 @@ FGS.bakinglifeBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -209,7 +209,7 @@ FGS.bakinglifeBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -237,7 +237,7 @@ FGS.bakinglifeBonuses =
 					if(out.indexOf('already received') != -1 || out.indexOf('Make sure you click on the story within') != -1 || out2.indexOf('Bad News!') != -1 || out2.indexOf('Oops!') != -1)
 					{
 						var error_text = out;
-						FGS.endWithError('limit', 'bonuses', id, error_text);						
+						FGS.endWithError('limit', currentType, id, error_text);						
 						return;
 					}
 					
@@ -254,7 +254,7 @@ FGS.bakinglifeBonuses =
 					info.text  = $.trim(out);
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -266,7 +266,7 @@ FGS.bakinglifeBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -278,7 +278,7 @@ FGS.bakinglifeBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

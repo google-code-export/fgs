@@ -303,7 +303,7 @@ FGS.ravenwoodRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -336,7 +336,7 @@ FGS.ravenwoodRequests =
 							info.time = Math.round(new Date().getTime() / 1000);
 						}
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -353,7 +353,7 @@ FGS.ravenwoodRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -365,7 +365,7 @@ FGS.ravenwoodRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

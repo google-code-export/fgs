@@ -24,7 +24,7 @@ FGS.sororityRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -46,7 +46,7 @@ FGS.sororityRequests =
 					if(out.indexOf('been claimed. Go claim ') != -1 || out.indexOf('You can only claim gifts from your friends') != -1)
 					{
 						var error_text = 'This Gift has already been claimed.';
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 
@@ -65,7 +65,7 @@ FGS.sororityRequests =
 						info.time = Math.round(new Date().getTime() / 1000);
 					}
 					
-					FGS.endWithSuccess($type, id, info);	
+					FGS.endWithSuccess(currentType, id, info);	
 				} 
 				catch(err)
 				{
@@ -77,7 +77,7 @@ FGS.sororityRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -89,7 +89,7 @@ FGS.sororityRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

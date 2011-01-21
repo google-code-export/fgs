@@ -186,7 +186,7 @@ FGS.fishvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -207,7 +207,7 @@ FGS.fishvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -219,7 +219,7 @@ FGS.fishvilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -245,7 +245,7 @@ FGS.fishvilleRequests =
 					if(dataStr.indexOf('seem to have already accepted this request') != -1)
 					{
 						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
-						FGS.endWithError('limit', $type, id, error_text);	
+						FGS.endWithError('limit', currentType, id, error_text);	
 					}
 					else if($('.reqFrom_img', dataHTML).length > 0)
 					{
@@ -254,7 +254,7 @@ FGS.fishvilleRequests =
 						info.text  = $(".reqFrom_name",dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
 					{
@@ -287,7 +287,7 @@ FGS.fishvilleRequests =
 						info.text  = $(".giftFrom_name",dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -304,7 +304,7 @@ FGS.fishvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -316,7 +316,7 @@ FGS.fishvilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

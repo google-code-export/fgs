@@ -625,8 +625,8 @@ FGS.getFBML = function(params, retry)
 
 				var arr = [];
 				var i0 = 0;
-				var i1 = slice.indexOf('},"', i0);		
-				
+				var i1 = slice.indexOf('},"', i0);
+						
 				while(i1 != -1)
 				{
 					var item = slice.slice(i0, i1+1);

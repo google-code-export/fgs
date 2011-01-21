@@ -283,7 +283,7 @@ FGS.pokerRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -293,14 +293,13 @@ FGS.pokerRequests =
 					if(dataStr.indexOf('This gift is old and expired! Make sure to accept your gifts as soon as possible next time') != -1)
 					{
 						var error_text = 'This gift is old and expired! Make sure to accept your gifts as soon as possible next time.';
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;						
 					}
 
 					var el = $('.acceptedGift', dataHTML);		
 
 					dump(el.length);
-					return;
 					
 					
 					if($(el).length > 0)
@@ -322,7 +321,7 @@ FGS.pokerRequests =
 						}
 						info.thanks = sendInfo;
 						
-						FGS.endWithSuccess($type, id, info);				
+						FGS.endWithSuccess(currentType, id, info);				
 					}
 					else
 					{
@@ -339,7 +338,7 @@ FGS.pokerRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -351,7 +350,7 @@ FGS.pokerRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

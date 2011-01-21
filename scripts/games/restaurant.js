@@ -24,7 +24,7 @@ FGS.restaurantRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -34,7 +34,7 @@ FGS.restaurantRequests =
 					if(dataStr.indexOf('have already accepted this gift or it has expired') != -1)
 					{
 						var error_text = 'You have already accepted this gift or it has expired.';					
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 
@@ -63,7 +63,7 @@ FGS.restaurantRequests =
 					info.image = $('#app43016202276_gift_img', dataHTML).children('img').attr('src');
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);					
+					FGS.endWithSuccess(currentType, id, info);					
 				}
 				catch(err)
 				{
@@ -75,7 +75,7 @@ FGS.restaurantRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -87,7 +87,7 @@ FGS.restaurantRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

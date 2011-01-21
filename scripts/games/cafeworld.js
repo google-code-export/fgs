@@ -167,7 +167,7 @@ FGS.cafeworldRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -177,18 +177,18 @@ FGS.cafeworldRequests =
 					if(dataStr.indexOf('There is a problem in the kitchen') != -1)
 					{
 						var error_text = 'There was problem receiving this gift. You have probably already accepted it';
-						FGS.endWithError('limit', 'requests', id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
 					if(dataStr.indexOf('is now your neighbor!') != -1)
 					{
-						info.image = 'gfx/90px-check.png';
+						info.image = '';
 						info.title = '';
-						info.text = 'is now your neighbor!';
+						info.text = 'New neighbour';
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 
@@ -252,7 +252,7 @@ FGS.cafeworldRequests =
 						info.text  = from;
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -269,7 +269,7 @@ FGS.cafeworldRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -281,7 +281,7 @@ FGS.cafeworldRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -314,28 +314,42 @@ FGS.cafeworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
 				
 				if(dataStr.indexOf('There are no more servings left') != -1 || dataStr.indexOf('Looks like all the prizes have') != -1 || dataStr.indexOf('already claimed') != -1 || dataStr.indexOf('You are either too late or you clicked here previously') != -1 || dataStr.indexOf('You already received this bonus') != -1 || dataStr.indexOf(' Perfect Servings once today!') != -1 || dataStr.indexOf('already received all the help they could handle') != -1 || dataStr.indexOf('You have already helped today!') != -1)
 				{
-					FGS.endWithError('limit', 'bonuses', id);
+					FGS.endWithError('limit', currentType, id);
 					return;
 				}
 				
 				if(dataStr.indexOf('please pick a mystery gift as a thank you') != -1)
 				{
 					var newUrl = $('.lotto-container', dataHTML).children('a:first').attr('href');
-					$retry(currentType, id, unescape(newUrl), true);
+					if(typeof(retry) == 'undefined')
+					{
+						$retry(currentType, id, unescape(newUrl), true);
+					}
+					else
+					{
+						throw {message: 'error'}
+					}
 					return;
 				}
 				
 				if(dataStr.indexOf('give you some in return but they can') != -1)
 				{
 					var newUrl = $('#app101539264719_item_wrapper', dataHTML).find('a:first').attr('href');
-					$retry(currentType, id, unescape(newUrl), true);
+					if(typeof(retry) == 'undefined')
+					{
+						$retry(currentType, id, unescape(newUrl), true);
+					}
+					else
+					{
+						throw {message: 'error'}
+					}
 					return;
 				}
 
@@ -513,7 +527,7 @@ FGS.cafeworldBonuses =
 						$.get(URL);
 					}
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -525,7 +539,7 @@ FGS.cafeworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -537,7 +551,7 @@ FGS.cafeworldBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

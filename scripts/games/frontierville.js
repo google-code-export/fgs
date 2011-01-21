@@ -212,7 +212,7 @@ FGS.frontiervilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -222,7 +222,7 @@ FGS.frontiervilleRequests =
 					if($('div.giftLimit', dataHTML).length > 0)
 					{
 						var error_text = $.trim($('div.giftLimit', dataHTML).text());
-						FGS.endWithError('limit', $type, id, error_text);					
+						FGS.endWithError('limit', currentType, id, error_text);					
 						return;
 					}				
 				
@@ -233,7 +233,7 @@ FGS.frontiervilleRequests =
 						info.text  = $(".giftFrom_name",dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
 					{
@@ -266,7 +266,7 @@ FGS.frontiervilleRequests =
 						info.text  = $(".giftFrom_name",dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -283,7 +283,7 @@ FGS.frontiervilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -295,7 +295,7 @@ FGS.frontiervilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -328,7 +328,7 @@ FGS.frontiervilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -338,7 +338,7 @@ FGS.frontiervilleBonuses =
 					if($('.fail_message', dataHTML).length > 0)
 					{
 						var error_text = $('.fail_message', dataHTML).text();
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					else if($('.morePending_bttn', dataHTML).length > 0)
@@ -381,11 +381,11 @@ FGS.frontiervilleBonuses =
 										info.text = '';
 										info.time = Math.round(new Date().getTime() / 1000);
 									
-										FGS.endWithSuccess($type, id, info);
+										FGS.endWithSuccess(currentType, id, info);
 									}
 									else
 									{
-										FGS.endWithError('other', $type, id, error_text);
+										FGS.endWithError('other', currentType, id, error_text);
 									}
 								}
 								else
@@ -396,7 +396,7 @@ FGS.frontiervilleBonuses =
 									info.text = '';
 									info.time = Math.round(new Date().getTime() / 1000);
 								
-									FGS.endWithSuccess($type, id, info);
+									FGS.endWithSuccess(currentType, id, info);
 								}
 							},
 							error: function()
@@ -407,7 +407,7 @@ FGS.frontiervilleBonuses =
 								}
 								else
 								{
-									FGS.endWithError('connection', $type, id);
+									FGS.endWithError('connection', currentType, id);
 								}
 							}
 						});
@@ -427,7 +427,7 @@ FGS.frontiervilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -439,7 +439,7 @@ FGS.frontiervilleBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
