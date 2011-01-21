@@ -52,6 +52,7 @@ var FGS = {
 		FGS.xhrQueue = [];
 		FGS.xhrWorking = 0;
 		FGS.xhrInterval = null;
+		FGS.xhrWorkingQueue = {};
 		FGS.debugLog = [];
 	},
 	
@@ -84,7 +85,7 @@ var FGS = {
 	{
 		var $ = FGS.jQuery;
 		$retry 	= arguments.callee;
-		$type	= 'request';
+		var currentType	= 'request';
 		var info = {}
 		
 		dataPost+='&nctr[_mod]=pagelet_requests';
@@ -138,7 +139,7 @@ var FGS = {
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -150,7 +151,7 @@ var FGS = {
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -308,7 +309,6 @@ var FGS = {
 		}
 		catch(err)
 		{
-			
 			dump('checkForLocationReload'+err);
 			return false;
 		}
@@ -326,9 +326,13 @@ var FGS = {
 			var viewMsg = 'bonusSuccess';
 			var table = 'bonuses';
 		}
-		
+		else
+		{
+			alert('nieznany type - powiedz mezowi: '+type+' ID: '+id);
+		}
+		FGS.sendView(viewMsg, id, info);
 		FGS.database.updateItem(table, id, info);
-		FGS.sendView(viewMsg, id, info);	
+			
 	},
 	
 	endWithError: function(error, type, id, error_text)
@@ -349,6 +353,10 @@ var FGS = {
 		{
 			var viewMsg = 'bonusError';
 			var table = 'bonuses';
+		}
+		else
+		{
+			alert('nieznany type - powiedz mezowi: '+type+' ID: '+id);
 		}
 		
 		if(error == 'receiving')
@@ -377,6 +385,11 @@ var FGS = {
 			
 			FGS.database.updateErrorItem(table, id, info);
 			FGS.sendView(viewMsg, id, info);	
+		}
+		else
+		{
+			FGS.sendView(viewMsg, id, info);
+			alert('nieznany error - powiedz mezowi: '+error+' ID: '+id);
 		}
 	},
 	
@@ -411,7 +424,11 @@ var FGS = {
 				var url = v.slice(i1,i2);
 				var url = $(FGS.HTMLParser('<p class="link" href="'+url+'">abc</p>')).find('p.link');
 				nextUrl = $(url).attr('href');
-			}		
+			}
+			else
+			{
+				return '';
+			}
 			return nextUrl;
 		}
 		catch(e)
@@ -430,7 +447,7 @@ var FGS = {
 			var data = data.slice(i1);
 			
 			var count = data.match(/<iframe[^>]*?.*?<\/iframe>/g);
-			if(count == 0) throw{}
+			if(count == 0) throw {message: 'iframe not found'}
 			
 			var nextUrl = false;
 			v = count[0];
@@ -443,7 +460,11 @@ var FGS = {
 				var url = v.slice(i1,i2);
 				var url = $(FGS.HTMLParser('<p class="link" href="'+url+'">abc</p>')).find('p.link');
 				nextUrl = $(url).attr('href');
-			}		
+			}
+			else
+			{
+				return '';
+			}
 			return nextUrl;
 		}
 		catch(e)
@@ -460,12 +481,14 @@ var FGS = {
 			{
 				if(FGS.xhrQueue[0].type == 'request')
 				{
+					FGS.xhrWorkingQueue[FGS.xhrQueue[0].id] = FGS.xhrQueue[0];
 					FGS.prepareLinkForGame(FGS.xhrQueue[0].game, FGS.xhrQueue[0].id, FGS.xhrQueue[0].post);
 					FGS.xhrQueue = FGS.xhrQueue.slice(1);
 					FGS.xhrWorking++;
 				}
 				else if(FGS.xhrQueue[0].type == 'bonus')
 				{
+					FGS.xhrWorkingQueue[FGS.xhrQueue[0].id] = FGS.xhrQueue[0];
 					eval('FGS.'+FGS.xhrQueue[0].game+'Bonuses.Click("bonus","'+FGS.xhrQueue[0].id+'","'+FGS.xhrQueue[0].url+'")');
 					FGS.xhrQueue = FGS.xhrQueue.slice(1);
 					FGS.xhrWorking++;
