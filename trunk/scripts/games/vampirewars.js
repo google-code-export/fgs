@@ -35,7 +35,7 @@ FGS.vampirewarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -47,7 +47,7 @@ FGS.vampirewarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -81,7 +81,7 @@ FGS.vampirewarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -103,7 +103,7 @@ FGS.vampirewarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -115,7 +115,7 @@ FGS.vampirewarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -141,7 +141,7 @@ FGS.vampirewarsRequests =
 					if($('div.title', dataHTML).text().indexOf('You must accept gifts within') != -1)
 					{
 						var error_text = $.trim($('div.title', dataHTML).text());
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -182,7 +182,7 @@ FGS.vampirewarsRequests =
 					info.thanks = sendInfo;
 					info.time = Math.round(new Date().getTime() / 1000);					
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -194,7 +194,7 @@ FGS.vampirewarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -206,7 +206,7 @@ FGS.vampirewarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

@@ -12,6 +12,7 @@ FGS.treasureFreegifts =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				dump(dataStr);
 				try
 				{
 					var i1,i2;
@@ -37,6 +38,7 @@ FGS.treasureFreegifts =
 					
 					FGS.jQuery(count).each(function(k,v)
 					{
+						dump(v);
 						var i1 = v.indexOf('src="');
 						if(i1 == -1) return true; 
 						i1+=5;
@@ -286,7 +288,7 @@ FGS.treasureRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -312,7 +314,7 @@ FGS.treasureRequests =
 							info.time = Math.round(new Date().getTime() / 1000);
 						}
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
 					{
@@ -344,7 +346,7 @@ FGS.treasureRequests =
 						info.text  = $(".giftFrom_img",dataHTML).siblings('p').text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else if(dataStr.indexOf("explorer's pack?") != -1)
 					{
@@ -368,7 +370,7 @@ FGS.treasureRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -380,7 +382,7 @@ FGS.treasureRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -409,7 +411,7 @@ FGS.treasureRequests =
 						info.text  = $(".giftFrom_img",dataHTML).siblings('p').text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
@@ -426,7 +428,7 @@ FGS.treasureRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -438,7 +440,7 @@ FGS.treasureRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -472,7 +474,7 @@ FGS.treasureBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -495,7 +497,7 @@ FGS.treasureBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -507,7 +509,7 @@ FGS.treasureBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -532,7 +534,7 @@ FGS.treasureBonuses =
 				{
 					if(dataStr.indexOf('<h1>Oh no!</h1>') != -1)
 					{
-						FGS.endWithError('limit', $type, id);
+						FGS.endWithError('limit', currentType, id);
 						return;
 					}
 					
@@ -548,7 +550,7 @@ FGS.treasureBonuses =
 					info.text = '';
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -560,7 +562,7 @@ FGS.treasureBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -572,7 +574,7 @@ FGS.treasureBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

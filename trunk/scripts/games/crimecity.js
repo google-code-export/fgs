@@ -24,7 +24,7 @@ FGS.crimecityRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -46,7 +46,7 @@ FGS.crimecityRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -58,7 +58,7 @@ FGS.crimecityRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -85,7 +85,7 @@ FGS.crimecityRequests =
 					if($('.streamRewardAllRewardsClaimed', dataHTML).length > 0)
 					{ 
 						var error_text = $.trim($('.streamRewardAllRewardsClaimed', dataHTML).text());
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -104,7 +104,7 @@ FGS.crimecityRequests =
 						info.time = Math.round(new Date().getTime() / 1000);
 					}
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -116,7 +116,7 @@ FGS.crimecityRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -128,7 +128,7 @@ FGS.crimecityRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -161,7 +161,7 @@ FGS.crimecityBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -183,7 +183,7 @@ FGS.crimecityBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -195,7 +195,7 @@ FGS.crimecityBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -222,7 +222,7 @@ FGS.crimecityBonuses =
 					if($('.streamRewardAllRewardsClaimed', dataHTML).length > 0)
 					{ 
 						var error_text = $.trim($('.streamRewardAllRewardsClaimed', dataHTML).text());
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -233,7 +233,7 @@ FGS.crimecityBonuses =
 					info.time = Math.round(new Date().getTime() / 1000);
 					
 					
-					FGS.endWithSuccess($type, id, info);		
+					FGS.endWithSuccess(currentType, id, info);		
 				}
 				catch(err)
 				{
@@ -245,7 +245,7 @@ FGS.crimecityBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -257,7 +257,7 @@ FGS.crimecityBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

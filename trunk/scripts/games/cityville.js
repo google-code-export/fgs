@@ -393,7 +393,7 @@ FGS.cityvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -414,7 +414,7 @@ FGS.cityvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -426,7 +426,7 @@ FGS.cityvilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -479,7 +479,7 @@ FGS.cityvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -491,7 +491,7 @@ FGS.cityvilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -538,7 +538,7 @@ FGS.cityvilleRequests =
 							var error_text = 'There was problem receiving this gift. You have probably already accepted it';
 						}
 						
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 
@@ -552,7 +552,7 @@ FGS.cityvilleRequests =
 						info.text  = $(".giftFrom_name",dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 						
 					}
@@ -562,7 +562,7 @@ FGS.cityvilleRequests =
 						info.title = 'Coin bonus';
 						info.text  = $(".train_message",dataHTML).children().text();
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else if($('.message', dataHTML).text().indexOf('You have adopted') != -1)
@@ -570,7 +570,7 @@ FGS.cityvilleRequests =
 						info.image 	= $(".img_container",dataHTML).children().attr("src");
 						info.text 	= $(".message",dataHTML).text();
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else if($('h3.gift_title', dataHTML).text().indexOf('have been made') != -1)
@@ -587,7 +587,7 @@ FGS.cityvilleRequests =
 						info.title = tempTitle;
 						info.text  = $('h3.gift_title', dataHTML).text();						
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else if($(".giftFrom_name",dataHTML).length > 0)
@@ -626,7 +626,7 @@ FGS.cityvilleRequests =
 						
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else
@@ -644,7 +644,7 @@ FGS.cityvilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -656,7 +656,7 @@ FGS.cityvilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -689,7 +689,7 @@ FGS.cityvilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -712,7 +712,7 @@ FGS.cityvilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -724,7 +724,7 @@ FGS.cityvilleBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -779,7 +779,7 @@ FGS.cityvilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -791,7 +791,7 @@ FGS.cityvilleBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -818,7 +818,7 @@ FGS.cityvilleBonuses =
 					if($('.errorMessage', dataHTML).length > 0)
 					{ 
 						var error_text = $.trim($('.errorMessage', dataHTML).text());
-						FGS.endWithError('limit', $type, id, error_text);	
+						FGS.endWithError('limit', currentType, id, error_text);	
 						return;
 					}
 					
@@ -827,7 +827,7 @@ FGS.cityvilleBonuses =
 					info.image = $(".giftConfirm_img",dataHTML).children().attr("src");
 					info.time = Math.round(new Date().getTime() / 1000);
 
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -839,7 +839,7 @@ FGS.cityvilleBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -851,7 +851,7 @@ FGS.cityvilleBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

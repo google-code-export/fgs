@@ -24,7 +24,7 @@ FGS.cityofwonderRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}			
@@ -46,7 +46,7 @@ FGS.cityofwonderRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -58,7 +58,7 @@ FGS.cityofwonderRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -92,7 +92,7 @@ FGS.cityofwonderRequests =
 					if(txt.indexOf('You can not accept this gift') != -1)
 					{
 						var error_text = txt;
-						FGS.endWithError('limit', 'requests', id, error_text);						
+						FGS.endWithError('limit', currentType, id, error_text);						
 						return;
 					}
 					
@@ -113,7 +113,7 @@ FGS.cityofwonderRequests =
 					}
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -125,7 +125,7 @@ FGS.cityofwonderRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -137,7 +137,7 @@ FGS.cityofwonderRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -170,7 +170,7 @@ FGS.cityofwonderBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -191,7 +191,7 @@ FGS.cityofwonderBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -203,7 +203,7 @@ FGS.cityofwonderBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -231,7 +231,7 @@ FGS.cityofwonderBonuses =
 					if(out.indexOf('You already collected this bonus') != -1 || out.indexOf('is already complete') != -1 || out.indexOf('you cannot help now') != -1 || out.indexOf('No more bonuses to collect') != -1 || out.indexOf('already helped with') != -1)
 					{
 						var error_text = out;
-						FGS.endWithError('limit', 'bonuses', id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 					
 						return;
 					}
@@ -252,7 +252,7 @@ FGS.cityofwonderBonuses =
 						$.get(link);
 					}
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -264,7 +264,7 @@ FGS.cityofwonderBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -276,7 +276,7 @@ FGS.cityofwonderBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

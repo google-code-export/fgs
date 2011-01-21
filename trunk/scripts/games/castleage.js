@@ -24,7 +24,7 @@ FGS.castleageRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -35,7 +35,7 @@ FGS.castleageRequests =
 					if(dataStr.indexOf('have already accepted this gift or it has expired') != -1)
 					{
 						var error_text = 'You have already accepted this gift or it has expired';
-						FGS.endWithError('limit', 'requests', id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 
@@ -61,7 +61,7 @@ FGS.castleageRequests =
 					info.time = Math.round(new Date().getTime() / 1000);
 					
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -73,7 +73,7 @@ FGS.castleageRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -85,7 +85,7 @@ FGS.castleageRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

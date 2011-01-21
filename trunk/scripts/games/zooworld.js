@@ -210,7 +210,7 @@ FGS.zooworldRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -234,7 +234,7 @@ FGS.zooworldRequests =
 						info.time = Math.round(new Date().getTime() / 1000);
 					}
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -246,7 +246,7 @@ FGS.zooworldRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -258,7 +258,7 @@ FGS.zooworldRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -292,7 +292,7 @@ FGS.zooworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -321,7 +321,7 @@ FGS.zooworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -333,7 +333,7 @@ FGS.zooworldBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -412,7 +412,7 @@ FGS.zooworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -424,7 +424,7 @@ FGS.zooworldBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -463,7 +463,7 @@ FGS.zooworldBonuses =
 							
 							if(error_text.indexOf('<b>') == -1)
 							{
-								FGS.endWithError('limit', $type, id, error_text);
+								FGS.endWithError('limit', currentType, id, error_text);
 								return;
 							}
 							else
@@ -535,7 +535,7 @@ FGS.zooworldBonuses =
 					info.image = image;					
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -547,7 +547,7 @@ FGS.zooworldBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -559,7 +559,7 @@ FGS.zooworldBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

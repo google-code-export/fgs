@@ -24,7 +24,7 @@ FGS.yovilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -35,7 +35,7 @@ FGS.yovilleRequests =
 					if(dataStr.indexOf('seem to have already accepted this request') != -1)
 					{
 						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
-						FGS.endWithError('limit', $type, id, error_text);
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -46,7 +46,7 @@ FGS.yovilleRequests =
 						info.text  = 'New neighbour';
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else if($('#app21526880407_main-gift-body', dataHTML).find('div > b').length > 0)
@@ -82,7 +82,7 @@ FGS.yovilleRequests =
 						info.text  = $('#app21526880407_main-gift-body', dataHTML).find('div > b').text();
 						info.time = Math.round(new Date().getTime() / 1000);
 						
-						FGS.endWithSuccess($type, id, info);
+						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
 					else
@@ -100,7 +100,7 @@ FGS.yovilleRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -112,7 +112,7 @@ FGS.yovilleRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});

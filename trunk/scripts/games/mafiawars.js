@@ -21,7 +21,6 @@ FGS.mafiawarsFreegifts =
 					
 					params.post_form_id = dataStr.slice(i1,i2);
 					
-					
 					i1          =   dataStr.indexOf('fb_dtsg:"',i1)
 					if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
 					i1			+=	9;
@@ -105,21 +104,31 @@ FGS.mafiawarsFreegifts =
 					myUrl = strTemp.slice(i1,i2);
 
 					myParms = '';
-					i1 = strTemp.indexOf('<input',i1);
-					while (i1!=-1)
+					
+					
+					var count = strTemp.match(/<input[^>]*?.*?>/g);
+					
+					$(count).each(function(k,v)
 					{
-						i1 = strTemp.indexOf('name="',i1)+6;
-						i2 = strTemp.indexOf('"',i1);
+						
+						var i1 = v.indexOf('name="')+6;
+						if(i1 == 5) return;
+						i2 = v.indexOf('"',i1);
+						
+						
+						
 						if (myParms=='')
-							myParms = strTemp.slice(i1,i2)+'='
+							var tmpName = v.slice(i1,i2)+'=';
 						else
-							myParms += '&'+strTemp.slice(i1,i2)+'=';
-						i1 = strTemp.indexOf('value="',i1)+7;
-						i2 = strTemp.indexOf('"',i1);
-						myParms += escape(strTemp.slice(i1,i2));
-
-						i1 = strTemp.indexOf('<input',i1);
-					}
+							var tmpName = '&'+v.slice(i1,i2)+'=';
+						
+						
+						var i1 = v.indexOf('value="')+7;
+						if(i1 == 6) return;
+						
+						i2 = v.indexOf('"',i1);
+						myParms += tmpName+escape(v.slice(i1,i2));
+					});
 					
 					var useridtmp = $('input[name="sf_xw_user_id"]', dataHTML).val();
 					var i1 = useridtmp.indexOf('|')+1;
@@ -292,7 +301,7 @@ FGS.mafiawarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -315,7 +324,7 @@ FGS.mafiawarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -327,7 +336,7 @@ FGS.mafiawarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -362,21 +371,32 @@ FGS.mafiawarsRequests =
 					myUrl = strTemp.slice(i1,i2);
 
 					myParms = '';
-					i1 = strTemp.indexOf('<input',i1);
-					while (i1!=-1)
+					
+					
+					var count = strTemp.match(/<input[^>]*?.*?>/g);
+					
+					$(count).each(function(k,v)
 					{
-						i1 = strTemp.indexOf('name="',i1)+6;
-						i2 = strTemp.indexOf('"',i1);
+						
+						var i1 = v.indexOf('name="')+6;
+						if(i1 == 5) return;
+						i2 = v.indexOf('"',i1);
+						
+						
+						
 						if (myParms=='')
-							myParms = strTemp.slice(i1,i2)+'='
+							var tmpName = v.slice(i1,i2)+'=';
 						else
-							myParms += '&'+strTemp.slice(i1,i2)+'=';
-						i1 = strTemp.indexOf('value="',i1)+7;
-						i2 = strTemp.indexOf('"',i1);
-						myParms += escape(strTemp.slice(i1,i2));
-
-						i1 = strTemp.indexOf('<input',i1);
-					}
+							var tmpName = '&'+v.slice(i1,i2)+'=';
+						
+						
+						var i1 = v.indexOf('value="')+7;
+						if(i1 == 6) return;
+						
+						i2 = v.indexOf('"',i1);
+						myParms += tmpName+escape(v.slice(i1,i2));
+					});
+					
 					
 					var isBoost = false;
 					
@@ -397,7 +417,7 @@ FGS.mafiawarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -409,7 +429,7 @@ FGS.mafiawarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -567,7 +587,7 @@ FGS.mafiawarsRequests =
 					info.thanks = sendInfo;
 					info.time = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -579,7 +599,7 @@ FGS.mafiawarsRequests =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -591,7 +611,7 @@ FGS.mafiawarsRequests =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -625,7 +645,7 @@ FGS.mafiawarsBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
 				}
@@ -647,7 +667,7 @@ FGS.mafiawarsBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -659,7 +679,7 @@ FGS.mafiawarsBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -675,10 +695,10 @@ FGS.mafiawarsBonuses =
 		$.ajax({
 			type: "GET",
 			url: currentURL,
-			dataType: 'text',
+			//dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
+				var dataStr = dataStr.substr(dataStr.indexOf('<body'),dataStr.lastIndexOf('</body'));
 				
 				try
 				{
@@ -694,22 +714,31 @@ FGS.mafiawarsBonuses =
 					myUrl = strTemp.slice(i1,i2);
 
 					myParms = '';
-					i1 = strTemp.indexOf('<input',i1);
-					while (i1!=-1)
+					
+					
+					var count = strTemp.match(/<input[^>]*?.*?>/g);
+					
+					$(count).each(function(k,v)
 					{
-						i1 = strTemp.indexOf('name="',i1)+6;
-						i2 = strTemp.indexOf('"',i1);
+						
+						var i1 = v.indexOf('name="')+6;
+						if(i1 == 5) return;
+						i2 = v.indexOf('"',i1);
+						
+						
+						
 						if (myParms=='')
-							myParms = strTemp.slice(i1,i2)+'='
+							var tmpName = v.slice(i1,i2)+'=';
 						else
-							myParms += '&'+strTemp.slice(i1,i2)+'=';
-						i1 = strTemp.indexOf('value="',i1)+7;
-						i2 = strTemp.indexOf('"',i1);
-						myParms += escape(strTemp.slice(i1,i2));
-
-						i1 = strTemp.indexOf('<input',i1);
-					}
-
+							var tmpName = '&'+v.slice(i1,i2)+'=';
+						
+						
+						var i1 = v.indexOf('value="')+7;
+						if(i1 == 6) return;
+						
+						i2 = v.indexOf('"',i1);
+						myParms += tmpName+escape(v.slice(i1,i2));
+					});
 					FGS.mafiawarsBonuses.Click3(currentType, id, myUrl, myParms);
 				}
 				catch(err)
@@ -722,7 +751,7 @@ FGS.mafiawarsBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -734,7 +763,7 @@ FGS.mafiawarsBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
@@ -760,9 +789,9 @@ FGS.mafiawarsBonuses =
 				{
 					var strTemp = dataStr;
 					
-					if(strTemp.indexOf('Sorry, you already collected on this stash!') != -1 || strTemp.indexOf('secret stashes today, and have to wait') != -1 || strTemp.indexOf('You cannot claim this reward') != -1 || strTemp.indexOf('You have already received your free boost') != -1 || strTemp.indexOf('You have already helped') != -1 || strTemp.indexOf('has already paid out the bounty on this target') != -1 || strTemp.indexOf('This user has already received the maximum amount of help') != -1 || strTemp.indexOf('has already got their Energy Pack for today') != -1 || strTemp.indexOf('You cannot gift this item to people not in your mafia') != -1 || strTemp.indexOf('has received all the help allowed for today') != -1 || strTemp.indexOf('All of the available boosts have already been claimed') != -1 || strTemp.indexOf('This stash has already been found') != -1 || strTemp.indexOf('has passed out all available') != -1 || strTemp.indexOf('You already helped this user') != -1 || strTemp.indexOf('You can only receive') != -1 || strTemp.indexOf('cannot receive any more parts') != -1 || strTemp.indexOf('has no more free boosts to hand out') != -1 || strTemp.indexOf(', come back tomorrow to help out more') != -1 || strTemp.indexOf('You are too late to claim a reward') != -1)
+					if(strTemp.indexOf('Sorry, you already collected on this stash!') != -1 || strTemp.indexOf('secret stashes today, and have to wait') != -1 || strTemp.indexOf('You cannot claim this reward') != -1 || strTemp.indexOf('You have already received your free boost') != -1 || strTemp.indexOf('You have already helped') != -1 || strTemp.indexOf('has already paid out the bounty on this target') != -1 || strTemp.indexOf('This user has already received the maximum amount of help') != -1 || strTemp.indexOf('has already got their Energy Pack for today') != -1 || strTemp.indexOf('You cannot gift this item to people not in your mafia') != -1 || strTemp.indexOf('has received all the help allowed for today') != -1 || strTemp.indexOf('All of the available boosts have already been claimed') != -1 || strTemp.indexOf('This stash has already been found') != -1 || strTemp.indexOf('has passed out all available') != -1 || strTemp.indexOf('You already helped this user') != -1 || strTemp.indexOf('You can only receive') != -1 || strTemp.indexOf('cannot receive any more parts') != -1 || strTemp.indexOf('has no more free boosts to hand out') != -1 || strTemp.indexOf(', come back tomorrow to help out more') != -1 || strTemp.indexOf('You are too late to claim a reward') != -1 || strTemp.indexOf('You have already claimed the maximum number of') != -1)
 					{
-						FGS.endWithError('limit', $type, id);
+						FGS.endWithError('limit', currentType, id);
 						return;
 					}
 					
@@ -869,81 +898,9 @@ FGS.mafiawarsBonuses =
 						throw {message: dataStr}
 					}
 					
-					
-					
-					
-					
-					/*
-					else
-					{
-						var i1 = strTemp.indexOf('<td class="message_body">');
-					
-					
-
-						if (i1 == -1) throw {message:"Cannot find message_body"}
-						
-						var i2 = strTemp.indexOf('</td>',i1);
-						var strNotice = strTemp.slice(i1+25,i2);
-						
-						i1 = strNotice.indexOf('><a href="');
-						if (i1 == -1) throw {message:"Cannot find a href"}
-
-						i2 = strNotice.indexOf('"',i1+10);
-
-						myUrl =  strNotice.slice(i1+10,i2) + '&xw_client_id=8';
-						myUrl =  myUrl.replace(/\s/g, '%20');
-
-						if(strNotice.indexOf('received all the help allowed') != -1)
-						{
-							info.error = 'limit';
-							info.time = Math.round(new Date().getTime() / 1000);
-							
-							FGS.database.updateErrorItem('bonuses', id, info);
-							FGS.sendView('bonusError', id, info);
-							return;
-						}
-
-						info.text  = '';
-						info.image = $('td.message_body > div:nth-child(2)', dataHTML).find('img:first').attr('src');
-						info.title =    $('td.message_body > div:nth-child(2)', dataHTML).find('img:first').parent().siblings().text();
-						
-						
-						
-						$.ajax({
-							type: "GET",
-							url: myUrl,
-							success: function(d)
-							{
-								info.time = Math.round(new Date().getTime() / 1000);
-								
-								FGS.database.updateItem('bonuses', id, info);
-								FGS.sendView('bonusSuccess', id, info);							
-								
-								dump(FGS.getCurrentTime()+'[B] Bonus collected SUCCESSFULLY - ID: '+id);
-							},
-							error: function()
-							{
-								if(typeof(retry) == 'undefined')
-								{
-									dump(FGS.getCurrentTime()+'[B] Connection error while receiving bonus, Retrying bonus with ID: '+id);
-									FGS.mafiawarsBonuses.Click3(currentType, id, url, params, true);
-								}
-								else
-								{
-									info.error = 'connection';
-									info.time = Math.round(new Date().getTime() / 1000);
-									FGS.sendView('bonusError', id, info);
-								}
-							}
-						});	
-					}
-					*/
-					
-					
-					
 					info.time  = Math.round(new Date().getTime() / 1000);
 					
-					FGS.endWithSuccess($type, id, info);
+					FGS.endWithSuccess(currentType, id, info);
 				}
 				catch(err)
 				{
@@ -955,7 +912,7 @@ FGS.mafiawarsBonuses =
 					}
 					else
 					{
-						FGS.endWithError('receiving', $type, id);
+						FGS.endWithError('receiving', currentType, id);
 					}
 				}
 			},
@@ -967,7 +924,7 @@ FGS.mafiawarsBonuses =
 				}
 				else
 				{
-					FGS.endWithError('connection', $type, id);
+					FGS.endWithError('connection', currentType, id);
 				}
 			}
 		});
