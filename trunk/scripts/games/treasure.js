@@ -8,11 +8,10 @@ FGS.treasureFreegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/treasureisle/crt=&aff=tab&src=direct&newUser=&sendkey=&ref=tab'+addAntiBot,
+			url: 'http://apps.facebook.com/treasureisle/?ref=ts'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				dump(dataStr);
 				try
 				{
 					var i1,i2;
@@ -38,7 +37,6 @@ FGS.treasureFreegifts =
 					
 					FGS.jQuery(count).each(function(k,v)
 					{
-						dump(v);
 						var i1 = v.indexOf('src="');
 						if(i1 == -1) return true; 
 						i1+=5;
