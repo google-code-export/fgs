@@ -97,18 +97,18 @@ FGS.cityvilleFreegifts =
 					var nextUrl = 'http://'+params.domain+'/';					
 					var i1 = dataStr.indexOf("ZYFrameManager.navigateTo('");
 					
-					if(i1 != -1 && typeof(retry) == 'undefined')
+					if(i1 != -1)
 					{
 						var i2 = dataStr.indexOf("'", i1)+1;
 						var i3 = dataStr.indexOf("'", i2);
+						
+						
 					
 						params.step2url = nextUrl+dataStr.slice(i2,i3).replace(nextUrl, '');
 						$retry(params, true);
 						return;
 					}
 					
-					var dataStr = '';
-
 					var i1 = dataStr.indexOf('new ZY(');
 					if(i1 == -1) throw {message: 'No new ZY'}
 					i1+=7;				
@@ -178,42 +178,58 @@ FGS.cityvilleFreegifts =
 			{
 				try
 				{
-					var i1,i2, myParms;
+					var i1,i2;
 					var strTemp = dataStr;
 					
-					return;
 					
-					myParms = 'api_key=291549705119&locale=en_US&sdk=joey';
+					var data = dataStr.replace(/snml:/g, 'fb_');
 					
-					/*
-					i1       =  strTemp.indexOf('FB.init("');
-					if (i1 == -1) throw {message:"Cannot find FB.init"}
-					i1 += 9;
-					i2       =  strTemp.indexOf('"',i1);
+					var outStr = '';
+					
+					var i1 = data.indexOf('<fb_serverSnml');
+					
+					var s1 = data.indexOf('<style', i1);
+					var s2 = data.indexOf('/style', s1);
+					
+					outStr += data.slice(s1, s2+7);
+					
+					var s1 = data.indexOf('<div', i1);
+					var s2 = data.indexOf('/div', s1);
+					
+					outStr += data.slice(s1, s2+5);
+					
+					var s1 	= data.indexOf('<fb_multi-friend-selector', i1);
+					var s11 = data.indexOf('exclude_ids="', s1);
+					s11+=13;
+					var s12 = data.indexOf('"', s11);
 
-					myParms  =  'app_key='+strTemp.slice(i1,i2);
-					i1     =  i2 +1;
-					i1       =  strTemp.indexOf('"',i1)+1;
-					i2       =  strTemp.indexOf('"',i1);
+					var exclude = data.slice(s11, s12);
 					
-					myParms +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
-					*/
-
-					//var i1 = data.indexOf('serverSnml>');
-					//var i2 = data.indexOf('
+					var f1 = data.indexOf('<fb_request-form', i1);
+					
+					var i1 = data.indexOf('invite="', f1);
+					var a1 = data.indexOf('action="', f1);
+					var m1 = data.indexOf('method="', f1);
+					var t1 = data.indexOf('type="', f1);
+					
+					outStr += '<div class="mfs">';
+					
+					var inviteAttr 	= data.slice(i1+8, data.indexOf('"', i1+8));
+					var actionAttr	= data.slice(a1+8, data.indexOf('"', a1+8));
+					var methodAttr 	= data.slice(m1+8, data.indexOf('"', m1+8));
+					var typeAttr	= data.slice(t1+6, data.indexOf('"', t1+6));
+					
+					var c1 = data.indexOf('<fb_content', f1);
+					var c11 = data.indexOf('>', c1);
+					var c12 = data.indexOf('/fb_content>',c11);
+					
+					var contentAttr = encodeURIComponent(data.slice(c11+1, c12));
+					
+					outStr += '<fbGood_request-form invite="'+inviteAttr+'" action="'+actionAttr+'" method="'+methodAttr+'" type="'+typeAttr+'" content="'+contentAttr+'"><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="EXCLUDE_ARRAY_LIST" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="http://fb-0.FGS.cityville.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form>';
 					
 					
 					
-					
-					data = data.replace(/snml:/g, 'fb_');
-					
-					var el2 = $('<div></div>');
-					
-					$('fb_serverSnml', dataHTML).find('style:first').appendTo(el2);
-					$('fb_serverSnml', dataHTML).find('div:first').appendTo(el2);
-
-					var exclude = $('fb_multi-friend-selector', dataHTML).attr('exclude_ids');
-					
+					outStr += '</div>';
 					
 					
 					var cmd_id = new Date().getTime();
@@ -251,24 +267,20 @@ FGS.cityvilleFreegifts =
 						params:	'[['+str+'],"1"]',
 						cmd_id:	cmd_id,
 						app_id:	'75',
-						session: session,
+						authHash: session,
 						zid:	zy_user,
 						snid:	1,
 					}
 					
+					params.postData = postData;
+					params.excludeCity = exclude;
 					
-					// kolejny krok z postdata
+					params.outStr = outStr;
 					
+					
+					FGS.cityvilleFreegifts.Click4(params);
 					
 				}
-			
-			
-			
-			
-			
-			
-			
-			
 				catch(err)
 				{
 					dump(err);
@@ -316,9 +328,15 @@ FGS.cityvilleFreegifts =
 		var $ = FGS.jQuery;
 		$retry = arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
-	
-		$.post('http://fb-client-0.FGS.cityville.zynga.com/snapi_proxy.php', postData, function(data2)
+
+		var outStr = params.outStr;
+		
+		
+		$.post('http://fb-client-0.cityville.zynga.com/snapi_proxy.php', params.postData, function(data2)
 		{
+		
+			var myParms = 'api_key=291549705119&locale=en_US&sdk=joey';
+			
 			var info = JSON.parse(data2);
 			
 			var str = '';
@@ -328,27 +346,21 @@ FGS.cityvilleFreegifts =
 				var t = info.body[uid];
 				str+= t+',';					
 			}
-			exclude = str.slice(0, -1);
+			params.excludeCity = str.slice(0, -1);
 			
 			if(typeof(params.thankYou) != 'undefined')
 			{
 				params.sendTo[0] = info.body[params.sendTo[0]];
-			}					
+			}
 			
-			var el = $('div.mfs', dataHTML);
+			outStr = outStr.replace('EXCLUDE_ARRAY_LIST', params.excludeCity);
 			
-			$(el).prepend('<fbGood_request-form invite="'+$('fb_request-form', dataHTML).attr('invite')+'"  action="'+$('fb_request-form', dataHTML).attr('action')+'" method="'+$('fb_request-form', dataHTML).attr('method')+'"  type="'+$('fb_request-form', dataHTML).attr('type')+'" content="'+$('fb_content', dataHTML).html().replace(/\"/g, "'")+'" ><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="'+exclude+'" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="http://fb-0.FGS.cityville.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form');
-			$(el).find('form, fb_request-form').remove();
-		
-			$(el).appendTo(el2);
+			var str = outStr;
 			
-			var str = $(el2).html();
-			
-			str = str.replace(/fbgood_/g, 'fb:');
-			str = str.replace(/fb_req-choice/g, 'fb:req-choice');
+			str = str.replace(/fbgood_/gi, 'fb:');
+			str = str.replace(/fb_req-choice/gi, 'fb:req-choice');
 			str = str.replace('/fb:req-choice', '/fb:request');
 			str = str.replace('/fb:req-choice', '/fb:req');
-			
 			
 			
 			var fbml = '<fb:fbml>'+str+'</fb:fbml>';
