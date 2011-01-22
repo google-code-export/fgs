@@ -267,16 +267,20 @@ FGS.pokerRequests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				dump(dataStr);
 				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
+				if(typeof(retry) == 'undefined')
+				{
+					retry = 0;
+				}
+				
 				if(redirectUrl != false)
 				{
-					if(typeof(retry) == 'undefined')
+					if(typeof(retry) == 'undefined' || retry < 4)
 					{
 						var redirectUrl = redirectUrl.replace(/%21/g, '!').replace(/%2A/g, '*');
-						retryThis(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, retry++);
 					}
 					else
 					{
@@ -294,9 +298,7 @@ FGS.pokerRequests =
 						return;						
 					}
 
-					var el = $('.acceptedGift', dataHTML);		
-
-					dump(el.length);
+					var el = $('.acceptedGift', dataHTML);
 					
 					
 					if($(el).length > 0)

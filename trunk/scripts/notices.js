@@ -14,11 +14,16 @@ function readNotices()
 			var newRow = $('<div class="bg4" style="text-align:left"><span class="username" style="font-weight: bolder">'+v.title+'</span><br /><span style="font-size:0.9em">'+date.toLocaleDateString()+' @ '+date.toLocaleTimeString()+'</span><br /><br /><span class="message">'+v.message+'</span><br /><br /></div></div></div>');
 			$('#noticesContent').prepend(newRow);
 		};
+		
 		for(k in data.dataScript)
 		{
 			var v = data.dataScript[k];
-			
-			$('#noticesScript').html(v.message);
+			try
+			{
+				$('#noticesScript').html(v.message);
+			}
+			catch(e)
+			{}
 		}
 	});
 }
