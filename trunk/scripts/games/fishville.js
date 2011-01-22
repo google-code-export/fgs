@@ -40,8 +40,8 @@ FGS.fishvilleFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -118,8 +118,8 @@ FGS.fishvilleFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -198,8 +198,8 @@ FGS.fishvilleRequests =
 				}				
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -294,8 +294,8 @@ FGS.fishvilleRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);

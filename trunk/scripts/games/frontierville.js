@@ -65,8 +65,8 @@ FGS.frontiervilleFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -139,14 +139,14 @@ FGS.frontiervilleFreegifts =
 					
 					params.myParms = myParms;
 					
-					dump(FGS.getCurrentTime()+'[Z] FBMLinfo - OK');
+					//dump(FGS.getCurrentTime()+'[Z] FBMLinfo - OK');
 					
 					FGS.getFBML(params);
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -274,8 +274,8 @@ FGS.frontiervilleRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -417,8 +417,8 @@ FGS.frontiervilleBonuses =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);

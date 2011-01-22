@@ -58,8 +58,8 @@ FGS.treasureFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -130,8 +130,8 @@ FGS.treasureFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -219,8 +219,8 @@ FGS.treasureFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -366,8 +366,8 @@ FGS.treasureRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -424,8 +424,8 @@ FGS.treasureRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -499,8 +499,8 @@ FGS.treasureBonuses =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -564,8 +564,8 @@ FGS.treasureBonuses =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);

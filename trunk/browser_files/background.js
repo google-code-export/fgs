@@ -406,7 +406,7 @@ FGS.loadLibraries = function(context)
 		}
 	}
 	
-	dump(arr.sort());
+	//dump(arr.sort());
 
 	var jQuery = window.jQuery.noConflict(true);
 	if( typeof(jQuery.fn._init) == 'undefined') { jQuery.fn._init = jQuery.fn.init; }

@@ -63,8 +63,8 @@ FGS.pokerFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -141,7 +141,7 @@ FGS.pokerFreegifts =
 					
 					if(typeof(params.sendTo) == 'undefined')
 					{
-						dump(FGS.getCurrentTime()+'[Z] Updating neighbours');
+						//dump(FGS.getCurrentTime()+'[Z] Updating neighbours');
 						FGS.sendView('updateNeighbours', params.gameID, arr);
 						return;
 					}
@@ -188,7 +188,7 @@ FGS.pokerFreegifts =
 					
 					params.items = arr;
 					
-					dump(FGS.getCurrentTime()+'[Z] Sending');
+					//dump(FGS.getCurrentTime()+'[Z] Sending');
 					
 					var j = 0;
 					for(u in params.sendTo)
@@ -211,8 +211,8 @@ FGS.pokerFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -329,8 +329,8 @@ FGS.pokerRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
