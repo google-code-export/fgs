@@ -3,7 +3,7 @@ FGS.ravenwoodFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -42,7 +42,7 @@ FGS.ravenwoodFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -61,7 +61,7 @@ FGS.ravenwoodFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -80,7 +80,7 @@ FGS.ravenwoodFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -105,7 +105,7 @@ FGS.ravenwoodFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -124,7 +124,7 @@ FGS.ravenwoodFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -143,7 +143,7 @@ FGS.ravenwoodFreegifts =
 	Click3: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -170,7 +170,7 @@ FGS.ravenwoodFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -189,7 +189,7 @@ FGS.ravenwoodFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -208,7 +208,7 @@ FGS.ravenwoodFreegifts =
 	Click4: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -239,7 +239,7 @@ FGS.ravenwoodFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -258,7 +258,7 @@ FGS.ravenwoodFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -282,8 +282,7 @@ FGS.ravenwoodRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -299,7 +298,7 @@ FGS.ravenwoodRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -349,7 +348,7 @@ FGS.ravenwoodRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -361,7 +360,7 @@ FGS.ravenwoodRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{

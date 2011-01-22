@@ -3,7 +3,7 @@ FGS.cityvilleFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -41,7 +41,7 @@ FGS.cityvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -60,7 +60,7 @@ FGS.cityvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -80,7 +80,7 @@ FGS.cityvilleFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -102,10 +102,8 @@ FGS.cityvilleFreegifts =
 						var i2 = dataStr.indexOf("'", i1)+1;
 						var i3 = dataStr.indexOf("'", i2);
 						
-						
-					
 						params.step2url = nextUrl+dataStr.slice(i2,i3).replace(nextUrl, '');
-						$retry(params, true);
+						retryThis(params, true);
 						return;
 					}
 					
@@ -128,7 +126,7 @@ FGS.cityvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -147,7 +145,7 @@ FGS.cityvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -167,7 +165,7 @@ FGS.cityvilleFreegifts =
 	Click3: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -179,8 +177,7 @@ FGS.cityvilleFreegifts =
 				try
 				{
 					var i1,i2;
-					var strTemp = dataStr;
-					
+					var strTemp = dataStr;					
 					
 					var data = dataStr.replace(/snml:/g, 'fb_');
 					
@@ -287,7 +284,7 @@ FGS.cityvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -306,7 +303,7 @@ FGS.cityvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -326,7 +323,7 @@ FGS.cityvilleFreegifts =
 	Click4: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		var outStr = params.outStr;
@@ -362,12 +359,10 @@ FGS.cityvilleFreegifts =
 			str = str.replace('/fb:req-choice', '/fb:request');
 			str = str.replace('/fb:req-choice', '/fb:req');
 			
-			
 			var fbml = '<fb:fbml>'+str+'</fb:fbml>';
 			
 			
 			myParms +=  '&fbml='+encodeURIComponent(fbml);
-			// myParms +=  '&channel_url=http://static.ak.fbcdn.net/connect/xd_proxy.php#cb=f268243e1c&origin=http%3A%2F%2Ffb-0.FGS.cityville.zynga.com%2Ff366dc9ba8&relation=parent.parent&transport=postmessage';
 
 			params.myParms = myParms;
 
@@ -384,8 +379,7 @@ FGS.cityvilleRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -401,7 +395,7 @@ FGS.cityvilleRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -422,7 +416,7 @@ FGS.cityvilleRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -434,7 +428,7 @@ FGS.cityvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -447,8 +441,7 @@ FGS.cityvilleRequests =
 	Click2:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -487,7 +480,7 @@ FGS.cityvilleRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -499,7 +492,7 @@ FGS.cityvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -512,8 +505,7 @@ FGS.cityvilleRequests =
 	Click3:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -652,7 +644,7 @@ FGS.cityvilleRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -664,7 +656,7 @@ FGS.cityvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -680,8 +672,7 @@ FGS.cityvilleBonuses =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -697,7 +688,7 @@ FGS.cityvilleBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -720,7 +711,7 @@ FGS.cityvilleBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -732,7 +723,7 @@ FGS.cityvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -745,8 +736,7 @@ FGS.cityvilleBonuses =
 	Click2:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -787,7 +777,7 @@ FGS.cityvilleBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -799,7 +789,7 @@ FGS.cityvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -812,8 +802,7 @@ FGS.cityvilleBonuses =
 	Click3:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -847,7 +836,7 @@ FGS.cityvilleBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -859,7 +848,7 @@ FGS.cityvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{

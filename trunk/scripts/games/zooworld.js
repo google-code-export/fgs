@@ -3,7 +3,7 @@ FGS.zooworldFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -65,7 +65,7 @@ FGS.zooworldFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -84,7 +84,7 @@ FGS.zooworldFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -104,7 +104,7 @@ FGS.zooworldFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -147,7 +147,7 @@ FGS.zooworldFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -166,7 +166,7 @@ FGS.zooworldFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -189,8 +189,7 @@ FGS.zooworldRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -206,7 +205,7 @@ FGS.zooworldRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -242,7 +241,7 @@ FGS.zooworldRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -254,7 +253,7 @@ FGS.zooworldRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -271,8 +270,7 @@ FGS.zooworldBonuses =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -288,7 +286,7 @@ FGS.zooworldBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -317,7 +315,7 @@ FGS.zooworldBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -329,7 +327,7 @@ FGS.zooworldBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -342,8 +340,7 @@ FGS.zooworldBonuses =
 	Click2:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -408,7 +405,7 @@ FGS.zooworldBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -420,7 +417,7 @@ FGS.zooworldBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -433,8 +430,7 @@ FGS.zooworldBonuses =
 	Click3:	function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -543,7 +539,7 @@ FGS.zooworldBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', params, true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -555,7 +551,7 @@ FGS.zooworldBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', params, true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{
