@@ -412,3 +412,31 @@ FGS.loadLibraries = function(context)
 	if( typeof(jQuery.fn._init) == 'undefined') { jQuery.fn._init = jQuery.fn.init; }
 	FGS.jQuery = jQuery;
 };
+
+FGS.openRecovery = function()
+{
+	FGS.sendView('close');
+	
+	var url = "recovery.html";
+	var url2 = "recovery.html?";
+	
+	var fullUrl = chrome.extension.getURL(url);
+	var fullUrl2 = chrome.extension.getURL(url2);
+	chrome.tabs.getAllInWindow(null, function(tabs) {
+		for (var i in tabs) { // check if Options page is open already
+			var tab = tabs[i];
+			if (tab.url == fullUrl || tab.url == fullUrl2)
+			{
+				chrome.tabs.update(tab.id, { selected: true });
+				//sendView('refresh');
+				return;
+			}
+		}
+		chrome.tabs.getSelected(null, function(tab) { // open a new tab next to currently selected tab
+			chrome.tabs.create({
+				url: url,
+				index: tab.index + 1
+			});
+		});
+	});
+};
