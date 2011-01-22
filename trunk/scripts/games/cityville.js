@@ -696,8 +696,7 @@ FGS.cityvilleBonuses =
 					}
 					return;
 				}
-				
-				
+
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);

@@ -12,8 +12,6 @@ var FGS = {
 		FGS.iBonusTimeout = {};
 		
 		FGS.iRequestTimeout = null;
-		FGS.iChatTimeout  = null;
-		
 		
 		FGS.options = {};
 		FGS.optionsLoaded = false;
@@ -124,7 +122,9 @@ var FGS = {
 					strTemp   =   "'"+strTemp.slice(i1+6,i2)+"'";
 
 					eval("strTemp =" + strTemp);
-
+					
+					strTemp = strTemp.replace(/\\u0025/g, '%');
+					
 					var URI = JSON.parse(strTemp);
 					
 					eval('FGS.'+game+'Requests.Click("request", "'+id+'","'+URI+'")');
@@ -159,8 +159,7 @@ var FGS = {
 	
 	emptyUnwantedGifts: function(post)
 	{
-		dump(FGS.getCurrentTime()+'[G] Deleting unwanted gifts');
-		
+
 		FGS.jQuery.ajax({
 			type: "POST",
 			url: 'http://www.facebook.com/ajax/reqs.php?__a=1',
@@ -224,9 +223,6 @@ var FGS = {
 		
 		if(FGS.xhrInterval !== null)
 		clearInterval(FGS.xhrInterval);
-
-		if(FGS.iChatTimeout !== null) dump(FGS.getCurrentTime()+'[C] Stopping');
-		clearTimeout(FGS.iChatTimeout);
 		
 		FGS.initializeDefaults();
 		
@@ -398,7 +394,7 @@ var FGS = {
 		else
 		{
 			FGS.sendView(viewMsg, id, info);
-			alert('nieznany error - powiedz mezowi: '+error+' ID: '+id);
+			//alert('nieznany error - powiedz mezowi: '+error+' ID: '+id);
 		}
 	},
 	
@@ -972,7 +968,6 @@ var FGS = {
 		{
 			if(FGS.userID == null)
 			{
-				dump('new user');
 				FGS.FBloginError = null;
 				FGS.updateIcon();				
 				FGS.startup();
@@ -980,7 +975,6 @@ var FGS = {
 		}
 		else
 		{
-			dump('No user');
 			FGS.stopAll();
 		}
 	},
@@ -1028,13 +1022,14 @@ var FGS = {
 				}
 				catch(err)
 				{
+					dump(err);
+					dump(err.message);
 				}
 			},
 			error: function()
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					dump(FGS.getCurrentTime()+'[R] Connection error while receiving bonus, Retrying bonus with ID: '+id);
 					FGS.getRequestLink(id, dataPost, true);
 				}
 			}
