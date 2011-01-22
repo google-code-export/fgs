@@ -439,8 +439,6 @@ FGS.zooworldBonuses =
 			data: params,
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
 				try
 				{
 					var out = dataStr.return_data.dialogData.subtitle;
