@@ -131,8 +131,8 @@ var FGS = {
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(game, id, dataPost, true);
@@ -217,7 +217,7 @@ var FGS = {
 		
 		for(var id in FGS.iBonusTimeout)
 		{
-			dump(FGS.getCurrentTime()+'[B] Stopping '+id);
+			//dump(FGS.getCurrentTime()+'[B] Stopping '+id);
 			FGS.stopBonusesForGame(id);
 		}
 		
@@ -244,7 +244,7 @@ var FGS = {
 								
 				if(FGS.jQuery("#login_form", data).length > 0)
 				{
-					dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
+					//dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
 					FGS.stopAll();
 					return true;
 				}
@@ -306,7 +306,7 @@ var FGS = {
 		}
 		catch(err)
 		{
-			dump('checkForLocationReload'+err);
+			//dump('checkForLocationReload'+err);
 			return false;
 		}
 	},
@@ -325,11 +325,11 @@ var FGS = {
 		}
 		else
 		{
-			alert('nieznany type przy SUCCESS - powiedz mezowi: '+type+' ID: '+id);
-			dump('nieznany typ SUCCESS');
-			dump(type);
-			dump(id);
-			dump('nieznany typ SUCCESS koniec');
+			//alert('nieznany type przy SUCCESS - powiedz mezowi: '+type+' ID: '+id);
+			//dump('nieznany typ SUCCESS');
+			//dump(type);
+			//dump(id);
+			//dump('nieznany typ SUCCESS koniec');
 		}
 		FGS.sendView(viewMsg, id, info);
 		FGS.database.updateItem(table, id, info);
@@ -357,11 +357,11 @@ var FGS = {
 		}
 		else
 		{
-			alert('nieznany type przy ERROR - powiedz mezowi: '+type+' ID: '+id);
-			dump('nieznany typ ERROR');
-			dump(type);
-			dump(id);
-			dump('nieznany typ ERROR koniec');
+			//alert('nieznany type przy ERROR - powiedz mezowi: '+type+' ID: '+id);
+			//dump('nieznany typ ERROR');
+			//dump(type);
+			//dump(id);
+			//dump('nieznany typ ERROR koniec');
 		}
 		
 		if(error == 'receiving')
@@ -505,11 +505,11 @@ var FGS = {
 	
 	restartBonuses: function()
 	{
-		dump(FGS.getCurrentTime()+'[B] Restarting bonuses');		
+		//dump(FGS.getCurrentTime()+'[B] Restarting bonuses');		
 		
 		for(var id in FGS.iBonusTimeout)
 		{
-			dump(FGS.getCurrentTime()+'[B] Stopping '+id);
+			//dump(FGS.getCurrentTime()+'[B] Stopping '+id);
 			FGS.stopBonusesForGame(id);
 		}
 		
@@ -522,7 +522,7 @@ var FGS = {
 				if(typeof(FGS.iBonusTimeout[id]) == 'undefined' || FGS.iBonusTimeout[id] == null)
 				{
 					FGS.startBonusesForGame(id);
-					dump(FGS.getCurrentTime()+'[B] Starting '+id);
+					//dump(FGS.getCurrentTime()+'[B] Starting '+id);
 				}
 			}
 		}
@@ -530,7 +530,7 @@ var FGS = {
 	
 	restartRequests: function()
 	{
-		dump(FGS.getCurrentTime()+'[R] Restarting requests');
+		//dump(FGS.getCurrentTime()+'[R] Restarting requests');
 		clearInterval(FGS.iRequestTimeout);
 		FGS.iRequestTimeout = null;
 		FGS.checkRequests();
@@ -711,11 +711,11 @@ var FGS = {
 				{
 					FGS.database.addRequest(giftArr);
 				}
-				dump(FGS.getCurrentTime()+'[R] Setting up new update in 10 minutes');
+				//dump(FGS.getCurrentTime()+'[R] Setting up new update in 10 minutes');
 			},
 			error: function(e)
 			{
-				dump(FGS.getCurrentTime()+'[R] Connection error. Setting up new update in 10 seconds');
+				//dump(FGS.getCurrentTime()+'[R] Connection error. Setting up new update in 10 seconds');
 			}
 		});
 	},
@@ -763,7 +763,7 @@ var FGS = {
 			downAppID = appID+'_2345673396';
 		
 		
-		dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
+		//dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
 		
 		$.ajax({
 			type: "GET",
@@ -779,7 +779,7 @@ var FGS = {
 					
 					if(error == 1357001)
 					{
-						dump(FGS.getCurrentTime()+'[B] Error: logged out');
+						//dump(FGS.getCurrentTime()+'[B] Error: logged out');
 						FGS.stopAll();
 						return true;
 					}
@@ -845,15 +845,15 @@ var FGS = {
 						{
 							if(FGS.userID != targets)
 							{
-								dump('Rozne id: '+actr+' i '+targets+' userid: '+FGS.userID);
+								//dump('Rozne id: '+actr+' i '+targets+' userid: '+FGS.userID);
 								return;
 							}
 						}
 						
 						if(secs > FGS.options.deleteOlderThan && FGS.options.deleteOlderThan != 0)
 						{
-							dump(secs);
-							dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
+							//dump(secs);
+							//dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
 							return false;
 						}
 						
@@ -870,7 +870,7 @@ var FGS = {
 						
 						if(actr == FGS.userID)	
 						{
-							dump('Wlasny bonus');
+							//dump('Wlasny bonus');
 							return;
 						}
 						
@@ -904,7 +904,7 @@ var FGS = {
 							
 							if(re.test(bTitle))
 							{
-								dump('Filtering: '+bTitle);
+								//dump('Filtering: '+bTitle);
 								ret = true;
 								return false;
 							}
@@ -933,16 +933,16 @@ var FGS = {
 					}
 					
 					
-					dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+					//dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
 				}
 				catch(e)
 				{
-					dump(e.message);
+					//dump(e.message);
 				}
 			},
 			error: function(e)
 			{
-				dump(FGS.getCurrentTime()+'[B] There was a connection error. Setting up new update in 10 seconds');
+				//dump(FGS.getCurrentTime()+'[B] There was a connection error. Setting up new update in 10 seconds');
 			}
 		});
 	},
@@ -962,7 +962,7 @@ var FGS = {
 	
 	loginStatusChanged: function(bool)
 	{
-		dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
+		//dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
 		
 		if(bool == true)
 		{
@@ -1022,8 +1022,8 @@ var FGS = {
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 				}
 			},
 			error: function()

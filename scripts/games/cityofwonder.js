@@ -37,8 +37,8 @@ FGS.cityofwonderRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -115,8 +115,8 @@ FGS.cityofwonderRequests =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -180,8 +180,8 @@ FGS.cityofwonderBonuses =
 				} 
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -244,7 +244,7 @@ FGS.cityofwonderBonuses =
 						i1+=23;
 						var i2 = dataStr.indexOf("'", i1);					
 						var link = dataStr.slice(i1, i2);
-						dump(link);
+						//dump(link);
 						$.get(link);
 					}
 					
@@ -252,8 +252,8 @@ FGS.cityofwonderBonuses =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);

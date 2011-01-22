@@ -672,12 +672,12 @@ FGS.getFBML = function(params, retry)
 				
 				if(typeof(params.sendTo) == 'undefined')
 				{
-					dump(FGS.getCurrentTime()+'[Z] Updating neighbours');
+					//dump(FGS.getCurrentTime()+'[Z] Updating neighbours');
 					FGS.sendView('updateNeighbours', params.gameID, items);
 					return;
 				}
 				
-				dump(FGS.getCurrentTime()+'[Z] Sending');
+				//dump(FGS.getCurrentTime()+'[Z] Sending');
 
 				var j = 0;
 				for(u in params.sendTo)
@@ -725,7 +725,7 @@ FGS.getFBML = function(params, retry)
 			}
 			catch(e)
 			{
-				dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
+				//dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
 				if(typeof(params.sendTo) == 'undefined')
 				{
 					FGS.sendView('errorUpdatingNeighbours');
