@@ -3,7 +3,7 @@ FGS.farmvilleFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -62,7 +62,7 @@ FGS.farmvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -81,7 +81,7 @@ FGS.farmvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -101,7 +101,7 @@ FGS.farmvilleFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -134,7 +134,7 @@ FGS.farmvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -153,7 +153,7 @@ FGS.farmvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -173,7 +173,7 @@ FGS.farmvilleFreegifts =
 	Click3: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -213,7 +213,7 @@ FGS.farmvilleFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -232,7 +232,7 @@ FGS.farmvilleFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -257,8 +257,7 @@ FGS.farmvilleRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -286,7 +285,7 @@ FGS.farmvilleRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -380,7 +379,7 @@ FGS.farmvilleRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -392,7 +391,7 @@ FGS.farmvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -409,8 +408,7 @@ FGS.farmvilleBonuses =
 	Click:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 
 		var otherLimits = 
@@ -433,7 +431,7 @@ FGS.farmvilleBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -518,7 +516,7 @@ FGS.farmvilleBonuses =
 							{
 								if(typeof(retry) == 'undefined')
 								{
-									$retry(currentType, id, currentURL, true);
+									retryThis(currentType, id, currentURL, true);
 								}
 								else
 								{
@@ -539,7 +537,7 @@ FGS.farmvilleBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -551,7 +549,7 @@ FGS.farmvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{

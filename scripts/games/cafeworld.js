@@ -3,7 +3,7 @@ FGS.cafeworldFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -39,7 +39,7 @@ FGS.cafeworldFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -58,7 +58,7 @@ FGS.cafeworldFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -78,7 +78,7 @@ FGS.cafeworldFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -104,7 +104,7 @@ FGS.cafeworldFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -123,7 +123,7 @@ FGS.cafeworldFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -146,8 +146,7 @@ FGS.cafeworldRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -163,7 +162,7 @@ FGS.cafeworldRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -265,7 +264,7 @@ FGS.cafeworldRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -277,7 +276,7 @@ FGS.cafeworldRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -293,8 +292,7 @@ FGS.cafeworldBonuses =
 	Click:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -310,7 +308,7 @@ FGS.cafeworldBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -330,7 +328,7 @@ FGS.cafeworldBonuses =
 					var newUrl = $('.lotto-container', dataHTML).children('a:first').attr('href');
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, unescape(newUrl), true);
+						retryThis(currentType, id, unescape(newUrl), true);
 					}
 					else
 					{
@@ -344,7 +342,7 @@ FGS.cafeworldBonuses =
 					var newUrl = $('#app101539264719_item_wrapper', dataHTML).find('a:first').attr('href');
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, unescape(newUrl), true);
+						retryThis(currentType, id, unescape(newUrl), true);
 					}
 					else
 					{
@@ -535,7 +533,7 @@ FGS.cafeworldBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -547,7 +545,7 @@ FGS.cafeworldBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{

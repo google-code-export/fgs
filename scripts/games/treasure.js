@@ -3,7 +3,7 @@ FGS.treasureFreegifts =
 	Click: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -62,7 +62,7 @@ FGS.treasureFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -81,7 +81,7 @@ FGS.treasureFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -101,7 +101,7 @@ FGS.treasureFreegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -134,7 +134,7 @@ FGS.treasureFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -153,7 +153,7 @@ FGS.treasureFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -173,7 +173,7 @@ FGS.treasureFreegifts =
 	Click3: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry = arguments.callee;
+		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
@@ -223,7 +223,7 @@ FGS.treasureFreegifts =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(params, true);
+						retryThis(params, true);
 					}
 					else
 					{
@@ -242,7 +242,7 @@ FGS.treasureFreegifts =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(params, true);
+					retryThis(params, true);
 				}
 				else
 				{
@@ -265,8 +265,7 @@ FGS.treasureRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -282,7 +281,7 @@ FGS.treasureRequests =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -296,8 +295,14 @@ FGS.treasureRequests =
 
 					if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length == 0)
 					{
-					
-						if(dataStr.indexOf('You helped train the Dragon') != -1)
+						if(dataStr.indexOf('Great! You helped the ') != -1)
+						{
+							info.image = 'gfx/90px-check.png';
+							info.title = '';
+							info.text = $('h2', dataHTML).text();
+							info.time = Math.round(new Date().getTime() / 1000);
+						}
+						else if(dataStr.indexOf('You helped train the Dragon') != -1)
 						{
 							info.image = $(".giftFrom_img",dataHTML).children().attr("src");
 							info.title = 'Train the Dragon';
@@ -306,17 +311,18 @@ FGS.treasureRequests =
 						}
 						else
 						{
-							info.image = $(".giftFrom_img",dataHTML).children().attr("src");
-							info.title = 'New neighbour';
-							info.text  = $(".giftFrom_name",dataHTML).children().text();
+							info.image = '';
+							info.title = '';
+							info.text  = 'New neighbour';
 							info.time = Math.round(new Date().getTime() / 1000);
 						}
 						
 						FGS.endWithSuccess(currentType, id, info);
+						return;
 					}
 					else if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
 					{
-						var sendInfo = '';						
+						var sendInfo = '';
 						
 						var tmpStr = unescape(currentURL);					
 						var i1 = tmpStr.indexOf('&gift=');
@@ -337,7 +343,7 @@ FGS.treasureRequests =
 								destName: $(".giftFrom_img",dataHTML).siblings('p').text(),
 								}
 						}
-						info.thanks = sendInfo;	
+						info.thanks = sendInfo;
 						
 						info.image = $(".giftConfirm_img",dataHTML).children().attr("src");
 						info.title = $(".giftConfirm_img",dataHTML).siblings('p').text();
@@ -364,7 +370,7 @@ FGS.treasureRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -376,7 +382,7 @@ FGS.treasureRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -385,11 +391,11 @@ FGS.treasureRequests =
 			}
 		});
 	},
+	
 	Click2: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -422,7 +428,7 @@ FGS.treasureRequests =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -434,7 +440,7 @@ FGS.treasureRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -451,8 +457,7 @@ FGS.treasureBonuses =
 	Click:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -468,7 +473,7 @@ FGS.treasureBonuses =
 				{
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, true);
 					}
 					else
 					{
@@ -479,6 +484,13 @@ FGS.treasureBonuses =
 				
 				try
 				{
+					if(dataStr.indexOf('<h1>Oh no!</h1>') != -1)
+					{
+						var error_text = $('h2', dataHTML).text();
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+
 					var URL = $('.acceptButtons', dataHTML).children('a:first').attr('href');
 					if(typeof(URL) == 'undefined') throw {message: 'No url'}
 					var URL = unescape(URL);
@@ -491,7 +503,7 @@ FGS.treasureBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -503,7 +515,7 @@ FGS.treasureBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{
@@ -516,8 +528,7 @@ FGS.treasureBonuses =
 	Click2:	function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
-		$type	= currentType;
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -532,7 +543,8 @@ FGS.treasureBonuses =
 				{
 					if(dataStr.indexOf('<h1>Oh no!</h1>') != -1)
 					{
-						FGS.endWithError('limit', currentType, id);
+						var error_text = $('h2', dataHTML).text();
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 					
@@ -556,7 +568,7 @@ FGS.treasureBonuses =
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 					}
 					else
 					{
@@ -568,7 +580,7 @@ FGS.treasureBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
 				}
 				else
 				{

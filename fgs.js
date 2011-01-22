@@ -84,7 +84,7 @@ var FGS = {
 	prepareLinkForGame: function(game, id, dataPost, retry)
 	{
 		var $ = FGS.jQuery;
-		$retry 	= arguments.callee;
+		var retryThis 	= arguments.callee;
 		var currentType	= 'request';
 		var info = {}
 		
@@ -135,7 +135,7 @@ var FGS = {
 					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						$retry(game, id, dataPost, true);
+						retryThis(game, id, dataPost, true);
 					}
 					else
 					{
@@ -147,7 +147,7 @@ var FGS = {
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					$retry(game, id, dataPost, true);
+					retryThis(game, id, dataPost, true);
 				}
 				else
 				{
@@ -305,7 +305,8 @@ var FGS = {
 			text = text.replace(/\\u0025/g, '%');
 			text = text.replace(/\\/g,'');
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
-			return $(url).attr('href');
+			var ret = $(url).attr('href');
+			return ret;
 		}
 		catch(err)
 		{
@@ -328,7 +329,11 @@ var FGS = {
 		}
 		else
 		{
-			alert('nieznany type - powiedz mezowi: '+type+' ID: '+id);
+			alert('nieznany type przy SUCCESS - powiedz mezowi: '+type+' ID: '+id);
+			dump('nieznany typ SUCCESS');
+			dump(type);
+			dump(id);
+			dump('nieznany typ SUCCESS koniec');
 		}
 		FGS.sendView(viewMsg, id, info);
 		FGS.database.updateItem(table, id, info);
@@ -356,7 +361,11 @@ var FGS = {
 		}
 		else
 		{
-			alert('nieznany type - powiedz mezowi: '+type+' ID: '+id);
+			alert('nieznany type przy ERROR - powiedz mezowi: '+type+' ID: '+id);
+			dump('nieznany typ ERROR');
+			dump(type);
+			dump(id);
+			dump('nieznany typ ERROR koniec');
 		}
 		
 		if(error == 'receiving')
