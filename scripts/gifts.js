@@ -678,11 +678,7 @@ FGS.getFBML = function(params, retry)
 				}
 				
 				dump(FGS.getCurrentTime()+'[Z] Sending');
-				
-				dump(myUrl2);
 
-				
-				
 				var j = 0;
 				for(u in params.sendTo)
 				{
@@ -716,9 +712,6 @@ FGS.getFBML = function(params, retry)
 					param2 += '&giftId='+params.gift;
 				}
 				
-				dump(param2);
-				
-
 				params.myParms = myParms+'&lsd=';
 				params.myUrl = myUrl2;
 				params.param2 = param2;

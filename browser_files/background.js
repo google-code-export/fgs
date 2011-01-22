@@ -144,20 +144,7 @@ FGS.sendView = function (msg, data, data2, data3)
 		//If this view has the right URL and hasn't been used yet...
 		if (view.location.href == viewTabUrl)
 		{
-			// chat //
-			if(msg == 'sendChatData')
-			{
-				view.parseChatData(data);
-			}
-			else if(msg == 'emptyMessageBox')
-			{
-				view.emptyMessageBox(data);
-			}
-			else if(msg == 'chatIndicator')
-			{
-				view.indicator_switch(data);
-			}
-			else if(msg == 'close')
+			if(msg == 'close')
 			{
 				view.close();
 			}

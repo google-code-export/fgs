@@ -10,12 +10,14 @@
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
 <script type="text/javascript" src="scripts/jquery.contextMenu.js?version=4.0.2"></script>
 <script type="text/javascript" src="scripts/time.js?version=4.0.2"></script>
-<script type="text/javascript" src="scripts/notices.js?version=4.0.2"></script>
+<script type="text/javascript" src="scripts/notices.js?version=4.0.3"></script>
+<script type="text/javascript" src="scripts/chat.js?version=4.0.3"></script>
 <script type="text/javascript" src="browser_files/browser.js?version=4.0.2"></script>
 <script type="text/javascript">
 	var loaded = 0;	
 	
 	var isScreenLocked = false;
+	var chatInterval = null;
 
 	function updateLoaded()
 	{
@@ -1157,11 +1159,6 @@
 		var newRow = $('<div class="bg'+mod+'" style="margin:4px 0"><div class="inner"><div class="username font'+mod+'"><img src="gfx/'+img+'.png" class="online_img"> <a title="Click to go to facebook profile" target="_blank" href="http://www.facebook.com/profile.php?id='+v.id+'">'+v.user+'</a>'+addit+'</div></div></div>');
 		$('.users', chatID).append(newRow);
 	}
-	
-	function emptyMessageBox(isPriv)
-	{
-		$('.message', (isPriv ? '#privateChat' : '#publicChat')).val('');
-	}
 
 	function send(form)
 	{	
@@ -1169,16 +1166,20 @@
 		var privateVar = $(form).attr('id') == 'privateChat' ? true : false;
 		if(msg !== '')
 		{
-			bkP.send(msg, privateVar);
+			sendChat(msg, privateVar);
 		}
 		
 	}
 
-	function parseChatData(data)
+	function parseChatData(data, empty)
 	{
-		if($('.message','#privateChat').attr('disabled') !== false || $('.message','#publicChat').attr('disabled') !== false)
+		if($('.message','#publicChat').attr('disabled') !== false)
 		{
-			//$('.message','#privateChat').val('').removeAttr('disabled');
+			$('.message','#publicChat').val('').removeAttr('disabled');
+		}
+		
+		if(empty === true)
+		{
 			$('.message','#publicChat').val('').removeAttr('disabled');
 		}
 		
@@ -1594,8 +1595,10 @@
 			{
 				$('#chat').removeClass('hide');
 				$('.shouts', '#chat').html('');
-				//bkP.iChatTimeout = bkP.setTimeout('readChat(true)', 1);
-				return; 
+				
+				setTimeout(function() { readChat(true); }, 1);
+				var chatInterval = setInterval(readChat, 5000); //bkP.options.checkChatTimeout
+				return;
 			}
 			else if($(this).attr('id') == 'optionsSelected')
 			{
@@ -1610,7 +1613,8 @@
 			else
 			{
 				$('#'+$(this).attr('sysID')+'Game').removeClass('hide');
-				//bkP.clearTimeout(bkP.iChatTimeout);
+				clearInterval(chatInterval);
+				chatInterval = null;
 				return;
 			}
 		});
@@ -2432,6 +2436,7 @@
 		<div class="section leftBox" id="notices">
 			<h3>Notices:</h3>
 			<br />
+			<div id="noticesScript" style="display:none"></div>
 			<div id="noticesContent">
 			
 			</div>

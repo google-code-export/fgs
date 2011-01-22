@@ -242,10 +242,6 @@ FGS.database.updateItemGiftBack = function(table, itemID)
 {
 	FGS.database.db.transaction(function(tx)
 	{
-	
-		console.log(table);
-		console.log(itemID);
-		
 		var temp = {sent: true};
 		var tempStr = JSON.stringify(temp);
 		

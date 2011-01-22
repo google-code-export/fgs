@@ -1,15 +1,8 @@
 function readChat(start)
 {
-	clearTimeout(iChatTimeout);
-
-	if(userID == null)
-	{
-		console.log(getCurrentTime()+'[Chat] No userID. Retrying in '+options.checkChatTimeout+' seconds');
-		iChatTimeout = setTimeout('readChat()', options.checkChatTimeout*1000);
-		return;
-	}
-
-	if(options.chatSessions == undefined)
+	if(bkP.userID == null) return;
+	
+	if(bkP.options.chatSessions == undefined)
 	{
 		var newUser = 
 		{
@@ -17,87 +10,74 @@ function readChat(start)
 			lastPrivateID: 0,
 			lastPublicID: 0
 		};
-		options.chatSessions = newUser;
-		console.log(getCurrentTime()+'[Chat] First connection to chat');
+		
+		bkP.options.chatSessions = newUser;
 	}
-
+	
 	if(start == true)
 	{
-		options.chatSessions.lastPrivateID = options.chatSessions.lastPublicID = 0;
-		console.log(getCurrentTime()+'[Chat] Resetting chat data');
+		bkP.options.chatSessions.lastPrivateID = bkP.options.chatSessions.lastPublicID = 0;
 	}
 
-	sendView('chatIndicator', 'on');
+	indicator_switch('on');
+	
+	
 	$.ajax({
 		type: "GET",
-		url: 'http://rzadki.eu/projects/chat/chat2.php',
+		url: 'http://rzadki.eu:81/projects/fgs/jsonp/chat.php?callback=?',
 		cache: false,
-		data: {action: 'read',  userName: userName, userID: userID,
-					lastPrivateID: options.chatSessions.lastPrivateID, lastPublicID: options.chatSessions.lastPublicID, sessionID: options.chatSessions.sessID},
-		dataType: 'json',
+		data: {action: 'read',  userName: bkP.userName, userID: bkP.userID,
+					lastPrivateID: bkP.options.chatSessions.lastPrivateID, lastPublicID: bkP.options.chatSessions.lastPublicID, sessionID: bkP.options.chatSessions.sessID},
+		dataType: 'jsonp',
 		success: function(data)
 		{
 			if(data == null || data == undefined)
 			{
-				console.log(getCurrentTime()+'[Chat] Problem with server. Retrying in '+options.checkChatTimeout+' seconds');
-				sendView('chatIndicator', 'off');
-				iChatTimeout = setTimeout('readChat()', options.checkChatTimeout*1000);
+				indicator_switch('off');
 				return false;
 			}
-			options.chatSessions.sessID = data.sessID;
-			options.chatSessions.lastPrivateID = data.lastPrivateID;
-			options.chatSessions.lastPublicID = data.lastPublicID;
-			
-			console.log(getCurrentTime()+'[Chat] Received new data. Populating chat.');
-			
-			sendView('sendChatData', data);
+			bkP.options.chatSessions.sessID = data.sessID;
+			bkP.options.chatSessions.lastPrivateID = data.lastPrivateID;
+			bkP.options.chatSessions.lastPublicID = data.lastPublicID;			
+			parseChatData(data, false);
 		},
 		complete: function()
 		{
-			sendView('chatIndicator', 'off');
-			iChatTimeout = setTimeout('readChat()', options.checkChatTimeout*1000);
+			indicator_switch('off');
 		}
 	});
 }
 
-function send(msg, isPrivate)
+function sendChat(msg, isPrivate)
 {
 	if(msg == '')
 		return;
 	
-	clearTimeout(iChatTimeout);
+	indicator_switch('on');
 	
-	sendView('chatIndicator', 'on');
 	
 	$.ajax({
 		type: "POST",
-		url: 'http://rzadki.eu/projects/chat/chat2.php',
+		url: 'http://rzadki.eu:81/projects/fgs/jsonp/chat.php?callback=?',
 		cache: false,
-		data:  {action: 'send', text: msg, userName: userName, userID: userID, private: isPrivate,
-					lastPrivateID: options.chatSessions.lastPrivateID, lastPublicID: options.chatSessions.lastPublicID, sessionID: options.chatSessions.sessID},
-		dataType: 'json',
+		data:  {action: 'send', text: msg, userName: bkP.userName, userID: bkP.userID, private: isPrivate,
+					lastPrivateID: bkP.options.chatSessions.lastPrivateID, lastPublicID: bkP.options.chatSessions.lastPublicID, sessionID: bkP.options.chatSessions.sessID},
+		dataType: 'jsonp',
 		success: function(data)
 		{
 			if(data == null || data == undefined)
 			{
-				console.log(getCurrentTime()+'[Chat] Problem with server. Retrying in '+options.checkChatTimeout+' seconds');
-				sendView('chatIndicator', 'off');
-				iChatTimeout = setTimeout('readChat()', options.checkChatTimeout*1000);
+				indicator_switch('off');
 				return false;
 			}
-			
-			options.chatSessions.sessID = data.sessID;
-			options.chatSessions.lastPrivateID = data.lastPrivateID;
-			options.chatSessions.lastPublicID = data.lastPublicID;
-			
-			console.log(getCurrentTime()+'[Chat] Received new data. Populating chat.');
-			sendView('sendChatData', data);
-			sendView('emptyMessageBox', isPrivate);
+			bkP.options.chatSessions.sessID = data.sessID;
+			bkP.options.chatSessions.lastPrivateID = data.lastPrivateID;
+			bkP.options.chatSessions.lastPublicID = data.lastPublicID;	
+			parseChatData(data, true);
 		},
 		complete: function()
 		{
-			sendView('chatIndicator', 'off');
-			iChatTimeout = setTimeout('readChat()', options.checkChatTimeout*1000);
+			indicator_switch('off');
 		}
 	});
 }

@@ -415,8 +415,8 @@ FGS.farmvilleBonuses =
 		{
 			'have any room to store that bushel': ['Get a Bushel', 'Take a Bushel'],
 			'need to use some of your fuel to be eligible to find more': [],
+			'All that lightning fast clicking is leaving the bits': [],
 		}
-		
 		
 		$.ajax({
 			type: "GET",
