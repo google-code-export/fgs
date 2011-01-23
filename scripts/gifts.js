@@ -71,6 +71,7 @@ FGS.giftsArray = {
 		
 		
 		
+		"fencemarvinpicket": {name: 'Picket Fence II'},
 		
 		
 		
