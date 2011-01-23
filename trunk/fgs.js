@@ -1,5 +1,5 @@
 var FGS = {
-	currentVersion: '4.0.3.2',
+	currentVersion: '4.0.3.3',
 	alreadyOpened: false,
 	
 	initializeDefaults: function ()
@@ -286,6 +286,11 @@ var FGS = {
 				setTimeout(FGS.startup, 3000);
 			}
 		});		
+	},
+	
+	encodeHtmlEntities: function (str) 
+	{
+		return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 	},
 
 	checkForLocationReload: function(data)
