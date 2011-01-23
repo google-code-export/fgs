@@ -459,15 +459,8 @@ FGS.zooworldBonuses =
 							else
 								var error_text = out;
 							
-							if(error_text.indexOf('<b>') == -1)
-							{
-								FGS.endWithError('limit', currentType, id, error_text);
-								return;
-							}
-							else
-							{
-								out = error_text;
-							}							
+							FGS.endWithError('limit', currentType, id, error_text);
+							return;						
 						}
 						var i1 = out.indexOf('<b>')+3;
 						var i2 = out.indexOf('b>',i1)-2;

@@ -1,5 +1,5 @@
 var FGS = {
-	currentVersion: '4.0.3.3',
+	currentVersion: '4.0.3.4',
 	alreadyOpened: false,
 	
 	initializeDefaults: function ()
