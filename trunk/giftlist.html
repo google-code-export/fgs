@@ -2435,6 +2435,65 @@
 		<div class="section leftBox" id="notices">
 			<h3>Notices:</h3>
 			<br />
+			<div>
+			<script>
+				function compareObjects(y, x)
+				{
+					for (var p in y) 
+					{
+						if(typeof(y[p]) !== typeof(x[p])) return false;
+						if((y[p]===null) !== (x[p]===null)) return false;
+						switch (typeof(y[p])) 
+						{
+							case 'undefined':
+								if (typeof(x[p]) != 'undefined') return false;
+								break;
+							case 'object':
+								if(y[p]!==null && x[p]!==null && (y[p].constructor.toString() !== x[p].constructor.toString() || !compareObjects(y[p],x[p]))) return false;
+								break;
+							case 'function':
+								if (p != 'equals' && y[p].toString() != x[p].toString()) return false;
+								break;
+							default:
+								if (y[p] !== x[p]) return false;
+						}
+					}
+					return true;
+				}
+				
+				
+				jQuery.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/giftsUpdate.php?callback=?', function(data)
+				{				
+					try
+					{
+						
+						var updateList = false;
+						
+						eval('var tmp1 = '+data.default);
+						eval('var tmp2 = '+data.list);
+						
+						if(compareObjects(bkP.giftsArray, tmp2) === false)
+						{
+							updateList = true;
+						}
+						
+						if(compareObjects(bkP.freeGiftForGame, tmp1) === false)
+						{
+							updateList = true;
+						}
+						
+						if(updateList == true)
+						{
+							
+						}
+					}
+					catch(e)
+					{
+						console.log(e);
+					}
+				});
+			</script>
+			</div>
 			<div id="noticesScript" style="display:none"></div>
 			<div id="noticesContent">
 			

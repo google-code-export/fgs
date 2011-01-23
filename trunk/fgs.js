@@ -307,6 +307,9 @@ var FGS = {
 			text = text.replace(/\\/g,'');
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
 			var ret = $(url).attr('href');
+			
+			FGS.debugLog.push(ret);
+			
 			return ret;
 		}
 		catch(err)
@@ -396,11 +399,31 @@ var FGS = {
 			FGS.database.updateErrorItem(table, id, info);
 			FGS.sendView(viewMsg, id, info);	
 		}
-		else
+		else if(error == 'not found')
 		{
+			info.error_text = 'This gift has expired or was collected from requests page.';
+			FGS.database.updateErrorItem(table, id, info);
 			FGS.sendView(viewMsg, id, info);
 			//alert('nieznany error - powiedz mezowi: '+error+' ID: '+id);
 		}
+	},
+	
+	checkForNotFound: function(url)
+	{
+		var errorsArr = ['gifterror=notfound'];
+		
+		var ret = false;
+		
+		FGS.jQuery(errorsArr).each(function(k,v)
+		{
+			if(url.indexOf(v) != -1)
+			{
+				ret = true;
+				return false;				
+			}		
+		});
+		
+		return ret;
 	},
 	
 	findIframeByName: function(name, data)

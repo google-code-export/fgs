@@ -1,5 +1,5 @@
 FGS.giftsArray = {
-	'201278444497':
+	'201278444497': // frontierville
 	{
 		"gift_mystery1": { name: 'Mystery Gift 1'},
 		"gift_mystery2": { name: 'Mystery Gift 2'},
@@ -57,7 +57,7 @@ FGS.giftsArray = {
 		"flowerpot_round": { name: 'Round Flower Pot'},
 		"picnic_basket": { name: 'Picnic Basket'},
 	},
-	'102452128776':
+	'102452128776': // farmville
 	{
 		"mysterygift": { name: 'Mystery Gift'},
 		"socialplumbingmysterygift": { name: 'Special Delivery' },
@@ -199,7 +199,7 @@ FGS.giftsArray = {
 		"yellowmelonbushel": { name: 'YellowMelon (-.-.W)'},
 		"watermelonbushel": { name: 'Watermelon (-.-.W)'},
 	},
-	'234860566661':
+	'234860566661': // treasure isle
 	{
 		"mystery_gift": { name: 'Mystery Gift'},
 		"fishing_bait_common": { name: 'Basic Bait'},
@@ -262,7 +262,7 @@ FGS.giftsArray = {
 		"deco_royalmnkpostrope": { name: 'Royal Post'},
 		"shrub_redbeachplant": { name: 'Red Beach Plant'},
 	},
-	'101539264719':
+	'101539264719': // cafe world
 	{
 		"2883": { name: 'Maxwell Coffee'},
 		"2548": { name: 'Special Delivery'},
@@ -295,7 +295,7 @@ FGS.giftsArray = {
 		"603": { name: 'Overstuffed Peppers'},
 		"638": { name: 'Lucky Fortune Cookie'},
 	},
-	10979261223:  
+	10979261223:  // mafia wars
 	{
 		"425": { name: 'Beats by Dre'},
 		"426": { name: 'Doctors Orders'},
@@ -322,7 +322,7 @@ FGS.giftsArray = {
 		*/
 		
 	},
-	120563477996213:
+	120563477996213: // ravenwood fair
 	{
 		"329": { name: 'One Energy'},
 		"405": { name: 'Leaf'},
@@ -391,7 +391,7 @@ FGS.giftsArray = {
 		"526": { name: 'Vinca Vine - lvl 13'},
 		"530": { name: 'Picnic Umbrella - lvl 14'},
 	},
-	151044809337:
+	151044809337: // fishville
 	{
 		"klfreefcollection1": { name: 'Live Rock'},
 		"tgvcranberryplant": { name: 'Cranberry Plant'},
@@ -415,7 +415,7 @@ FGS.giftsArray = {
 		"greenBubbleCoral": { name: 'Green Bubble Coral'},
 	},
 	
-	291549705119: 
+	291549705119: // cityville
 	{
 		"energy_1": { name: '+1 Energy'},
 		"energy_2": { name: '+2 Energy'},
@@ -438,16 +438,26 @@ FGS.giftsArray = {
 		"quest_item_holiday_pinecones": { name: 'Pincecones' },
 		
 		
+		
+		
 		"material_marble": { name: 'Marble'},
 		"material_city_seal": { name: 'City Seal'},
 		"tree_poinciana": { name: 'Poinciana Tree - lvl 15'},
 		"Animal_cow1": { name: 'White Cow - lvl 15'},
 		"Animal_horse1": { name: 'Horse - lvl 20'},
 		"tree_willow": { name: 'Willow Tree - lvl 30'},
-		"deco_fountain01": { name: 'Fountain - lvl 40'},		
+		"deco_fountain01": { name: 'Fountain - lvl 40'},
+		
+		
+		"Animal_moose1": { name: 'Moose (lvl 20)'},
+		"Animal_penguin" : { name: 'Penguin'},
+		"tree_hanging_flower" : { name: 'Hanging Flower (lvl 20)'},
+		"deco_fence04" : { name: 'White Fence'},
+		"tree_plantered" : { name: 'Shade Tree'},
+		
 	},
 	
-	167746316127:
+	167746316127: // zoo world
 	{
 		"977": { name: 'Winter Scarf'},
 		"978": { name: 'Reindeer Headdress'},
@@ -492,7 +502,7 @@ FGS.giftsArray = {
 		"15": { name: 'Tree Frog'},
 		"22": { name: 'Zebra'},
 	},
-	2389801228:
+	2389801228: // poker
 	{
 		"chips": { name: "Chips" }
 	}
