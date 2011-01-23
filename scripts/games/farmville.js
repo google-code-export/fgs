@@ -283,7 +283,11 @@ FGS.farmvilleRequests =
 				
 				if(redirectUrl != false)
 				{
-					if(typeof(retry) == 'undefined')
+					if(FGS.checkForNotFound(redirectUrl) === true)
+					{
+						FGS.endWithError('not found', currentType, id);
+					}
+					else if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, redirectUrl, true);
 					}
@@ -294,9 +298,19 @@ FGS.farmvilleRequests =
 					return;
 				}
 				
-				
 				try
 				{
+				
+					if($('.main_giftConfirm_cont', dataHTML).length > 0)
+					{
+						if($('.main_giftConfirm_cont', dataHTML).text().indexOf('seem to send that gift to your friend right now') != -1)
+						{
+							var error_text = "Sorry, farmer. We can't seem to send that gift to your friend right now.";
+							FGS.endWithError('limit', currentType, id, error_text);							
+							return;
+						}
+					}
+					
 					if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
 					{
 						info.image = $(".giftConfirm_img",dataHTML).children().attr("src");
