@@ -12,7 +12,6 @@ FGS.giftsArray = {
 		"feast_sweetpotatoes" : { name: 'Sweet potatoes'},
 		//"table_silverware" : { name: 'Silverware'},
 		
-		
 		"toys": { name: 'Toys' },
 		"fruitcake": { name: 'Fruitcake' },
 		"winterdecor3_largewreath": { name: 'Large wreath' },

@@ -170,18 +170,26 @@ FGS.cityvilleFreegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://'+params.domain+'/gifts.php?action=chooseRecipient&gift='+params.gift+'&view=app&ref=&'+params.zyParam+''+addAntiBot,
+			url: 'http://'+params.domain+'/gifts.php?action=chooseRecipient&gift='+params.gift+'&view=all&ref=&'+params.zyParam+''+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				try
 				{
 					var i1,i2;
-					var strTemp = dataStr;					
+					var strTemp = dataStr;
+
+					if(dataStr.indexOf('snml:') == -1)
+					{
+						retry = true;
+						throw {message: 'invalid gift'}
+					}
 					
 					var data = dataStr.replace(/snml:/g, 'fb_');
 					
 					var outStr = '';
+					
+					
 					
 					var i1 = data.indexOf('<fb_serverSnml');
 					
@@ -220,14 +228,20 @@ FGS.cityvilleFreegifts =
 					var c11 = data.indexOf('>', c1);
 					var c12 = data.indexOf('/fb_content>',c11);
 					
-					var contentAttr = encodeURIComponent(data.slice(c11+1, c12));
+					var contentTmp = data.slice(c11+1, c12-1).replace(/\"/g, "'");
+					
+					var contentAttr = FGS.encodeHtmlEntities(contentTmp);
+
+					//$(FGS.HTMLParser('<p class="link" href="'+contentTmp+'">abc</p>')).find('p.link').attr('href');
+					//var contentAttr = encodeURIComponent(data.slice(c11+1, c12-1));
+					//var contentAttr = data.slice(c11+1, c12);
+					
 					
 					outStr += '<fbGood_request-form invite="'+inviteAttr+'" action="'+actionAttr+'" method="'+methodAttr+'" type="'+typeAttr+'" content="'+contentAttr+'"><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="EXCLUDE_ARRAY_LIST" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="http://fb-0.FGS.cityville.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form>';
 					
 					
 					
 					outStr += '</div>';
-					
 					
 					var cmd_id = new Date().getTime();
 					
