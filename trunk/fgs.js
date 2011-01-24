@@ -308,7 +308,7 @@ var FGS = {
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
 			var ret = $(url).attr('href');
 			
-			dump(ret);
+			//dump(ret);
 			
 			return ret;
 		}
