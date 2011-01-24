@@ -308,7 +308,7 @@ var FGS = {
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
 			var ret = $(url).attr('href');
 			
-			FGS.debugLog.push(ret);
+			dump(ret);
 			
 			return ret;
 		}
@@ -410,7 +410,7 @@ var FGS = {
 	
 	checkForNotFound: function(url)
 	{
-		var errorsArr = ['gifterror=notfound'];
+		var errorsArr = ['gifterror=notfound', 'countrylife/play'];
 		
 		var ret = false;
 		
@@ -689,7 +689,7 @@ var FGS = {
 					
 					if(i1 == -1)
 					{
-						if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1)
+						if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1)
 						{
 							var type =  $(el).find('.UIImageBlock_SMALL_Image').find('img').attr('src');				
 						}

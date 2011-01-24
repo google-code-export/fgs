@@ -356,6 +356,39 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	143547399002598:	{ 	name: 'Paradise Life',		systemName: 'paradiselife', link: 'http://apps.facebook.com/paradiselife/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['^Go play', '^Send', '^Go see my gift'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+	26947445683:	{ 	name: 'Country Life',		systemName: 'countrylife', link: 'http://apps.facebook.com/countrylife/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: ['be my friend']
+						},
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+					
 };
 
 FGS.submenuButtons =
