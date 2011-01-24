@@ -93,7 +93,17 @@ FGS.paradiselifeRequests =
 					
 					var i1 = dataStr.indexOf('id="gifts_received"');
 					
-					if(dataStr.indexOf('as your neighbor') != -1)
+					
+					if($('.gift_wrap', dataHTML).length > 0)
+					{
+						info.image = $('.gift_wrap', dataHTML).find('img').attr('src');
+						info.title = $('.gift_wrap', dataHTML).find('p').text();
+						info.text  = ' ';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+					}
+					else if(dataStr.indexOf('as your neighbor') != -1)
 					{
 						info.image = '';
 						info.text  = 'New neighbour';
