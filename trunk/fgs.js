@@ -796,7 +796,8 @@ var FGS = {
 		$.ajax({
 			type: "GET",
 			url: 'http://www.facebook.com/ajax/apps/app_stories.php',
-			data: '__a=1&is_game=1&app_ids='+downAppID+'&max_stories='+number+'&user_action=1',		dataType: 'text',
+			data: '__a=1&is_game=1&app_ids='+downAppID+'&max_stories='+number+'&user_action=1',		
+			dataType: 'text',
 			timeout: 180000,
 			success: function(data)
 			{
@@ -830,7 +831,7 @@ var FGS = {
 					{
 						throw {message: FGS.getCurrentTime()+'[B] No new bonuses. Skipping'};
 					}
-								
+
 					var elIDNext = 	FGS.options.games[appID].clearOlderID;
 					
 					var count = 0;
@@ -959,8 +960,6 @@ var FGS = {
 					{
 						FGS.bonusLoadingProgress[appID].loaded = true;
 					}
-					
-					
 					//dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
 				}
 				catch(e)
