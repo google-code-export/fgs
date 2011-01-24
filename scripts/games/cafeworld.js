@@ -321,42 +321,44 @@ FGS.cafeworldBonuses =
 					return;
 				}
 				
+				
 				if(dataStr.indexOf('There are no more servings left') != -1 || dataStr.indexOf('Looks like all the prizes have') != -1 || dataStr.indexOf('already claimed') != -1 || dataStr.indexOf('You are either too late or you clicked here previously') != -1 || dataStr.indexOf('You already received this bonus') != -1 || dataStr.indexOf(' Perfect Servings once today!') != -1 || dataStr.indexOf('already received all the help they could handle') != -1 || dataStr.indexOf('You have already helped today!') != -1)
 				{
 					FGS.endWithError('limit', currentType, id);
 					return;
 				}
 				
-				if(dataStr.indexOf('please pick a mystery gift as a thank you') != -1)
-				{
-					var newUrl = $('.lotto-container', dataHTML).children('a:first').attr('href');
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(currentType, id, unescape(newUrl), true);
-					}
-					else
-					{
-						throw {message: 'error'}
-					}
-					return;
-				}
-				
-				if(dataStr.indexOf('give you some in return but they can') != -1)
-				{
-					var newUrl = $('#app101539264719_item_wrapper', dataHTML).find('a:first').attr('href');
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(currentType, id, unescape(newUrl), true);
-					}
-					else
-					{
-						throw {message: 'error'}
-					}
-					return;
-				}
-
 				try
-				{				
+				{
+					if(dataStr.indexOf('please pick a mystery gift as a thank you') != -1)
+					{
+						var newUrl = $('.lotto-container', dataHTML).children('a:first').attr('href');
+						if(typeof(retry) == 'undefined')
+						{
+							retryThis(currentType, id, unescape(newUrl), true);
+						}
+						else
+						{
+							throw {message: 'error'}
+						}
+						return;
+					}
+					
+					if(dataStr.indexOf('give you some in return but they can') != -1)
+					{
+						var newUrl = $('#app101539264719_item_wrapper', dataHTML).find('a:first').attr('href');
+						
+						if(typeof(retry) == 'undefined')
+						{
+							retryThis(currentType, id, unescape(newUrl), true);
+						}
+						else
+						{
+							throw {message: 'error'}
+						}
+						return;
+					}
+				
 					if($('.one-button-container', dataHTML).length > 0)
 					{
 						var URL = $('.one-button-container', dataHTML).children('a.ok').attr('href');
