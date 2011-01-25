@@ -265,22 +265,23 @@ FGS.giftsArray = {
 	},
 	'101539264719': // cafe world
 	{
-		"2883": { name: 'Maxwell Coffee'},
 		"2548": { name: 'Special Delivery'},
 		"1174": { name: 'Spice Shelf'},
 		"1177": { name: 'Spice Small Jar'},
-		"1834": { name: 'Vaccuum Tube'},
 		"1833": { name: 'Flux Switch'},
+		"1834": { name: 'Vaccuum Tube'},
 		"1875": { name: 'Lotto Ticket'},
+		"3013": { name: 'Puff Pastries'},
 		"1837": { name: 'Small Energy Boost'},
 		"2266": { name: 'Pita and Dolmas'},
 		"2404": { name: 'Ranch Beans'},
-		"2925": { name: 'Holly Candy Cane'},
 		"2450": { name: 'Tempura Udon'},
-		"2856": { name: 'Pumpkin Cookies'},
-		"2773": { name: 'Tea Party'},
+		"2925": { name: 'Holly Candy Cane'},
 		"2480": { name: 'Pan Dulce'},
+		"2773": { name: 'Tea Party'},
 		"2924": { name: 'Mistletoe'},
+		"2856": { name: 'Pumpkin Cookies'},
+		"2974": { name: 'New Year Popper'},
 		"2540": { name: 'In Flight Meal'},
 		"2677": { name: 'Skull Cookies'},
 		"2774": { name: 'Drink Me Elixir'},
@@ -288,6 +289,7 @@ FGS.giftsArray = {
 		"758": { name: 'Lump of Coal'},
 		"759": { name: 'Ginger Man'},
 		"1793": { name: 'Falafel'},
+
 		
 		"1600": { name: 'Spring Rolls'},
 		"1559": { name: 'Popcorn Shrimp'},
@@ -539,6 +541,58 @@ FGS.giftsArray = {
 		"Cherry+Pound+Cake": { name: 'Cherry Pound Cake'},
 	},
 	
+	46755028429: //castle age
+	{
+		"1": { name: 'Mystery Shield Gift!'},
+		"2": { name: 'Mystery Trident Gift!'},
+		"3": { name: 'Mystery Cloak Gift!'},
+		"4": { name: 'Mystery Dagger Gift!'},
+		"5": { name: 'Mystery Axe Gift!'},
+		"6": { name: 'Mystery Staff Gift!'},
+		"7": { name: 'Mystery Lava Gift!'},
+		"8": { name: 'Mystery Crest Piece!'},
+		"9": { name: 'Mystery Plate Gift!'},
+		"10": { name: 'Great Fiery Gift!'},
+		"11": { name: 'Volcanic Egg!'},
+		"12": { name: 'Mystery Ice Artifact!'},
+		"13": { name: 'Mystery Earth!'},
+		"14": { name: 'Mystery Relic!'},
+		"15": { name: 'Mystery Item!'},
+		"16": { name: 'Limited Dragan Gift!'},
+		"17": { name: 'Mystery Relic!'},
+		"18": { name: 'Mystery Treasure!'},
+		"20": { name: 'Serpent Egg!'},
+		"21": { name: 'Dragon Egg!'},
+		"22": { name: 'Mystery Druid Item!'},
+		"23": { name: 'Mystery Armor!'},
+		"24": { name: 'Mystery Frost Item!'},
+		"25": { name: 'Mystery Artifact!'},
+		"26": { name: 'Mystery Armor!'},
+		"27": { name: 'Mystery Frost Relic!'},
+		"28": { name: 'Mystery Fire Relic!'},
+		"29": { name: 'Mystery Heirloom!'},
+		"30": { name: 'Mystery Blade Gift!'},
+	},
+	
+	129547877091100: // crime city
+	{
+		"23": { name: 'Mystery Blade'},
+		"1": { name: 'Brass Knuckle...'},
+		"24": { name: 'Mystery Pisto...'},
+		"2": { name: 'Ski Mask'},
+		"16": { name: 'Circular Saw'},
+		"25": { name: 'Mystery Armor...'},
+		"4": { name: 'Steel Garrote'},
+		"7": { name: 'Police Baton - (lvl 8)'},
+		"10": { name: 'M14 Sniper Ri... - (lvl 15)'},
+		"31": { name: 'Mystery Car - (lvl 20)'},
+		"27": { name: 'Mystery Shotg... - (lvl 20)'},
+		"28": { name: 'Mystery Rifle - (lvl 30)'},
+		"26": { name: 'Mystery Armor... - (lvl 35)'},
+		"29": { name: 'Mystery Heavy... - (lvl 40)'},
+	}
+	
+	
 };
 
 FGS.freeGiftForGame =
@@ -554,6 +608,8 @@ FGS.freeGiftForGame =
 	167746316127: '562',
 	2389801228: 'chips',
 	338051018849: 'Stanchion',
+	46755028429: '1',
+	129547877091100: '23',
 }
 
 
@@ -569,6 +625,11 @@ FGS.getFBML = function(params, retry)
 	else if(typeof(params.bakinglifeUrl) != 'undefined')
 	{
 		var thisUrl = params.bakinglifeUrl;
+		var thisMethod = 'get';
+	}
+	else if(typeof(params.customUrl) != 'undefined')
+	{
+		var thisUrl = params.customUrl;
 		var thisMethod = 'get';
 	}
 	else
@@ -642,7 +703,7 @@ FGS.getFBML = function(params, retry)
 				i2          =   strTemp.indexOf('"',i1);
 				myParms    +=  '&post_form_id='+strTemp.slice(i1,i2)
 
-				if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined')
+				if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined' || typeof(params.customUrl) != 'undefined')
 				{
 					i1          =   strTemp.indexOf('fb_dtsg:"');
 				}
@@ -712,6 +773,11 @@ FGS.getFBML = function(params, retry)
 				{
 					myUrl2 = $('form[type]', data).attr('action');
 				}
+				
+				if(params.gameID == '46755028429')
+				{
+					myUrl2 = 'http://apps.facebook.com/castle_age/'+myUrl2;
+				}
 
 				var param2 = '';
 
@@ -752,6 +818,11 @@ FGS.getFBML = function(params, retry)
 				if(params.gameID == '120563477996213')
 				{
 					param2 += '&'+ $('form[type="Ravenwood Fair Gift"]', data).find('input[name="item_id"],input[name="timestamp"]').serialize();
+				}
+				
+				if(params.gameID == '129547877091100')
+				{
+					param2 += '&'+$('form[type]', data).serialize();
 				}
 				
 				if(params.gameID == '167746316127')
