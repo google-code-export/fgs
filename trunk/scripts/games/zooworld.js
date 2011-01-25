@@ -231,6 +231,61 @@ FGS.zooworldRequests =
 					}
 					else
 					{
+					
+						var sendInfo = '';
+						
+						
+						var tmpStr = unescape(currentURL);
+						
+						var i1 = tmpStr.indexOf('?itemId=');
+						if(i1 == -1)
+						{
+							i1 = tmpStr.indexOf('&itemId=');
+						}
+						if(i1 != -1)
+						{
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftName = tmpStr.slice(i1+8,i2);
+							
+							var i1 = tmpStr.indexOf('&giftSenderId=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftRecipient = tmpStr.slice(i1+14,i2);			
+								
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $('img[uid]', dataHTML).attr('title')
+								}
+						}
+						
+						var i1 = tmpStr.indexOf('?giftId=');
+						if(i1 == -1)
+						{
+							i1 = tmpStr.indexOf('&giftId=');
+						}
+						if(i1 != -1)
+						{
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftName = tmpStr.slice(i1+8,i2);
+							
+							var i1 = tmpStr.indexOf('&senderId=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftRecipient = tmpStr.slice(i1+10,i2);			
+								
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $('img[uid]', dataHTML).attr('title')
+								}
+						}
+						
+						info.thanks = sendInfo;				
+					
+					
 						info.image = $('.main_body', dataHTML).find('img:first').attr('src');
 						info.title = $('.main_body', dataHTML).find('p:first').text();
 						info.text  = $('.main_body', dataHTML).find('p:last').text();
@@ -518,7 +573,7 @@ FGS.zooworldBonuses =
 						out = out.slice(i1, i2);
 					}
 					
-					
+
 					out = out.replace('You helped and received a','').replace(' has been added to your inventory.','').replace('You received a', '').replace('You have adopted the','').replace('You got a', '').replace('!','');
 					
 					info.title = out;
