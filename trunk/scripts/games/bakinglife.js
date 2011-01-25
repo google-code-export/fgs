@@ -103,6 +103,11 @@ FGS.bakinglifeRequests =
 					
 					if($('.gift', dataHTML).length > 0)
 					{
+						var sendInfo = '';
+						
+						var tmpStr = unescape(currentURL);
+						
+						
 						var i1 = tmpStr.indexOf('?gift=');
 						if(i1 == -1)
 						{
