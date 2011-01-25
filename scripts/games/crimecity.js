@@ -319,9 +319,34 @@ FGS.crimecityRequests =
 					}
 					else
 					{
-					
-					
-					
+						var sendInfo = '';
+						
+						var tmpStr = unescape(currentURL);
+						
+						var i1 = tmpStr.indexOf('?gift_id=');
+						if(i1 == -1)
+						{
+							i1 = tmpStr.indexOf('&gift_id=');
+						}
+						if(i1 != -1)
+						{
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftName = tmpStr.slice(i1+9,i2);
+							
+							var i1 = tmpStr.indexOf('sender_facebook_id=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftRecipient = tmpStr.slice(i1+19,i2);			
+								
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: "Can't say"
+								}
+						}
+						
+						info.thanks = sendInfo;
 						
 						info.image = $('.acceptGiftGiftBoxImage', dataHTML).children('img').attr('src');
 						info.title = '';						
