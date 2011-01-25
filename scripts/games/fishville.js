@@ -240,6 +240,17 @@ FGS.fishvilleRequests =
 				
 				try
 				{
+					if(dataStr.indexOf('<fb:fbml') != -1)
+					{
+						var i1 = dataStr.indexOf('<fb:fbml')+9;
+						var i2 = dataStr.indexOf('fb:fbml>', i1);
+						
+						var newData = dataStr.slice(i1, i2-2);
+						
+						var dataHTML = FGS.HTMLParser(newData);	
+					}
+				
+				
 					if(dataStr.indexOf('seem to have already accepted this request') != -1)
 					{
 						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
