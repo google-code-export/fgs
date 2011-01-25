@@ -281,7 +281,7 @@ FGS.petvilleFreegifts =
 			
 			if(typeof(params.thankYou) != 'undefined')
 			{
-				params.sendTo[0] = info.body[params.sendTo[0]];
+				//params.sendTo[0] = info.body[params.sendTo[0]];
 			}
 			
 			outStr = outStr.replace('EXCLUDE_ARRAY_LIST', params.excludeCity);
