@@ -409,7 +409,7 @@ var FGS = {
 	
 	checkForNotFound: function(url)
 	{
-		var errorsArr = ['gifterror=notfound', 'countrylife/play'];
+		var errorsArr = ['gifterror=notfound', 'countrylife/play', 'apps.facebook.com/ravenwoodfair/home'];
 		
 		var ret = false;
 		

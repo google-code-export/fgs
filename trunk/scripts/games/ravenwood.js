@@ -325,6 +325,37 @@ FGS.ravenwoodRequests =
 						}
 						else
 						{
+							var sendInfo = '';
+							
+							var tmpStr = unescape(currentURL);
+							
+							var i1 = tmpStr.indexOf('?item_id=');
+							if(i1 == -1)
+							{
+								i1 = tmpStr.indexOf('&item_id=');
+							}
+							if(i1 != -1)
+							{
+								var i2 = tmpStr.indexOf('&', i1+1);
+								
+								var giftName = tmpStr.slice(i1+9,i2);
+								
+								var i1 = tmpStr.indexOf('&sender_id=');
+								var i2 = tmpStr.indexOf('&', i1+1);
+								
+								var giftRecipient = tmpStr.slice(i1+11,i2);			
+									
+								sendInfo = {
+									gift: giftName,
+									destInt: giftRecipient,
+									destName: "Can't say"
+									}
+							}
+							
+							info.thanks = sendInfo;
+							
+							
+						
 							info.title = $(el).text();				
 							
 							var i1 = $(el).text().indexOf('You just accepted this');
