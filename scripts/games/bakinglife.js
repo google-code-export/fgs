@@ -1,3 +1,13 @@
+FGS.bakinglifeFreegifts =
+{
+	Click: function(params, retry)
+	{
+		params.bakinglifeUrl = 'http://apps.facebook.com/bakinglife/sendGift.php?gift='+params.gift+'&fb_force_mode=fbml&friends=app';
+		
+		FGS.getFBML(params);
+	},
+};
+
 FGS.bakinglifeRequests = 
 {
 	Click: function(currentType, id, currentURL, retry)
@@ -93,6 +103,32 @@ FGS.bakinglifeRequests =
 					
 					if($('.gift', dataHTML).length > 0)
 					{
+						var i1 = tmpStr.indexOf('?gift=');
+						if(i1 == -1)
+						{
+							i1 = tmpStr.indexOf('&gift=');
+						}
+						if(i1 != -1)
+						{
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftName = tmpStr.slice(i1+6,i2);
+							
+							var i1 = tmpStr.indexOf('&senderID=');
+							var i2 = tmpStr.indexOf('&', i1+1);
+							
+							var giftRecipient = tmpStr.slice(i1+10,i2);			
+								
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $(".friendContainer2",dataHTML).find('b:first').text()
+								}
+						}
+						
+						info.thanks = sendInfo;
+						
+						
 						info.image = $(".gift",dataHTML).children('img').attr("src");
 						info.title = $(".gift",dataHTML).children('img').attr("alt");
 						info.text  = $(".friendContainer2",dataHTML).find('b:first').text();

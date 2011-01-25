@@ -506,7 +506,38 @@ FGS.giftsArray = {
 	2389801228: // poker
 	{
 		"chips": { name: "Chips" }
-	}
+	},
+	338051018849: //baking life
+	{
+		"Valentine+Cookies": { name: 'Valentine Cookies'},
+		"Stanchion": { name: 'Stanchion'},
+		"Cinnamon+Rolls": { name: 'Cinnamon Rolls'},
+		"Lemon+Poppy+Seed+Muffins": { name: 'Lemon Poppy Seed Muffins'},
+		"Lattice+Top+Apple+Pie": { name: 'Lattice Top Apple Pie'},
+		"Layered+Chocolate+Cake": { name: 'Layered Chocolate Cake'},
+		"Almond+Croissants": { name: 'Almond Croissants'},
+		"Potted+Flower%3A+Yellow": { name: 'Potted Flower: Yellow'},
+		"Chocolate+Chip+Cookies": { name: 'Chocolate Chip Cookies'},
+		"Raspberry+Cheesecake": { name: 'Raspberry Cheesecake'},
+		"Paulas+Igloo+Pudding": { name: 'Paulas Igloo Pudding'},
+		"Tres+Leches+Cake": { name: 'Tres Leches Cake'},
+		"Potted+Flower%3A+Pink": { name: 'Potted Flower: Pink'},
+		"Vanilla+Bundt+Cake": { name: 'Vanilla Bundt Cake'},
+		"Baklava": { name: 'Baklava'},
+		"Chocolate+Delights": { name: 'Chocolate Delights'},
+		"Strawberry+Rhubarb+Pie": { name: 'Strawberry Rhubarb Pie'},
+		"Bibingka+Coconut+Cake": { name: 'Bibingka Coconut Cake'},
+		"Pistachio+Biscotti": { name: 'Pistachio Biscotti'},
+		"Pumpkin+Pie": { name: 'Pumpkin Pie'},
+		"Parisian+Macaroons": { name: 'Parisian Macaroons'},
+		"Passion+Fruit+Mousse+Cake": { name: 'Passion Fruit Mousse Cake'},
+		"Peanut+Butter+Blossoms": { name: 'Peanut Butter Blossoms'},
+		"Tiramisu": { name: 'Tiramisu'},
+		"Carrot+Cake": { name: 'Carrot Cake'},
+		"Marshmallow+Crispy+Stars": { name: 'Marshmallow Crispy Stars'},
+		"Red+Velvet+Cake": { name: 'Red Velvet Cake'},
+		"Cherry+Pound+Cake": { name: 'Cherry Pound Cake'},
+	},
 	
 };
 
@@ -522,6 +553,7 @@ FGS.freeGiftForGame =
 	291549705119: 'energy_1',
 	167746316127: '562',
 	2389801228: 'chips',
+	338051018849: 'Stanchion',
 }
 
 
@@ -532,6 +564,11 @@ FGS.getFBML = function(params, retry)
 	if(typeof(params.cafeUrl) != 'undefined')
 	{
 		var thisUrl = params.cafeUrl;
+		var thisMethod = 'get';
+	}
+	else if(typeof(params.bakinglifeUrl) != 'undefined')
+	{
+		var thisUrl = params.bakinglifeUrl;
 		var thisMethod = 'get';
 	}
 	else
@@ -605,7 +642,7 @@ FGS.getFBML = function(params, retry)
 				i2          =   strTemp.indexOf('"',i1);
 				myParms    +=  '&post_form_id='+strTemp.slice(i1,i2)
 
-				if(typeof(params.cafeUrl) != 'undefined')
+				if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined')
 				{
 					i1          =   strTemp.indexOf('fb_dtsg:"');
 				}
@@ -735,7 +772,7 @@ FGS.getFBML = function(params, retry)
 			}
 			catch(e)
 			{
-				//dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
+				dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
 				if(typeof(params.sendTo) == 'undefined')
 				{
 					FGS.sendView('errorUpdatingNeighbours');

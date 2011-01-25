@@ -326,16 +326,11 @@ FGS.openFacebook = function()
 
 FGS.checkVersion = function()
 {
-	var oldVersion = localStorage.getItem('version');
-	
-	if(oldVersion == undefined || oldVersion == null)
-	{
-	}
-	else if(FGS.jQuery.version_compare(oldVersion, FGS.currentVersion, '<'))
-	{
-		// changelog
-	}
-	localStorage.setItem('version', FGS.currentVersion);	
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', chrome.extension.getURL('manifest.json'), false);
+	xhr.send(null);
+	var manifest = JSON.parse(xhr.responseText);
+	FGS.currentVersion = manifest.version;
 };
 
 FGS.preStartup = function() 
