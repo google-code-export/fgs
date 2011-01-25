@@ -325,6 +325,8 @@ FGS.gamesData =
 							'BonusesHistory', 
 							'RequestsPending',
 							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'GameOptionsTab'
 						],
 					},
@@ -339,7 +341,9 @@ FGS.gamesData =
 						buttons: [
 							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'RequestsHistory',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'GameOptionsTab'
 						],
 					},

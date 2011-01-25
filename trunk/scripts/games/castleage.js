@@ -1,3 +1,14 @@
+FGS.castleageFreegifts =
+{
+	Click: function(params, retry)
+	{
+		params.customUrl = 'http://apps.facebook.com/castle_age/gift.php?quick=true&app_friends=c&giftSelection='+params.gift;
+		
+		FGS.getFBML(params);
+	},
+};
+
+
 FGS.castleageRequests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
