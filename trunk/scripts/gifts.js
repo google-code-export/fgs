@@ -590,8 +590,26 @@ FGS.giftsArray = {
 		"28": { name: 'Mystery Rifle - (lvl 30)'},
 		"26": { name: 'Mystery Armor... - (lvl 35)'},
 		"29": { name: 'Mystery Heavy... - (lvl 40)'},
-	}
+	},
 	
+	163576248142:
+	{
+		"5280": { name: 'Purple Key'},
+		"5281": { name: 'Red Key'},
+		"5282": { name: 'Yellow Key'},
+		"5215": { name: 'Blue Mystery Gift'},
+		"4140": { name: 'Creative Cupcake Treat'},
+		"4138": { name: 'Social Butterfly Cupcake Treat'},
+		"4139": { name: 'Troublemaker Cupcake Treat'},
+		"6016": { name: 'Magic Nails'},
+		"6017": { name: 'Magic Paint'},
+		"5526": { name: 'Bamboo'},
+		"5527": { name: 'Coconuts'},
+		"4950": { name: 'Blue Iris'},
+		"4952": { name: 'Red Lily'},
+		"4866": { name: 'Yellow Daffodils'},
+		"4873": { name: "Baby's Breath"},
+	}
 	
 };
 
@@ -610,6 +628,7 @@ FGS.freeGiftForGame =
 	338051018849: 'Stanchion',
 	46755028429: '1',
 	129547877091100: '23',
+	163576248142: '5215',
 }
 
 
