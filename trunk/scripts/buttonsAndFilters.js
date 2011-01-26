@@ -257,6 +257,8 @@ FGS.gamesData =
 							'ManualBonuses',
 							'RequestsPending',
 							'RequestsHistory',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'GameOptionsTab'
 						],
 					},

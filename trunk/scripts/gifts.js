@@ -609,8 +609,34 @@ FGS.giftsArray = {
 		"4952": { name: 'Red Lily'},
 		"4866": { name: 'Yellow Daffodils'},
 		"4873": { name: "Baby's Breath"},
-	}
+	},
 	
+	25287267406:
+	{
+		"478": { name: 'Red Snow Cone'},
+		"439": { name: 'Bold Mystery Gift Box'},
+		"204": { name: 'Black Mystery Gift Box'},
+		"247": { name: 'Gold Mystery Gift Box'},
+		"246": { name: 'Red Mystery Gift Box'},
+		"160": { name: 'Holy Water'},
+		"472": { name: 'Fingernails'},
+		"130": { name: 'Premonition (lvl 8)'},
+		"129": { name: 'Bloodletting'},
+		"131": { name: 'Shadow Conceal (lvl 6)'},
+		"165": { name: 'Werewolf Claw (lvl 10)'},
+		"15": { name: 'Shadow Transformation (lvl 10)'},
+		"166": { name: 'Chupacabra Teeth (lvl 12)'},
+		"167": { name: 'Pentagram Shard (lvl 14)'},
+		"168": { name: "Charon's Obol (lvl 18)"},
+		"163": { name: 'Wolfsbane (lvl 40)'},
+		"172": { name: 'Ankh Shard (lvl 34)'},
+		"173": { name: 'Pompeii Ash'},
+		"170": { name: 'Unholy Water'},
+		"175": { name: 'Raven Feathers'},
+		"169": { name: 'Tarot Death Card (lvl 22)'},
+		"171": { name: 'Map Fragment'},
+
+	}	
 };
 
 FGS.freeGiftForGame =
@@ -629,6 +655,7 @@ FGS.freeGiftForGame =
 	46755028429: '1',
 	129547877091100: '23',
 	163576248142: '5215',
+	25287267406: '439',
 }
 
 
@@ -827,11 +854,18 @@ FGS.getFBML = function(params, retry)
 					
 					j++;
 				}
-				param2 += 'cmfs_typeahead_'+aTemp["request_form"]+'=start';
+				
+				if(params.gameID != '25287267406')
+					param2 += 'cmfs_typeahead_'+aTemp["request_form"]+'=start';
 				
 				if(params.gameID == '10979261223')
 				{
 					param2 += '&ajax=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig;
+				}
+				
+				if(params.gameID == '25287267406')
+				{
+					param2 += $('form[type]', data).serialize();
 				}
 				
 				if(params.gameID == '120563477996213')
@@ -934,6 +968,15 @@ FGS.sendGift = function(params, retry)
 				{
 					var i = 0;
 					var sendHistArr = {};
+					
+					if(params.gameID == '25287267406')
+					{
+						var vampGet = FGS.findIframeAfterId('#app_content_25287267406', data);
+						if(vampGet != '')
+						{
+							$.get(vampGet);
+						}
+					}
 					
 					var curTime = Math.round(new Date().getTime() / 1000);
 
