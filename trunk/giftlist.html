@@ -677,7 +677,12 @@
 			$('#'+id).find('.bonusError').css('height', '23px').html(addLikeRow(false, infoAdd, false, true));
 			$('#'+id).find('.bonusError').find('.likeBonus').click(processLikeBonus);
 			$('#'+id).find('.bonusError').find('.commentBonus').click(processCommentBonus);
-			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);			
+			$('#'+id).find('.bonusError').find('.sendBack').click(processSendBack);	
+			
+			if(typeof $('#'+id).attr('SendbackInProgress') !== 'undefined')
+			{
+				updateSendbackState('#'+id);
+			}
 			
 			$('#'+id).find('.title').next('span').text(data.text);
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
@@ -1229,18 +1234,25 @@
 		else
 		{
 			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').removeAttr('disabled');
-			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"]').removeAttr('checked');
+			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"], .gameSendbackGiftBox[gameID="'+gameID+'"]').removeAttr('checked');
+			
 			$('.gameEnabledBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			
 			if(gameID == bkP.options.defaultGame)
 			{
 				$('.gameDefaultBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			}
-			
+
 			if(e.likeBonus)
 			{
 				$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			}
+			
+			if(e.sendbackGift)
+			{
+				$('.gameSendbackGiftBox[gameID="'+gameID+'"]').attr('checked', 'checked');			
+			}
+			
 			
 			$(el).removeClass('hide');
 			$('img', 'label[for="'+gameID+'Selected"]').attr('src', 'icons/menu/'+game+'.png');
@@ -1529,6 +1541,8 @@
 			
 			$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
+			$('<label><span>Auto send thank you gift, if possible</span><input type="checkbox" class="gameSendbackGiftBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
 			//$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
 			switchEnabled(id);
@@ -1646,6 +1660,12 @@
 		$(".gameLikeBonusBox").click(function()
 		{
 			bkP.options.games[$(this).attr('gameID')].likeBonus = $(this).is(':checked') ? true : false;
+			bkP.saveOptions();
+		});
+		
+		$(".gameSendbackGiftBox").click(function()
+		{
+			bkP.options.games[$(this).attr('gameID')].sendbackGift = $(this).is(':checked') ? true : false;
 			bkP.saveOptions();
 		});
 		
@@ -2098,10 +2118,13 @@
 	
 	function processSendBack()
 	{
+		if(!$(this).hasClass('disabledSendback'))
+		{
 			var bonusID = $(this).parent().parent().parent().parent().attr('id');
+			$(this).attr('src', 'gfx/act_indicator.gif');
+
 			var gameID =  $(this).parent().parent().parent().parent().attr('gameID');
 			
-			$(this).attr('src', 'gfx/act_indicator.gif');
 			var tempData = JSON.parse($(this).next().text());
 			
 			var params = {
@@ -2117,13 +2140,8 @@
 			var game = bkP.gamesData[gameID].systemName;
 			
 			eval('bkP.'+game+'Freegifts.Click(params)');
+		}
 	}
-	
-	
-	
-	
-	
-	
 	
 	function unhideGameIcon()
 	{
@@ -2254,6 +2272,25 @@
 				$('#'+bonusID).attr('isCommented', 1);
 			}
 		}
+	}
+	
+	function changeSendbackState(bonusID)
+	{
+		var img = $('img.sendBack', '#'+bonusID);
+		
+		if(img.length > 0)
+		{
+			updateSendbackState('#'+bonusID);
+		}
+		else
+		{
+			$('#'+bonusID).attr('SendbackInProgress', 1);
+		}
+	}
+	
+	function updateSendbackState(selector)
+	{
+		$('img.sendBack', selector).addClass('disabledSendback').css('cursor', 'default').attr('src', 'gfx/act_indicator.gif').attr('title', 'Sending back is in progress');
 	}
 	
 	setInterval('updateTimeAgo()', 15000);
