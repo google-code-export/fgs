@@ -90,8 +90,7 @@ FGS.petvilleFreegifts =
 					var data = dataStr.replace(/snml:/g, 'fb_');
 					
 					var outStr = '';
-					
-					
+										
 					
 					var pos1 = data.indexOf('<fb_serverSnml');
 					

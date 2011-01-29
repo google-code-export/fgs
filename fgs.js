@@ -431,7 +431,7 @@ var FGS = {
 		
 		try
 		{
-			var count = data.match(/<iframe[^>]*?.*?<\/iframe>/g);
+			var count = data.match(/<iframe[^>]*?>/gm);
 			
 			var v = '';
 			
@@ -478,7 +478,7 @@ var FGS = {
 			var pos1 = data.indexOf('"'+id.slice(1)+'"');
 			var data = data.slice(pos1);
 			
-			var count = data.match(/<iframe[^>]*?.*?<\/iframe>/g);
+			var count = data.match(/<iframe[^>]*?>/gm);
 			if(count == 0) throw {message: 'iframe not found'}
 			
 			var nextUrl = false;
