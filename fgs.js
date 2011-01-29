@@ -185,9 +185,9 @@ var FGS = {
 				
 				if(!found) throw {message:"no URI"}
 			
-				var pos1      	=   parseStr.indexOf('goURI');
-				var pos2        	=   parseStr.indexOf(');',pos1);
-				parseStr   		=   "'"+parseStr.slice(pos1+6,pos2)+"'";
+				var pos1 =  parseStr.indexOf('goURI');
+				var pos2 =  parseStr.indexOf(');',pos1);
+				parseStr =  "'"+parseStr.slice(pos1+6,pos2)+"'";
 
 				eval("parseStr =" + parseStr);
 				
@@ -1024,7 +1024,7 @@ var FGS = {
 					
 					var found = false;
 					
-					$(dataObj.onload).each(function(k,v)
+					FGS.jQuery(dataObj.onload).each(function(k,v)
 					{
 						if(v.indexOf('goURI') != -1)
 						{
@@ -1036,9 +1036,9 @@ var FGS = {
 					
 					if(!found) throw {message:"no URI"}
 				
-					var pos1      	=   parseStr.indexOf('goURI');
-					var pos2        	=   parseStr.indexOf(');',pos1);
-					parseStr   		=   "'"+parseStr.slice(pos1+6,pos2)+"'";
+					var pos1 = parseStr.indexOf('goURI');
+					var pos2 = parseStr.indexOf(');',pos1);
+					parseStr = "'"+parseStr.slice(pos1+6,pos2)+"'";
 
 					eval("parseStr =" + parseStr);
 					
