@@ -34,8 +34,8 @@ FGS.pokerFreegifts =
 						fb_mockajax_context: fb_mock,
 						fb_mockajax_context_hash: fb_mock_hash,
 						appid: '2389801228',
-						fb_dtsg: params.fb_dtsg,
-						post_form_id: params.post_form_id,
+						fb_dtsg: FGS.fb_dtsg,
+						post_form_id: FGS.post_form_id,
 						lsd:'',
 						post_form_id_source: 'AsyncRequest'
 					}
@@ -106,6 +106,8 @@ FGS.pokerFreegifts =
 					var x = JSON.parse(str);
 					
 					var data = x.payload.data.fbml_form0;
+					
+					var strTemp = data;
 					
 					var arr = [];
 					

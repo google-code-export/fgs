@@ -77,7 +77,7 @@ FGS.fishvilleFreegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
+					var tst = new RegExp(/FB[.]init\("(.*)","(.*)",/g).exec(dataStr);
 					if(tst == null) throw {message: 'no fb.init'}
 					
 					var app_key = tst[1];

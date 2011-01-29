@@ -205,7 +205,7 @@ FGS.ravenwoodFreegifts =
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
-					var nextParams  =  'api_key=120563477996213&fbml='+fbml;				
+					var nextParams  =  'api_key=120563477996213&fbml='+encodeURIComponent(fbml);		
 					
 					params.nextParams = nextParams;
 					FGS.getFBML(params);
