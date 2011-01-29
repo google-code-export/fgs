@@ -14,31 +14,15 @@ FGS.petvilleFreegifts =
 			{
 				try
 				{
-					i1          =   dataStr.indexOf('post_form_id:"')
-					if (i1 == -1) throw {message:'Cannot post_form_id in page'}
-					i1			+=	14;
-					i2          =   dataStr.indexOf('"',i1);
-					
-					params.post_form_id = dataStr.slice(i1,i2);
-					
-					
-					i1          =   dataStr.indexOf('fb_dtsg:"',i1)
-					if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
-					i1			+=	9;
-					i2          = dataStr.indexOf('"',i1);
-					params.fb_dtsg		= dataStr.slice(i1,i2);
-
-					
-					
 					var paramTmp = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
 					if(paramTmp == '') throw {message: 'no iframe'}
 					
-					var i1 = paramTmp.indexOf('pv_session=')+11;
-					var i2 = paramTmp.indexOf('&', i1);
+					var pos1 = paramTmp.indexOf('pv_session=')+11;
+					var pos2 = paramTmp.indexOf('&', pos1);
 					
 					
 					
-					params.pv_session = paramTmp.slice(i1, i2);
+					params.pv_session = paramTmp.slice(pos1, pos2);
 					FGS.petvilleFreegifts.Click2(params);
 					
 				}
@@ -97,8 +81,6 @@ FGS.petvilleFreegifts =
 			{
 				try
 				{
-					var strTemp = dataStr;
-
 					if(dataStr.indexOf('snml:') == -1)
 					{
 						retry = true;
@@ -111,35 +93,35 @@ FGS.petvilleFreegifts =
 					
 					
 					
-					var i1 = data.indexOf('<fb_serverSnml');
+					var pos1 = data.indexOf('<fb_serverSnml');
 					
-					var s1 = data.indexOf('<table', i1);
+					var s1 = data.indexOf('<table', pos1);
 					var s2 = data.indexOf('/center>', s1);
 					
 					outStr += data.slice(s1, s2+8);
 					
-					//var s1 = data.indexOf('<div', i1);
+					//var s1 = data.indexOf('<div', pos1);
 					//var s2 = data.indexOf('/div', s1);
 					
 					//outStr += data.slice(s1, s2+5);
 					
-					var s1 	= data.indexOf('<fb_multi-friend-selector', i1);
+					var s1 	= data.indexOf('<fb_multi-friend-selector', pos1);
 					var s11 = data.indexOf('exclude_ids="', s1);
 					s11+=13;
 					var s12 = data.indexOf('"', s11);
 
 					var exclude = data.slice(s11, s12);
 					
-					var f1 = data.indexOf('<fb_request-form', i1);
+					var f1 = data.indexOf('<fb_request-form', pos1);
 					
-					var i1 = data.indexOf('invite="', f1);
+					var pos1 = data.indexOf('invite="', f1);
 					var a1 = data.indexOf('action="', f1);
 					var m1 = data.indexOf('method="', f1);
 					var t1 = data.indexOf('type="', f1);
 					
 					//outStr += '<div class="mfs">';
 					
-					var inviteAttr 	= data.slice(i1+8, data.indexOf('"', i1+8));
+					var inviteAttr 	= data.slice(pos1+8, data.indexOf('"', pos1+8));
 					var actionAttr	= data.slice(a1+8, data.indexOf('"', a1+8));
 					var methodAttr 	= data.slice(m1+8, data.indexOf('"', m1+8));
 					var typeAttr	= data.slice(t1+6, data.indexOf('"', t1+6));
@@ -165,11 +147,11 @@ FGS.petvilleFreegifts =
 					
 					var cmd_id = new Date().getTime();
 					
-					var i1 = data.indexOf('SNAPI.init(');
-					var i2 = data.indexOf('{', i1);
-					var i3 = data.indexOf('}},', i2)+2;
+					var pos1 = data.indexOf('SNAPI.init(');
+					var pos2 = data.indexOf('{', pos1);
+					var pos3 = data.indexOf('}},', pos2)+2;
 					
-					var session = data.slice(i2,i3);
+					var session = data.slice(pos2,pos3);
 					
 					var exArr = exclude.split(',');
 					
@@ -182,9 +164,9 @@ FGS.petvilleFreegifts =
 							str+= ',';
 					});
 					
-					var i1 = data.indexOf('"zy_user":"')+11;
-					var i2 = data.indexOf('"', i1);
-					var zy_user = data.slice(i1,i2);	
+					var pos1 = data.indexOf('"zy_user":"')+11;
+					var pos2 = data.indexOf('"', pos1);
+					var zy_user = data.slice(pos1,pos2);	
 					
 					
 					if(typeof(params.thankYou) != 'undefined')
@@ -266,7 +248,7 @@ FGS.petvilleFreegifts =
 		$.post('http://fb-client-0.petville.zynga.com/current/SNAPIProxy.php', params.postData, function(data2)
 		{
 		
-			var myParms = 'api_key=163576248142&locale=en_US&sdk=joey';
+			var nextParams = 'api_key=163576248142&locale=en_US&sdk=joey';
 			
 			var info = JSON.parse(data2);
 			
@@ -296,9 +278,9 @@ FGS.petvilleFreegifts =
 			var fbml = '<fb:fbml>'+str+'</fb:fbml>';
 			
 			
-			myParms +=  '&fbml='+encodeURIComponent(fbml);
+			nextParams +=  '&fbml='+encodeURIComponent(fbml);
 
-			params.myParms = myParms;
+			params.nextParams = nextParams;
 
 			//dump(FGS.getCurrentTime()+'[Z] FBMLinfo - OK');
 
@@ -395,16 +377,16 @@ FGS.petvilleRequests =
 					var URL = FGS.findIframeAfterId('#flashFrame', dataStr);
 					if (URL == '') throw {message:"Cannot find <iframe src= in page"}
 
-					var i1 = 0;
-					var i2 = URL.lastIndexOf('/')+1;
+					var pos1 = 0;
+					var pos2 = URL.lastIndexOf('/')+1;
 					
-					var nextUrl = URL.slice(i1,i2);
+					var nextUrl = URL.slice(pos1,pos2);
 
-					var i1 = dataStr.indexOf('ZYFrameManager.gotoTab');
-					var i2 = dataStr.indexOf(",'", i1)+2;
-					var i3 = dataStr.indexOf("'", i2);
+					var pos1 = dataStr.indexOf('ZYFrameManager.gotoTab');
+					var pos2 = dataStr.indexOf(",'", pos1)+2;
+					var pos3 = dataStr.indexOf("'", pos2);
 					
-					nextUrl = nextUrl+dataStr.slice(i2,i3);
+					nextUrl = nextUrl+dataStr.slice(pos2,pos3);
 					
 					
 					FGS.petvilleRequests.Click3(currentType, id, nextUrl);
@@ -468,17 +450,17 @@ FGS.petvilleRequests =
 						
 						var tmpStr = unescape(currentURL);
 						
-						var i1 = tmpStr.indexOf('&gift=');
-						if(i1 != -1)
+						var pos1 = tmpStr.indexOf('&gift=');
+						if(pos1 != -1)
 						{
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 								
-							var giftName = tmpStr.slice(i1+6,i2);
+							var giftName = tmpStr.slice(pos1+6,pos2);
 							
-							var i1 = tmpStr.indexOf('senderId=');
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos1 = tmpStr.indexOf('senderId=');
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 							
-							var giftRecipient = tmpStr.slice(i1+9,i2);						
+							var giftRecipient = tmpStr.slice(pos1+9,pos2);						
 								
 							sendInfo = {
 								gift: giftName,
@@ -613,19 +595,19 @@ FGS.petvilleBonuses =
 					var URL = FGS.findIframeAfterId('#flashFrame', dataStr);
 					if (URL == '') throw {message:"Cannot find <iframe src= in page"}
 					
-					var i1 = 0;
-					var i2 = URL.lastIndexOf('/')+1;
+					var pos1 = 0;
+					var pos2 = URL.lastIndexOf('/')+1;
 					
-					var nextUrl = URL.slice(i1,i2);
+					var nextUrl = URL.slice(pos1,pos2);
 
-					var i1 = dataStr.indexOf('ZYFrameManager.gotoTab');
+					var pos1 = dataStr.indexOf('ZYFrameManager.gotoTab');
 					
-					if(i1 == -1) throw {message: 'No ZYframeManager'}
+					if(pos1 == -1) throw {message: 'No ZYframeManager'}
 					
-					var i2 = dataStr.indexOf(",'", i1)+2;
-					var i3 = dataStr.indexOf("'", i2);
+					var pos2 = dataStr.indexOf(",'", pos1)+2;
+					var pos3 = dataStr.indexOf("'", pos2);
 					
-					var nextUrl2 = dataStr.slice(i2,i3).replace('http://fb-client-0.petville.zynga.com/current/', '');
+					var nextUrl2 = dataStr.slice(pos2,pos3).replace('http://fb-client-0.petville.zynga.com/current/', '');
 					
 					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
 					
@@ -696,51 +678,51 @@ FGS.petvilleBonuses =
 					
 					if(out.indexOf('been offered') != -1)
 					{
-						var i1 = out.indexOf(' been offered')+13;
-						var i2 = out.indexOf('.', i1);
-						var i3 = out.indexOf('!', i1);
-						if(i3 != -1)
-							if(i3 < i2 || i2 == -1)
-								i2 = i3;
+						var pos1 = out.indexOf(' been offered')+13;
+						var pos2 = out.indexOf('.', pos1);
+						var pos3 = out.indexOf('!', pos1);
+						if(pos3 != -1)
+							if(pos3 < pos2 || pos2 == -1)
+								pos2 = pos3;
 						
-						outText = out.slice(i1,i2);
+						outText = out.slice(pos1,pos2);
 					}
 					else if(out.indexOf('has shared a') != -1)
 					{
-						var i1 = out.indexOf('has shared a')+13;
-						var i2 = out.indexOf('!', i1);
-						var i3 = out.indexOf('with', i1);
-						if(i3 != -1)
-							if(i3 < i2 || i2 == -1)
-								i2 = i3;
+						var pos1 = out.indexOf('has shared a')+13;
+						var pos2 = out.indexOf('!', pos1);
+						var pos3 = out.indexOf('with', pos1);
+						if(pos3 != -1)
+							if(pos3 < pos2 || pos2 == -1)
+								pos2 = pos3;
 						
-						outText = out.slice(i1,i2);						
+						outText = out.slice(pos1,pos2);						
 						
 						outText = outText.replace('bonus of', '');
 					}
 					else if(out.indexOf('want to claim') != -1)
 					{
-						var i1 = out.indexOf('want to claim')+13;
-						var i2 = out.indexOf('?', i1);
-						outText = out.slice(i1,i2);						
+						var pos1 = out.indexOf('want to claim')+13;
+						var pos2 = out.indexOf('?', pos1);
+						outText = out.slice(pos1,pos2);						
 					}
 					else if(out.indexOf('You recieved a') != -1)
 					{
-						var i1 = out.indexOf('You recieved a')+15;
-						var i2 = out.indexOf('from', i1);
-						outText = out.slice(i1,i2);						
+						var pos1 = out.indexOf('You recieved a')+15;
+						var pos2 = out.indexOf('from', pos1);
+						outText = out.slice(pos1,pos2);						
 					}
 					else if(out.indexOf('You found a') != -1)
 					{
-						var i1 = out.indexOf('You found a')+12;
-						var i2 = out.indexOf(',', i1);
-						outText = out.slice(i1,i2);						
+						var pos1 = out.indexOf('You found a')+12;
+						var pos2 = out.indexOf(',', pos1);
+						outText = out.slice(pos1,pos2);						
 					}
 					else if(out.indexOf('Here are ') != -1)
 					{
-						var i1 = out.indexOf('Here are ')+9;
-						var i2 = out.indexOf('for', i1);
-						outText = out.slice(i1,i2);						
+						var pos1 = out.indexOf('Here are ')+9;
+						var pos2 = out.indexOf('for', pos1);
+						outText = out.slice(pos1,pos2);						
 					}
 					else if(out.indexOf('Thank you for offering ') != -1)
 					{
