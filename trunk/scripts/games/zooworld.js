@@ -397,7 +397,7 @@ FGS.zooworldBonuses =
 					for(var i = 0; i < count.length; i++)
 					{
 						var ipos1 = dataStr.indexOf('var serviceObj =', lastPos);
-						var pos1  = dataStr.indexOf('data:', ipos1);
+						var pos1 = dataStr.indexOf('data:', ipos1);
 						if(pos1 == -1) continue;
 						pos1+=5;
 						var pos2 = dataStr.indexOf('},', pos1)+1;

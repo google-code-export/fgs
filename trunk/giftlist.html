@@ -284,10 +284,10 @@
 	{
 		var gameID = $(e.currentTarget).attr('gameID');
 		$(e.currentTarget).unbind('click');
-		$(e.currentTarget).remove();
 		bkP.database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 0);
 		bkP.database.deleteItem('requests', gameID, $(e.currentTarget).attr('id'), 1);
 		bkP.getRequestLink($(e.currentTarget).attr('id'), $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
+		$(e.currentTarget).remove();
 		updateCount(gameID);
 	}
 	
