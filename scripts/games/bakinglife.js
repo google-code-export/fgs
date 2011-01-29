@@ -46,7 +46,7 @@ FGS.bakinglifeRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_338051018849', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					FGS.bakinglifeRequests.Click2(currentType, id, src);
 				}
@@ -225,7 +225,7 @@ FGS.bakinglifeBonuses =
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_338051018849', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.bakinglifeBonuses.Click2(currentType, id, src);
 				}
 				catch(err)

@@ -326,7 +326,7 @@ FGS.petvilleRequests =
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 				
 					FGS.petvilleRequests.Click2(currentType, id, src);
 				}
@@ -375,7 +375,7 @@ FGS.petvilleRequests =
 				try
 				{
 					var URL = FGS.findIframeAfterId('#flashFrame', dataStr);
-					if (URL == '') throw {message:"Cannot find <iframe src= in page"}
+					if (URL == '') throw {message:"no iframe"}
 
 					var pos1 = 0;
 					var pos2 = URL.lastIndexOf('/')+1;
@@ -544,7 +544,7 @@ FGS.petvilleBonuses =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 
 					FGS.petvilleBonuses.Click2(currentType, id, src);
 				}
@@ -593,7 +593,7 @@ FGS.petvilleBonuses =
 				try
 				{
 					var URL = FGS.findIframeAfterId('#flashFrame', dataStr);
-					if (URL == '') throw {message:"Cannot find <iframe src= in page"}
+					if (URL == '') throw {message:"no iframe"}
 					
 					var pos1 = 0;
 					var pos2 = URL.lastIndexOf('/')+1;

@@ -15,7 +15,7 @@ FGS.zooworldFreegifts =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_167746316127', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					var pos1 = src.indexOf('?');
 					src = src.slice(pos1+1);
@@ -339,7 +339,7 @@ FGS.zooworldBonuses =
 						var src = FGS.findIframeAfterId('#app_content_2345673396', dataStr);
 					}
 
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.zooworldBonuses.Click2(currentType, id, src);
 				}
 				catch(err)

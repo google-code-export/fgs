@@ -170,7 +170,7 @@ FGS.fishvilleRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_151044809337', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.fishvilleRequests.Click2(currentType, id, src);
 				}				
 				catch(err)

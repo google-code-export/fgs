@@ -35,7 +35,7 @@ FGS.cityofwonderRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_114335335255741', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					FGS.cityofwonderRequests.Click2(currentType, id, src);
 				}
@@ -176,7 +176,7 @@ FGS.cityofwonderBonuses =
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_114335335255741', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.cityofwonderBonuses.Click2(currentType, id, src);
 				} 
 				catch(err)
