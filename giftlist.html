@@ -703,9 +703,9 @@
 			if($(this).hasClass('manualRequest'))
 			{
 				var postData = $(this).attr('postData');
-				var i1 = postData.indexOf('&actions%5B');
+				var pos1 = postData.indexOf('&actions%5B');
 				
-				var postData = postData.slice(0,i1);
+				var postData = postData.slice(0,pos1);
 				postData += '&actions[reject]=Ignore';
 				bkP.emptyUnwantedGifts(postData);
 				
@@ -793,9 +793,9 @@
 					$('#'+game+'RequestsPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function()
 					{
 						var postData = $(this).attr('postData');
-						var i1 = postData.indexOf('&actions%5B');
+						var pos1 = postData.indexOf('&actions%5B');
 						
-						var postData = postData.slice(0,i1);
+						var postData = postData.slice(0,pos1);
 						postData += '&actions[reject]=Ignore';
 						$(this).remove();
 						bkP.emptyUnwantedGifts(postData);
@@ -1870,9 +1870,9 @@
 				else if(action == 'delete')
 				{
 					var postData = $(el).attr('postData');
-					var i1 = postData.indexOf('&actions%5B');
+					var pos1 = postData.indexOf('&actions%5B');
 					
-					var postData = postData.slice(0,i1);
+					var postData = postData.slice(0,pos1);
 					postData += '&actions[reject]=Ignore';
 					$(el).remove();
 					bkP.database.deleteItem('requests', $(el).attr('gameID'), $(el).attr('id'), 0);
@@ -1891,9 +1891,9 @@
 								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									var postData = $(this).attr('postData');
-									var i1 = postData.indexOf('&actions%5B');
+									var pos1 = postData.indexOf('&actions%5B');
 									
-									var postData = postData.slice(0,i1);
+									var postData = postData.slice(0,pos1);
 									postData += '&actions[reject]=Ignore';
 									$(this).remove();
 									bkP.emptyUnwantedGifts(postData);

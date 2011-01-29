@@ -83,7 +83,6 @@ FGS.paradiselifeRequests =
 				
 				try
 				{
-
 					if(dataStr.indexOf('Sorry, there is something wrong with this page') != -1)
 					{
 						var error_text = 'Request already accepted.';
@@ -91,7 +90,7 @@ FGS.paradiselifeRequests =
 						return;
 					}
 					
-					var i1 = dataStr.indexOf('id="gifts_received"');
+					var pos1 = dataStr.indexOf('id="gifts_received"');
 					
 					
 					if($('.gift_wrap', dataHTML).length > 0)
@@ -112,18 +111,18 @@ FGS.paradiselifeRequests =
 						
 						FGS.endWithSuccess(currentType, id, info);
 					}
-					else if(i1 != -1)
+					else if(pos1 != -1)
 					{
-						var i2 = dataStr.indexOf('<h2', i1)+4;
-						var i3 = dataStr.indexOf('<', i2);
+						var pos2 = dataStr.indexOf('<h2', pos1)+4;
+						var i3 = dataStr.indexOf('<', pos2);
 						
-						var i4 = dataStr.indexOf('<img ', i1);
+						var i4 = dataStr.indexOf('<img ', pos1);
 						var i5 = dataStr.indexOf('src="', i4)+5;
 						var i6 = dataStr.indexOf('"', i5);
 						
 						info.image = dataStr.slice(i5, i6);
 						info.text  = ' ';
-						info.title = dataStr.slice(i2, i3);
+						info.title = dataStr.slice(pos2, i3);
 						info.time = Math.round(new Date().getTime() / 1000);
 						
 						FGS.endWithSuccess(currentType, id, info);

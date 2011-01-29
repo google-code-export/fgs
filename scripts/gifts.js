@@ -688,215 +688,143 @@ FGS.getFBML = function(params, retry)
 		type: thisMethod,
 		url: thisUrl,
 		cache: false,
-		headers: {
-			'Accept':           'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-			'Accept-Language':  'en-us,en;q=0.5',
-			'Content-Type':     'application/x-www-form-urlencoded'
-		},
-		data: params.myParms,
-		success: function(data)
+		data: params.nextParams,
+		success: function(dataStr)
 		{
-			var i1,i2, myParms, strTemp2;
-			var strTemp = data;
-			
-			data = FGS.HTMLParser(data);
+			var data = FGS.HTMLParser(dataStr);
 			
 			try
 			{
-				i1       =  strTemp.indexOf('PlatformInvite.sendInvitation');
-				if (i1 == -1) throw {message:"Cannot find PlatformInvite.sendInvitation in page"}
-				i1       =  strTemp.indexOf('&#123;',i1);
-				i2       =  strTemp.indexOf('&#125;',i1)+6;
-				strTemp2     =  strTemp.slice(i1,i2);
-				strTemp2   =  strTemp2.replace(/&quot;/g,'"').replace(/&#123;/g,'{').replace(/&#125;/g,'}');
-				eval("aTemp = "+strTemp2);
+				var reqData =
+				{
+					prefill: true,
+					message: '',
+					preview: false,
+					donot_send: false,
+					__d: 1,
+					post_form_id: FGS.post_form_id,
+					fb_dtsg: FGS.fb_dtsg,
+					post_form_id_source: 'AsyncRequest',
+					lsd: ''
+				}
+			
+				var tst = new RegExp(/PlatformInvite.sendInvitation.*(\&#123.*.?125;)[(\(;)]/g).exec(dataStr);
+				if(tst == null) throw {message:'no api_key tag'}
+				var reqData2 = JSON.parse(tst[1].replace(/&quot;/g,'"').replace(/&#123;/g,'{').replace(/&#125;/g,'}'));
 				
-				myParms      =  'app_id='     +aTemp["app_id"];
-				myParms     +=  '&request_type='  +escape(aTemp["request_type"]);
-				myParms     +=  '&invite='      +aTemp["invite"];
-
-				if(typeof(params.cafeUrl) != 'undefined')
-				{
-					i1           =  strTemp.indexOf('.php" content="');
-					if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
-					i1			+=  15;
-					i2           =  strTemp.indexOf('"',i1)-1;
-					strTemp2    =   eval('"'+strTemp.slice(i1,i2)+'"');
-					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
-				}
-				else
-				{
-					var searchStr = strTemp.slice(strTemp.indexOf('<body'),strTemp.lastIndexOf('</body')+7);
-					i1           =  searchStr.indexOf(' content="');
-					if (i1 == -1) throw {message:"Cannot find  content=\\ in page"};
-					i1			+=  10;
-					i2           =  searchStr.indexOf('"',i1)-1;
-					strTemp2 	 = searchStr.slice(i1,i2);
-					myParms     +=  '&content='     +encodeURIComponent(strTemp2);
-				}
-
-				myParms     +=  '&preview=false';
-				myParms     +=  '&is_multi='    +aTemp["is_multi"];
-				myParms     +=  '&is_in_canvas='  +aTemp["is_in_canvas"];
-				myParms     +=  '&form_id='     +aTemp["request_form"];
-				myParms     +=  '&include_ci='    +aTemp["include_ci"];
-
-				myParms     +=  '&prefill=true&message=&donot_send=false&__d=1';
-
-				i1          =   strTemp.indexOf('name="post_form_id" value="');
-				if (i1 == -1) throw {message:'Cannot find name="post_form_id" value=" in page'}
-				i1 		   += 27
-				i2          =   strTemp.indexOf('"',i1);
-				myParms    +=  '&post_form_id='+strTemp.slice(i1,i2)
-
-				if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined' || typeof(params.customUrl) != 'undefined')
-				{
-					i1          =   strTemp.indexOf('fb_dtsg:"');
-				}
-				else
-				{
-					i1          =   strTemp.indexOf('fb_dtsg:"',i1);
-				}
+				$.extend(reqData, reqData2);
+				reqData.form_id = reqData2.request_form;
+				delete(reqData.request_form);
 				
-				if (i1 == -1) throw {message:'Cannot find fb_dtsg:" in page'}
-				i1		   += 9;
-				i2          =   strTemp.indexOf('"',i1);
-				myParms     +=  '&fb_dtsg='+strTemp.slice(i1,i2);
-				myParms     +=  '&post_form_id_source=AsyncRequest';
+				var tst = new RegExp(/<form[^>].*content=\s*["]([^"]+)[^>]*>/gm).exec(dataStr);
+				if(tst == null) throw {message:'no content'}
 				
-				
-				i1          =   strTemp.indexOf('var items={',i1)+11;
-				
-				if (i1 == 10)
-				{
-					var slice = '';
-				}
-				else
-				{
-					i2 =   strTemp.indexOf('}};',i1)+1;
-					var slice = strTemp.slice(i1,i2)
-				}
+				reqData.content = tst[1];
+				reqData.prefill = true;
 
+				var tst = new RegExp(/var items=({.*});/gm).exec(dataStr);
+				if(tst == null) throw {message:'no items'}
+				var tst = tst[1];
+				
+				var tst = tst.match(/("[0-9]+":{"name":\s*["][^"]+[^}]})/g);
+				if(tst == null) throw {message:'no friends'}
+				
 				var arr = [];
-				var i0 = 0;
-				var i1 = slice.indexOf('},"', i0);
-						
-				while(i1 != -1)
+				$(tst).each(function(k,v)
 				{
-					var item = slice.slice(i0, i1+1);
-					eval('var tmpItm = {'+item+'}');
-					arr.push(tmpItm);
-					
-					i0 = i1+2;
-					i1 = slice.indexOf('},"', i0);	
-				}
-				
-				i0 = slice.lastIndexOf('},"')+2;
-				if(i0 != 1)
-				{
-					i1 = slice.length;
-					var item = slice.slice(i0, i1);
-					eval('var tmpItm = {'+item+'}');
-					arr.push(tmpItm);
-				}				
+					arr.push(JSON.parse('{'+v+'}'));
+				});
 
-				var items = arr;
-				
-				var tempParams = '';
 				if(typeof(params.cafeUrl) != 'undefined')
 				{
-					$('form', data).each(function(){
+					var cafeParams = '';
+					
+					$('form', data).each(function()
+					{
 						if( $(this).serialize().indexOf('cmfs_type') != -1)
 						{
-							tempParams = $(this).serialize()+'&';
+							cafeParams = $(this).serialize()+'&';
 							return false;
 						}
 					});
 					
-					myUrl2		= 'http://apps.facebook.com/cafeworld/send_request.php';
+					var sendGiftUrl = 'http://apps.facebook.com/cafeworld/send_request.php';
 				}
 				else
 				{
-					myUrl2 = $('form[type]', data).attr('action');
+					sendGiftUrl = $('form[type]', data).attr('action');
 				}
 				
 				if(params.gameID == '46755028429')
 				{
-					myUrl2 = 'http://apps.facebook.com/castle_age/'+myUrl2;
+					sendGiftUrl = 'http://apps.facebook.com/castle_age/'+sendGiftUrl;
 				}
 
-				var param2 = '';
+				var sendGiftParams = '';
 
-				params.items = items;
+				params.items = arr;
 				
 				if(typeof(params.sendTo) == 'undefined')
 				{
-					//dump(FGS.getCurrentTime()+'[Z] Updating neighbours');
-					FGS.sendView('updateNeighbours', params.gameID, items);
+					FGS.sendView('updateNeighbours', params.gameID, arr);
 					return;
 				}
 				
-				//dump(FGS.getCurrentTime()+'[Z] Sending');
-
-				var j = 0;
-				for(u in params.sendTo)
+				$(params.sendTo).each(function(k,v)
 				{
-					var v = params.sendTo[u];
+					reqData['to_ids['+k+']'] = v;
 					
-					myParms     +=  '&to_ids['+j+']='   +v;
 					if(params.gameID == '120563477996213')
-						param2 += 'ids[]='+v+'&';
+						sendGiftParams += 'ids[]='+v+'&';
 					else
-						param2 += 'ids%5B%5D='+v+'&';
+						sendGiftParams += 'ids%5B%5D='+v+'&';
 					
 					if(typeof(params.cafeUrl) != 'undefined')
-						tempParams += 'ids[]='+v+'&';
-					
-					j++;
-				}
+						cafeParams += 'ids[]='+v+'&';
+				});
 				
 				if(params.gameID != '25287267406')
-					param2 += 'cmfs_typeahead_'+aTemp["request_form"]+'=start';
+					sendGiftParams += 'cmfs_typeahead_'+reqData.form_id+'=start';
 				
 				if(params.gameID == '10979261223')
 				{
-					param2 += '&ajax=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig;
+					sendGiftParams += '&ajax=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig;
 				}
 				
 				if(params.gameID == '25287267406')
 				{
-					param2 += $('form[type]', data).serialize();
+					sendGiftParams += $('form[type]', data).serialize();
 				}
 				
 				if(params.gameID == '120563477996213')
 				{
-					param2 += '&'+ $('form[type="Ravenwood Fair Gift"]', data).find('input[name="item_id"],input[name="timestamp"]').serialize();
+					sendGiftParams += '&'+ $('form[type="Ravenwood Fair Gift"]', data).find('input[name="item_id"],input[name="timestamp"]').serialize();
 				}
 				
 				if(params.gameID == '129547877091100')
 				{
-					param2 += '&'+$('form[type]', data).serialize();
+					sendGiftParams += '&'+$('form[type]', data).serialize();
 				}
 				
 				if(params.gameID == '167746316127')
 				{
-					param2 += '&giftId='+params.gift;
+					sendGiftParams += '&giftId='+params.gift;
 				}
 				
-				params.myParms = myParms+'&lsd=';
-				params.myUrl = myUrl2;
-				params.param2 = param2;
+				params.promptParams = reqData;
+				params.sendGiftUrl = sendGiftUrl;
+				params.sendGiftParams = sendGiftParams;
 				
 				if(typeof(params.cafeUrl) != 'undefined')
 				{
-					params.param2 = tempParams;
+					params.sendGiftParams = cafeParams;
 				}				
 				
 				FGS.sendGift(params);
 			}
 			catch(e)
 			{
-				dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
+				//dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
 				if(typeof(params.sendTo) == 'undefined')
 				{
 					FGS.sendView('errorUpdatingNeighbours');
@@ -938,7 +866,7 @@ FGS.sendGift = function(params, retry)
 		url: 'http://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
 		cache: false,
 		dataType: 'text',
-		data: params.myParms,
+		data: params.promptParams,
 		success: function(data)
 		{
 			var str = data.substring(9);
@@ -961,9 +889,9 @@ FGS.sendGift = function(params, retry)
 						
 			$.ajax({
 				type: reqMethod,
-				url: params.myUrl,
+				url: params.sendGiftUrl,
 				dataType: 'text',
-				data: params.param2,
+				data: params.sendGiftParams,
 				success: function(data)
 				{
 					var i = 0;

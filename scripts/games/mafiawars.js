@@ -92,7 +92,7 @@ FGS.mafiawarsFreegifts =
 				
 				try
 				{
-					var i1, i2, strTemp, myUrl, myParms;
+					var i1, i2, strTemp, myUrl, nextParams;
 
 					strTemp = dataStr;
 
@@ -103,7 +103,7 @@ FGS.mafiawarsFreegifts =
 					i2 = strTemp.indexOf('"',i1);
 					myUrl = strTemp.slice(i1,i2);
 
-					myParms = '';
+					nextParams = '';
 					
 					
 					var count = strTemp.match(/<input[^>]*?.*?>/g);
@@ -117,7 +117,7 @@ FGS.mafiawarsFreegifts =
 						
 						
 						
-						if (myParms=='')
+						if (nextParams=='')
 							var tmpName = v.slice(i1,i2)+'=';
 						else
 							var tmpName = '&'+v.slice(i1,i2)+'=';
@@ -127,7 +127,7 @@ FGS.mafiawarsFreegifts =
 						if(i1 == 6) return;
 						
 						i2 = v.indexOf('"',i1);
-						myParms += tmpName+escape(v.slice(i1,i2));
+						nextParams += tmpName+escape(v.slice(i1,i2));
 					});
 					
 					var useridtmp = $('input[name="sf_xw_user_id"]', dataHTML).val();
@@ -145,7 +145,7 @@ FGS.mafiawarsFreegifts =
 					params.sf_xw_user_id = $('input[name="sf_xw_user_id"]', dataHTML).val();
 					params.sf_xw_sig = $('input[name="sf_xw_sig"]', dataHTML).val();				
 					
-					params.click3param = myParms;
+					params.click3param = nextParams;
 					params.click3url = 'http://facebook.mafiawars.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=friend_selector&xw_city=1&req_controller=freegifts&free_gift_id='+params.gift+'&free_gift_cat=1&xw_client_id=8&ajax=1&liteload=1&fbml_iframe=1&xw_person='+useridfin+tmpTmp+tmpCb;
 				
 					FGS.mafiawarsFreegifts.Click3(params);
@@ -208,7 +208,7 @@ FGS.mafiawarsFreegifts =
 				try
 				{
 				
-					var i1,i2, myParms;
+					var i1,i2, nextParams;
 					var strTemp = dataStr;
 
 					i1       =  strTemp.indexOf('FB.Facebook.init("');
@@ -216,18 +216,18 @@ FGS.mafiawarsFreegifts =
 					i1 += 18;
 					i2       =  strTemp.indexOf('"',i1);
 
-					myParms  =  'app_key='+strTemp.slice(i1,i2);
+					nextParams  =  'app_key='+strTemp.slice(i1,i2);
 					i1     =  i2 +1;
 					i1       =  strTemp.indexOf('"',i1)+1;
 					i2       =  strTemp.indexOf('"',i1);
 					
-					myParms +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
+					nextParams +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
 
 					i1       =  strTemp.indexOf('<fb:fbml>');
 					i2       =  strTemp.indexOf('/script>',i1)-1;
-					myParms +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
+					nextParams +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
 					
-					params.myParms = myParms;
+					params.nextParams = nextParams;
 					
 					FGS.getFBML(params);
 				}
@@ -361,7 +361,7 @@ FGS.mafiawarsRequests =
 
 				try 
 				{
-					var i1, i2, strTemp, myUrl, myParms;
+					var i1, i2, strTemp, myUrl, nextParams;
 
 					strTemp = dataStr;
 
@@ -372,7 +372,7 @@ FGS.mafiawarsRequests =
 					i2 = strTemp.indexOf('"',i1);
 					myUrl = strTemp.slice(i1,i2);
 
-					myParms = '';
+					nextParams = '';
 					
 					
 					var count = strTemp.match(/<input[^>]*?.*?>/g);
@@ -386,7 +386,7 @@ FGS.mafiawarsRequests =
 						
 						
 						
-						if (myParms=='')
+						if (nextParams=='')
 							var tmpName = v.slice(i1,i2)+'=';
 						else
 							var tmpName = '&'+v.slice(i1,i2)+'=';
@@ -396,7 +396,7 @@ FGS.mafiawarsRequests =
 						if(i1 == 6) return;
 						
 						i2 = v.indexOf('"',i1);
-						myParms += tmpName+escape(v.slice(i1,i2));
+						nextParams += tmpName+escape(v.slice(i1,i2));
 					});
 					
 					
@@ -407,7 +407,7 @@ FGS.mafiawarsRequests =
 						isBoost = true;
 					}
 					
-					FGS.mafiawarsRequests.Click4(currentType, id, myUrl, myParms, isBoost);
+					FGS.mafiawarsRequests.Click4(currentType, id, myUrl, nextParams, isBoost);
 				}
 				catch(err)
 				{
@@ -701,7 +701,7 @@ FGS.mafiawarsBonuses =
 				
 				try
 				{
-					var i1, i2, strTemp, myUrl, myParms;
+					var i1, i2, strTemp, myUrl, nextParams;
 
 					strTemp = dataStr;
 
@@ -712,7 +712,7 @@ FGS.mafiawarsBonuses =
 					i2 = strTemp.indexOf('"',i1);
 					myUrl = strTemp.slice(i1,i2);
 
-					myParms = '';
+					nextParams = '';
 					
 					
 					var count = strTemp.match(/<input[^>]*?.*?>/g);
@@ -726,7 +726,7 @@ FGS.mafiawarsBonuses =
 						
 						
 						
-						if (myParms=='')
+						if (nextParams=='')
 							var tmpName = v.slice(i1,i2)+'=';
 						else
 							var tmpName = '&'+v.slice(i1,i2)+'=';
@@ -736,9 +736,9 @@ FGS.mafiawarsBonuses =
 						if(i1 == 6) return;
 						
 						i2 = v.indexOf('"',i1);
-						myParms += tmpName+escape(v.slice(i1,i2));
+						nextParams += tmpName+escape(v.slice(i1,i2));
 					});
-					FGS.mafiawarsBonuses.Click3(currentType, id, myUrl, myParms);
+					FGS.mafiawarsBonuses.Click3(currentType, id, myUrl, nextParams);
 				}
 				catch(err)
 				{

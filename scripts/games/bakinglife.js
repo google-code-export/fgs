@@ -91,7 +91,7 @@ FGS.bakinglifeRequests =
 			success: function(dataStr)
 			{
 				var dataHTML = FGS.HTMLParser(dataStr);
-				
+
 				try
 				{
 					if(dataStr.indexOf('Make sure you click on the request within one week') != -1)
@@ -107,21 +107,21 @@ FGS.bakinglifeRequests =
 						
 						var tmpStr = unescape(currentURL);
 						
-						var i1 = tmpStr.indexOf('?gift=');
-						if(i1 == -1)
+						var pos1 = tmpStr.indexOf('?gift=');
+						if(pos1 == -1)
 						{
-							i1 = tmpStr.indexOf('&gift=');
+							pos1 = tmpStr.indexOf('&gift=');
 						}
-						if(i1 != -1)
+						if(pos1 != -1)
 						{
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 							
-							var giftName = tmpStr.slice(i1+6,i2);
+							var giftName = tmpStr.slice(pos1+6,pos2);
 							
-							var i1 = tmpStr.indexOf('&senderID=');
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos1 = tmpStr.indexOf('&senderID=');
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 							
-							var giftRecipient = tmpStr.slice(i1+10,i2);			
+							var giftRecipient = tmpStr.slice(pos1+10,pos2);			
 								
 							sendInfo = {
 								gift: giftName,

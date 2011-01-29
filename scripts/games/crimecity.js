@@ -76,24 +76,14 @@ FGS.crimecityFreegifts =
 			{
 				try
 				{
-				
-				
-					var i1 = dataStr.indexOf('var cc_fbuid = "');
-					if(i1 == -1) throw {}
-					i1+=16;
+					var tst = new RegExp(/var cc_fbuid = "(.*)"/).exec(dataStr);
+					if(tst == null) throw {message:'no cc_fbuid tag'}
+					params.cc_fbuid = tst[1];
 					
-					var i2 = dataStr.indexOf('"', i1);
+					var tst = new RegExp(/var token = "(.*)"/).exec(dataStr);
+					if(tst == null) throw {message:'no token tag'}
+					params.token = tst[1];
 					
-					params.cc_fbuid = dataStr.slice(i1,i2);
-					
-					var i1 = dataStr.indexOf('var token = "');
-					if(i1 == -1) throw {}
-					i1+=13;
-					
-					var i2 = dataStr.indexOf('"', i1);
-					
-					params.token = dataStr.slice(i1,i2);					
-				
 					FGS.crimecityFreegifts.Click3(params);
 				}
 				catch(err)
@@ -151,30 +141,22 @@ FGS.crimecityFreegifts =
 			success: function(dataStr)
 			{
 				try
-				{
-					var i1,i2, myParms;
-					var strTemp = dataStr;
+				{	
+					var tst = new RegExp(/var api_key = "(.*)"/).exec(dataStr);
+					if(tst == null) throw {message:'no api_key tag'}
+					var api_key = tst[1];
 					
-					i1 	 	 =	strTemp.indexOf('var api_key = "');
-					if (i1 == -1) throw {message:"Cannot find FB.init"}
-					i1+=15;
-					i2       =  strTemp.indexOf('"',i1);
+					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					if(tst == null) throw {message:'no fbml tag'}
+					var fbml = tst[1];
 
-					myParms  =  'app_key='+strTemp.slice(i1,i2);
+					var tst = new RegExp(/var channel_path = "(.*)"/).exec(dataStr);
+					if(tst == null) throw {message:'no channel_path tag'}
+					var channel_path = tst[1];
 					
-					i1 	 	 =	strTemp.indexOf('var channel_path = "');
-					if (i1 == -1) throw {message:"Cannot find FB.init"}
-					i1+=20;
-					i2       =  strTemp.indexOf('"',i1);
+					var paramsStr = 'app_key='+api_key+'&channel_url='+encodeURIComponent(channel_path)+'&fbml='+encodeURIComponent(fbml);
 					
-					myParms +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
-
-					i1       =  strTemp.indexOf('<fb:fbml');
-					i2       =  strTemp.indexOf('/script>',i1)-1;
-					myParms +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
-					
-					params.myParms = myParms;
-					
+					params.nextParams = paramsStr;
 					
 					FGS.getFBML(params);
 				}
@@ -255,7 +237,6 @@ FGS.crimecityRequests =
 				{
 					var src = FGS.findIframeAfterId('#app_content_129547877091100', dataStr);
 					if (src == '') throw {message:"Cannot find <iframe src= in page"}
-					
 					FGS.crimecityRequests.Click2(currentType, id, src);
 				}
 				catch(err)
@@ -299,8 +280,7 @@ FGS.crimecityRequests =
 			success: function(dataStr)
 			{
 				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				
+
 				try
 				{
 					if($('.streamRewardAllRewardsClaimed', dataHTML).length > 0)
@@ -323,21 +303,21 @@ FGS.crimecityRequests =
 						
 						var tmpStr = unescape(currentURL);
 						
-						var i1 = tmpStr.indexOf('?gift_id=');
-						if(i1 == -1)
+						var pos1 = tmpStr.indexOf('?gift_id=');
+						if(pos1 == -1)
 						{
-							i1 = tmpStr.indexOf('&gift_id=');
+							pos1 = tmpStr.indexOf('&gift_id=');
 						}
-						if(i1 != -1)
+						if(pos1 != -1)
 						{
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 							
-							var giftName = tmpStr.slice(i1+9,i2);
+							var giftName = tmpStr.slice(pos1+9,pos2);
 							
-							var i1 = tmpStr.indexOf('sender_facebook_id=');
-							var i2 = tmpStr.indexOf('&', i1+1);
+							var pos1 = tmpStr.indexOf('sender_facebook_id=');
+							var pos2 = tmpStr.indexOf('&', pos1+1);
 							
-							var giftRecipient = tmpStr.slice(i1+19,i2);			
+							var giftRecipient = tmpStr.slice(pos1+19,pos2);			
 								
 							sendInfo = {
 								gift: giftName,
