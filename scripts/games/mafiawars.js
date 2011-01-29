@@ -130,8 +130,8 @@ FGS.mafiawarsFreegifts =
 				}
 				catch(err)
 				{
-					dump(err);
-					dump(err.message);
+					//dump(err);
+					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
