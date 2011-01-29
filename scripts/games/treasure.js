@@ -141,7 +141,7 @@ FGS.treasureFreegifts =
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: 'http://'+params.domain+'/gifts_send.php?overlayed=1&gift='+params.gift+'&'+unescape(params.zyParam)+''+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
