@@ -295,7 +295,7 @@ FGS.vampirewarsRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_25287267406', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					FGS.vampirewarsRequests.Click4(currentType, id, src);
 				}

@@ -15,7 +15,7 @@ FGS.ravenwoodFreegifts =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_120563477996213', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					params.step2url = src;
 
 					FGS.ravenwoodFreegifts.Click2(params);

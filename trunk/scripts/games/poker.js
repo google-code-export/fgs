@@ -147,8 +147,6 @@ FGS.pokerFreegifts =
 					reqData.form_id = reqData2.request_form;
 					delete(reqData.request_form);
 					
-					
-					
 					var tst = new RegExp(/<form[^>].*content=\s*["]([^"]+)[^>]*>/gm).exec(data);
 					if(tst == null) throw {message:'no content'}
 					

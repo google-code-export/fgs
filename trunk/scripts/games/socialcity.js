@@ -35,7 +35,7 @@ FGS.socialcityRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_163965423072', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					src = src.replace('http://city-fb-apache-active-vip.playdom.com/', 'http://city-fb-apache-active-vip.playdom.com/lib/playdom/facebook/facebook_iframe.php');
 					

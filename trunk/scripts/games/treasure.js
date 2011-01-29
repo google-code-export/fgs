@@ -81,7 +81,7 @@ FGS.treasureFreegifts =
 					
 					
 					var pos1 = dataStr.indexOf('new ZY({');
-					if (pos1 == -1) throw {message:'Cannot zyparams in page'}
+					if (pos1 == -1) throw {message:'no zyparams'}
 					pos1 += 7;
 					pos2 = dataStr.indexOf('"},', pos1)+2;
 					var dataParam	= dataStr.slice(pos1,pos2);				
@@ -443,7 +443,7 @@ FGS.treasureBonuses =
 					}
 
 					var URL = $('.acceptButtons', dataHTML).children('a:first').attr('href');
-					if(typeof(URL) == 'undefined') throw {message: 'No url'}
+					if(typeof(URL) == 'undefined') throw {message: 'no url'}
 					var URL = unescape(URL);
 					
 					FGS.treasureBonuses.Click2(currentType, id, URL);

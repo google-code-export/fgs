@@ -399,7 +399,7 @@ FGS.cityvilleRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.cityvilleRequests.Click2(currentType, id, src);
 				} 
 				catch(err)

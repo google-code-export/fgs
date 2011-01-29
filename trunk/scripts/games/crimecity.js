@@ -15,7 +15,7 @@ FGS.crimecityFreegifts =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_129547877091100', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					params.click2url = src;
 					
 					FGS.crimecityFreegifts.Click2(params);
@@ -236,7 +236,7 @@ FGS.crimecityRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_129547877091100', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.crimecityRequests.Click2(currentType, id, src);
 				}
 				catch(err)
@@ -398,7 +398,7 @@ FGS.crimecityBonuses =
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_129547877091100', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					
 					FGS.crimecityBonuses.Click2(currentType, id, src);
 				} 

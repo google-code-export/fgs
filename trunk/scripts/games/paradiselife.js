@@ -36,7 +36,7 @@ FGS.paradiselifeRequests =
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_143547399002598', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.paradiselifeRequests.Click2(currentType, id, src);
 				}
 				catch(err)
@@ -195,7 +195,7 @@ FGS.paradiselifeBonuses =
 				try 
 				{
 					var src = FGS.findIframeAfterId('#app_content_143547399002598', dataStr);
-					if (src == '') throw {message:"Cannot find <iframe src= in page"}
+					if (src == '') throw {message:"no iframe"}
 					FGS.paradiselifeBonuses.Click2(currentType, id, src);
 				}
 				catch(err)

@@ -100,7 +100,7 @@ var FGS = {
 					
 					var dataObj = JSON.parse(parseStr.slice(9));
 					
-					if(typeof(dataObj.onload) == 'undefined') throw {message:"URI not found"}
+					if(typeof(dataObj.onload) == 'undefined') throw {message:"no URI"}
 					
 					var found = false;
 					
@@ -114,7 +114,7 @@ var FGS = {
 						}
 					});
 					
-					if(!found) throw {message:"URI not found"}
+					if(!found) throw {message:"no URI"}
 				
 					var pos1 = parseStr.indexOf('goURI');
 					var pos2 = parseStr.indexOf(');',pos1);
@@ -169,7 +169,7 @@ var FGS = {
 				
 				var dataObj = JSON.parse(parseStr.slice(9));
 				
-				if(typeof(dataObj.onload) == 'undefined') throw {message:"URI not found"}
+				if(typeof(dataObj.onload) == 'undefined') throw {message:"no URI"}
 				
 				var found = false;
 				
@@ -183,7 +183,7 @@ var FGS = {
 					}
 				});
 				
-				if(!found) throw {message:"URI not found"}
+				if(!found) throw {message:"no URI"}
 			
 				var pos1      	=   parseStr.indexOf('goURI');
 				var pos2        	=   parseStr.indexOf(');',pos1);
@@ -1020,7 +1020,7 @@ var FGS = {
 					
 					var dataObj = JSON.parse(parseStr.slice(9));
 					
-					if(typeof(dataObj.onload) == 'undefined') throw {message:"URI not found"}
+					if(typeof(dataObj.onload) == 'undefined') throw {message:"no URI"}
 					
 					var found = false;
 					
@@ -1034,7 +1034,7 @@ var FGS = {
 						}
 					});
 					
-					if(!found) throw {message:"URI not found"}
+					if(!found) throw {message:"no URI"}
 				
 					var pos1      	=   parseStr.indexOf('goURI');
 					var pos2        	=   parseStr.indexOf(');',pos1);
