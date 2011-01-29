@@ -14,26 +14,10 @@ FGS.mafiawarsFreegifts =
 			{
 				try
 				{
-					i1          =   dataStr.indexOf('post_form_id:"')
-					if (i1 == -1) throw {message:'Cannot post_form_id in page'}
-					i1			+=	14;
-					i2          =   dataStr.indexOf('"',i1);
-					
-					params.post_form_id = dataStr.slice(i1,i2);
-					
-					i1          =   dataStr.indexOf('fb_dtsg:"',i1)
-					if (i1 == -1) throw {message:'Cannot find fb_dtsg in page'}
-					i1			+=	9;
-					i2          = dataStr.indexOf('"',i1);
-					params.fb_dtsg		= dataStr.slice(i1,i2);
-					
 					var src = FGS.findIframeByName('mafiawars', dataStr);
 					if (src == '') throw {message:"Cannot find <iframe src= in page"}
-					
-					params.click2url = src;
-					
+					params.click2url = src;					
 					FGS.mafiawarsFreegifts.Click2(params);
-				
 				}
 				catch(err)
 				{
@@ -92,9 +76,7 @@ FGS.mafiawarsFreegifts =
 				
 				try
 				{
-					var i1, i2, strTemp, myUrl, nextParams;
-
-					strTemp = dataStr;
+					
 
 					i1 = strTemp.indexOf('action="');
 					if (i1 == -1) throw {message:"Cannot find action= in page"}
@@ -114,8 +96,6 @@ FGS.mafiawarsFreegifts =
 						var i1 = v.indexOf('name="')+6;
 						if(i1 == 5) return;
 						i2 = v.indexOf('"',i1);
-						
-						
 						
 						if (nextParams=='')
 							var tmpName = v.slice(i1,i2)+'=';
@@ -207,27 +187,19 @@ FGS.mafiawarsFreegifts =
 			{
 				try
 				{
-				
-					var i1,i2, nextParams;
-					var strTemp = dataStr;
-
-					i1       =  strTemp.indexOf('FB.Facebook.init("');
-					if (i1 == -1) throw {message:"Cannot find FB.init"}
-					i1 += 18;
-					i2       =  strTemp.indexOf('"',i1);
-
-					nextParams  =  'app_key='+strTemp.slice(i1,i2);
-					i1     =  i2 +1;
-					i1       =  strTemp.indexOf('"',i1)+1;
-					i2       =  strTemp.indexOf('"',i1);
+					var tst = new RegExp(/FB[.]Facebook[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
+					if(tst == null) throw {message: 'no fb.init'}
 					
-					nextParams +=  '&channel_url='+ encodeURIComponent(strTemp.slice(i1,i2));
-
-					i1       =  strTemp.indexOf('<fb:fbml>');
-					i2       =  strTemp.indexOf('/script>',i1)-1;
-					nextParams +=  '&fbml='+encodeURIComponent(strTemp.slice(i1,i2));
+					var app_key = tst[1];
+					var channel_url = tst[2];
 					
-					params.nextParams = nextParams;
+					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					if(tst == null) throw {message:'no fbml tag'}
+					var fbml = tst[1];
+					
+					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+
+					params.nextParams = paramsStr;
 					
 					FGS.getFBML(params);
 				}

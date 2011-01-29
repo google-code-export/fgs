@@ -106,9 +106,7 @@ FGS.pokerFreegifts =
 					var x = JSON.parse(str);
 					
 					var data = x.payload.data.fbml_form0;
-					
-					var strTemp = data;
-					
+
 					var arr = [];
 					
 					var dataHTML = FGS.HTMLParser(data);
@@ -141,7 +139,7 @@ FGS.pokerFreegifts =
 						lsd: ''
 					}
 				
-					var tst = new RegExp(/PlatformInvite.sendInvitation.*(\&#123.*.?125;)[(\(;)]/g).exec(dataStr);
+					var tst = new RegExp(/PlatformInvite.sendInvitation.*(\&#123.*.?125;)[(\(;)]/g).exec(data);
 					if(tst == null) throw {message:'no api_key tag'}
 					var reqData2 = JSON.parse(tst[1].replace(/&quot;/g,'"').replace(/&#123;/g,'{').replace(/&#125;/g,'}'));
 					
@@ -149,14 +147,14 @@ FGS.pokerFreegifts =
 					reqData.form_id = reqData2.request_form;
 					delete(reqData.request_form);
 					
-					var tst = new RegExp(/<form[^>].*content=\s*["]([^"]+)[^>]*>/gm).exec(dataStr);
+					
+					
+					var tst = new RegExp(/<form[^>].*content=\s*["]([^"]+)[^>]*>/gm).exec(data);
 					if(tst == null) throw {message:'no content'}
 					
 					reqData.content = tst[1];
 					reqData.prefill = true;
 
-					//var sendGiftUrl = $('form[type]', dataHTML).serialize();
-					
 					params.items = arr;
 					
 					var sendGiftParams = $('form[type]', dataHTML).serialize();
@@ -168,7 +166,7 @@ FGS.pokerFreegifts =
 						if(params.gameID == '120563477996213')
 							sendGiftParams += 'ids[]='+v+'&';
 						else
-							sendGiftParams += 'ids%5B%5D='+v+'&';
+							sendGiftParams += '&ids%5B%5D='+v;
 					});
 					
 					params.promptParams = reqData;
@@ -179,8 +177,8 @@ FGS.pokerFreegifts =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					dump(err);
+					dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
