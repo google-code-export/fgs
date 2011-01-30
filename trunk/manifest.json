@@ -20,7 +20,7 @@
 		{
 			"js": ["scripts/jquery-1.4.2.min.js" , "dom.js" ],
 			"matches": [ "http://*.facebook.com/*", "https://*.facebook.com/*"],
-			"run_at": "document_start"
+			"run_at": "document_end"
 		}
 	],
 	"minimum_chrome_version": "6"
