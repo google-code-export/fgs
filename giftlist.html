@@ -473,8 +473,23 @@
 		setTimeout(function() 
 		{
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
-			$('#'+id).removeClass('hide').removeClass('inProgress').find('img:last').attr('src', data.image);
-			$('#'+id).find('.title').text(data.title);
+			$('#'+id).removeClass('hide').removeClass('inProgress');
+
+			if(data.image !== '')
+			{
+				$('#'+id).find('img:last').attr('src', data.image);
+			}
+			else
+			{
+				$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+			}
+			
+			
+			if(data.title != '')
+			{
+				$('#'+id).find('.title').text(data.title);
+			}
+			
 			
 			var infoAdd = '';
 			

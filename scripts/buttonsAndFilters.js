@@ -430,7 +430,23 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
-					
+	213518941553:	{ 	name: 'Fantasy Kingdoms',		systemName: 'fantasy', link: 'http://apps.facebook.com/fantasykingdoms/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['Send'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =
