@@ -436,7 +436,7 @@ FGS.gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['Send'],
 							requests: [],
-							requestsNewWindow: []
+							requestsNewWindow: ['Come join me in Fantasy Kingdoms']
 						},
 						buttons: [
 							'BonusesPending',
