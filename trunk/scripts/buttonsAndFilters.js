@@ -300,7 +300,7 @@ FGS.gamesData =
 						filter:	
 						{
 							bonuses: [],
-							bonusesNewWindow: [],
+							bonusesNewWindow: ['Accept Promotion'],
 							requests: [],
 							requestsNewWindow: []
 						},
@@ -390,6 +390,38 @@ FGS.gamesData =
 							bonusesNewWindow: ['(.*)'],
 							requests: [],
 							requestsNewWindow: ['be my friend']
+						},
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+	372268249833:	{ 	name: 'Evony',		systemName: 'evony', link: 'http://apps.facebook.com/evonyoffical/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory', 
+							'RequestsPending',
+							'RequestsHistory',	
+							'GameOptionsTab'
+						],
+					},
+	56748925791:	{ 	name: 'Farm Town',		systemName: 'farmtown', link: 'http://apps.facebook.com/farmtown/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
 						},
 						buttons: [
 							'ManualBonuses',
