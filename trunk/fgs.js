@@ -724,9 +724,11 @@ var FGS = {
 	{
 		var game = FGS.gamesData[gameID].systemName;
 		
-		var params = {
+		var params = 
+		{
 			gift: FGS.freeGiftForGame[gameID],
-			gameID:	gameID
+			gameID:	gameID,
+			loadList: true
 		};
 		
 		if(FGS.options.games[gameID].enabled)
