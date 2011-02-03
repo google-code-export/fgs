@@ -470,6 +470,14 @@ var FGS = {
 		}
 	},
 	
+	stopQueue: function()
+	{
+		var resetArr = FGS.xhrQueue;
+		FGS.xhrQueue = [];
+		
+		return resetArr;
+	},
+	
 	checkXhrQueue: function()
 	{
 		if(FGS.xhrWorking < FGS.options.collectXbonusesAtTheSameTime)
