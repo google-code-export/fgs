@@ -638,34 +638,34 @@ var FGS = {
 					
 					dataPost += '&'+escape($(el).find('input[type="submit"]:first').attr('name'))+'='+$(el).find('input[type="submit"]:first').attr('value');
 					
-					if(APPID == 120563477996213)
+					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1)
 					{
-						var searchStr = 'item_id';
-					}
-					else if(APPID == 101539264719)
-					{
-						var searchStr = 'gid';
-					}
-					else if(APPID == 167746316127)
-					{
-						var searchStr = 'giftId';
+						var type =  $(el).find('.UIImageBlock_SMALL_Image').find('img').attr('src');				
 					}
 					else
 					{
-						var searchStr = 'gift';
-					}
-					
-					var typeText = unescape(typeText);
-					
-					var pos1 = typeText.indexOf('&'+searchStr+'=');
-					
-					if(pos1 == -1)
-					{
-						if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1)
+						if(APPID == 120563477996213)
 						{
-							var type =  $(el).find('.UIImageBlock_SMALL_Image').find('img').attr('src');				
+							var searchStr = 'item_id';
+						}
+						else if(APPID == 101539264719)
+						{
+							var searchStr = 'gid';
+						}
+						else if(APPID == 167746316127)
+						{
+							var searchStr = 'giftId';
 						}
 						else
+						{
+							var searchStr = 'gift';
+						}
+						
+						var typeText = unescape(typeText);
+
+						var pos1 = FGS.Gup(searchStr, typeText);
+
+						if(pos1 == "")
 						{
 							if(APPID == 10979261223)
 							{
@@ -688,14 +688,11 @@ var FGS = {
 								var type = 'unknown';
 							}
 						}
+						else
+						{
+							var type = pos1;
+						}
 					}
-					else
-					{
-						pos1+=(searchStr.length+2);
-						pos2 = typeText.indexOf('&', pos1);
-						var type = typeText.slice(pos1, pos2);
-					}
-
 					
 					var curTime = Math.round(new Date().getTime() / 1000);		
 					var bTitle = $(el).find('.UIImageBlock_SMALL_Content').find('a:first').text().replace(/'/gi, '');		
@@ -718,6 +715,15 @@ var FGS = {
 				//dump(FGS.getCurrentTime()+'[R] Connection error. Setting up new update in 10 seconds');
 			}
 		});
+	},
+	
+	Gup: function(name, str)
+	{
+		var results = (new RegExp("[\\?&]"+name+"=([^&#]*)")).exec(str);
+		if(results == null)
+			return ''
+		else
+			return results[1];
 	},
 	
 	ListNeighbours: function(gameID)
