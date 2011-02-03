@@ -1105,7 +1105,7 @@ var FGS = {
 		Step3: function(gameID, users)
 		{
 			FGS.jQuery.ajax({
-				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php',
+				url: 'http://rzadki.eu/projects/fgs/jsonp/friends.php',
 				data: {callback: '?', action: 'get', games: gameID, userID: FGS.userID},
 				method: 'GET',
 				dataType: 'json',

@@ -689,7 +689,7 @@
 				if(data.thanks != '' && typeof(data.thanks.gift) != 'undefined' && data.image != '')
 				{
 					if($('#'+id).attr('isMissingImage'))
-						$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/gifts.php?callback=?', {gameID: gameID, gift: data.thanks.gift, image: data.image});
+						$.getJSON('http://rzadki.eu/projects/fgs/jsonp/gifts.php?callback=?', {gameID: gameID, gift: data.thanks.gift, image: data.image});
 				}
 				infoAdd = JSON.stringify(data.thanks);
 			}
@@ -1805,7 +1805,7 @@
 		
 			var action = $(this).is(':checked') ? 'add' : 'remove';
 			
-			$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: action, games: $(this).attr('gameID'), userID: bkP.userID}, 
+			$.getJSON('http://rzadki.eu/projects/fgs/jsonp/friends.php?callback=?', {action: action, games: $(this).attr('gameID'), userID: bkP.userID}, 
 			function(r)	{});			
 		});
 		
@@ -2521,7 +2521,7 @@
 	
 	function showSearchGames(enabledGames)
 	{
-		$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: 'status', games: enabledGames.join(), userID: bkP.userID}, 
+		$.getJSON('http://rzadki.eu/projects/fgs/jsonp/friends.php?callback=?', {action: 'status', games: enabledGames.join(), userID: bkP.userID}, 
 		function(r)
 		{
 			for(var gid in r)
@@ -2641,7 +2641,7 @@
 				</form>
 				<span style="font-weight: bold; margin-bottom: 10px;display: block;">If you need to contact me, use these links:</span>
 				<a href="http://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="16" height="16" alt="Facebook"></a>
-				<a href="http://fvgr.rzadki.eu:81/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="16" height="16" alt="E-mail"></a>
+				<a href="http://fgs.rzadki.eu/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="16" height="16" alt="E-mail"></a>
 				<a href="http://flies.blip.pl" target="_blank" title="Go to my Blip profile"><img src="gfx/blip.png" width="16" height="16" alt="Blip.pl"></a>
 				<a href="http://blog.fgs.rzadki.eu" target="_blank" title="Go to FGS Blog"><img src="gfx/blogger.png" width="16" height="16" alt="Blogger"></a>
 				<span style="font-weight: bold; margin-bottom: 10px;display: block;">If you encountered a problem, bug or want to file feature request, visit our message board:</span>
