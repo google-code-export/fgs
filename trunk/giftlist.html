@@ -226,15 +226,19 @@
 		if(v.image.indexOf('http') != -1)
 		{
 			var url = v.image;
+			if(game == 'cityville')
+			console.log(v.post);
 		}
 		else
 		{
 			var url = 'http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png';
+			if(game == 'cityville')
+				console.log(v.post);
 		}
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -686,6 +690,11 @@
 			
 			if(typeof(data.thanks) != 'undefined' && data.thanks != '')
 			{
+				if(data.thanks != '' && typeof(data.thanks.gift) != 'undefined' && data.image != '')
+				{
+					if($('#'+id).attr('isMissingImage'))
+						$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/gifts.php?callback=?', {gameID: gameID, gift: data.thanks.gift, image: data.image});
+				}
 				infoAdd = JSON.stringify(data.thanks);
 			}
 			
