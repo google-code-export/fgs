@@ -1472,6 +1472,12 @@
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'NeighborsSearchList';
 		
+		if(!$(".gameListOnNeighborsSearch", '#'+game+'Game').is(':checked'))
+		{
+			alert('You must check "List me on the neighbors search" before you can search.');
+			return;
+		}
+		
 		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Found people:</h2> <div class="searchForPeopleList"><h3 class="center"><img src="gfx/loading.gif"><br />Looking for people who are not already your neighbours... Please wait...</h3></div>');
 		
 		bkP.searchForNeighbors.Step1(gameID);
