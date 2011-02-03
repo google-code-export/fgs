@@ -1099,14 +1099,18 @@ var FGS = {
 		Step3: function(gameID, users)
 		{
 			FGS.jQuery.ajax({
-				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=friendsList',
-				data: {action: 'get', games: gameID, userID: FGS.userID},
+				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php',
+				data: {callback: '?', action: 'get', games: gameID, userID: FGS.userID},
 				method: 'GET',
+				dataType: 'json',
 				success:function(obj)
 				{
 					try
 					{
 						var usersArr = [];
+						
+						//var obj = JSON.parse(data);
+						
 						FGS.jQuery(obj).each(function(k,v)
 						{
 							if(typeof(users[v]) == 'undefined' && v.toString() != FGS.userID.toString())
