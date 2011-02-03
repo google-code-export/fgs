@@ -1456,10 +1456,10 @@
 				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbours.</h3>';
 			else
 			{
-				var html = '<h3 class="center">These people are looking for new neighbors:</h3><ul>';
+				var html = '<h3 class="center">These people are looking for new neighbors:</h3><ul style="font-size: 1.2em">';
 				$(status).each(function(k,v)
 				{
-					html+='<li><a href="http://www.facebook.com/profile.php?id='+v+'" target="_blank">'+v+'</a></li>';
+					html+='<li class="friendsList"><a href="http://www.facebook.com/profile.php?id='+v+'" target="_blank">'+v+'</a></li>';
 				});
 				html+= '</ul>';
 			}
