@@ -1028,4 +1028,98 @@ var FGS = {
 			}
 		});
 	},
+	
+	searchForNeighbors:
+	{
+		Step1: function(gameID)
+		{
+			FGS.jQuery.ajax({
+				url: 'https://developers.facebook.com/docs/api',
+				method: 'GET',
+				dataType: 'text',
+				success: function(d)
+				{
+					var pos1 = d.indexOf('?access_token=')+1;
+					if(pos1 == 0)
+					{
+						FGS.sendView('friendsLoaded', gameID, false);
+						return;
+					}
+					var pos2 = d.indexOf('"', pos1);
+					
+					FGS.searchForNeighbors.Step2(gameID, d.slice(pos1,pos2));
+				},
+				error: function()
+				{
+					FGS.sendView('friendsLoaded', gameID, false);
+				}
+			});
+		},
+		Step2: function(gameID, access)
+		{
+			FGS.jQuery.ajax({
+				url: 'https://graph.facebook.com/me/friends?'+access,
+				method: 'GET',
+				dataType: 'text',
+				success:function(obj)
+				{
+					try
+					{
+						var usersObj = {}
+						
+						var users = JSON.parse(obj);
+						FGS.jQuery(users.data).each(function(k,v)
+						{
+							usersObj[v.id] = v.name;
+						});
+						
+						
+						FGS.searchForNeighbors.Step3(gameID, usersObj);
+					}
+					catch(e)
+					{
+						FGS.sendView('friendsLoaded', gameID, false);
+					}
+				},
+				error: function()
+				{
+					FGS.sendView('friendsLoaded', gameID, false);
+				}
+			});
+		},
+		Step3: function(gameID, users)
+		{
+			FGS.jQuery.ajax({
+				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?',
+				data: {action: 'get', games: gameID, userID: FGS.userID},
+				method: 'GET',
+				dataType: 'json',
+				success:function(obj)
+				{
+					try
+					{
+						var usersArr = [];
+						FGS.jQuery(obj).each(function(k,v)
+						{
+							if(typeof(users[v]) == 'undefined' && v.toString() != FGS.userID.toString())
+							{
+								usersArr.push(v);
+							}
+						});
+						FGS.sendView('friendsLoaded', gameID, usersArr);
+					}
+					catch(e)
+					{
+						FGS.sendView('friendsLoaded', gameID, false);
+					}
+				},
+				error: function()
+				{
+					FGS.sendView('friendsLoaded', gameID, false);
+				}
+			});
+		},
+	}
+
+
 };

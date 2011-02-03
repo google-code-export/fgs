@@ -355,7 +355,7 @@ h2.center, h3.center
 	text-align: center;
 }
 
-.sendToFavouritesList, .sendToNeighboursList, .sendToGiftsList, .gameOptionsFiltersList
+.sendToFavouritesList, .sendToNeighboursList, .sendToGiftsList, .gameOptionsFiltersList, .searchForPeopleList
 {
 	border:1px solid #000;
 	padding: 20px;
