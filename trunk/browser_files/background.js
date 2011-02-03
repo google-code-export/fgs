@@ -182,7 +182,6 @@ FGS.sendView = function (msg, data, data2, data3)
 			{
 				view.close();
 			}
-			// chat off/
 			
 			else if(msg == 'friendsLoaded')
 			{
