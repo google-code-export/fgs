@@ -65,7 +65,7 @@ FGS.giftsArray = {
 		"shovel_item_01": { name: '2 Shovels'},
 		"wateringcan": { name: 'Watering Can'},
 		"valentinesbasket2011_valentine_2": { name: 'Rose Vase'},
-		"valentinesbasket2011_valentine_3": { name: 'Baby's Breath'},
+		"valentinesbasket2011_valentine_3": { name: 'Baby\'s Breath'},
 		"valentinesbasket2011_valentine_4": { name: 'Valentine Chocolates'},
 		"valentinesbasket2011_valentine_1": { name: 'Stuffed Cow'},
 		"valentinesbasket2011_valentine_5": { name: 'Love Letters'},

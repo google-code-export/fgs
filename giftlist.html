@@ -226,14 +226,10 @@
 		if(v.image.indexOf('http') != -1)
 		{
 			var url = v.image;
-			if(game == 'cityville')
-			console.log(v.post);
 		}
 		else
 		{
 			var url = 'http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png';
-			if(game == 'cityville')
-				console.log(v.post);
 		}
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
