@@ -37,10 +37,11 @@
 		
 		if($('div#'+game+opt, '#'+game+'Game').children('div').length == 0)
 		{
-			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds. To unhide it, follow steps in this link:<br /><br /><a href="http://www.kimwoodbridge.com/updated-how-to-unhide-a-facebook-application-or-page/" target="_blank">LINK</a>.</h3>');
+			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds. To unhide it, follow steps in this link:<br /><br /><a href="http://www.kimwoodbridge.com/updated-how-to-unhide-a-facebook-application-or-page/" target="_blank">LINK</a>.</h3><br style="clear:both" />');
 		}
 	}
 	
+
 	function ListNeighbours(gameID, neigh)
 	{
 		var game = bkP.gamesData[gameID].systemName;
@@ -349,6 +350,7 @@
 				}
 		
 		bkP.xhrQueue.push(obj);
+		updateQueueCount();
 	}
 	
 	function processRequestsClick(e)
@@ -368,6 +370,7 @@
 				}
 		
 		bkP.xhrQueue.push(obj);
+		updateQueueCount();
 		
 		//bkP.prepareLinkForGame(game,$(e.currentTarget).attr('id'), );
 	}
@@ -400,6 +403,7 @@
 		var gameID = $('#'+id).attr('gameID');
 		var game = bkP.gamesData[gameID].systemName;
 		
+		updateQueueCount();
 		
 		bonusErrorFinish(id, data);
 	}
@@ -455,6 +459,8 @@
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = bkP.gamesData[gameID].systemName;
+		
+		updateQueueCount();
 		
 		bonusSuccessFinish(id, data);
 	}
@@ -601,6 +607,8 @@
 		var gameID = $('#'+id).attr('gameID');
 		var game = bkP.gamesData[gameID].systemName;
 		
+		updateQueueCount();
+		
 		requestErrorFinish(id, data);
 	}
 	
@@ -647,6 +655,8 @@
 		
 		var gameID = $('#'+id).attr('gameID');
 		var game = bkP.gamesData[gameID].systemName;
+		
+		updateQueueCount();
 		
 		requestSuccessFinish(id, data);
 	}
@@ -1281,6 +1291,7 @@
 				selectFirstTab(gameID);
 				updateCount();
 				bkP.startBonusesForGame(gameID);
+				showSearchGames([gameID])
 				prepareNeighboursList(gameID);
 			}			
 		}
@@ -1609,14 +1620,7 @@
 		
 		if(enabledGames.length > 0)
 		{
-			$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: 'status', games: enabledGames.join(), userID: bkP.userID}, 
-			function(r)
-			{
-				for(var gid in r)
-				{
-					$('.gameListOnNeighborsSearch[gameID="'+gid+'"]').attr('checked', 'checked').closest('label').show();
-				}
-			});
+			showSearchGames(enabledGames);
 		}
 		
 		$('input', '.optionsMenu').click(function()
@@ -2095,10 +2099,39 @@
 				}
 			}
 		});
+		
+		$('#stopReceivingQueue').button().click(function()
+		{
+			$(bkP.stopQueue()).each(function(k,v)
+			{
+				var id = v.id;
+				
+				if(v.type == 'bonus')
+				{
+					$('#'+id).enableContextMenu().click(processBonusClick).removeClass('inProgress');
+					$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+				}
+				else
+				{
+					$('#'+id).enableContextMenu().click(processRequestsClick).removeClass('inProgress');
+					$('#'+id).find('img:last').attr('src', $('#'+id).find('img:last').attr('orig-src'));
+				}
+			});
+			
+			updateQueueCount();
+		});
+		
+		
+		
 
 		setTimeout(loadBonuses, 1);
 		//Screen is: UNLOCKED (click to lock)
 	});
+	
+	function updateQueueCount()
+	{
+		$('#queueItemsCount').text(bkP.xhrQueue.length);
+	}
 	
 	function processSaveNewComment()
 	{
@@ -2429,6 +2462,21 @@
 		return(secs > olderThan ? true : false);
 	}
 	
+	function showSearchGames(enabledGames)
+	{
+		$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: 'status', games: enabledGames.join(), userID: bkP.userID}, 
+		function(r)
+		{
+			for(var gid in r)
+			{
+				var el = $('.gameListOnNeighborsSearch[gameID="'+gid+'"]');
+				if(r[gid])
+					el.attr('checked', 'checked');
+				el.closest('label').show();
+			}
+		});
+	}
+	
 	function updateTimeAgo()
 	{
 		var olderThanTime = bkP.options.deleteHistoryOlderThan;
@@ -2575,6 +2623,8 @@
 			<button style="font-size: 0.8em;" id="receiveBonusesAllGames">Receive bonuses from all games</button>
 			<input type="checkbox" id="lockScreen" /><label for="lockScreen">Screen is: UNLOCKED (click to lock)</label>
 			<button style="font-size: 0.8em;" id="receiveGiftsAllGames">Receive gifts from all games</button>
+			<br />
+			<button style="font-size: 0.8em;" id="stopReceivingQueue">Reset queue (<span id="queueItemsCount">0</span>)</button>
 		</h2>
 		
 		<br style="clear: both" />
