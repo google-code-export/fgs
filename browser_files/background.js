@@ -184,6 +184,11 @@ FGS.sendView = function (msg, data, data2, data3)
 			}
 			// chat off/
 			
+			else if(msg == 'friendsLoaded')
+			{
+				view.friendsLoaded(data, data2);
+			}
+			
 			else if(msg == 'changeSendbackState')
 			{
 				view.changeSendbackState(data);
@@ -235,7 +240,10 @@ FGS.sendView = function (msg, data, data2, data3)
 				{
 					view.updateSendback(data, false);
 				}
-				view.freegiftError();
+				else
+				{
+					view.freegiftError();
+				}
 			}		
 			else if(msg == 'freegiftSuccess')
 			{

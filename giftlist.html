@@ -2,16 +2,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.4.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.0.0.2" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.0.0.3" rel="stylesheet" />
 <link rel="shortcut icon" href="gfx/favicon.ico" />
 <title>Friendly Gaming Simplifier</title>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.0.0.2"></script>
-<script type="text/javascript" src="scripts/time.js?version=1.0.0.2"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.0.0.2"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.0.0.2"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.0.0.3"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.0.0.3"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.0.0.3"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.0.0.3"></script>
 <script type="text/javascript">
 	var loaded = 0;
 	
@@ -159,10 +159,10 @@
 				}
 		}});
 		
-		//$('#dialog-error').dialog('open');
+		$('#dialog-error').dialog('open');
 	}
-
 	
+
 	function getGiftHistoryRow(gameID, v, thankYou)
 	{
 		var game = bkP.gamesData[gameID].systemName;
@@ -1451,6 +1451,40 @@
 			}
 		}
 	}
+	
+	function friendsLoaded(gameID, status)
+	{
+		var game = bkP.gamesData[gameID].systemName;
+		var opt = 'NeighborsSearchList';
+		
+		if(!status)
+			var html = '<h3 class="center">There was a problem. Please try again later.</h3>';
+		else
+		{
+			if(status.length == 0)
+				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbours.</h3>';
+			else
+			{
+				var html = '<h3 class="center">These people are looking for new neighbors:</h3><ul>';
+				$(status).each(function(k,v)
+				{
+					html+='<li><a href="http://www.facebook.com/profile.php?id='+v+'" target="_blank">'+v+'</a></li>';
+				});
+				html+= '</ul>';
+			}
+		}
+		$('div#'+game+opt, '#'+game+'Game').find('.searchForPeopleList').html(html);
+	}
+	
+	function CheckIfNeighborsAvailable(gameID)
+	{
+		var game = bkP.gamesData[gameID].systemName;
+		var opt = 'NeighborsSearchList';
+		
+		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Found people:</h2> <div class="searchForPeopleList"><h3 class="center"><img src="gfx/loading.gif"><br />Looking for people who are not already your neighbours... Please wait...</h3></div>');
+		
+		bkP.searchForNeighbors.Step1(gameID);
+	}
 
 	function windowFocus()
 	{
@@ -1559,10 +1593,30 @@
 			
 			$('<label><span>Auto send thank you gift, if possible</span><input type="checkbox" class="gameSendbackGiftBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
+			$('<label style="display: none"><span>List me on the neighbors search</span><input type="checkbox" class="gameListOnNeighborsSearch" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			
 			//$('<label><span>Post comment on bonuses</span><input type="checkbox" class="gameCommentBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
 			switchEnabled(id);
 			createMenu(id);
+		}
+		
+		var enabledGames = [];
+		$('.gameEnabledBox[gameID]:checked').each(function()
+		{
+			enabledGames.push($(this).attr('gameID'));
+		});
+		
+		if(enabledGames.length > 0)
+		{
+			$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: 'status', games: enabledGames.join(), userID: bkP.userID}, 
+			function(r)
+			{
+				for(var gid in r)
+				{
+					$('.gameListOnNeighborsSearch[gameID="'+gid+'"]').attr('checked', 'checked').closest('label').show();
+				}
+			});
 		}
 		
 		$('input', '.optionsMenu').click(function()
@@ -1683,6 +1737,15 @@
 		{
 			bkP.options.games[$(this).attr('gameID')].sendbackGift = $(this).is(':checked') ? true : false;
 			bkP.saveOptions();
+		});
+		
+		$(".gameListOnNeighborsSearch").click(function()
+		{
+		
+			var action = $(this).is(':checked') ? 'add' : 'remove';
+			
+			$.getJSON('http://rzadki.eu:81/projects/fgs/jsonp/friends.php?callback=?', {action: action, games: $(this).attr('gameID'), userID: bkP.userID}, 
+			function(r)	{});			
 		});
 		
 		//$(".gameCommentBonusBox").click(function()
