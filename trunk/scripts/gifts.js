@@ -607,8 +607,11 @@ FGS.giftsArray = {
 		"175": { name: 'Raven Feathers'},
 		"169": { name: 'Tarot Death Card (lvl 22)'},
 		"171": { name: 'Map Fragment'},
-
-	}	
+	},
+	156383461049284:
+	{
+	
+	}
 };
 
 FGS.freeGiftForGame =
@@ -628,6 +631,7 @@ FGS.freeGiftForGame =
 	129547877091100: '23',
 	163576248142: '5215',
 	25287267406: '439',
+	156383461049284: 'brick'
 }
 
 

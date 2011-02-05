@@ -357,18 +357,24 @@ h2.center, h3.center
 
 .friendsList
 {
-	margin-left: 30px;
-	margin-bottom: 10px;
+	float: left;
+	width: 175px;
+	margin-right: 10px;
 }
 
-
-.friendsList > a
+a.friendLink
 {
 	color: #105289;
 	text-decoration: none;
 }
 
-.friendsList > a:hover
+a.friendLink:visited
+{
+	color: #f06 !important;
+	text-decoration: underline;
+}
+
+a.friendLink:hover
 {
 	text-decoration: underline;
 }

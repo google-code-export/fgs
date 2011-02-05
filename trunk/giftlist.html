@@ -253,9 +253,18 @@
 		var title = v.title;
 		title = title.replace(/'/gi, '');
 		
+		if(v.image.indexOf('http') != -1)
+		{
+			var url = v.image;
+		}
+		else
+		{
+			var url = 'http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png';
+		}
+		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
-
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	
@@ -1461,12 +1470,12 @@
 				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbours.</h3>';
 			else
 			{
-				var html = '<h3 class="center">These people are looking for new neighbors:</h3><ul style="font-size: 1.2em">';
+				var html = '<h3 class="center">These people are looking for new neighbors:</h3>';
 				$(status).each(function(k,v)
 				{
-					html+='<li class="friendsList"><a href="http://www.facebook.com/profile.php?id='+v+'" target="_blank">'+v+'</a></li>';
+					html+='<div class="friendsList"><a href="http://www.facebook.com/profile.php?id='+v+'" class="friendLink" target="_blank">'+v+'</a></div>';
 				});
-				html+= '</ul>';
+				html+= '<br style="clear: both" />';
 			}
 		}
 		$('div#'+game+opt, '#'+game+'Game').find('.searchForPeopleList').html(html);
