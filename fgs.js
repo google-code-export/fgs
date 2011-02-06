@@ -29,7 +29,7 @@ var FGS = {
 			deleteOlderThan: 0,
 			deleteHistoryOlderThan: 0,
 			displayXbonuses: 300,
-			collectXbonusesAtTheSameTime: 5,
+			collectXbonusesAtTheSameTime: 2,
 		}
 
 		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, filter: [], defaultGift: 0, hiddenIcon: false };
