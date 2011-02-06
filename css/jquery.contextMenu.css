@@ -43,6 +43,11 @@ th, td
 	padding: 0.25em 0.5em;
 }
 
+.settings
+{
+	margin-top: 20px;
+}
+
 #gameSelector > label
 {
 	/*min-width: 100px;*/
