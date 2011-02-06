@@ -1,27 +1,9 @@
 	var bkP = chrome.extension.getBackgroundPage().FGS;
 
-	
-	function loadNeighboursFromDatabase(gameID, game, opt)
-	{
-		bkP.database.db.transaction(function(tx)
-		{
-			tx.executeSql("SELECT * FROM neighbours where gameID = ?", [gameID], function(tx, res)
-			{
-				for(var i = 0; i < res.rows.length; i++)
-				{
-					$('input[neighID="'+res.rows.item(i)['id']+'"]', 'div#'+game+opt).siblings('img').trigger('click');
-				}
-				$('.sendToFavouritesList','div#'+game+opt).append('<br style="clear:both" />');
-			}, null, bkP.database.onSuccess, bkP.database.onError);
-		});
-	}
-	
 	function loadBonuses()
 	{
 		bkP.database.db.transaction(function(tx)
 		{
-			tx.executeSql('delete from neighbours where exists (select 1 from neighbours t2 where neighbours.id = t2.id and neighbours.gameID = t2.gameID and  neighbours.autoID > t2.autoID)');
-			
 			if(bkP.options.deleteHistoryOlderThan != 0)
 			{
 				var now = Math.floor(new Date().getTime()/1000);
