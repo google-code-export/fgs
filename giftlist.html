@@ -37,7 +37,7 @@
 		
 		if($('div#'+game+opt, '#'+game+'Game').children('div').length == 0)
 		{
-			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds. To unhide it, follow steps in this link:<br /><br /><a href="http://www.kimwoodbridge.com/updated-how-to-unhide-a-facebook-application-or-page/" target="_blank">LINK</a>.</h3><br style="clear:both" />');
+			$('div#'+game+opt, '#'+game+'Game').html('<h3 class="fvBonusErr">There was a problem collecting bonuses. You may have this game hidden in your news feeds.<br /><br />To unhide it, follow this steps: <br /><br />- Click "Friends" on the left side under the Facebook icon<br />- Click "Status Updates" under "Friends"<br />- Scroll all the way to the bottom and click "Edit Options" (The one on the status updates page is different from the news feed one)<br />- Click the "Applications" tab and click "Add To News Feed" on the one you wish to unhide.</h3><br style="clear:both" />');
 		}
 	}
 
@@ -1268,11 +1268,13 @@
 			
 			if(typeof(reload) != 'undefined')
 			{
-				delete bkP.bonusLoadingProgress[gameID];
+				/*
 				bkP.database.clearByGameID(gameID);
+				bkP.options.games[gameID] = bkP.defaultGameOptions;
+				*/
+				delete bkP.bonusLoadingProgress[gameID];
 				$('div.bonusItem, div.requestItem, div.freegiftHistory, div.manualItem', $('#'+game+'Game')).remove();
 				updateCount();
-				bkP.options.games[gameID] = bkP.defaultGameOptions;
 				bkP.stopBonusesForGame(gameID);
 			}
 		}
@@ -1308,9 +1310,9 @@
 			if(typeof(reload) != 'undefined')
 			{
 				selectFirstTab(gameID);
-				updateCount();
+				loadBonuses(gameID);
 				bkP.startBonusesForGame(gameID);
-				showSearchGames([gameID])
+				showSearchGames([gameID]);				
 			}			
 		}
 	}
