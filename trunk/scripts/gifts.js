@@ -875,10 +875,16 @@ FGS.sendGift = function(params, retry)
 					
 					if(params.gameID == '25287267406')
 					{
-						var vampGet = FGS.findIframeAfterId('#app_content_25287267406', data);
-						if(vampGet != '')
+						var pos0 = data.indexOf('forward_request($("#ajax_request_message"),"');
+						if(pos0 != -1)
 						{
-							$.get(vampGet);
+							pos0+=44;
+							var pos1 = data.indexOf('"', pos0);
+							//var newPar = '&ajax=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig;
+							var vampUrl = data.slice(pos0, pos1);
+							var newPar = params.step3param.replace('send_gifts_mfs.php?', '');
+							$.post(vampUrl, newPar);
+							$.post('http://'+params.domain+'/index2.php', newPar);						
 						}
 					}
 					
