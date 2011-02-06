@@ -276,7 +276,7 @@ FGS.sendView = function (msg, data, data2, data3)
 	}
 };
 
-FGS.loadOptions = function (userID)
+FGS.loadOptions = function (userID, callback)
 {
 	var lastOptions = localStorage.getItem('options_'+userID);
 	
@@ -303,6 +303,7 @@ FGS.loadOptions = function (userID)
 					}
 					FGS.optionsLoaded = true;
 					FGS.saveOptions();
+					callback();
 					
 				}, null, FGS.database.onSuccess, FGS.database.onError);
 				
@@ -333,6 +334,7 @@ FGS.loadOptions = function (userID)
 			
 			FGS.optionsLoaded = true;
 			FGS.saveOptions();
+			callback();
 			
 		}, null, FGS.database.onSuccess, FGS.database.onError);
 	});
