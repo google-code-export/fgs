@@ -31,7 +31,7 @@ var FGS = {
 			collectXbonusesAtTheSameTime: 2,
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false };
+		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, hideFromFeed: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false };
 
 		for(var idd in FGS.gamesData)
 		{

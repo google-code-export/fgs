@@ -1281,7 +1281,7 @@
 		else
 		{
 			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').removeAttr('disabled');
-			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"], .gameSendbackGiftBox[gameID="'+gameID+'"]').removeAttr('checked');
+			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"], .gameSendbackGiftBox[gameID="'+gameID+'"], .gameHideFromFeedBox[gameID="'+gameID+'"]').removeAttr('checked');
 			
 			$('.gameEnabledBox[gameID="'+gameID+'"]').attr('checked', 'checked');
 			
@@ -1298,6 +1298,11 @@
 			if(e.sendbackGift)
 			{
 				$('.gameSendbackGiftBox[gameID="'+gameID+'"]').attr('checked', 'checked');			
+			}
+			
+			if(e.hideFromFeed)
+			{
+				$('.gameHideFromFeedBox[gameID="'+gameID+'"]').attr('checked', 'checked');			
 			}
 			
 			
@@ -1674,7 +1679,9 @@
 			
 			$('<label><span>Post "I like" on bonuses</span><input type="checkbox" class="gameLikeBonusBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
-			$('<label><span>Auto send thank you gift, if possible</span><input type="checkbox" class="gameSendbackGiftBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
+			$('<label><span>Auto send thank you gift, if possible</span><input type="checkbox" class="gameSendbackGiftBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');	
+			
+			$('<label><span>Hide successfully collected bonus from feed</span><input type="checkbox" class="gameHideFromFeedBox" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
 			$('<label style="display: none"><span>List me on the neighbors search</span><input type="checkbox" class="gameListOnNeighborsSearch" sysID="'+d.systemName+'" gameID="'+id+'" /></label>').appendTo('#'+d.systemName+'Game > h1 > .checkOptions');
 			
@@ -1812,6 +1819,12 @@
 		$(".gameSendbackGiftBox").click(function()
 		{
 			bkP.options.games[$(this).attr('gameID')].sendbackGift = $(this).is(':checked') ? true : false;
+			bkP.saveOptions();
+		});
+		
+		$(".gameHideFromFeedBox").click(function()
+		{
+			bkP.options.games[$(this).attr('gameID')].hideFromFeed = $(this).is(':checked') ? true : false;
 			bkP.saveOptions();
 		});
 		
