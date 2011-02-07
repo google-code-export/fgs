@@ -45,6 +45,13 @@ FGS.database.createTable = function()
 		
 		tx.executeSql('ALTER TABLE freegifts ADD COLUMN is_thank_you INTEGER', [],  FGS.database.onSuccess, FGS.database.onError);
 		
+		FGS.databaseAlreadyOpen = true;
+		
+		if(FGS.optionsLoaded == false)
+		{
+			FGS.loadOptions(FGS.userID);
+		}
+		
 		
 //tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
 //tx.executeSql('DELETE FROM bonuses', [], FGS.database.onSuccess, FGS.database.onError);
