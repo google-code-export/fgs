@@ -172,7 +172,7 @@ var FGS = {
 		clearInterval(FGS.iBonusTimeout[gameID]);
 	},
 	
-	stopAll: function()
+	stopAll: function(wait)
 	{
 		FGS.sendView('close');
 		
@@ -187,7 +187,11 @@ var FGS = {
 		
 		FGS.initializeDefaults();
 		
-		FGS.FBloginError = true;		
+		if(wait)
+			FGS.FBloginError = null;
+		else
+			FGS.FBloginError = true;
+		
 		FGS.database.db = null;
 		FGS.updateIcon();
 	},
