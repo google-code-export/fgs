@@ -182,6 +182,11 @@ FGS.sendView = function (msg, data, data2, data3)
 			{
 				view.close();
 			}
+			else if(msg == 'closeAndOpen')
+			{
+				view.close();
+				FGS.saveOptions(FGS.startup);
+			}
 			
 			else if(msg == 'friendsLoaded')
 			{
@@ -276,7 +281,7 @@ FGS.sendView = function (msg, data, data2, data3)
 	}
 };
 
-FGS.loadOptions = function (userID, callback)
+FGS.loadOptions = function (userID)
 {
 	var lastOptions = localStorage.getItem('options_'+userID);
 	
@@ -303,7 +308,7 @@ FGS.loadOptions = function (userID, callback)
 					}
 					FGS.optionsLoaded = true;
 					FGS.saveOptions();
-					callback();
+					FGS.finishStartup();
 					
 				}, null, FGS.database.onSuccess, FGS.database.onError);
 				
@@ -334,13 +339,13 @@ FGS.loadOptions = function (userID, callback)
 			
 			FGS.optionsLoaded = true;
 			FGS.saveOptions();
-			callback();
+			FGS.finishStartup();
 			
 		}, null, FGS.database.onSuccess, FGS.database.onError);
 	});
 };
 
-FGS.saveOptions = function()
+FGS.saveOptions = function(callback)
 {
 	if(FGS.userID != null)
 	{
@@ -348,7 +353,14 @@ FGS.saveOptions = function()
 		
 		FGS.database.db.transaction(function(tx)
 		{
-			tx.executeSql("UPDATE options SET option = ? where id = '1'", [JSON.stringify(FGS.options)], function(){}, null, FGS.database.onSuccess, FGS.database.onError);
+			tx.executeSql("UPDATE options SET option = ? where id = '1'", [JSON.stringify(FGS.options)], function()
+			{
+				if(callback)
+				{
+					FGS.stopAll();
+					callback();
+				}
+			}, null, FGS.database.onSuccess, FGS.database.onError);
 		});
 	}
 };

@@ -2235,10 +2235,9 @@
 				
 				alert('New data loaded. Use FGS icon to open this page again');
 				bkP.options = bkP.jQuery.extend(true,{}, bkP.defaultOptions,	cleanSet);
-				bkP.sendView('close');
 				bkP.FBloginError = null;
 				bkP.updateIcon();
-				bkP.startup();
+				bkP.sendView('closeAndOpen');
 			}
 			catch(e)
 			{

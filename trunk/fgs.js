@@ -223,13 +223,7 @@ var FGS = {
 				{
 					FGS.database.open(FGS.userID);
 					FGS.database.createTable();
-					FGS.databaseAlreadyOpen = true;
 				}
-				
-				if(FGS.optionsLoaded == false)
-				{
-					FGS.loadOptions(FGS.userID, FGS.finishStartup);
-				}		
 
 				if(FGS.post_form_id == '' || FGS.fb_dtsg == '')
 				{
