@@ -27,6 +27,50 @@ FGS.openURI = function (url, background)
 	});
 };
 
+FGS.hideFromFeed = function(bonusID)
+{
+	FGS.database.db.transaction(function(tx)
+	{
+		tx.executeSql("SELECT * FROM bonuses where id = ?", [bonusID], function(tx2, res)
+		{
+			var v = res.rows.item(0);
+			
+			if(!FGS.options.games[v.gameID].hideFromFeed)
+			{	
+				return;
+			}
+			
+			var tmpObj = JSON.parse(v.link_data);
+			
+			
+			var postData = { 
+				'action': 'uninteresting',
+				'post_form_id': FGS.post_form_id,
+				'fb_dtsg':	FGS.fb_dtsg,
+				'object_ids[0]': tmpObj.targets,
+				'object_ids[1]': tmpObj.app_id,
+				'story_fbids[0]': tmpObj.targets+':'+tmpObj.fbid,
+				'source': 'home',
+				'nctr[_mod]': 'pagelet_home_stream',
+				'lsd':	'',
+				'post_form_id_source':'AsyncRequest'
+			};
+			
+			var postData = FGS.jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
+			
+			FGS.jQuery.ajax({
+				type: "POST",
+				url: 'http://www.facebook.com/ajax/feed/filter_action.php?__a=1',
+				data: postData,
+				dataType: 'text',
+				success: function(data)
+				{
+				}
+			});
+		});
+	});
+};
+
 FGS.commentBonus = function(bonusID, comment)
 {
 	FGS.database.db.transaction(function(tx)
@@ -206,6 +250,7 @@ FGS.sendView = function (msg, data, data2, data3)
 			else if(msg == 'bonusSuccess')
 			{
 				FGS.likeBonus(data, true);
+				FGS.hideFromFeed(data);
 				view.bonusSuccess(data, data2);
 			}
 			else if(msg == 'updateLike')
@@ -357,7 +402,7 @@ FGS.saveOptions = function(callback)
 			{
 				if(callback)
 				{
-					FGS.stopAll();
+					FGS.stopAll(true);
 					callback();
 				}
 			}, null, FGS.database.onSuccess, FGS.database.onError);
