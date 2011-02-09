@@ -4,7 +4,7 @@ FGS.yovilleFreegifts =
 	{
 		params.customUrl = 'http://apps.facebook.com/yoville/send_gift.php?view=yoville&fb_force_mode=fbml&id='+params.gift;
 		FGS.getFBML(params);
-	},
+	}
 };
 
 
@@ -44,7 +44,6 @@ FGS.yovilleRequests =
 				
 				try
 				{
-				
 					if(dataStr.indexOf('seem to have already accepted this request') != -1)
 					{
 						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
@@ -66,29 +65,21 @@ FGS.yovilleRequests =
 					{
 						var sendInfo = '';
 						
-						$('form', dataHTML).each(function()
-						{
-							var tmpStr = unescape($(this).attr('action'));
-							
-							if(tmpStr.indexOf('item_id') != -1)
-							{
-								var giftRecipient = $('img[uid]', dataHTML).attr('uid');
-								
-								var pos1 = tmpStr.indexOf('&item_id=');
-								var pos2 = tmpStr.indexOf('&', pos1+1);
-								
-								var giftName = tmpStr.slice(pos1+9,pos2);
-
-								sendInfo = {
-									gift: giftName,
-									destInt: giftRecipient,
-									destName: $('img[uid]', dataHTML).attr('title')
-								}							
-								return false;
-							}
-						});
+						var tmpStr = unescape(currentURL);
 						
-						//info.thanks = sendInfo;					
+						if(tmpStr.indexOf('iid') != -1)
+						{
+							var giftRecipient = FGS.Gup('sid', currentURL);
+							var giftName = FGS.Gup('iid', currentURL);
+
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $('#app21526880407_main-gift-body', dataHTML).find('div > b').text()
+							}
+						}
+						
+						info.thanks = sendInfo;				
 						
 						info.image = $('#app21526880407_main-gift-body', dataHTML).find('div > img').attr("src");
 						info.title = $('#app21526880407_main-gift-body', dataHTML).find('div > h2').text();
