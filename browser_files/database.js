@@ -50,6 +50,7 @@ FGS.database.createTable = function()
 		
 		FGS.databaseAlreadyOpen = true;
 		
+		
 		if(FGS.optionsLoaded == false)
 		{
 			FGS.loadOptions(FGS.userID);
@@ -66,41 +67,48 @@ FGS.database.createTable = function()
 
 FGS.database.updateStats = function(tx, type, data2)
 {
-	console.log(data2);
-	FGS.jQuery(data2).each(function(k,data)
+	for(var ids in data2)
 	{
-		var time = data[2];
-		var gameID = data[1];
-		var userID = data[0];
-
-		if(type == 'bonus')
-		{
-			var qry = ' totalBonuses = totalBonuses+1, lastBonus = ?';
-			var lastBonus = time;
-			var lastGift  = 0;
-			var totalBonuses = 1;
-			var totalGifts = 0;
-		}
-		else
-		{
-			var qry = ' totalGifts = totalGifts+1, lastGift = ?';
-			
-			var lastBonus = 0;
-			var lastGift  = time;
-			var totalBonuses = 0;
-			var totalGifts = 1;
-		}
-		
-		tx.executeSql("UPDATE neighborStats SET "+qry+"  where gameID = ? AND userID = ?", [time, gameID, userID],
-			function(tx2, r)
-			{
-				if(r.rowsAffected == 0)
-				{
-					tx2.executeSql('INSERT INTO neighborStats (userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts) VALUES(?,?,?,?,?,?)', [userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts], FGS.database.onSuccess, FGS.database.onError);
-				}
-			}, null);
-	});
+		FGS.database.addStats(tx, type, ids, data2[ids]);
+	}
 }
+
+FGS.database.addStats = function(tx, type, ids, data)
+{
+	var x = ids.split('_');
+	var userID = parseInt(x[0]);
+	var gameID = parseInt(x[1]);
+	
+	var time = data.time;
+	var count = parseInt(data.count);
+	
+	if(type == 'bonus')
+	{
+		var qry = ' totalBonuses = totalBonuses + '+count+', lastBonus = ?';
+		var lastBonus = time;
+		var lastGift  = 0;
+		var totalBonuses = count;
+		var totalGifts = 0;
+	}
+	else
+	{
+		var qry = ' totalGifts = totalGifts + '+count+', lastGift = ?';
+		
+		var lastBonus = 0;
+		var lastGift  = time;
+		var totalBonuses = 0;
+		var totalGifts = count;
+	}
+	
+	tx.executeSql('INSERT OR IGNORE INTO neighborStats (userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts) VALUES(?,?,?,?,?,?)', [userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts],		
+		function(tx, r)
+		{
+			if(r.rowsAffected == 0)
+			{
+				tx.executeSql("UPDATE neighborStats SET "+qry+"  where gameID = ? AND userID = ?", [time, gameID, userID], FGS.database.onSuccess, FGS.database.onError);
+			}
+		}, FGS.database.onError);
+};
 
 FGS.database.likeBonus = function(bonusID)
 {
@@ -317,7 +325,7 @@ FGS.database.addBonus = function(data2)
 	FGS.database.db.transaction(function(tx)
 	{
 		var outArr = [];
-		var updStatArr = [];
+		var updStatObj = {};
 		var total = data2.length;
 		
 		
@@ -333,8 +341,21 @@ FGS.database.addBonus = function(data2)
 					try
 					{
 						var tmpObj = JSON.parse(data[8]);
-						var newItem = [tmpObj.actrs, tmpObj.app_id, tmpObj.pub_time];
-						updStatArr.push(newItem);
+						
+						var userID = tmpObj.actrs;
+						var gameID = tmpObj.app_id;						
+						var time = tmpObj.pub_time;
+						
+						if(typeof(updStatObj[userID+'_'+gameID]) == 'undefined')
+						{
+							updStatObj[userID+'_'+gameID] = {count: 1, time: time};
+						}
+						else
+						{
+							updStatObj[userID+'_'+gameID].count++;
+							if(time > updStatObj[userID+'_'+gameID].time)
+								updStatObj[userID+'_'+gameID].time = time;
+						}
 					}
 					catch(e)
 					{console.log(e);}
@@ -350,7 +371,7 @@ FGS.database.addBonus = function(data2)
 					if(outArr.length > 0)
 					{
 						FGS.sendView('addNewBonus', '', '', outArr);
-						FGS.database.updateStats(tx, 'bonus', updStatArr);
+						FGS.database.updateStats(tx, 'bonus', updStatObj);
 					}
 					FGS.updateIcon();
 				}				
@@ -364,13 +385,14 @@ FGS.database.addRequest = function(data2)
 	FGS.database.db.transaction(function(tx)
 	{
 		var outArr = [];
-		var updStatArr = [];
+		var updStatObj = {};
 
 		var total = data2.length;		
 		
 		FGS.jQuery(data2).each(function(k, data)
 		{
 			var newItem = data[data.length-1];
+			
 			var data = data.slice(0,data.length-1);
 			
 			tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?,'','')", data,
@@ -381,9 +403,23 @@ FGS.database.addRequest = function(data2)
 				{
 					try
 					{
-						console.log(newItem);
 						if(newItem.length > 0)
-							updStatArr.push(newItem);
+						{
+							var userID = newItem[0];
+							var gameID = newItem[1];						
+							var time   = newItem[2];
+							
+							if(typeof(updStatObj[userID+'_'+gameID]) == 'undefined')
+							{
+								updStatObj[userID+'_'+gameID] = {count: 1, time: time};
+							}
+							else
+							{
+								updStatObj[userID+'_'+gameID].count++;
+								if(time > updStatObj[userID+'_'+gameID].time)
+									updStatObj[userID+'_'+gameID].time = time;
+							}
+						}
 					}
 					catch(e)
 					{console.log(e);}
@@ -399,7 +435,7 @@ FGS.database.addRequest = function(data2)
 					if(outArr.length > 0)
 					{
 						FGS.sendView('addNewRequest', '', '', outArr);
-						FGS.database.updateStats(tx, 'requests', updStatArr);
+						FGS.database.updateStats(tx, 'requests', updStatObj);
 					}
 					FGS.updateIcon();
 				}

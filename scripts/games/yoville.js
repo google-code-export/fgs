@@ -1,3 +1,13 @@
+FGS.yovilleFreegifts = 
+{
+	Click: function(params, retry)
+	{
+		params.customUrl = 'http://apps.facebook.com/yoville/send_gift.php?view=yoville&fb_force_mode=fbml&id='+params.gift;
+		FGS.getFBML(params);
+	},
+};
+
+
 FGS.yovilleRequests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
