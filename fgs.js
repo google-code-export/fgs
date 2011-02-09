@@ -626,7 +626,7 @@ var FGS = {
 				
 
 					var elID = $(el).children('input[name=id]').val();
-					var newText = $(el).find('.streamStyleRequestBody').text();
+					var newText = $(el).find('.appRequestBody').text();
 					
 					
 					var typeText = $(el).find('input[type="submit"]').attr('name');
@@ -721,7 +721,6 @@ var FGS = {
 					}
 					
 					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime, stats];
-					
 					giftArr.push(gift);
 				});
 				
