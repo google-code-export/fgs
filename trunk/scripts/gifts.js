@@ -652,7 +652,18 @@ FGS.giftsArray = {
 	},
 	21526880407:
 	{
-		
+		"39675": { name: 'Italian Mystery Box'},
+		"39409": { name: 'Italian Table Clock'},
+		"39408": { name: 'Free Italian Red Rug'},
+		"38963": { name: 'Night Club Mystery Box'},
+		"38964": { name: 'Nightclub Mystery Gift'},
+		"34399": { name: 'Collections Mystery Box'},
+		"38133": { name: 'Yellow Fall Mystery Box'},
+		//"": { name: 'Unlock at Level 20'},
+		//"": { name: 'Unlock at Level 10'},
+		"31830": { name: 'Red Mystery Chest'},
+		"31829": { name: 'Blue Mystery Chest'},
+		"37394": { name: 'Hammer'},
 	}
 };
 
