@@ -511,6 +511,22 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	272810543124:	{ 	name: 'Pot Farm',	systemName: 'potfarm', link: 'http://apps.facebook.com/mypotfarm/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'ManualBonuses',
+							'RequestsPending',
+							'RequestsHistory',	
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =

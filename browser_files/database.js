@@ -55,13 +55,11 @@ FGS.database.createTable = function()
 		{
 			FGS.loadOptions(FGS.userID);
 		}
-		
-		
-//tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
-//tx.executeSql('DELETE FROM bonuses', [], FGS.database.onSuccess, FGS.database.onError);
-//tx.executeSql('DELETE FROM requests', [], FGS.database.onSuccess, FGS.database.onError);
-//tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
-			 
+
+		//tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
+		//tx.executeSql('DELETE FROM bonuses', [], FGS.database.onSuccess, FGS.database.onError);
+		//tx.executeSql('DELETE FROM requests', [], FGS.database.onSuccess, FGS.database.onError);
+		//tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
 	});
 }
 
