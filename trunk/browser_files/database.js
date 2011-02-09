@@ -15,7 +15,7 @@ FGS.database.onError = function(tx, e)
 
 FGS.database.onSuccess = function(tx, e) 
 {
-	//console.log('Success ' + e.message );
+	//console.log('Koniec' );
 }
 
 FGS.database.createTable = function()
@@ -29,6 +29,9 @@ FGS.database.createTable = function()
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
                   'bonuses (id TEXT PRIMARY KEY ASC, gameID INTEGER, status INTEGER, error TEXT, title TEXT, text TEXT, image TEXT, url TEXT, time INTEGER, feedback TEXT, link_data TEXT, like_bonus INTEGER, comment_bonus INTEGER, resend_gift TEXT, error_text TEXT)', [],  FGS.database.onSuccess, FGS.database.onError);
+		
+		tx.executeSql('CREATE TABLE IF NOT EXISTS ' + 
+                  'neighborStats (userID INTEGER, gameID INTEGER, lastBonus INTEGER,  lastGift INTEGER, totalBonuses INTEGER, totalGifts INTEGER, PRIMARY KEY(userID, gameID))', [],  FGS.database.onSuccess, FGS.database.onError);
 		
 		tx.executeSql('ALTER TABLE bonuses ADD COLUMN comment_bonus INTEGER', [],  FGS.database.onSuccess, FGS.database.onError);
 		tx.executeSql('ALTER TABLE bonuses ADD COLUMN resend_gift TEXT', [],  FGS.database.onSuccess, FGS.database.onError);
@@ -58,6 +61,44 @@ FGS.database.createTable = function()
 //tx.executeSql('DELETE FROM requests', [], FGS.database.onSuccess, FGS.database.onError);
 //tx.executeSql('DELETE FROM freegifts', [], FGS.database.onSuccess, FGS.database.onError);
 			 
+	});
+}
+
+FGS.database.updateStats = function(tx, type, data2)
+{
+	console.log(data2);
+	FGS.jQuery(data2).each(function(k,data)
+	{
+		var time = data[2];
+		var gameID = data[1];
+		var userID = data[0];
+
+		if(type == 'bonus')
+		{
+			var qry = ' totalBonuses = totalBonuses+1, lastBonus = ?';
+			var lastBonus = time;
+			var lastGift  = 0;
+			var totalBonuses = 1;
+			var totalGifts = 0;
+		}
+		else
+		{
+			var qry = ' totalGifts = totalGifts+1, lastGift = ?';
+			
+			var lastBonus = 0;
+			var lastGift  = time;
+			var totalBonuses = 0;
+			var totalGifts = 1;
+		}
+		
+		tx.executeSql("UPDATE neighborStats SET "+qry+"  where gameID = ? AND userID = ?", [time, gameID, userID],
+			function(tx2, r)
+			{
+				if(r.rowsAffected == 0)
+				{
+					tx2.executeSql('INSERT INTO neighborStats (userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts) VALUES(?,?,?,?,?,?)', [userID, gameID, lastBonus, lastGift, totalBonuses, totalGifts], FGS.database.onSuccess, FGS.database.onError);
+				}
+			}, null);
 	});
 }
 
@@ -276,8 +317,9 @@ FGS.database.addBonus = function(data2)
 	FGS.database.db.transaction(function(tx)
 	{
 		var outArr = [];
-
+		var updStatArr = [];
 		var total = data2.length;
+		
 		
 		FGS.jQuery(data2).each(function(k, data)
 		{
@@ -285,8 +327,18 @@ FGS.database.addBonus = function(data2)
 			function(t,r)
 			{
 				total--;
+				
 				if(r.rowsAffected == 1)
 				{
+					try
+					{
+						var tmpObj = JSON.parse(data[8]);
+						var newItem = [tmpObj.actrs, tmpObj.app_id, tmpObj.pub_time];
+						updStatArr.push(newItem);
+					}
+					catch(e)
+					{console.log(e);}
+					
 					outArr.push(data);
 					if(FGS.giftlistFocus == false)
 					{
@@ -298,6 +350,7 @@ FGS.database.addBonus = function(data2)
 					if(outArr.length > 0)
 					{
 						FGS.sendView('addNewBonus', '', '', outArr);
+						FGS.database.updateStats(tx, 'bonus', updStatArr);
 					}
 					FGS.updateIcon();
 				}				
@@ -311,17 +364,30 @@ FGS.database.addRequest = function(data2)
 	FGS.database.db.transaction(function(tx)
 	{
 		var outArr = [];
+		var updStatArr = [];
 
 		var total = data2.length;		
 		
 		FGS.jQuery(data2).each(function(k, data)
 		{
+			var newItem = data[data.length-1];
+			var data = data.slice(0,data.length-1);
+			
 			tx.executeSql("INSERT OR IGNORE INTO requests VALUES (?,?,0,'',?,?,?,?,?,'','')", data,
 			function(t,r)
 			{
 				total--;
 				if(r.rowsAffected == 1)
 				{
+					try
+					{
+						console.log(newItem);
+						if(newItem.length > 0)
+							updStatArr.push(newItem);
+					}
+					catch(e)
+					{console.log(e);}
+					
 					outArr.push(data);
 					if(FGS.giftlistFocus == false)
 					{
@@ -333,9 +399,10 @@ FGS.database.addRequest = function(data2)
 					if(outArr.length > 0)
 					{
 						FGS.sendView('addNewRequest', '', '', outArr);
+						FGS.database.updateStats(tx, 'requests', updStatArr);
 					}
 					FGS.updateIcon();
-				}		
+				}
 			}, FGS.database.onSuccess, FGS.database.onError);
 		});
 	});
