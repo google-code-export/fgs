@@ -579,14 +579,25 @@ var FGS = {
 				var FBdata = $('input[name="params\[app_id\]"]',data).parent('form:first');
 				
 				if(FGS.post_form_id == '')
-					FGS.post_form_id = $(FBdata).children('input[name=post_form_id]').val();
+				{
+					var p = $(FBdata).children('input[name=post_form_id]').val();
+					if(p != undefined)
+						FGS.post_form_id = p;
+				}
 				
 				if(FGS.fb_dtsg == '' )
-					FGS.fb_dtsg = $(FBdata).children('input[name=fb_dtsg]').val();
+				{
+					var p = FGS.fb_dtsg = $(FBdata).children('input[name=fb_dtsg]').val();
+					if(p != undefined)
+						FGS.fb_dtsg = p;
+				}
 				
 				if(FGS.charset_test == '')
-					FGS.charset_test = $(FBdata).children('input[name=charset_test]').val();
-				
+				{
+					var p = $(FBdata).children('input[name=charset_test]').val();
+					if(p != undefined)
+						FGS.charset_test = p;
+				}
 				
 				var giftArr = [];
 				
@@ -698,7 +709,18 @@ var FGS = {
 					var curTime = Math.round(new Date().getTime() / 1000);		
 					var bTitle = $(el).find('.UIImageBlock_SMALL_Content').find('a:first').text().replace(/'/gi, '');		
 					
-					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime];
+					var fromUser = $(el).find('input[name="params\[from_id\]"]').val();
+					
+					if(fromUser != undefined)
+					{
+						var stats = [fromUser, APPID, curTime];
+					}
+					else
+					{
+						var stats = [];
+					}
+					
+					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime, stats];
 					
 					giftArr.push(gift);
 				});
