@@ -943,8 +943,17 @@ var FGS = {
 						if(ret) return;
 						//koniec filtry usera
 
+						if(appID.toString() == '101539264719')
+						{
+							var link = $(el).find('.uiAttachmentTitle').find('a:first').attr('href');
+							bTitle = $(el).find('.uiAttachmentTitle').text();
+						}
+						else
+						{
+							var link = $(el).find('.UIActionLinks_bottom > a:last').attr('href');
+						}
 						
-						var bonus = [elID, appID, bTitle, $(el).find('.uiAttachmentTitle').text(), $(el).find('.uiStreamAttachments').find('img').attr('src'), $(el).find('.UIActionLinks_bottom > a:last').attr('href'), bonusTime, feedback, link_data];
+						var bonus = [elID, appID, bTitle, $(el).find('.uiAttachmentTitle').text(), $(el).find('.uiStreamAttachments').find('img').attr('src'), link, bonusTime, feedback, link_data];
 
 						bonusArr.push(bonus);
 					});

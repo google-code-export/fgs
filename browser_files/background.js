@@ -365,7 +365,7 @@ FGS.loadOptions = function (userID)
 	
 	FGS.database.db.transaction(function(tx)
 	{
-		tx.executeSql("SELECT option FROM options ORDER BY id DESC LIMIT 1", [], function(tx, res)
+		tx.executeSql("SELECT option FROM options where id = '1'", [], function(tx, res)
 		{
 			var results = [];
 			for(var i = 0; i < res.rows.length; i++)
