@@ -145,7 +145,7 @@ function addDataToScreenLocked(callback, id, data)
 		};
 		
 		$('div#'+game+opt, '#'+game+'Game').children().addClass('hide');
-		$('div#'+game+'SendFreeGiftsSubMenu', '#'+game+'Game').children('button:gt(0)').addClass('hide');
+		$('div#'+game+'SendFreeGifts > .submenu', '#'+game+'Game').children('button:gt(0)').addClass('hide');
 		
 		$('div#'+game+opt, '#'+game+'Game').prepend('<div class="sendingGiftProgress"><h3 class="center"><img src="gfx/loading.gif"><br />Sending "'+giftName+'" to '+sendTo.length+' people</h3></div>');
 				
@@ -168,7 +168,7 @@ function addDataToScreenLocked(callback, id, data)
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'SendFreeGiftsList';	
 		
-		$('div#'+game+'SendFreeGiftsSubMenu', '#'+game+'Game').children('button:gt(0)').removeClass('hide');
+		$('div#'+game+'SendFreeGifts > .submenu', '#'+game+'Game').children('button:gt(0)').removeClass('hide');
 		$('div#'+game+opt, '#'+game+'Game').children().removeClass('hide');
 		
 		$('div#'+game+opt, '#'+game+'Game').children('.sendingGiftProgress').html('<h3 class="center"><img src="gfx/90px-cancel.png"><br /> There was an error with sending gifts. It could one of this:<br />- you reached facebook limit for sending gifts for this application,<br />- there was a connection error,<br />- you choose gift that requires level that you don\'t have. Try again.</h3>');
@@ -1416,7 +1416,7 @@ function addDataToScreenLocked(callback, id, data)
 			
 			
 			$('.sendToNeighboursList','div#'+game+opt).parent().find('.hide').not('td > span').removeClass('hide');
-			$('#'+game+'SendFreeGiftsSubMenu > button').removeClass('hide');
+			$('#'+game+'SendFreeGifts > .submenu > button').removeClass('hide');
 			
 			
 			/*
