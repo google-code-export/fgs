@@ -31,7 +31,7 @@ var FGS = {
 			collectXbonusesAtTheSameTime: 2,
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, hideFromFeed: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false };
+		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, hideFromFeed: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false };
 
 		for(var idd in FGS.gamesData)
 		{
@@ -757,7 +757,7 @@ var FGS = {
 			gift: FGS.freeGiftForGame[gameID],
 			gameID:	gameID,
 			loadList: true
-		};
+		}
 		
 		if(FGS.options.games[gameID].enabled)
 		{

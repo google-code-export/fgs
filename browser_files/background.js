@@ -537,10 +537,9 @@ FGS.loadLibraries = function(context)
 		cache: false,
 		url: chrome.extension.getURL("scripts/gifts.js"),
 		type: "GET",
-		success: function(){},
+		success: function(d){},
 		dataType: 'script'
-	});
-	
+	});	
 	
 	var arr = [];
 	for(var ids in FGS.gamesData)
@@ -563,8 +562,6 @@ FGS.loadLibraries = function(context)
 			arr.push(FGS.gamesData[ids].systemName+' request');
 		}
 	}
-	
-	//dump(arr.sort());
 
 	var jQuery = window.jQuery.noConflict(true);
 	if( typeof(jQuery.fn._init) == 'undefined') { jQuery.fn._init = jQuery.fn.init; }

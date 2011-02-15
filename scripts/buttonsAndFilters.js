@@ -531,38 +531,38 @@ FGS.gamesData =
 
 FGS.submenuButtons =
 {
-	'BonusesPending': 	{	name: 'Show pending bonuses (<span>?</span>)',
+	'BonusesPending': 	{	name: 'Bonuses (<span>?</span>)',
 							submenu: {
 										'ReceivePendingBonuses': { name: 'Receive all bonuses' },
 										'ClearPendingBonuses': 	{ name: 'Clear all bonuses' },
 										'ClearPendingBonusesOtherError': { name: 'Clear bonuses with "Other error"' },
 									}
 						},
-	'ManualBonuses':	{	name: 'Bonuses With Action Required (<span>?</span>)',
+	'ManualBonuses':	{	name: 'Items requiring action (<span>?</span>)',
 							submenu: {
 										'ClearManualBonuses': { name: 'Clear all bonuses' },
 									}
 						},
-	'BonusesHistory': 	{	name: 'Show collected bonuses',
+	'BonusesHistory': 	{	name: 'Collected bonuses',
 							submenu: {
 										'ClearCollectedBonuses': { name: 'Clear bonuses history' },
 										'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
 										'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 									}
 						},
-	'RequestsPending':	{	name: 'Show pending gifts (<span>?</span>)',
+	'RequestsPending':	{	name: 'Gifts (<span>?</span>)',
 							submenu: {
 										'ReceivePendingRequests': { name: 'Receive all gifts' },
 										'ClearPendingRequests': 	{ name: 'Clear all requests' },
 									}
 						}, 
-	'RequestsHistory':	{	name: 'Show collected gifts',
+	'RequestsHistory':	{	name: 'Collected gifts',
 							submenu: {
 										'ClearCollectedRequests': { name: 'Clear gifts history' },
 										'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 									}
 						}, 
-	'SendFreeGifts':	{	name: 'Send free gifts',
+	'SendFreeGifts':	{	name: 'Send gift',
 							submenu: {
 										'LoadNeighborsList': { name: 'Load neighbors list' },
 										'SelectFavourites': { name: 'Select favourites (max 25)' },
@@ -571,7 +571,7 @@ FGS.submenuButtons =
 										'SendGifts': { name: 'Send free gifts' },
 									}
 						}, 
-	'SendFreeGiftsHistory':	{	name: 'Show free gifts history',
+	'SendFreeGiftsHistory':	{	name: 'Sent gifts history',
 							submenu: {
 										'ClearSentFreeGifts': { name: 'Clear send gifts history' },
 									}
@@ -583,4 +583,4 @@ FGS.submenuButtons =
 						},
 	'GameOptionsTab':	{	name: 'Filters',
 	},
-}
+};
