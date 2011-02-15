@@ -45,8 +45,7 @@
 				});
 				
 			}, bkP.database.onSuccess, bkP.database.onError);
-		});
-		
+		});		
 	}
 
 	function loadBonuses(gID)
@@ -110,8 +109,8 @@
 						htmlsManual[gameID] += getNewManualBonusRow(gameID, v);
 					}
 					else
-					{		
-						htmls[gameID] += getNewBonusRow(gameID, v);
+					{
+						htmls[gameID] += getNewBonusRow(gameID, v, true);
 					}
 				}
 				
@@ -123,8 +122,6 @@
 					
 					$('div#'+game+'BonusesPendingList').prepend(htmls[tmp]);
 					$('div#'+game+'BonusesPendingList').children('div').removeClass('awaitingClick').click(processBonusClick);
-					
-					selectFirstTab(tmp);
 				}
 				updateCount();
 				updateLoaded();
