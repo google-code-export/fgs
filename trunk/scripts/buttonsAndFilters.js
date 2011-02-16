@@ -12,10 +12,12 @@ FGS.gamesData =
 						buttons:
 						[	
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -32,11 +34,14 @@ FGS.gamesData =
 							requestsNewWindow: [],
 						},
 						buttons:
-						[	'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
+						[	
+							'BonusesPending',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',	
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -53,11 +58,14 @@ FGS.gamesData =
 							requestsNewWindow: ['Toolbar_Install', 'sendcredits'],
 						},
 						buttons:
-						[	'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
+						[
+							'BonusesPending',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -79,10 +87,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -99,10 +109,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -119,10 +131,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -140,10 +154,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -161,10 +177,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -181,9 +199,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -200,9 +219,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -217,9 +237,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -236,9 +257,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -254,9 +276,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -271,10 +294,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -290,9 +315,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -309,10 +335,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
 							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -326,9 +354,10 @@ FGS.gamesData =
 							requestsNewWindow: ['a Mystery collectible', 'holiday gift']
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -345,10 +374,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',	
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -384,9 +415,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
+							'ManualBonuses',
 							'RequestsHistory',
+							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -402,9 +434,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -419,10 +452,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -436,9 +471,10 @@ FGS.gamesData =
 							requestsNewWindow: ['be my friend']
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -453,10 +489,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -470,9 +508,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -487,10 +526,12 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'ManualBonuses',
-							'BonusesHistory', 
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -504,9 +545,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',	
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -520,9 +562,10 @@ FGS.gamesData =
 							requestsNewWindow: []
 						},
 						buttons: [
-							'ManualBonuses',
 							'RequestsPending',
-							'RequestsHistory',	
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -531,6 +574,15 @@ FGS.gamesData =
 
 FGS.submenuButtons =
 {
+	'FailedBonuses':	{	name: 'Failed bonuses',
+							'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+							'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
+	},
+	
+	'FailedGifts':	{	name: 'Failed gifts',
+							'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
+	},
+	
 	'BonusesPending': 	{	name: 'Bonuses (<span>?</span>)',
 							submenu: {
 										'ReceivePendingBonuses': { name: 'Receive all bonuses' },
@@ -546,8 +598,6 @@ FGS.submenuButtons =
 	'BonusesHistory': 	{	name: 'Collected bonuses',
 							submenu: {
 										'ClearCollectedBonuses': { name: 'Clear bonuses history' },
-										'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-										'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
 									}
 						},
 	'RequestsPending':	{	name: 'Gifts (<span>?</span>)',
@@ -559,7 +609,6 @@ FGS.submenuButtons =
 	'RequestsHistory':	{	name: 'Collected gifts',
 							submenu: {
 										'ClearCollectedRequests': { name: 'Clear gifts history' },
-										'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
 									}
 						}, 
 	'SendFreeGifts':	{	name: 'Send gift',
