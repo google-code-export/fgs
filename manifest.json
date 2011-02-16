@@ -23,5 +23,6 @@
 			"run_at": "document_end"
 		}
 	],
+	"homepage_url": "http://fgs.rzadki.eu",
 	"minimum_chrome_version": "6"
 }

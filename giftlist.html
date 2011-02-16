@@ -347,6 +347,12 @@ function addDataToScreenLocked(callback, id, data)
 		{
 			processSwitchItemsDisplay(gameID, game+'BonusesPending');
 		}
+		
+		if($('div#'+game+'ManualBonusesList:visible').length > 0)
+		{
+			processSwitchItemsDisplay(gameID, game+'ManualBonuses');
+		}
+		
 		updateCount(gameID);
 	}
 	
@@ -354,10 +360,22 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		var gameID = $(e.currentTarget).attr('gameID');
 		var game =  bkP.gamesData[gameID].systemName;
-
-
+		
 		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
-		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
+		
+		var img = $(e.currentTarget).find('img:last');
+		
+		if(img.attr('src'))
+			var orig = img.attr('src');
+		else if(img.attr('nosrc'))
+		{
+			var orig = img.attr('nosrc');
+			img.removeAttr('nosrc');
+		}
+		else
+			var orig = '';
+		
+		img.attr('orig-src', orig).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
 		
 		var obj = {
 					id: $(e.currentTarget).attr('id'),
@@ -377,7 +395,21 @@ function addDataToScreenLocked(callback, id, data)
 		var game =  bkP.gamesData[gameID].systemName;
 		
 		$(e.currentTarget).disableContextMenu().unbind('click').addClass('inProgress');
-		$(e.currentTarget).find('img:last').attr('orig-src', $(e.currentTarget).find('img:last').attr('src')).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
+		
+		
+		var img = $(e.currentTarget).find('img:last');
+		
+		if(img.attr('src'))
+			var orig = img.attr('src');
+		else if(img.attr('nosrc'))
+		{
+			var orig = img.attr('nosrc');
+			img.removeAttr('nosrc');
+		}
+		else
+			var orig = '';
+			
+		img.attr('orig-src', orig).attr('src', 'gfx/dl.gif').css({ width: '64px', height: '64px'});
 		
 		var obj = {
 					id: $(e.currentTarget).attr('id'),
@@ -449,7 +481,7 @@ function addDataToScreenLocked(callback, id, data)
 		{
 			setTimeout(function()
 			{
-				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'BonusesHistoryList');
+				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'FailedBonusesList');
 				$('#'+id).removeClass('hide').attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 				
 				if(data.error == 'receiving')
@@ -653,7 +685,7 @@ function addDataToScreenLocked(callback, id, data)
 		else
 		{
 			setTimeout(function() {
-				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'RequestsHistoryList');
+				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'FailedGiftsList');
 				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 				
 				if(data.error == 'receiving')
@@ -947,7 +979,7 @@ function addDataToScreenLocked(callback, id, data)
 				"Delete limit errors": function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
-					$('#'+game+'BonusesHistoryList').children('div').each(function(){
+					$('#'+game+'FailedBonusesList').children('div').each(function(){
 						if($(this).find('.bonusError').text().indexOf('limit') != -1)
 						{
 							$(this).remove();
@@ -973,7 +1005,7 @@ function addDataToScreenLocked(callback, id, data)
 				"Delete receiving errors": function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
-					$('#'+game+'BonusesHistoryList').children('div').each(function(){
+					$('#'+game+'FailedBonusesList').children('div').each(function(){
 						if($(this).find('.bonusError').text().indexOf('receiving') != -1)
 						{
 							$(this).remove();
@@ -999,7 +1031,7 @@ function addDataToScreenLocked(callback, id, data)
 				"Delete receiving errors": function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
-					$('#'+game+'RequestsHistoryList').children('div').each(function(){
+					$('#'+game+'FailedGiftsList').children('div').each(function(){
 						if($(this).find('.bonusError').text().indexOf('receiving') != -1)
 						{
 							$(this).remove();
@@ -1094,6 +1126,16 @@ function addDataToScreenLocked(callback, id, data)
 			
 			$('div#'+game+'RequestsPendingList').prepend(htmls[tmp]);
 			$('div#'+game+'RequestsPendingList').children('div.awaitingClick').removeClass('awaitingClick').click(processRequestsClick);
+		}
+		
+		if($('div#'+game+'RequestsPendingList:visible').length > 0)
+		{
+			processSwitchItemsDisplay(gameID, game+'RequestsPending');
+		}
+		
+		if($('div#'+game+'ManualBonusesList:visible').length > 0)
+		{
+			processSwitchItemsDisplay(gameID, game+'ManualBonuses');
 		}
 		
 		updateCount();
@@ -1600,7 +1642,7 @@ function addGameMenu(gameID)
 		var curEl = $('#'+game+id, el);
 		
 		
-		if(id == 'BonusesPending' || 'ManualBonuses' || 'RequestsPending')
+		if(id == 'BonusesPending' || id == 'ManualBonuses' || id == 'RequestsPending')
 		{
 			curEl.find('.submenu').append('<div class="showAllButtonDiv"><input processTab="'+game+id+'" type="checkbox" id="'+game+'ShowAll'+id+'" gameID="'+gameID+'" class="ShowAllItems" /><label for="'+game+'ShowAll'+id+'">Show all</label><br /><br /></div>');
 		}
