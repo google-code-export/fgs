@@ -19,7 +19,6 @@ body
 	text-align: center;
 }
 
-
 .bonusItem, .requestItem, .manualItem 
 {
 	overflow: hidden;
@@ -27,11 +26,18 @@ body
 	border: 1px solid #000;
 	text-align: center;
 	width: 120px;
-	height: 120px;
-	max-height: 120px;
+	height: 170px;
+	max-height: 170px;
 	margin: 5px;
 	padding: 5px;
 	float: left;
+}
+
+.bonusItem
+{
+	width: 100px !important;
+	height: 115px !important;
+	max-height: 115px !important;
 }
 
 .bonusItem > img, .requestItem > img, .manualItem > img
