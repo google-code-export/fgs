@@ -235,7 +235,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';		
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span></span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)
@@ -255,7 +255,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -2794,11 +2794,10 @@ function compareTime(itemTime, olderThan)
 			
 			<a name="fb_share" target="_blank" type="button" share_url="http://rzadki.eu/projects/fgs/?from=giftlist" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Frzadki.eu%2Fprojects%2Ffgs%2F%3Ffrom%3Dgiftlist&amp;src=sp"  style="float: right; margin-top: 8px;margin-right: 8px;text-decoration: none; "><span class="FBConnectButton FBConnectButton_Small" style="cursor:pointer;"><span class="FBConnectButton_Text">Share</span></span></a>
 			
-			<!--//
-					<div id="fbLike" style="float: right; margin-top: 6px;">
+		
+			<div id="fbLike" style="float: right; margin-top: 6px;">
 				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFGS%2F150480078326371&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-					</div>
-			//-->
+			</div>
 			
 		</h1>
 		<br style="clear: both" />
@@ -2956,7 +2955,6 @@ function compareTime(itemTime, olderThan)
 			<h2>If you need to contact me, use these links:</h2><br />
 				<a href="http://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="48" height="48" alt="Facebook"></a>
 				<a href="http://fgs.rzadki.eu/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="48" height="48" alt="E-mail"></a>
-				<a href="http://flies.blip.pl" target="_blank" title="Go to my Blip profile"><img src="gfx/blip.png" width="48" height="48" alt="Blip.pl"></a>
 				<a href="http://blog.fgs.rzadki.eu" target="_blank" title="Go to FGS Blog"><img src="gfx/blogger.png" width="48" height="48" alt="Blogger"></a>
 			
 			<br /><br /><br />
