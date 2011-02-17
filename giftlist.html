@@ -1662,11 +1662,12 @@ function addGameMenu(gameID)
 			var sub = bkP.submenuButtons[id].submenu[id2];
 			if(id == 'SendFreeGifts')
 			{
-				var disabled = (id2 == 'LoadNeighborsList' ? '' : ' class="hide" ');
+				var disabled = (id2 == 'LoadNeighborsList' ? '' : ' hide ');
 			}
 			else
 				var disabled = '';
-			curEl.find('.submenu').append('<button'+disabled+' class="submenuButton" id="'+game+id2+'" gameID="'+gameID+'" sysID="'+id2+'">'+sub.name+'</button>');
+			
+			curEl.find('.submenu').append('<button class="submenuButton'+disabled+'" id="'+game+id2+'" gameID="'+gameID+'" sysID="'+id2+'">'+sub.name+'</button>');
 		}
 		curEl.find('.submenu').children('button').button();
 	});
