@@ -1307,7 +1307,7 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+v.title+'" class="bonusItem disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+v.text+'" class="bonusItem disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span></div>';
 	}
 	
 	function getRequestHistoryRow(v)
