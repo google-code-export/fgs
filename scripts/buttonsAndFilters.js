@@ -575,12 +575,16 @@ FGS.gamesData =
 FGS.submenuButtons =
 {
 	'FailedBonuses':	{	name: 'Failed bonuses',
-							'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
-							'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
+							submenu: {
+								'ClearCollectedBonusesLimitError': { name: 'Clear bonuses with "Limit error"' },
+								'ClearCollectedBonusesReceivingError': { name: 'Clear bonuses with "Receiving error"' },
+							}
 	},
 	
 	'FailedGifts':	{	name: 'Failed gifts',
-							'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
+							submenu: {
+								'ClearCollectedRequestsReceivingError': { name: 'Clear gifts with "Receiving error"' },
+							}
 	},
 	
 	'BonusesPending': 	{	name: 'Bonuses (<span>?</span>)',
@@ -625,7 +629,7 @@ FGS.submenuButtons =
 										'ClearSentFreeGifts': { name: 'Clear send gifts history' },
 									}
 						},
-	'NeighborsSearch': {	name: 'Search for neighbors',
+	'NeighborsSearch': {	name: 'Find neighbors',
 							submenu: {
 										'CheckIfNeighborsAvailable': { name: 'Check, if there are people waiting to be added' },
 									}
