@@ -265,7 +265,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem '+classHide+' showContextManual updateTimeAgo manualBonus awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem '+classHide+' showContextManual updateTimeAgo manualBonus awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	function getNewManualRequestRow(gameID, v)
@@ -285,7 +285,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
 	}
 	
 	
@@ -382,7 +382,7 @@ function addDataToScreenLocked(callback, id, data)
 					url: $(e.currentTarget).attr('url'),
 					game: game,
 					type: 'bonus',
-					title: $(e.currentTarget).attr('title')
+					title: $(e.currentTarget).attr('search-title')
 				}
 		
 		bkP.xhrQueue.push(obj);
@@ -416,7 +416,7 @@ function addDataToScreenLocked(callback, id, data)
 					post: $(e.currentTarget).attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg,
 					game: game,
 					type: 'request',
-					title: $(e.currentTarget).attr('title')
+					title: $(e.currentTarget).attr('search-title')
 				}
 		
 		bkP.xhrQueue.push(obj);
@@ -2189,9 +2189,7 @@ function updateTimeAgo(target)
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function(){
-						$(this).trigger('click');
-					});
+					$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').trigger('click');
 				}
 				else if(action == 'delete')
 				{
@@ -2206,11 +2204,11 @@ function updateTimeAgo(target)
 						{
 							"Delete all items": function()
 							{
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
+								$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
-								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('search-title'), 0);
 								updateCount($(el).attr('gameID'));
 								
 								$( this ).dialog( "close" );
@@ -2229,13 +2227,13 @@ function updateTimeAgo(target)
 						{
 							"Stop collecting": function()
 							{
-								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
+								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('search-title'));
 								bkP.saveOptions();
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
+								$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
-								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('search-title'), 0);
 								updateCount($(el).attr('gameID'));
 								
 								$( this ).dialog( "close" );
@@ -2271,13 +2269,13 @@ function updateTimeAgo(target)
 						{
 							"Stop collecting": function()
 							{
-								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('title'));
+								bkP.options.games[$(el).attr('gameID')].filter.push($(el).attr('search-title'));
 								bkP.saveOptions();
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
+								$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									$(this).remove();
 								});
-								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title'), 0);
+								bkP.database.deleteItemByTitle('bonuses', $(el).attr('gameID'), $(el).attr('title-search'), 0);
 								updateCount($(el).attr('gameID'));
 								
 								$( this ).dialog( "close" );
@@ -2331,10 +2329,7 @@ function updateTimeAgo(target)
 				}
 				else if(action == 'receiveSimilar')
 				{
-					$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
-					{
-						$(this).trigger('click');
-					});
+					$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').trigger('click');
 				}
 				else if(action == 'delete')
 				{
@@ -2356,8 +2351,7 @@ function updateTimeAgo(target)
 						{
 							"Delete all items": function()
 							{
-
-								$(el).parent().children('div[title="'+$(el).attr('title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
+								$(el).parent().find('div[search-title="'+$(el).attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function()
 								{
 									var postData = $(this).attr('postData');
 									var pos1 = postData.indexOf('&actions%5B');
