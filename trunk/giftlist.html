@@ -1940,7 +1940,7 @@ function processSwitchItemsDisplay(gameID, target)
 	
 	if($('input.ShowAllItems', elSub).button().is(':checked'))
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL bonuses</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL items</h3>');
 		el.children('div').not('.hideScreenLocked').removeClass('hide');		
 		appendSrcToImages(el.attr('id'));
 		switchDescriptions(el.attr('id'), showDesc);
@@ -1949,12 +1949,12 @@ function processSwitchItemsDisplay(gameID, target)
 	
 	if(total > 100)
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing 100 bonuses (total: '+total+')</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing 100 items (total: '+total+')</h3>');
 		$('input.ShowAllItems', elSub).next().removeClass('hide');
 	}
 	else
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL bonuses</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL items</h3>');
 		$('input.ShowAllItems', elSub).next().addClass('hide');
 	}
 	el.children('div:gt(99)').not('.hideScreenLocked').addClass('hide');
