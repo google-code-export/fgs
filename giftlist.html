@@ -235,7 +235,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';		
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span></span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem '+classHide+' showContext updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)
@@ -255,7 +255,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem '+classHide+' showContextRequests updateTimeAgo awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -265,7 +265,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem '+classHide+' showContextManual updateTimeAgo manualBonus awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem '+classHide+' showContextManual updateTimeAgo manualBonus awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewManualRequestRow(gameID, v)
@@ -285,7 +285,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var classHide = isScreenLocked ? ' hideScreenLocked ' : '';
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem '+classHide+' updateTimeAgo manualRequest awaitingClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	
@@ -446,7 +446,7 @@ function addDataToScreenLocked(callback, id, data)
 	
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
 		
-		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
+		var error_text = (typeof(data.error_text) != 'undefined' && data.error_text != '' ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
 		
 		$('#'+id).find('.bonusError').html('('+data.error+' error)'+error_text);
 		
@@ -481,8 +481,11 @@ function addDataToScreenLocked(callback, id, data)
 		{
 			setTimeout(function()
 			{
+				$('#'+id).addClass('withDesc');
 				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'FailedBonusesList');
 				$('#'+id).removeClass('hide').attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				
+				$('#'+id).find('.description').removeClass('hide');
 				
 				if(data.error == 'receiving')
 				{
@@ -503,7 +506,7 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-check.png');
 		
-		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
+		var error_text = (typeof(data.error_text) != 'undefined' && data.error_text != ''  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
 		
 		$('#'+id).find('.bonusError').html(error_text);
 		
@@ -529,6 +532,7 @@ function addDataToScreenLocked(callback, id, data)
 	
 		setTimeout(function() 
 		{
+			$('#'+id).addClass('withDesc');
 			$('#'+id).prependTo('#'+game+'BonusesHistoryList');
 			$('#'+id).removeClass('hide').removeClass('inProgress');
 
@@ -570,9 +574,12 @@ function addDataToScreenLocked(callback, id, data)
 				updateCommentState('#'+id, 0);
 			}
 			
+			$('#'+id).find('.description').removeClass('hide');
+			
 			if(data.text != '')
 			{
 				$('#'+id).attr('title', data.text);
+				$('#'+id).find('.description').removeClass('hide').html(data.text);
 			}
 			
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
@@ -650,7 +657,7 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-cancel.png');
 		
-		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
+		var error_text = (typeof(data.error_text) != 'undefined'  && data.error_text != ''  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');
 		
 		$('#'+id).find('.bonusError').html('('+data.error+' error)'+error_text);
 		
@@ -685,8 +692,10 @@ function addDataToScreenLocked(callback, id, data)
 		else
 		{
 			setTimeout(function() {
-				$('#'+id).unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'FailedGiftsList');
+				$('#'+id).addClass('withDesc').unbind('mousedown').unbind('contextmenu').unbind('mouseup').die().prependTo('#'+game+'FailedGiftsList');
 				$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
+				
+				$('#'+id).find('.description').removeClass('hide');
 				
 				if(data.error == 'receiving')
 				{
@@ -702,7 +711,7 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		$('#'+id).find('img:last').attr('src', 'gfx/90px-check.png');
 		
-		var error_text = (typeof(data.error_text) != 'undefined'  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');		
+		var error_text = (typeof(data.error_text) != 'undefined'  && data.error_text != ''  ? ' <img src="gfx/info.png" title="'+data.error_text+'" />' : '');		
 		$('#'+id).find('.bonusError').html(error_text);
 		
 		var gameID = $('#'+id).attr('gameID');
@@ -729,7 +738,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		setTimeout(function() {
 			$('#'+id).prependTo('#'+game+'RequestsHistoryList');
-			$('#'+id).removeClass('inProgress');
+			$('#'+id).addClass('withDesc').removeClass('inProgress');
 			
 			if(data.image !== '')
 			{
@@ -769,7 +778,7 @@ function addDataToScreenLocked(callback, id, data)
 				updateSendbackState('#'+id);
 			}
 			
-			$('#'+id).find('.title').next('span').text(data.text);
+			$('#'+id).find('.title').next('span').removeClass('hide').text(data.text);
 			$('#'+id).attr('time', data.time).find('.timeAgo').text(format_time_ago(data.time));
 			updateCount(gameID);
 		}, 1000);
@@ -1307,7 +1316,7 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+v.text+'" class="bonusItem disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+v.text+'" class="bonusItem withDesc disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
 	}
 	
 	function getRequestHistoryRow(v)
@@ -1336,7 +1345,7 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span>'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
 	}
 	
 	function friendsLoaded(gameID, status)
@@ -1620,10 +1629,9 @@ function addGameMenu(gameID)
 		
 		var curEl = $('#'+game+id, el);
 		
-		
 		if(id == 'BonusesPending' || id == 'ManualBonuses' || id == 'RequestsPending')
 		{
-			curEl.find('.submenu').append('<div class="showAllButtonDiv"><input processTab="'+game+id+'" type="checkbox" id="'+game+'ShowAll'+id+'" gameID="'+gameID+'" class="ShowAllItems" /><label for="'+game+'ShowAll'+id+'">Show all</label><br /><br /></div>');
+			curEl.find('.submenu').css('margin', '0 300px').append('<div style="float: left;position: absolute; left: 15px; width: 290px;" class="showAllButtonDiv"><span class="showAllText"></span><input processTab="'+game+id+'" type="checkbox" id="'+game+'ShowAll'+id+'" gameID="'+gameID+'" class="ShowAllItems" /><label for="'+game+'ShowAll'+id+'">Show all</label> <input processTab="'+game+id+'" type="checkbox" id="'+game+'ShowDescriptions'+id+'" gameID="'+gameID+'" class="ShowDescriptions" /><label for="'+game+'ShowDescriptions'+id+'">Show descriptions</label><br /><br /></div>');
 		}
 		
 		if(id == 'NeighborsSearch')
@@ -1929,35 +1937,51 @@ function processSwitchItemsDisplay(gameID, target)
 	var game = bkP.gamesData[gameID].systemName;
 	var el = $('#'+target+'List');
 	var total = el.children('div').not('.hideScreenLocked').length;
-	var elSub  = el.prev('.submenu');
+	var elSub  = el.prev('.submenu').css('height', '55px');
 	
-		
+	var showDesc = $('input.ShowDescriptions', elSub).button().is(':checked');
+	
 	el.children('div').not('.hideScreenLocked').addClass('hide');
 	
 	if($('input.ShowAllItems', elSub).button().is(':checked'))
 	{
-		elSub.children('.submenuInfo').html('<h3>Displaying ALL ('+total+') bonuses<br /><br /></h3>');
-		el.children('div').not('.hideScreenLocked').removeClass('hide');
-		
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL bonuses</h3>');
+		el.children('div').not('.hideScreenLocked').removeClass('hide');		
 		appendSrcToImages(el.attr('id'));
+		switchDescriptions(el.attr('id'), showDesc);
 		return;
 	}
 	
 	if(total > 100)
 	{
-		elSub.children('.submenuInfo').html('<h3>Displaying latest 100 bonuses (total: '+total+').<br /><span style="font-size: 0.8em;">(hidden bonuses will be collected / deleted when using "Receive all" / "Clear all")</span><br /><br /></h3>').siblings('.showAllButtonDiv').removeClass('hide');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing 100 bonuses (total: '+total+')</h3>');
+		$('input.ShowAllItems', elSub).next().removeClass('hide');
 	}
 	else
 	{
-		elSub.children('.submenuInfo').html('<h3>Displaying ALL ('+total+') bonuses<br /><br /></h3>').siblings('.showAllButtonDiv').addClass('hide');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL bonuses</h3>');
+		$('input.ShowAllItems', elSub).next().addClass('hide');
 	}
 	el.children('div:gt(99)').not('.hideScreenLocked').addClass('hide');
 	el.children('div:lt(100)').not('.hideScreenLocked').removeClass('hide');
 
-	
 	appendSrcToImages(el.attr('id'));
+	switchDescriptions(el.attr('id'), showDesc);
 	
 	el.removeClass('hide');
+}
+
+
+function switchDescriptions(id, test)
+{
+	if(test)
+	{
+		$('#'+id).children('div').not('.hideScreenLocked').not('.hide').not('.withDesc').addClass('withDesc').find('.description').removeClass('hide');
+	}
+	else
+	{
+		$('#'+id).children('div.withDesc').not('.hideScreenLocked').not('.hide').removeClass('withDesc').find('.description').addClass('hide');
+	}
 }
 
 function appendSrcToImages(id)
@@ -2108,7 +2132,7 @@ function updateTimeAgo(target)
 				return processSubmenuClick(el.parent());
 			else if(el.hasClass('deleteFilter'))
 				return processDeleteFilter(el);
-			else if(el.hasClass('ShowAllItems'))
+			else if(el.hasClass('ShowAllItems') || el.hasClass('ShowDescriptions'))
 				return processSwitchItemsDisplay(el.attr('gameID'), el.attr('processTab'));
 			
 			if(el.attr('id') == 'saveNewComment')
@@ -2777,9 +2801,9 @@ function compareTime(itemTime, olderThan)
 		
 		<h2 style="text-align: center">
 			<button style="font-size: 0.8em;" id="receiveBonusesAllGames">Receive bonuses from all games</button>
-			<input type="checkbox" id="lockScreen" /><label for="lockScreen">Screen is: UNLOCKED (click to lock)</label>
+			<input type="checkbox" id="lockScreen" /><label for="lockScreen" style="font-size: 0.9em;">Screen is: UNLOCKED (click to lock)</label>
 			<button style="font-size: 0.8em;" id="receiveGiftsAllGames">Receive gifts from all games</button>
-			<br />
+			<br /><br />
 			<button style="font-size: 0.8em;" id="stopReceivingQueue">Reset queue (<span id="queueItemsCount">0</span>)</button>
 		</h2>
 	</div>

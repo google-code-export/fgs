@@ -25,19 +25,19 @@ body
 	cursor:pointer;
 	border: 1px solid #000;
 	text-align: center;
-	width: 120px;
-	height: 170px;
-	max-height: 170px;
+	width: 100px;
+	height: 115px;
+	max-height: 115px;
 	margin: 5px;
 	padding: 5px;
 	float: left;
 }
 
-.bonusItem
+.bonusItem.withDesc, .requestItem.withDesc, .manualItem.withDesc
 {
-	width: 100px !important;
-	height: 115px !important;
-	max-height: 115px !important;
+	width: 120px;
+	height: 170px;
+	max-height: 170px;
 }
 
 .bonusItem > img, .requestItem > img, .manualItem > img
@@ -127,7 +127,7 @@ body
 
 .submenu
 {
-	margin-top: 10px;
+	margin-top:	10px;
 	margin-bottom: 10px;
 	display: block;
 	text-align:center;
