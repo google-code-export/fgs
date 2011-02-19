@@ -437,7 +437,7 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		var game = bkP.gamesData[gameID].systemName;
 		$('#'+game+'BonusesPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function(){
-			processBonusClick(this);
+			processBonusClick($(this));
 		});
 	}
 	
@@ -445,7 +445,7 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		var game = bkP.gamesData[gameID].systemName;
 		$('#'+game+'RequestsPendingList').children('div').not('.hideScreenLocked').not('.inProgress').each(function(){
-			processRequestClick(this);
+			processRequestClick($(this));
 		});
 	}
 	
@@ -1016,6 +1016,51 @@ function addDataToScreenLocked(callback, id, data)
 		$('#dialog-confirm').dialog('open');
 	}
 	
+	function ClearAllFailedBonuses(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete failed bonuses": function()
+				{
+					var game = bkP.gamesData[gameID].systemName;
+					$('#'+game+'FailedBonusesList').children('div').each(function(){
+						$(this).remove();
+					});
+					bkP.database.clearFailedBonuses(gameID);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
+	function ClearAllFailedRequests(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete failed gifts": function()
+				{
+					var game = bkP.gamesData[gameID].systemName;
+					$('#'+game+'FailedGiftsList').children('div').each(function(){
+						$(this).remove();
+					});
+					//('<br style="clear:both" />');
+					bkP.database.clearFailedGifts(gameID);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
 	function ClearCollectedBonusesReceivingError(gameID)
 	{
 		$('#dialog-confirm').dialog({
@@ -1067,6 +1112,33 @@ function addDataToScreenLocked(callback, id, data)
 		
 		$('#dialog-confirm').dialog('open');
 	}
+	
+	function ClearCollectedRequestsLimitError(gameID)
+	{
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete limit errors": function()
+				{
+					var game = bkP.gamesData[gameID].systemName;
+					$('#'+game+'FailedGiftsList').children('div').each(function(){
+						if($(this).find('.bonusError').text().indexOf('limit') != -1)
+						{
+							$(this).remove();
+						}
+					});
+					//('<br style="clear:both" />');
+					bkP.database.clearRequestLimitErrors(gameID);
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
+		
+		$('#dialog-confirm').dialog('open');
+	}
+	
 	
 	function ClearCollectedRequests(gameID)
 	{
@@ -2227,7 +2299,7 @@ function updateTimeAgo(target)
 				else if(action == 'receiveSimilar')
 				{
 					el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function(){
-						processBonusClick(this);
+						processBonusClick($(this));
 					});
 				}
 				else if(action == 'delete')
@@ -2308,7 +2380,7 @@ function updateTimeAgo(target)
 				else if(action == 'receiveSimilar')
 				{
 					el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.hideScreenLocked').not('.inProgress').each(function(){
-						processRequestClick(this);
+						processRequestClick($(this));
 					});
 				}
 				else if(action == 'delete')

@@ -144,6 +144,22 @@ FGS.database.clearTable = function(table, gameID, status)
 	}
 }
 
+FGS.database.clearFailedBonuses = function(gameID)
+{
+	FGS.database.db.transaction(function(tx)
+	{
+		tx.executeSql('DELETE FROM bonuses where status = 1 and gameID = ? and error != "" and error IS NOT NULL', [gameID], FGS.database.onSuccess, FGS.database.onError);
+	});
+}
+
+FGS.database.clearFailedGifts = function(gameID)
+{
+	FGS.database.db.transaction(function(tx)
+	{
+		tx.executeSql('DELETE FROM requests where status = 1 and gameID = ? and error != "" and error IS NOT NULL', [gameID], FGS.database.onSuccess, FGS.database.onError);
+	});
+}
+
 FGS.database.clearLimitErrors = function(gameID)
 {
 	FGS.database.db.transaction(function(tx)
@@ -165,6 +181,14 @@ FGS.database.clearRequestReceivingErrors = function(gameID)
 	FGS.database.db.transaction(function(tx)
 	{
 		tx.executeSql('DELETE FROM requests where status = 1 and gameID = ? and error = "receiving"', [gameID], FGS.database.onSuccess, FGS.database.onError);
+	});
+}
+
+FGS.database.clearRequestLimitErrors = function(gameID)
+{
+	FGS.database.db.transaction(function(tx)
+	{
+		tx.executeSql('DELETE FROM requests where status = 1 and gameID = ? and error = "limit"', [gameID], FGS.database.onSuccess, FGS.database.onError);
 	});
 }
 
