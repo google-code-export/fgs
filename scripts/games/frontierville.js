@@ -1,4 +1,4 @@
-FGS.frontiervilleFreegifts = 
+FGS.frontierville.Freegifts = 
 {
 	Click: function(params, retry)
 	{
@@ -24,7 +24,7 @@ FGS.frontiervilleFreegifts =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.frontiervilleFreegifts.ClickForm(params);
+					FGS.frontierville.Freegifts.ClickForm(params);
 				}
 				catch(err)
 				{
@@ -101,7 +101,7 @@ FGS.frontiervilleFreegifts =
 					}
 					params.zyParam = $.param(zyParams);
 					
-					FGS.frontiervilleFreegifts.Click2(params);
+					FGS.frontierville.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -218,7 +218,7 @@ FGS.frontiervilleFreegifts =
 	}
 };
 
-FGS.frontiervilleRequests = 
+FGS.frontierville.Requests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -253,7 +253,7 @@ FGS.frontiervilleRequests =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.frontiervilleRequests.Click2(currentType, id, url, params);
+					FGS.frontierville.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -401,7 +401,7 @@ FGS.frontiervilleRequests =
 	}
 };
 
-FGS.frontiervilleBonuses = 
+FGS.frontierville.Bonuses = 
 {
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -436,7 +436,7 @@ FGS.frontiervilleBonuses =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.frontiervilleBonuses.Click2(currentType, id, url, params);
+					FGS.frontierville.Bonuses.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -488,7 +488,7 @@ FGS.frontiervilleBonuses =
 						var pos2 = dataStr.indexOf('"', pos1+21);
 						var url = dataStr.slice(pos1+21, pos2);
 						
-						FGS.frontiervilleBonuses.Click3(currentType, id, url);
+						FGS.frontierville.Bonuses.Click3(currentType, id, url);
 					}
 					else
 					{
@@ -556,7 +556,7 @@ FGS.frontiervilleBonuses =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.frontiervilleBonuses.Click4(currentType, id, url, params);
+					FGS.frontierville.Bonuses.Click4(currentType, id, url, params);
 				}
 				catch(err)
 				{

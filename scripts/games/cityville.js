@@ -1,4 +1,4 @@
-FGS.cityvilleFreegifts = 
+FGS.cityville.Freegifts = 
 {
 	Click: function(params, retry)
 	{
@@ -24,7 +24,7 @@ FGS.cityvilleFreegifts =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.cityvilleFreegifts.Click2(params);
+					FGS.cityville.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -90,7 +90,7 @@ FGS.cityvilleFreegifts =
 					
 					params.step2url = src;
 					
-					FGS.cityvilleFreegifts.Click2(params);
+					FGS.cityville.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -171,13 +171,13 @@ FGS.cityvilleFreegifts =
 					pos1+=7;
 					var pos2 = dataStr.indexOf('},', pos1)+1;
 					
-					eval('var zyParam ='+dataStr.slice(pos1,pos2));
+					var zyParam = JSON.parse(dataStr.slice(pos1,pos2));
 					
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 					params.domain = params.step1url.match(re)[1].toString();
 					params.zyParam = FGS.jQuery.param(zyParam);
 					
-					FGS.cityvilleFreegifts.Click3(params);
+					FGS.cityville.Freegifts.Click3(params);
 				}
 				catch(err)
 				{
@@ -338,7 +338,7 @@ FGS.cityvilleFreegifts =
 					
 					params.outStr = outStr;
 
-					FGS.cityvilleFreegifts.Click4(params);
+					FGS.cityville.Freegifts.Click4(params);
 					
 				}
 				catch(err)
@@ -488,7 +488,7 @@ FGS.cityvilleFreegifts =
 };
 
 
-FGS.cityvilleRequests =
+FGS.cityville.Requests =
 {
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -523,7 +523,7 @@ FGS.cityvilleRequests =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.cityvilleRequests.Click2(currentType, id, url, params);
+					FGS.cityville.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -588,7 +588,7 @@ FGS.cityvilleRequests =
 					
 					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
 
-					FGS.cityvilleRequests.Click3(currentType, id, nextUrl);
+					FGS.cityville.Requests.Click3(currentType, id, nextUrl);
 				}
 				catch(err)
 				{
@@ -783,7 +783,7 @@ FGS.cityvilleRequests =
 	},
 };
 
-FGS.cityvilleBonuses = 
+FGS.cityville.Bonuses = 
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -818,7 +818,7 @@ FGS.cityvilleBonuses =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.cityvilleRequests.Click2(currentType, id, url, params);
+					FGS.cityville.Requests.Click2(currentType, id, url, params);
 				} 
 				catch(err)
 				{
@@ -884,7 +884,7 @@ FGS.cityvilleBonuses =
 					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
 					
 					
-					FGS.cityvilleBonuses.Click3(currentType, id, nextUrl);
+					FGS.cityville.Bonuses.Click3(currentType, id, nextUrl);
 				}
 				catch(err)
 				{
