@@ -1,4 +1,4 @@
-﻿FGS.farmvillechinese.Freegifts = 
+FGS.farmvillechinese.Freegifts = 
 {
 	Click: function(params, retry)
 	{
