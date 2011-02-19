@@ -315,7 +315,7 @@ function addDataToScreenLocked(callback, id, data)
 		var gameID = el.attr('gameID');
 		bkP.database.deleteItem('requests', gameID, el.attr('id'), 0);
 		bkP.database.deleteItem('requests', gameID, el.attr('id'), 1);
-		bkP.getRequestLink(el.attr('id'), el.attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
+		bkP.getRequestLink(el.attr('id'), el.attr('postData'));
 		el.remove();
 		updateCount(gameID);
 	}
@@ -423,7 +423,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var obj = {
 					id: el.attr('id'),
-					post: el.attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg,
+					post: el.attr('postData'),
 					game: game,
 					type: 'request',
 					title: el.attr('search-title')
@@ -1365,7 +1365,7 @@ function addDataToScreenLocked(callback, id, data)
 		else
 		{
 			if(status.length == 0)
-				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbours.</h3>';
+				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbors.</h3>';
 			else
 			{
 				var html = '<h3 class="center">These people are looking for new neighbors:</h3>';
@@ -1390,7 +1390,7 @@ function addDataToScreenLocked(callback, id, data)
 			return;
 		}
 		
-		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Found people:</h2> <div class="searchForPeopleList"><h3 class="center"><img src="gfx/loading.gif"><br />Looking for people who are not already your neighbours... Please wait...</h3></div>');
+		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Found people:</h2> <div class="searchForPeopleList"><h3 class="center"><img src="gfx/loading.gif"><br />Looking for people who are not already your neighbors... Please wait...</h3></div>');
 		
 		bkP.searchForNeighbors.Step1(gameID);
 	}
@@ -1464,7 +1464,7 @@ function addDataToScreenLocked(callback, id, data)
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'SendFreeGiftsList';
 		
-		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center hide">Favourite neighbours:</h2> <div class="sendToFavouritesList hide"></div> <h2 class="center hide">Gifts list:</h2> <div class="hide sendToGiftsList"></div> <h2 class="center">Neighbours list:</h2> <div class="sendToNeighboursList"><h3 class="center"><img src="gfx/loading.gif"><br />Loading your neighbours... Please wait...</h3></div>');
+		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center hide">Favourite neighbors:</h2> <div class="sendToFavouritesList hide"></div> <h2 class="center hide">Gifts list:</h2> <div class="hide sendToGiftsList"></div> <h2 class="center">Neighbors list:</h2> <div class="sendToNeighboursList"><h3 class="center"><img src="gfx/loading.gif"><br />Loading your neighbors... Please wait...</h3></div>');
 		
 		listGifts(gameID);
 		
@@ -2356,7 +2356,7 @@ function updateTimeAgo(target)
 				}
 				else if(action == 'debug')
 				{
-					bkP.getRequestLink(el.attr('id'), el.attr('postData')+'&post_form_id='+bkP.post_form_id+'&fb_dtsg='+bkP.fb_dtsg);
+					bkP.getRequestLink(el.attr('id'), el.attr('postData'));
 				}
 			});
 		});
@@ -2431,6 +2431,13 @@ function updateTimeAgo(target)
 		});
 		
 		$( "#dialog-error" ).dialog({
+			resizable: false,
+			autoOpen: false,
+			height:'auto',
+			modal: true
+		});
+		
+		$( "#dialog-normal" ).dialog({
 			resizable: false,
 			autoOpen: false,
 			height:'auto',
@@ -2989,6 +2996,10 @@ function compareTime(itemTime, olderThan)
 		<h3 class="center"><img src="gfx/dl.gif"><br />FGS is loading... Please wait.</h3><br /><br />
 		<span>(It may take a few minutes if you've got many bonuses in the database. If it takes very long - consider using Panic Button option)</span><br />
 		<div id="progressbar"></div>
+	</div>
+	
+	<div id="dialog-normal" title="Information window">
+		
 	</div>
 
 
