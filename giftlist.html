@@ -2175,11 +2175,11 @@ function updateTimeAgo(target)
 			value: 0
 		});
 		
-		loadBonuses();		
+		loadBonuses();
 		
 		$(window).click(function(e)
 		{
-			var el = $(e.srcElement);
+			var el = $(e.srcElement || e.target);
 			
 			if(el.hasClass('gameSelectorInput'))
 				return processGameSelectorInput(el);
