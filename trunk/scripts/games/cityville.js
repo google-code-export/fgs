@@ -24,7 +24,7 @@ FGS.cityvilleFreegifts =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.cityvilleFreegifts.ClickForm(params);
+					FGS.cityvilleFreegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -81,6 +81,8 @@ FGS.cityvilleFreegifts =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+			
+				console.log(dataStr);
 				try
 				{
 					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);
@@ -139,15 +141,17 @@ FGS.cityvilleFreegifts =
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
-			type: "GET",
-			url: params.step2url+''+addAntiBot,
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
+			//url: params.step2url+''+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				try
 				{
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-					params.domain = params.step2url.match(re)[1].toString();
+					params.domain = params.step1url.match(re)[1].toString();
 					
 					var nextUrl = 'http://'+params.domain+'/';					
 					var pos1 = dataStr.indexOf("ZYFrameManager.navigateTo('");
@@ -157,7 +161,7 @@ FGS.cityvilleFreegifts =
 						var pos2 = dataStr.indexOf("'", pos1)+1;
 						var pos3 = dataStr.indexOf("'", pos2);
 						
-						params.step2url = nextUrl+dataStr.slice(pos2,pos3).replace(nextUrl, '');
+						params.step1url = nextUrl+dataStr.slice(pos2,pos3).replace(nextUrl, '');
 						retryThis(params, true);
 						return;
 					}
@@ -170,7 +174,7 @@ FGS.cityvilleFreegifts =
 					eval('var zyParam ='+dataStr.slice(pos1,pos2));
 					
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-					params.domain = params.step2url.match(re)[1].toString();
+					params.domain = params.step1url.match(re)[1].toString();
 					params.zyParam = FGS.jQuery.param(zyParam);
 					
 					FGS.cityvilleFreegifts.Click3(params);
