@@ -14,12 +14,81 @@ FGS.cityvilleFreegifts =
 			{
 				try
 				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target]', dataHTML).attr('action');
+					var params2 = $('form[target]', dataHTML).serialize();
+					
+					if(!url) throw {message: 'fail'}
+					
+					params.step1url = url;
+					params.step1params = params2;
+					
+					FGS.cityvilleFreegifts.ClickForm(params);
+				}
+				catch(err)
+				{
+					//dump(err);
+					//dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	ClickForm: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
 					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);
 					if(src == '') throw {message:'No iframe found'}
 					
 					params.step2url = src;
 					
-					FGS.cityvilleFreegifts.Click2(params);		
+					FGS.cityvilleFreegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -420,7 +489,7 @@ FGS.cityvilleRequests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
+		var retryThis 	= arguments.callee;		
 		var info = {}
 		
 		$.ajax({
@@ -434,11 +503,7 @@ FGS.cityvilleRequests =
 				
 				if(redirectUrl != false)
 				{
-					if(FGS.checkForNotFound(redirectUrl) === true)
-					{
-						FGS.endWithError('not found', currentType, id);
-					}
-					else if(typeof(retry) == 'undefined')
+					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, redirectUrl, true);
 					}
@@ -451,10 +516,11 @@ FGS.cityvilleRequests =
 				
 				try
 				{
-					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);
-					if (src == '') throw {message:"no iframe"}
-					FGS.cityvilleRequests.Click2(currentType, id, src);
-				} 
+					var url = $('form[target]', dataHTML).attr('action');
+					var params = $('form[target]', dataHTML).serialize();
+					
+					FGS.cityvilleRequests.Click2(currentType, id, url, params);
+				}
 				catch(err)
 				{
 					//dump(err);
@@ -483,14 +549,15 @@ FGS.cityvilleRequests =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, retry)
+	Click2:	function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
+			data: params,
 			url: currentURL,
 			dataType: 'text',
 			success: function(dataStr)
@@ -525,7 +592,7 @@ FGS.cityvilleRequests =
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -537,7 +604,7 @@ FGS.cityvilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{
@@ -744,9 +811,10 @@ FGS.cityvilleBonuses =
 
 				try 
 				{
-					var src = FGS.findIframeAfterId('#app_content_291549705119', dataStr);
-					if(src == '') throw {message: 'No iframe'}
-					FGS.cityvilleBonuses.Click2(currentType, id, src);
+					var url = $('form[target]', dataHTML).attr('action');
+					var params = $('form[target]', dataHTML).serialize();
+					
+					FGS.cityvilleRequests.Click2(currentType, id, url, params);
 				} 
 				catch(err)
 				{
@@ -776,20 +844,20 @@ FGS.cityvilleBonuses =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, retry)
+	Click2:	function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
+			data: params,
 			url: currentURL,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				var dataHTML = FGS.HTMLParser(dataStr);
-				
 				
 				try
 				{
@@ -820,7 +888,7 @@ FGS.cityvilleBonuses =
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -832,7 +900,7 @@ FGS.cityvilleBonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{
