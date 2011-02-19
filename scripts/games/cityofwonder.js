@@ -91,7 +91,7 @@ FGS.cityofwonderRequests =
 						var url = dataStr.slice(pos1+21, pos2);
 						FGS.cityofwonderRequests.Click(currentType, id, url, true);
 						return;
-					}				
+					}
 				
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null)
@@ -102,7 +102,13 @@ FGS.cityofwonderRequests =
 					var dataHTML = FGS.HTMLParser(data);
 					
 					// Oops! you cannot accept this request!
-										
+					
+					if($('.ally_accept', dataHTML).length  == 0)
+					{
+						FGS.endWithError('not found', currentType, id);
+						return;
+					}
+					
 					info.image = $('.ally_accept', dataHTML).find('img:first').attr('src');
 					var txt = $('.ally_accept', dataHTML).find('h1').text();
 					

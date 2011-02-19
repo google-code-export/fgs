@@ -14,7 +14,78 @@ FGS.frontiervilleFreegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/<form[^>].*action=\s*["].*populateFbCache\.php[?]([^"]+)/m).exec(dataStr);
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target]', dataHTML).attr('action');
+					var params2 = $('form[target]', dataHTML).serialize();
+					
+					if(!url) throw {message: 'fail'}
+					
+					params.step1url = url;
+					params.step1params = params2;
+					
+					FGS.frontiervilleFreegifts.ClickForm(params);
+				}
+				catch(err)
+				{
+					//dump(err);
+					//dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	ClickForm: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+				
+					var tst = new RegExp(/<iframe[^>].*src=\s*["].*populateFbCache\.php[?]([^"]+)/m).exec(dataStr);
 					if(tst == null) throw {message:'no frontierville iframe tag'}
 					
 					var zyParams = {}
@@ -73,6 +144,7 @@ FGS.frontiervilleFreegifts =
 			}
 		});
 	},
+	
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -165,13 +237,77 @@ FGS.frontiervilleRequests =
 				
 				if(redirectUrl != false)
 				{
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, redirectUrl, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+					return;
+				}
+				
+				try
+				{
+					var url = $('form[target]', dataHTML).attr('action');
+					var params = $('form[target]', dataHTML).serialize();
+					
+					FGS.frontiervilleRequests.Click2(currentType, id, url, params);
+				}
+				catch(err)
+				{
+					//dump(err);
+					//dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	
+	Click2: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			url: currentURL,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				var dataHTML = FGS.HTMLParser(dataStr);
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
+				
+				if(redirectUrl != false)
+				{
 					if(FGS.checkForNotFound(redirectUrl) === true)
 					{
 						FGS.endWithError('not found', currentType, id);
 					}
 					else if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, params, true);
 					}
 					else
 					{
@@ -242,7 +378,7 @@ FGS.frontiervilleRequests =
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -254,7 +390,7 @@ FGS.frontiervilleRequests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{
