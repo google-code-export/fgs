@@ -946,7 +946,8 @@ FGS.sendGift = function(params, retry)
 
 					var found = false;
 					
-					FGS.ListNeighbours(params.gameID);
+					if(typeof(params.thankYou) == 'undefined')
+						FGS.ListNeighbours(params.gameID);
 					
 					$(params.items).each(function(k,val)
 					{
