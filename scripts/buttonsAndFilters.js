@@ -636,7 +636,7 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
-	2601240224: 	{ 	name: 'Rock you',		systemName: 'rockyou', link: 'http://apps.facebook.com/superwall/zoo/home.php',
+	2339854854: 	{ 	name: 'Horoscopes',		systemName: 'horoscopes', link: 'http://apps.facebook.com/horoscopes/zoo/home.php',
 						filter:		
 						{
 							bonuses: [],
@@ -658,7 +658,7 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
-	44111361632: 	{ 	name: 'RockYou Pets',		systemName: 'rockyoupets', link: 'http://apps.facebook.com/rysuperpets/zoo/home.php',
+	14852940614: 	{ 	name: 'Birthday Cards',		systemName: 'birthdaycards', link: 'http://apps.facebook.com/rybirthday/zoo/home.php',
 						filter:		
 						{
 							bonuses: [],

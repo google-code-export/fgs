@@ -1312,7 +1312,7 @@ function addDataToScreenLocked(callback, id, data)
 
 		if(typeof(gameID) == 'undefined')
 		{
-			for(var idd in bkP.options.games)
+			for(var idd in bkP.gamesData)
 			{
 				if(bkP.options.games[idd].enabled)
 				{
@@ -1568,7 +1568,7 @@ function startup()
 
 function prepareGameSelector()
 {
-	for(var gameID in bkP.options.games)
+	for(var gameID in bkP.gamesData)
 	{
 		addIconToGameSelector(gameID);
 		addIconToOptionsMenu(gameID);
@@ -2285,10 +2285,6 @@ function updateTimeAgo(target)
 		{
 			bkP.options.displayXbonuses = $('option:selected', this).val();
 			bkP.saveOptions();
-			for(var id in bkP.options.games)
-			{
-				//selectFirstTab(id);
-			}
 		});
 		
 		$('#collectXbonusesAtTheSameTime > option[value="'+bkP.options.collectXbonusesAtTheSameTime+'"]').attr('selected', 'selected');
@@ -2565,7 +2561,7 @@ function updateTimeAgo(target)
 		
 		$('#receiveBonusesAllGames').button().click(function()
 		{
-			for(var idd in bkP.options.games)
+			for(var idd in bkP.gamesData)
 			{
 				if(bkP.options.games[idd].enabled)
 				{
@@ -2576,7 +2572,7 @@ function updateTimeAgo(target)
 		
 		$('#receiveGiftsAllGames').button().click(function()
 		{
-			for(var idd in bkP.options.games)
+			for(var idd in bkP.gamesData)
 			{
 				if(bkP.options.games[idd].enabled)
 				{

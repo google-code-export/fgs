@@ -1,4 +1,4 @@
-FGS.rockyou.Bonuses = 
+FGS.birthdaycards.Bonuses = 
 {	
 	Click: function(currentType, id, currentURL)
 	{
@@ -6,7 +6,7 @@ FGS.rockyou.Bonuses =
 	}
 };
 
-FGS.rockyou.Requests = 
+FGS.birthdaycards.Requests = 
 {	
 	Click: function(currentType, id, currentURL)
 	{
@@ -14,14 +14,14 @@ FGS.rockyou.Requests =
 	}
 };
 
-FGS.rockyou.Freegifts = 
+FGS.birthdaycards.Freegifts = 
 {
 	Click: function(params, retry)
 	{
-		params.zooAppname = 'swall';
-		params.zooAppId	  = '9';
-		params.checkID = '2601240224';
-		params.gameName = 'superwall';
+		params.zooAppname = 'birthdays';
+		params.zooAppId	  = '46';
+		params.checkID = '14852940614';
+		params.gameName = 'rybirthday';
 		
 		FGS.zooworld.Freegifts.Click(params);
 	}

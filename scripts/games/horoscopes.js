@@ -1,4 +1,4 @@
-FGS.rockyoupets.Bonuses = 
+FGS.horoscopes.Bonuses = 
 {	
 	Click: function(currentType, id, currentURL)
 	{
@@ -6,7 +6,7 @@ FGS.rockyoupets.Bonuses =
 	}
 };
 
-FGS.rockyoupets.Requests = 
+FGS.horoscopes.Requests = 
 {	
 	Click: function(currentType, id, currentURL)
 	{
@@ -14,14 +14,14 @@ FGS.rockyoupets.Requests =
 	}
 };
 
-FGS.rockyoupets.Freegifts = 
+FGS.horoscopes.Freegifts = 
 {
 	Click: function(params, retry)
 	{
-		params.zooAppname = 'superpets';
-		params.zooAppId	  = '59';
-		params.checkID = '44111361632';
-		params.gameName = 'rysuperpets';
+		params.zooAppname = 'horoscope';
+		params.zooAppId	  = '2';
+		params.checkID = '2339854854';
+		params.gameName = 'horoscopes';
 		
 		FGS.zooworld.Freegifts.Click(params);
 	}

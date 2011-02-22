@@ -216,11 +216,7 @@ FGS.zooworld.Requests =
 						return;
 					}
 				
-					if($('#app_content_167746316127', dataHTML).length > 0)
-					{
-						var testStr = $('#app_content_167746316127', dataHTML).find('h1:first').text();
-					}
-					else if($('#app_content_2405948328', dataHTML).length > 0)
+					if($('#app_content_2405948328', dataHTML).length > 0)
 					{
 						var testStr = $('#app_content_2405948328', dataHTML).find('h1:first').text();
 					}
@@ -228,13 +224,17 @@ FGS.zooworld.Requests =
 					{
 						var testStr = $('#app_content_2345673396', dataHTML).find('h1:first').text();
 					}
-					else if($('#app_content_44111361632', dataHTML).length > 0)
+					else if($('#app_content_2339854854', dataHTML).length > 0)
 					{
-						var testStr = $('#app_content_44111361632', dataHTML).find('h1:first').text();
+						var testStr = $('#app_content_2339854854', dataHTML).find('h1:first').text();
+					}
+					else if($('#app_content_14852940614', dataHTML).length > 0)
+					{
+						var testStr = $('#app_content_14852940614', dataHTML).find('h1:first').text();
 					}
 					else
 					{
-						var testStr = $('#app_content_2601240224', dataHTML).find('h1:first').text();
+						var testStr = $('#app_content_167746316127', dataHTML).find('h1:first').text();
 					}
 					
 					if(testStr.indexOf('You are now ZooMates') != -1)
@@ -371,21 +371,25 @@ FGS.zooworld.Bonuses =
 				
 				try
 				{
-					if($('#app_content_167746316127', dataHTML).length > 0)
+					if($('#app_content_2405948328', dataHTML).length > 0)
 					{
-						var src = FGS.findIframeAfterId('#app_content_167746316127', dataStr);
+						var src = FGS.findIframeAfterId('#app_content_2405948328', dataStr);
 					}
 					else if($('#app_content_2345673396', dataHTML).length > 0)
 					{
 						var src = FGS.findIframeAfterId('#app_content_2345673396', dataStr);
 					}
-					else if($('#app_content_2405948328', dataHTML).length > 0)
+					else if($('#app_content_2339854854', dataHTML).length > 0)
 					{
-						var src = FGS.findIframeAfterId('#app_content_2405948328', dataStr);
+						var src = FGS.findIframeAfterId('#app_content_2339854854', dataStr);
 					}
-					else if($('#app_content_44111361632', dataHTML).length > 0)
+					else if($('#app_content_14852940614', dataHTML).length > 0)
 					{
-						var src = FGS.findIframeAfterId('#app_content_44111361632', dataStr);
+						var src = FGS.findIframeAfterId('#app_content_14852940614', dataStr);
+					}
+					else if($('#app_content_167746316127', dataHTML).length > 0)
+					{
+						var src = FGS.findIframeAfterId('#app_content_167746316127', dataStr);
 					}
 					else
 					{
@@ -456,7 +460,7 @@ FGS.zooworld.Bonuses =
 						var pos2 = dataStr.indexOf('},', pos1)+1;
 						lastPos = pos2;
 						
-						if(dataStr.slice(pos1, pos2).indexOf('zooparent') != -1 || dataStr.slice(pos1, pos2).indexOf('"hugme"') != -1 || dataStr.slice(pos1, pos2).indexOf('"likeness"') != -1)
+						if(dataStr.slice(pos1, pos2).indexOf('zooparent') != -1 || dataStr.slice(pos1, pos2).indexOf('"hugme"') != -1 || dataStr.slice(pos1, pos2).indexOf('"likeness"') != -1 || dataStr.slice(pos1, pos2).indexOf('"birthdays"') != -1 || dataStr.slice(pos1, pos2).indexOf('"horoscope"') != -1)
 						{
 							var tempVars = JSON.parse(dataStr.slice(pos1,pos2));
 							break;
