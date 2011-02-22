@@ -203,7 +203,18 @@ FGS.zooworld.Requests =
 				
 				try
 				{
-					// <h3>Cannot accept gift. // <h3>This promotion is over.
+					if(dataStr.indexOf('<h3>Cannot accept gift.') != -1)
+					{
+						var error_text = 'This gift is too old.';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					if(dataStr.indexOf('<h3>This promotion is over.') != -1)
+					{
+						var error_text = 'This promotion is over.';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
 				
 					if($('#app_content_167746316127', dataHTML).length > 0)
 					{
