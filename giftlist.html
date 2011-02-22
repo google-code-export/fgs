@@ -1589,6 +1589,29 @@ function prepareGameSelector()
 	
 	$('<input type="radio" class="gameSelectorInput" name="gameSelectorInput" id="optionsSelected" /><label gameName="Options" for="optionsSelected"><img src="icons/menu/options.png"></label>').appendTo('#gameSelector');
 	
+	$('#gameSelector').children('label').contextMenu({
+			menu: 'myMenuGameIcon'
+		}, function(action, el, pos)
+		{
+			if(action == 'hideIcon')
+			{
+				var gameID = $(el).prev().attr('gameID');
+				$(el).addClass('hide');
+				bkP.options.games[gameID].hiddenIcon = true;					
+				bkP.saveOptions();
+				
+				if(!$('#options').hasClass('hide'))
+					loadOptionsData();					
+			}
+			else if(action == 'goToGame')
+			{
+				var gameID = $(el).prev().attr('gameID');
+				bkP.openURI(bkP.gamesData[gameID].link, false);
+			}
+	});
+	
+	$('#gameSelector').children('[gamename="Contact"], [gamename="Chat"], [gamename="Options"]').disableContextMenu();
+	
 	$('#gameSelector').children('label').tooltip({
 		delay: 0,
 		track: true,
@@ -1596,7 +1619,7 @@ function prepareGameSelector()
 		positionLeft: true,
 		showURL: false
 	});
-	
+		
 	$("#gameSelector").buttonset();
 }
 
@@ -3134,6 +3157,10 @@ function compareTime(itemTime, olderThan)
 	
 	<ul id="myMenuDefaultGift" class="contextMenu">
 		<li class="receive"><a href="#selectDefault">Select as default gift</a></li>
+	</ul>
+	
+	<ul id="myMenuGameIcon" class="contextMenu">
+		<li class="goToGame"><a href="#goToGame"><strong>Go to this game!</strong></a></li>
 	</ul>
 </body>
 </html>
