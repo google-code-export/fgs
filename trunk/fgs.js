@@ -614,12 +614,7 @@ var FGS = {
 				FGS.jQuery('input[name="params\[app_id\]"]',data).parent('form').each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
-					
-					if(apps)
-					{
-						console.log($(this));
-					}
-					
+
 					if(FGS.options.games[APPID] == undefined || FGS.options.games[APPID].enabled == false)
 					{
 						return;
