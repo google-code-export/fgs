@@ -658,6 +658,28 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	44111361632: 	{ 	name: 'RockYou Pets',		systemName: 'rockyoupets', link: 'http://apps.facebook.com/rysuperpets/zoo/home.php',
+						filter:		
+						{
+							bonuses: [],
+							bonusesNewWindow: ['Claim Juice and Share', 'Send the material', 'Claim and share', '^Send', 'Start Team Race'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =
