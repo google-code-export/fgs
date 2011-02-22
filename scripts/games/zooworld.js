@@ -383,6 +383,10 @@ FGS.zooworld.Bonuses =
 					{
 						var src = FGS.findIframeAfterId('#app_content_2405948328', dataStr);
 					}
+					else if($('#app_content_44111361632', dataHTML).length > 0)
+					{
+						var src = FGS.findIframeAfterId('#app_content_44111361632', dataStr);
+					}
 					else
 					{
 						throw {message: 'not zoo?'}
