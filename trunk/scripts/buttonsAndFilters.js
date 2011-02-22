@@ -636,6 +636,28 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	2601240224: 	{ 	name: 'Rock you',		systemName: 'rockyou', link: 'http://apps.facebook.com/superwall/zoo/home.php',
+						filter:		
+						{
+							bonuses: [],
+							bonusesNewWindow: ['Claim Juice and Share', 'Send the material', 'Claim and share', '^Send', 'Start Team Race'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =

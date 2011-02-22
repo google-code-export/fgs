@@ -213,9 +213,13 @@ FGS.zooworld.Requests =
 					{
 						var testStr = $('#app_content_2405948328', dataHTML).find('h1:first').text();
 					}
-					else
+					else if($('#app_content_2345673396', dataHTML).length > 0)
 					{
 						var testStr = $('#app_content_2345673396', dataHTML).find('h1:first').text();
+					}
+					else
+					{
+						var testStr = $('#app_content_2601240224', dataHTML).find('h1:first').text();
 					}
 					
 					if(testStr.indexOf('You are now ZooMates') != -1)
