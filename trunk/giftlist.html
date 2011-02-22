@@ -109,11 +109,14 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var el = $('.sendToGiftsList','div#'+game+opt);
 		
+		el.append('<h3 style="text-align: center">Add message to your gift: <input type="text" name="messageToAdd" class="messageToAddToGift" /></h3><br /><br class="clear" style="clear:both"/>');
+		
 		for(var id in bkP.giftsArray[gameID])
 		{
 			var v = bkP.giftsArray[gameID][id];
 			el.append('<div class="selectGiftToSend" gameID="'+gameID+'" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="http://fgs.rzadki.eu/reqs/'+game+'/'+id+'.png"><div style="font-size: 11px;">'+v.name+'</div></div>');
 		}
+		
 		
 		if(bkP.options.games[gameID].defaultGift == 0)
 		{
@@ -143,14 +146,17 @@ function addDataToScreenLocked(callback, id, data)
 			alert('You must select at least one person');
 			return;
 		}
-				
+		
+		var messageToAddToGift = $('.sendToGiftsList > h3 > input.messageToAddToGift','div#'+game+opt).val();
+
 		var gift 	 = $('.sendToGiftsList > div.selected','div#'+game+opt).attr('giftID');
 		var giftName = $('.sendToGiftsList > div.selected','div#'+game+opt).attr('title');
 		
 		var params = {
 			gift: gift,
 			gameID:	gameID,
-			sendTo: sendTo
+			sendTo: sendTo,
+			messageToAdd: messageToAddToGift
 		};
 		
 		$('div#'+game+opt, '#'+game+'Game').children().addClass('hide');
@@ -1432,7 +1438,7 @@ function addDataToScreenLocked(callback, id, data)
 				var html = '<h3 class="center">These people are looking for new neighbors:</h3>';
 				$(status).each(function(k,v)
 				{
-					html+='<div class="friendsList"><a href="http://www.facebook.com/profile.php?id='+v+'" class="friendLink" target="_blank">'+v+'</a></div>';
+					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'" class="friendLink" target="_blank">'+v+'</a></div>';
 				});
 				html+= '<br style="clear: both" />';
 			}
