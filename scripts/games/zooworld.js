@@ -228,6 +228,10 @@ FGS.zooworld.Requests =
 					{
 						var testStr = $('#app_content_2345673396', dataHTML).find('h1:first').text();
 					}
+					else if($('#app_content_44111361632', dataHTML).length > 0)
+					{
+						var testStr = $('#app_content_44111361632', dataHTML).find('h1:first').text();
+					}
 					else
 					{
 						var testStr = $('#app_content_2601240224', dataHTML).find('h1:first').text();
