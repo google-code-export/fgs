@@ -35,7 +35,7 @@ FGS.zooworld.Freegifts =
 					{
 						if(idd.indexOf('fb_') != -1)
 						{
-							postParams[idd] = $.unparam(src)[idd];
+							postParams[idd] = unescape($.unparam(src)[idd]);
 						}
 					}
 					
@@ -114,7 +114,8 @@ FGS.zooworld.Freegifts =
 					var app_key = tst[1];
 					var channel_url = tst[2];
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					
+					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/mg).exec(dataStr);					
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
@@ -470,7 +471,7 @@ FGS.zooworld.Bonuses =
 					if(typeof(tempVars) == 'undefined') throw {message: 'no tempvars zooworld'}
 					
 					var getStr = '?oauth_consumer_key=facebook.com&oauth_signature=1&vip&version=100';
-					
+										
 					for(var idd in tempVars)
 					{
 						if(idd.indexOf('fb_') != -1)
