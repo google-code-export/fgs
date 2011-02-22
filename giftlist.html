@@ -317,6 +317,13 @@ function addDataToScreenLocked(callback, id, data)
 		var gameID = data2[0][1];
 		var game = bkP.gamesData[gameID].systemName;
 		
+		if(isScreenLocked)
+		{
+			addDataToScreenLocked(addNewBonus, '', data2);
+			return;
+		}
+		
+		
 		$('div#'+game+'BonusesPendingList', '#'+game+'Game').prev().height(55).find('.submenuInfo').html('');
 		$('div#'+game+'ManualBonusesList', '#'+game+'Game').prev().height(55).find('.submenuInfo').html('');
 		
@@ -1168,6 +1175,12 @@ function addDataToScreenLocked(callback, id, data)
 	{
 		var htmls = {};
 		var htmlsManual = {};
+		
+		if(isScreenLocked)
+		{
+			addDataToScreenLocked(addNewRequest, '', data2);
+			return;
+		}
 		
 		$(data2).each(function(ind,data)
 		{
@@ -2541,7 +2554,10 @@ function updateTimeAgo(target)
 				
 				$(procArr).each(function(k,v)
 				{
-					v.callback(v.id, v.data);					
+					if(v.id == '')
+						v.callback(v.data);
+					else
+						v.callback(v.id, v.data);					
 				});
 			}
 		});

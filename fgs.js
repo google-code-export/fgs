@@ -548,14 +548,22 @@ var FGS = {
 	},
 	
 	
-	checkRequests: function()
+	checkRequests: function(apps)
 	{
+		if(typeof(apps) == 'undefined')
+			var urlIK = 'http://www.facebook.com/games';
+		else
+			var urlIK = 'http://www.facebook.com/?sk=apps&ap=1';
+	
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/games',
+			url: urlIK,
 			timeout: 180000,
 			success: function(data)
 			{
+				if(typeof(apps) == 'undefined')
+					FGS.checkRequests(true);
+				
 				if(data.indexOf('"content":{"pagelet_requests":"') != -1)
 				{
 					var pos1 = data.indexOf('"content":{"pagelet_requests":"')+10;
@@ -606,6 +614,11 @@ var FGS = {
 				FGS.jQuery('input[name="params\[app_id\]"]',data).parent('form').each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
+					
+					if(apps)
+					{
+						console.log($(this));
+					}
 					
 					if(FGS.options.games[APPID] == undefined || FGS.options.games[APPID].enabled == false)
 					{
@@ -807,9 +820,6 @@ var FGS = {
 		}
 		
 		var downAppID = appID;
-		
-		if(appID == '167746316127')
-			downAppID = appID+'_2345673396';
 		
 		
 		//dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);

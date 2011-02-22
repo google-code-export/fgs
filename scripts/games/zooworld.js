@@ -5,16 +5,25 @@ FGS.zooworld.Freegifts =
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+		
+		if(!params.zooAppId	)
+		{
+			params.zooAppname = 'zooparent';
+			params.zooAppId	  = '74';
+			params.checkID = '167746316127';
+			params.gameName = 'playzoo';
+		}
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/playzoo/zoo/home.php'+addAntiBot,
+			url: 'http://apps.facebook.com/'+params.gameName+'/zoo/home.php'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				try
 				{
-					var src = FGS.findIframeAfterId('#app_content_167746316127', dataStr);
+					
+					var src = FGS.findIframeAfterId('#app_content_'+params.checkID, dataStr);
 					if (src == '') throw {message:"no iframe"}
 					
 					var pos1 = src.indexOf('?');
@@ -32,8 +41,8 @@ FGS.zooworld.Freegifts =
 					
 					postParams['service'] 	= 'dsplygiftinvite';
 					postParams['giftId'] 	= params.gift;
-					postParams['appname']	= 'zooparent';
-					postParams['appId'] 	= '74';
+					postParams['appname']	= params.zooAppname;
+					postParams['appId'] 	= params.zooAppId;
 					//postParams['straightToGift'] = '1';
 					
 					params.param2 = postParams;
@@ -196,7 +205,18 @@ FGS.zooworld.Requests =
 				{
 					// <h3>Cannot accept gift. // <h3>This promotion is over.
 				
-					var testStr = $('#app_content_167746316127', dataHTML).find('h1:first').text();
+					if($('#app_content_167746316127', dataHTML).length > 0)
+					{
+						var testStr = $('#app_content_167746316127', dataHTML).find('h1:first').text();
+					}
+					else if($('#app_content_2405948328', dataHTML).length > 0)
+					{
+						var testStr = $('#app_content_2405948328', dataHTML).find('h1:first').text();
+					}
+					else
+					{
+						var testStr = $('#app_content_2345673396', dataHTML).find('h1:first').text();
+					}
 					
 					if(testStr.indexOf('You are now ZooMates') != -1)
 					{
@@ -336,9 +356,17 @@ FGS.zooworld.Bonuses =
 					{
 						var src = FGS.findIframeAfterId('#app_content_167746316127', dataStr);
 					}
-					else
+					else if($('#app_content_2345673396', dataHTML).length > 0)
 					{
 						var src = FGS.findIframeAfterId('#app_content_2345673396', dataStr);
+					}
+					else if($('#app_content_2405948328', dataHTML).length > 0)
+					{
+						var src = FGS.findIframeAfterId('#app_content_2405948328', dataStr);
+					}
+					else
+					{
+						throw {message: 'not zoo?'}
 					}
 
 					if (src == '') throw {message:"no iframe"}
@@ -405,7 +433,7 @@ FGS.zooworld.Bonuses =
 						var pos2 = dataStr.indexOf('},', pos1)+1;
 						lastPos = pos2;
 						
-						if(dataStr.slice(pos1, pos2).indexOf('zooparent') != -1 || dataStr.slice(pos1, pos2).indexOf('"hugme"') != -1)
+						if(dataStr.slice(pos1, pos2).indexOf('zooparent') != -1 || dataStr.slice(pos1, pos2).indexOf('"hugme"') != -1 || dataStr.slice(pos1, pos2).indexOf('"likeness"') != -1)
 						{
 							var tempVars = JSON.parse(dataStr.slice(pos1,pos2));
 							break;
