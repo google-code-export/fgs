@@ -622,7 +622,6 @@ var FGS = {
 
 					var el = $(this);
 					
-					
 					if($(this).attr('action') == '/ajax/games/apprequest/apprequest.php')
 					{
 						var dataPost = 
@@ -691,7 +690,7 @@ var FGS = {
 						{
 							var searchStr = 'gid';
 						}
-						else if(APPID == 167746316127)
+						else if(APPID == 167746316127 || APPID == 2405948328 || APPID == 2345673396 || APPID == 2339854854 || APPID == 14852940614)
 						{
 							var searchStr = 'giftId';
 						}

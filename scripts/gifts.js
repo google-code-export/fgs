@@ -868,7 +868,7 @@ FGS.getFBML = function(params, retry)
 				var reqData =
 				{
 					prefill: true,
-					message: '',
+					message: (params.messageToAdd ? params.messageToAdd : ''),
 					preview: false,
 					donot_send: false,
 					__d: 1,
