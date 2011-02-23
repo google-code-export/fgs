@@ -674,7 +674,20 @@ var FGS = {
 					}
 
 					var elID = $(el).children('input[name=id]').val();
-					var newText = $(el).find('.appRequestBody').text();
+
+					var testEl = $(el).find('.UIImageBlock_ICON_Content:first');
+					
+					if(testEl.children().length > 1)
+					{
+						var txtP1 = '<span style="color: blue;font-weight: bold;">'+testEl.children(':last').text()+'</span><br />';
+						var txtP2 = testEl.children(':first').text();
+						
+						var newText = txtP1 + txtP2;
+					}
+					else
+					{
+						var newText = testEl.text();
+					}
 					
 					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1)
 					{
