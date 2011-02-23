@@ -680,6 +680,23 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	256799621935:	{ 	name: 'Car Town',	systemName: 'cartown', link: 'http://apps.facebook.com/cartown/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'RequestsPending',
+							'ManualBonuses',
+							'RequestsHistory',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =
