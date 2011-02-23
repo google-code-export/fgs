@@ -34,7 +34,7 @@ FGS.cartown.Requests =
 				
 				try
 				{
-					var txt = $('#app256799621935_main_body', dataHTML).text();
+					var txt = $('#app256799621935_main_body', dataHTML).find('.popup').children('h2').text();
 					
 					if(txt.indexOf('This gift has expired') != -1)
 					{
@@ -43,8 +43,22 @@ FGS.cartown.Requests =
 						return;
 					}
 					
-					info.image = $('.item-holder',dataHTML).find('img:first').attr('src');
-					info.title = $('.item-holder',dataHTML).find('.title:first').text();					
+					if($('.item-holder',dataHTML).length > 0)
+					{
+						info.image = $('.item-holder',dataHTML).find('img:first').attr('src');
+						info.title = $('.item-holder',dataHTML).find('.title:first').text();
+					}
+					else if($('.popup',dataHTML).length > 0)
+					{
+						info.image = $('.popup',dataHTML).find('img:first').attr('src');
+						info.title = txt;
+					}
+					else
+					{
+						throw {message: 'unknown page'}
+					}
+					
+					
 					info.text  = txt;
 					info.time = Math.round(new Date().getTime() / 1000);
 					
