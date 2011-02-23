@@ -21,6 +21,11 @@
 			"js": ["scripts/jquery-1.4.2.min.js" , "dom.js" ],
 			"matches": [ "http://*.facebook.com/*", "https://*.facebook.com/*"],
 			"run_at": "document_end"
+		},
+		{
+			"js": ["add.js"],
+			"matches": [ "http://www.facebook.com/addfriend.php?id=*&fromFGS=*", "https://www.facebook.com/addfriend.php?id=*&fromFGS=*"],
+			"run_at": "document_end"
 		}
 	],
 	"homepage_url": "http://fgs.rzadki.eu",

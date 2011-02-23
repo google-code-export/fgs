@@ -1438,7 +1438,7 @@ function addDataToScreenLocked(callback, id, data)
 				var html = '<h3 class="center">These people are looking for new neighbors:</h3>';
 				$(status).each(function(k,v)
 				{
-					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'" class="friendLink" target="_blank">'+v+'</a></div>';
+					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'&fromFGS='+escape(bkP.gamesData[gameID].name)+'" class="friendLink" target="_blank">'+v+'</a></div>';
 				});
 				html+= '<br style="clear: both" />';
 			}
