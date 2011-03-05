@@ -1,6 +1,10 @@
 FGS.giftsArray = {
 	'201278444497': // frontierville
 	{
+		"doctor_office_syringe": { name: "Syringe"},
+		"beans": { name: "Beans"},
+		
+		
 		"gift_mystery1": { name: 'Mystery Gift 1'},
 		"gift_mystery2": { name: 'Mystery Gift 2'},
 		"gift_mystery3": { name: 'Mystery Gift 3'},

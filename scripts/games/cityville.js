@@ -162,7 +162,7 @@ FGS.cityville.Freegifts =
 						var pos3 = dataStr.indexOf("'", pos2);
 						
 						params.step1url = nextUrl+dataStr.slice(pos2,pos3).replace(nextUrl, '');
-						retryThis(params, true);
+						retryThis(params);
 						return;
 					}
 					
