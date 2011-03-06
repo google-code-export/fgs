@@ -14,15 +14,19 @@ FGS.petville.Freegifts =
 			{
 				try
 				{
-					var paramTmp = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
-					if(paramTmp == '') throw {message: 'no iframe'}
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target]', dataHTML).attr('action');
+					var params2 = $('form[target]', dataHTML).serialize();
 					
-					var pos1 = paramTmp.indexOf('pv_session=')+11;
-					var pos2 = paramTmp.indexOf('&', pos1);
+					if(!url) throw {message: 'fail'}
 					
 					
+
+					var pos1 = url.indexOf('pv_session=')+11;
+					var pos2 = url.indexOf('&', pos1);
 					
-					params.pv_session = paramTmp.slice(pos1, pos2);
+					params.pv_session = url.slice(pos1, pos2);
 					FGS.petville.Freegifts.Click2(params);
 					
 				}
@@ -67,6 +71,81 @@ FGS.petville.Freegifts =
 			}
 		});
 	},
+	/*
+	Click2: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+					params.domain = params.step1url.match(re)[1].toString();
+					
+					
+					var pos1 = dataStr.indexOf('new ZY({');
+					if (pos1 == -1) throw {message:'no zyparams'}
+					pos1 += 7;
+					pos2 = dataStr.indexOf('"},', pos1)+2;
+					var dataParam	= dataStr.slice(pos1,pos2);				
+					
+					var dataStrTmp = JSON.parse(dataParam);
+					
+					params.zyParam = $.param(dataStrTmp);
+
+					FGS.petville.Freegifts.Click3(params);
+				}
+				catch(err)
+				{
+					console.log(err);
+					//dump(err);
+					//dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	*/
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -324,10 +403,10 @@ FGS.petville.Requests =
 				
 				try 
 				{
-					var src = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
-					if (src == '') throw {message:"no iframe"}
-				
-					FGS.petville.Requests.Click2(currentType, id, src);
+					var url = $('form[target]', dataHTML).attr('action');
+					var params = $('form[target]', dataHTML).serialize();
+					
+					FGS.petville.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -357,15 +436,16 @@ FGS.petville.Requests =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, retry)
+	Click2:	function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: currentURL,
+			data: params,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -396,7 +476,7 @@ FGS.petville.Requests =
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -408,7 +488,7 @@ FGS.petville.Requests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{
@@ -542,10 +622,12 @@ FGS.petville.Bonuses =
 				
 				try
 				{
-					var src = FGS.findIframeAfterId('#app_content_163576248142', dataStr);
-					if (src == '') throw {message:"no iframe"}
+					var url = $('form[target]', dataHTML).attr('action');
+					var params = $('form[target]', dataHTML).serialize();
+					
+					FGS.petville.Bonuses.Click2(currentType, id, url, params);
 
-					FGS.petville.Bonuses.Click2(currentType, id, src);
+					//FGS.petville.Bonuses.Click2(currentType, id, src);
 				}
 				catch(err)
 				{
@@ -575,15 +657,16 @@ FGS.petville.Bonuses =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, retry)
+	Click2:	function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: currentURL,
+			data: params,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -619,7 +702,7 @@ FGS.petville.Bonuses =
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 					}
 					else
 					{
@@ -631,7 +714,7 @@ FGS.petville.Bonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
 				}
 				else
 				{

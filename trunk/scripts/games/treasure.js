@@ -14,9 +14,15 @@ FGS.treasure.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/<iframe[^>].*src=\s*["](.*treasure.zynga.com\/flash.php.*[^"]+)[^>]*>*?.*?<\/iframe>/gm).exec(dataStr);
-					if(tst == null) throw {message:'no treasure iframe tag'}
-					params.nextUrl = $(FGS.HTMLParser('<p class="link" href="'+tst[1]+'">abc</p>')).find('p.link').attr('href');
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target]', dataHTML).attr('action');
+					var params2 = $('form[target]', dataHTML).serialize();
+					
+					if(!url) throw {message: 'fail'}
+					
+					params.step1url = url;
+					params.step1params = params2;
 					
 					FGS.treasure.Freegifts.Click2(params);
 				}
@@ -65,19 +71,20 @@ FGS.treasure.Freegifts =
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
+		var retryThis 	= arguments.callee;		
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
-			type: "GET",
-			url: params.nextUrl+''+addAntiBot,
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				try
 				{
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-					params.domain = params.nextUrl.match(re)[1].toString();
+					params.domain = params.step1url.match(re)[1].toString();
 					
 					
 					var pos1 = dataStr.indexOf('new ZY({');
@@ -94,6 +101,7 @@ FGS.treasure.Freegifts =
 				}
 				catch(err)
 				{
+					console.log(err);
 					//dump(err);
 					//dump(err.message);
 					if(typeof(retry) == 'undefined')
