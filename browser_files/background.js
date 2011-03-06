@@ -559,3 +559,8 @@ FGS.openRecovery = function()
 		});
 	});
 };
+
+FGS.dump = function(msg)
+{
+	console.log(msg);
+};

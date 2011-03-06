@@ -13,8 +13,8 @@
 <link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.1" rel="stylesheet" />
 <link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.1" rel="stylesheet" />
 
-<script type="text/javascript" src="scripts/jquery-1.5.min.js"></script>
-<script type="text/javascript" src="scripts/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.tooltip.min.js"></script>
 
 
@@ -269,7 +269,7 @@ function addDataToScreenLocked(callback, id, data)
 			var url = 'http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo processRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo processRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -295,9 +295,14 @@ function addDataToScreenLocked(callback, id, data)
 			var url = 'http://fgs.rzadki.eu/reqs/'+game+'/'+v.image+'.png';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem updateTimeAgo manualRequest processManualRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');$(this).closest(\'div\').attr(\'isMissingImage\', true);"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem updateTimeAgo manualRequest processManualRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
+	function processImageError(e)
+	{
+		var el = $(e);
+		el.attr('src', 'icons/reqs/noimage.png');
+	}
 	
 	function processManualBonusClick(el)
 	{
@@ -1422,7 +1427,7 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="$(this).attr(\'src\', \'icons/reqs/noimage.png\');"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
+		return '<div id="'+v.id+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
 	}
 	
 	function friendsLoaded(gameID, status)
