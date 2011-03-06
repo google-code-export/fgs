@@ -3,6 +3,7 @@ FGS.giftsArray = {
 	{
 		"doctor_office_syringe": { name: "Syringe"},
 		"beans": { name: "Beans"},
+		"carepackages": { name: "Care package"},
 		
 		
 		"gift_mystery1": { name: 'Mystery Gift 1'},
@@ -1098,6 +1099,23 @@ FGS.sendGift = function(params, retry)
 							var newPar = params.step3param.replace('send_gifts_mfs.php?', '');
 							$.post(vampUrl, newPar);
 							$.post('http://'+params.domain+'/index2.php', newPar);						
+						}
+					}
+					
+					if(params.gameID == '102518706469143')
+					{
+						var pos0 = data.indexOf('self.parent.location = "');
+						if(pos0 != -1)
+						{
+							pos0+=24;
+							var pos1 = data.indexOf('"', pos0);
+							var wildUrl = data.slice(pos0, pos1);
+							var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+							var domain = params.step1url.match(re)[1].toString();
+							
+							wildUrl = wildUrl.replace('apps.facebook.com/wildwesttown', domain+'/wildwest/pFacebook');
+							var newPar = params.step2params;
+							$.post(wildUrl, newPar);				
 						}
 					}
 					
