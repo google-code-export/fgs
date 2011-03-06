@@ -174,6 +174,8 @@ FGS.wildwesttown.Freegifts =
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
+					fbml = fbml.replace(/&amp;/g, '&');
+					
 					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml)+'&session_key='+params.session_key;
 					
 					params.nextParams = paramsStr;

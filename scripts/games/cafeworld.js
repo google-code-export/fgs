@@ -69,13 +69,27 @@ FGS.cafeworld.Requests =
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
+		if(currentURL.length == 2)
+		{
+			var method = 'POST';
+			var newUrl = currentURL[0];
+			var params = currentURL[1];
+		}
+		else
+		{
+			var method = 'GET';
+			var newUrl = currentURL;
+			var params = '';
+		}
+	
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
-			url: currentURL,
+			type: method,
+			url: newUrl,
+			data: params,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -96,6 +110,15 @@ FGS.cafeworld.Requests =
 					{
 						FGS.endWithError('receiving', currentType, id);
 					}
+					return;
+				}
+				
+				if($('form[action*="request_v2_landing_page.php"]', dataHTML).length > 0)
+				{
+					var url 	= $('form[action*="request_v2_landing_page.php"]', dataHTML).attr('action');
+					var params2 = $('form[action*="request_v2_landing_page.php"]', dataHTML).serialize();
+					
+					retryThis(currentType, id, [url, params2]);
 					return;
 				}
 				
@@ -152,7 +175,7 @@ FGS.cafeworld.Requests =
 						
 						var sendInfo = '';
 
-						var tmpStr = unescape(currentURL);					
+						var tmpStr = unescape(newUrl);					
 						var pos1 = tmpStr.indexOf('&gid=');
 						if(pos1 != -1)
 						{
@@ -245,26 +268,41 @@ FGS.cafeworld.Bonuses =
 					return;
 				}
 				
+				var limitArr = [
+					{ search: 'There are no more servings left', error: 'There are no more servings left.' },
+					{ search: 'Looks like all the prizes have', error: 'Looks like all the prizes have been already taken.' },
+					{ search: 'already claimed', error: 'Looks like all the prizes have been already claimed.' },
+					{ search: 'You are either too late or you clicked here previously', error: 'You are either too late or you clicked here previously' },
+					{ search: 'You already received this bonus', error: 'You already received this bonus' },
+					{ search: 'Perfect Servings once today!', error: 'You have already received Perfect Servings once today!' },
+					{ search: 'already received all the help they could handle', error: 'Looks like your friend already received all the help they could handle' },
+					{ search: 'You have already helped today!', error: 'You have already helped today!' },
+					
+				];
 				
-				if(dataStr.indexOf('There are no more servings left') != -1 || dataStr.indexOf('Looks like all the prizes have') != -1 || dataStr.indexOf('already claimed') != -1 || dataStr.indexOf('You are either too late or you clicked here previously') != -1 || dataStr.indexOf('You already received this bonus') != -1 || dataStr.indexOf(' Perfect Servings once today!') != -1 || dataStr.indexOf('already received all the help they could handle') != -1 || dataStr.indexOf('You have already helped today!') != -1)
+				
+				var isLimit = false;
+				
+				$(limitArr).each(function(k,v)
 				{
-					FGS.endWithError('limit', currentType, id);
-					return;
-				}
+					if(dataStr.indexOf(v.search) != -1)
+					{
+						FGS.endWithError('limit', currentType, id, v.error);
+						isLimit = true;
+						return false;
+					}
+				});
+				
+				if(isLimit) return;
+				
+				
 				
 				try
 				{
 					if(dataStr.indexOf('please pick a mystery gift as a thank you') != -1)
 					{
 						var newUrl = $('.lotto-container', dataHTML).children('a:first').attr('href');
-						if(typeof(retry) == 'undefined')
-						{
-							retryThis(currentType, id, unescape(newUrl), true);
-						}
-						else
-						{
-							throw {message: 'error'}
-						}
+						retryThis(currentType, id, unescape(newUrl), true);
 						return;
 					}
 					

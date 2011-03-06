@@ -25,6 +25,24 @@ var FGSdebugMode = true;
 
 $(function()
 {
+
+	$('body').append('<iframe src="http://www.facebook.com/extern/login_status.php?api_key=101539264719&app_id=101539264719&display=hidden&extern=2&locale=en_US&method=auth.status&next=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df22c7e6a2%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dopener%26transport%3Dpostmessage%26frame%3Df32ebf7%26result%3D%2522xxRESULTTOKENxx%2522&no_session=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df2c16783bc%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&no_user=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df193ced25c%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&ok_session=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df1ec9633b8%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&sdk=joey&session_version=3"></iframe>');
+	
+
+
+	/*
+	$.ajax({
+		url: 'http://www.facebook.com/extern/login_status.php?api_key=101539264719&app_id=101539264719&display=hidden&extern=2&locale=en_US&method=auth.status&next=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df22c7e6a2%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dopener%26transport%3Dpostmessage%26frame%3Df32ebf7%26result%3D%2522xxRESULTTOKENxx%2522&no_session=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df2c16783bc%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&no_user=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df193ced25c%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&ok_session=http%3A%2F%2Fstatic.ak.fbcdn.net%2Fconnect%2Fxd_proxy.php%3Fversion%3D0%23cb%3Df1ec9633b8%26origin%3Dhttp%253A%252F%252Ffb-0.cafe.zynga.com%252Ff13fb34854%26relation%3Dparent%26transport%3Dpostmessage%26frame%3Df32ebf7&sdk=joey&session_version=3',
+		complete: function(xhr)
+		{
+			console.log(xhr);
+			console.log(xhr.getAllResponseHeaders());
+		}
+	});
+	*/
+	
+//return;
+
 	FGS.preStartup();
 	
 	FGS.jQuery(window).unload( function () 
