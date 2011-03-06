@@ -562,5 +562,6 @@ FGS.openRecovery = function()
 
 FGS.dump = function(msg)
 {
-	console.log(msg);
+	if(FGSdebugMode)
+		console.log(msg);
 };

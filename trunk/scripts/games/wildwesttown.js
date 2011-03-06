@@ -1,4 +1,4 @@
-FGS.frontierville.Freegifts = 
+FGS.wildwesttown.Freegifts = 
 {
 	Click: function(params, retry)
 	{
@@ -8,7 +8,7 @@ FGS.frontierville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/frontierville/?crt=&aff=tab&src=direct&newUser=&sendkey=&ref=tab'+addAntiBot,
+			url: 'http://apps.facebook.com/wildwesttown/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -19,12 +19,18 @@ FGS.frontierville.Freegifts =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params2 = $('form[target]', dataHTML).serialize();
 					
+					var pos1 = dataStr.indexOf('new PlatformCanvasController("102518706469143", "');
+					pos1+=49;
+					var pos2 = dataStr.indexOf('"', pos1);
+					
+					params.session_key = dataStr.slice(pos1,pos2);
+					
 					if(!url) throw {message: 'fail'}
 					
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.frontierville.Freegifts.ClickForm(params);
+					FGS.wildwesttown.Freegifts.ClickForm(params);
 				}
 				catch(err)
 				{
@@ -83,25 +89,22 @@ FGS.frontierville.Freegifts =
 			{
 				try
 				{
-					var dataHTML = FGS.HTMLParser(dataStr);
-				
-					var tst = new RegExp(/<iframe[^>].*src=\s*["].*populateFbCache\.php[?]([^"]+)/m).exec(dataStr);
-					if(tst == null) throw {message:'no frontierville iframe tag'}
+					var pos1 = dataStr.indexOf("params['signed_request'] = ");
+					if(pos1 == -1) throw {}
 					
-					var zyParams = {}
+					pos1+= 28;
+					var pos2 = dataStr.indexOf('"', pos1);
 					
-					var qry = tst[1].replace(/&amp;/g,'&');
 					
-					for(var idd in FGS.jQuery.unparam(qry))
+					
+					params.step2params = 
 					{
-						if(idd.indexOf('zy') == 0)
-						{
-							zyParams[idd] = FGS.jQuery.unparam(qry)[idd];
-						}
-					}
-					params.zyParam = $.param(zyParams);
+						reqid: 3,
+						signed_request: dataStr.slice(pos1,pos2),
+					};
 					
-					FGS.frontierville.Freegifts.Click2(params);
+					
+					FGS.wildwesttown.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -152,24 +155,26 @@ FGS.frontierville.Freegifts =
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
 		$.ajax({
-			type: "GET",
-			url: 'http://fb-0.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+''+addAntiBot+'#overlay',
+			type: "POST",
+			url: 'http://wildwest-234808553.us-east-1.elb.amazonaws.com/wildwest/pFacebook/index.php?c=CanvasCombinables&sc=ajax&mode=std&filter=rec&cr=&who=&ajax=1'+addAntiBot,
+			data: params.step2params,
 			dataType: 'text',
 			success: function(dataStr)
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
+					var x = JSON.parse(dataStr);
 					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var dataStr = x.fbml_body;
+
+					var app_key = '102518706469143';
+					var channel_url = '';
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					var tst = new RegExp(/<fb:serverfbml[^>]*?>[\s\S]*?<script[^>]*?>([\s\S]*?)<\/script>[\s\S]*?<\/fb:serverfbml>/mi).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml)+'&session_key='+params.session_key;
 					
 					params.nextParams = paramsStr;
 					
@@ -218,7 +223,7 @@ FGS.frontierville.Freegifts =
 	}
 };
 
-FGS.frontierville.Requests = 
+FGS.wildwesttown.Requests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -253,7 +258,7 @@ FGS.frontierville.Requests =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.frontierville.Requests.Click2(currentType, id, url, params);
+					FGS.wildwesttown.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -298,79 +303,68 @@ FGS.frontierville.Requests =
 			success: function(dataStr)
 			{
 				var dataHTML = FGS.HTMLParser(dataStr);
-				var redirectUrl = FGS.checkForLocationReload(dataStr);
-				
-				if(redirectUrl != false)
-				{
-					if(FGS.checkForNotFound(redirectUrl) === true)
-					{
-						FGS.endWithError('not found', currentType, id);
-					}
-					else if(typeof(retry) == 'undefined')
-					{
-						retryThis(currentType, id, redirectUrl, params, true);
-					}
-					else
-					{
-						FGS.endWithError('receiving', currentType, id);
-					}
-					return;
-				}
-				
+
 				try
 				{
-					if($('div.giftLimit', dataHTML).length > 0)
+					var pos1 = currentURL.indexOf('sc=acceptNeighbor');
+					if(pos1 != -1)
 					{
-						var error_text = $.trim($('div.giftLimit', dataHTML).text());
+						info.image = '';
+						info.title = '';
+						info.text  = 'New neighbour';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+						return;
+					}
+					
+					if(dataStr.indexOf('something went wrong with this offer') != -1)
+					{
+						var error_text = 'Gift already accepted';
 						FGS.endWithError('limit', currentType, id, error_text);					
 						return;
-					}				
-				
-					if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length == 0)
+					}
+					
+					if($(dataHTML).filter('#sendConf').length > 0)
 					{
-						info.image = $(".giftFrom_img",dataHTML).children().attr("src");
-						info.title = 'New neighbour';
-						info.text  = $(".giftFrom_name",dataHTML).children().text();
+						var txt = $(dataHTML).filter('#sendConf').text();
+						
+						if(txt.indexOf('Cannot accept a position with this person') != -1)
+						{
+							var error_text = 'Cannot accept a position with this person, you already have a job with them.';
+							FGS.endWithError('limit', currentType, id, error_text);					
+							return;
+						}
+						
+						var pos1 = txt.indexOf('!');
+						var txt = txt.slice(0, pos1+1);
+						var txt = txt.replace(/\'s/i,"");
+						
+						var pos1 = txt.indexOf(' in ');
+						pos1+= 4;
+						var title = txt.slice(pos1);
+						
+						info.title = title;
+						info.image = 'gfx/90px-check.png';
+						info.text = text;
 						info.time = Math.round(new Date().getTime() / 1000);
 						
 						FGS.endWithSuccess(currentType, id, info);
 					}
-					else if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
+					else if(dataStr.indexOf('Success!') != -1)
 					{
-						var sendInfo = '';
+						var found = $('img[title]', dataHTML);
 						
-						var tmpStr = unescape(currentURL);
-						
-						var pos1 = tmpStr.indexOf('&gift=');
-						if(pos1 != -1)
-						{
-							var pos2 = tmpStr.indexOf('&', pos1+1);
-								
-							var giftName = tmpStr.slice(pos1+6,pos2);
-							
-							var pos1 = tmpStr.indexOf('&senderId=1:');
-							var pos2 = tmpStr.indexOf('&', pos1+1);
-							
-							var giftRecipient = tmpStr.slice(pos1+12,pos2);						
-								
-							sendInfo = {
-								gift: giftName,
-								destInt: giftRecipient,
-								destName: $('.giftFrom_img', dataHTML).find('img').attr('title'),
-								}
-						}
-						info.thanks = sendInfo;					
-						
-						info.image = $(".giftConfirm_img",dataHTML).children().attr("src");
-						info.title = $(".giftConfirm_name",dataHTML).children().text();
-						info.text  = $(".giftFrom_name",dataHTML).children().text();
+						info.title = found.attr('title');
+						info.image = found.attr('src');
+						info.text = $("div:contains('Success!'):last", dataHTML).text();
 						info.time = Math.round(new Date().getTime() / 1000);
-						
+
 						FGS.endWithSuccess(currentType, id, info);
 					}
 					else
 					{
-						throw {message: dataStr}
+						throw {message: 'unknown'}
 					}
 				}
 				catch(err)
@@ -402,7 +396,7 @@ FGS.frontierville.Requests =
 	}
 };
 
-FGS.frontierville.Bonuses = 
+FGS.wildwesttown.Bonuses = 
 {
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -437,7 +431,7 @@ FGS.frontierville.Bonuses =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
-					FGS.frontierville.Bonuses.Click2(currentType, id, url, params);
+					FGS.wildwesttown.Bonuses.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -483,208 +477,40 @@ FGS.frontierville.Bonuses =
 	
 				try
 				{
-					var pos1 = dataStr.indexOf('top.location.href = "');
-					if(pos1 != -1)
-					{
-						var pos2 = dataStr.indexOf('"', pos1+21);
-						var url = dataStr.slice(pos1+21, pos2);
-						
-						FGS.frontierville.Bonuses.Click3(currentType, id, url);
-					}
-					else
-					{
-						throw {message: dataStr}
-					}
-				}
-				catch(err)
-				{
-					FGS.dump(err);
-					FGS.dump(err.message);
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
-					}
-					else
-					{
-						FGS.endWithError('receiving', currentType, id);
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
-				}
-				else
-				{
-					FGS.endWithError('connection', currentType, id);
-				}
-			}
-		});
-	},
-
-	Click3: function(currentType, id, currentURL, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;		
-		var info = {}
-		
-		$.ajax({
-			type: "GET",
-			url: currentURL,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				var redirectUrl = FGS.checkForLocationReload(dataStr);
-				
-				if(redirectUrl != false)
-				{
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(currentType, id, redirectUrl, true);
-					}
-					else
-					{
-						FGS.endWithError('receiving', currentType, id);
-					}
-					return;
-				}
-				
-				try
-				{
-					var url = $('form[target]', dataHTML).attr('action');
-					var params = $('form[target]', dataHTML).serialize();
+					var dataHTML = FGS.HTMLParser(dataStr);
 					
-					FGS.frontierville.Bonuses.Click4(currentType, id, url, params);
-				}
-				catch(err)
-				{
-					FGS.dump(err);
-					FGS.dump(err.message);
-					if(typeof(retry) == 'undefined')
+					if(dataStr.indexOf('You have already clicked on this link') != -1)
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
-					}
-					else
-					{
-						FGS.endWithError('receiving', currentType, id);
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
-				}
-				else
-				{
-					FGS.endWithError('connection', currentType, id);
-				}
-			}
-		});
-	},
-			
-	Click4: function(currentType, id, currentURL, params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;		
-		var info = {}
-		
-		$.ajax({
-			type: "POST",
-			url: currentURL,
-			data: params,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				var redirectUrl = FGS.checkForLocationReload(dataStr);
-				
-				try
-				{
-					if($('.fail_message', dataHTML).length > 0)
-					{
-						var error_text = $('.fail_message', dataHTML).text();
-						FGS.endWithError('limit', currentType, id, error_text);
+						var error_text = 'You have already clicked on this link, or sent them this item in the last 24 hours';
+						FGS.endWithError('limit', currentType, id, error_text);					
 						return;
 					}
-					else if($('.morePending_bttn', dataHTML).length > 0)
+					else
 					{
-						var giftReceiveUrl = $('.morePending_bttn > form:first', dataHTML).attr("action");
-						var giftReceivePost = $('.morePending_bttn > form:first', dataHTML).serialize();
+						var found = false;
 						
-						var testStr = $('.gift_from > h3', dataHTML).text();
-						var testStr = testStr.replace(/^\s+|\s+$/g, '');
-						
-						if(testStr == 'ToHelp' || testStr == 'To Help')
+						$('img[title]', dataHTML).each(function()
 						{
-							var tempTitle = $(".morePending_cont > div.text:first", dataHTML).text().replace('Help out and receive', '');
+							if($(this).closest('div').text().indexOf('Bonus:') != -1)
+							{
+								found = $(this);
+								return false;
+							}
+						});
+						
+						if(found !== false)
+						{
+							info.title = found.attr('title');
+							info.image = found.attr('src');
+							info.text = $("td:contains('You also received'):last", dataHTML).text();
+							info.time = Math.round(new Date().getTime() / 1000);
+
+							FGS.endWithSuccess(currentType, id, info);
 						}
 						else
 						{
-							var tempTitle = $(".giftConfirm_name",dataHTML).children().text();
+							throw {message: 'unknown'}
 						}
-						
-						var tempImage = $(".giftConfirm_img",dataHTML).children().attr("src");
-						
-						
-						FGS.jQuery.ajax({
-							type: "POST",
-							data: giftReceivePost,
-							url: giftReceiveUrl,
-							success: function(d)
-							{
-								if(d.indexOf('giftLimit') != -1)
-								{
-									var pos1 = d.indexOf('class="giftLimit')+18;
-									var pos2 = d.indexOf('div>', pos1)-2;
-									
-									var error_text = $.trim(d.slice(pos1,pos2));
-									
-									if(error_text.indexOf('your friend will still get their') != -1)
-									{
-										info.title = tempTitle;
-										info.image = tempImage;
-										info.text = '';
-										info.time = Math.round(new Date().getTime() / 1000);
-									
-										FGS.endWithSuccess(currentType, id, info);
-									}
-									else
-									{
-										FGS.endWithError('other', currentType, id, error_text);
-									}
-								}
-								else
-								{
-									
-									info.title = tempTitle;
-									info.image = tempImage;
-									info.text = '';
-									info.time = Math.round(new Date().getTime() / 1000);
-								
-									FGS.endWithSuccess(currentType, id, info);
-								}
-							},
-							error: function()
-							{
-								if(typeof(retry) == 'undefined')
-								{
-									retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
-								}
-								else
-								{
-									FGS.endWithError('connection', currentType, id);
-								}
-							}
-						});
-					}
-					else
-					{
-						throw {message: dataStr}
 					}
 				}
 				catch(err)

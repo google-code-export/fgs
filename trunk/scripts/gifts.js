@@ -802,6 +802,11 @@ FGS.giftsArray = {
 		"34091": { name: 'Cappuccino - lvl 10'},
 		"31830": { name: 'Red Mystery Chest'},
 		"31829": { name: 'Blue Mystery Chest'},
+	},
+	
+	102518706469143: //wild west town
+	{
+		"parts": { name: 'Send parts'}
 	}
 };
 
@@ -829,6 +834,8 @@ FGS.freeGiftForGame =
 	2345673396: '562',
 	2339854854: '562',
 	14852940614: '562',
+	
+	102518706469143: 'parts',
 }
 
 
@@ -1006,7 +1013,7 @@ FGS.getFBML = function(params, retry)
 			}
 			catch(e)
 			{
-				//dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
+				FGS.dump(FGS.getCurrentTime()+'[Z] Error: '+e.message);
 				if(typeof(params.sendTo) == 'undefined')
 				{
 					FGS.sendView('updateNeighbors', false, params.gameID);

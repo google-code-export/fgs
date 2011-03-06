@@ -697,6 +697,28 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	102518706469143:	{ 	name: 'Wild West Town',	systemName: 'wildwesttown', link: 'http://apps.facebook.com/wildwesttown/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['^Send Parts', 'Accept Help'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
 
 FGS.submenuButtons =

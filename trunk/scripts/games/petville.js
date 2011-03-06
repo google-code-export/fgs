@@ -32,8 +32,8 @@ FGS.petville.Freegifts =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -71,81 +71,7 @@ FGS.petville.Freegifts =
 			}
 		});
 	},
-	/*
-	Click2: function(params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;		
-		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 
-		$.ajax({
-			type: "POST",
-			url: params.step1url+addAntiBot,
-			data: params.step1params,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				try
-				{
-					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-					params.domain = params.step1url.match(re)[1].toString();
-					
-					
-					var pos1 = dataStr.indexOf('new ZY({');
-					if (pos1 == -1) throw {message:'no zyparams'}
-					pos1 += 7;
-					pos2 = dataStr.indexOf('"},', pos1)+2;
-					var dataParam	= dataStr.slice(pos1,pos2);				
-					
-					var dataStrTmp = JSON.parse(dataParam);
-					
-					params.zyParam = $.param(dataStrTmp);
-
-					FGS.petville.Freegifts.Click3(params);
-				}
-				catch(err)
-				{
-					console.log(err);
-					//dump(err);
-					//dump(err.message);
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(params, true);
-					}
-					else
-					{
-						if(typeof(params.sendTo) == 'undefined')
-						{
-							FGS.sendView('updateNeighbors', false, params.gameID);
-						}
-						else
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-						}
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(params, true);
-				}
-				else
-				{
-					if(typeof(params.sendTo) == 'undefined')
-					{
-						FGS.sendView('updateNeighbors', false, params.gameID);
-					}
-					else
-					{
-						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-					}
-				}
-			}
-		});
-	},
-	*/
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -274,8 +200,8 @@ FGS.petville.Freegifts =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(params, true);
@@ -360,7 +286,7 @@ FGS.petville.Freegifts =
 
 			params.nextParams = nextParams;
 
-			//dump(FGS.getCurrentTime()+'[Z] FBMLinfo - OK');
+			FGS.dump(FGS.getCurrentTime()+'[Z] FBMLinfo - OK');
 
 			FGS.getFBML(params);
 		});
@@ -410,8 +336,8 @@ FGS.petville.Requests =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -472,8 +398,8 @@ FGS.petville.Requests =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
@@ -563,8 +489,8 @@ FGS.petville.Requests =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -631,8 +557,8 @@ FGS.petville.Bonuses =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
@@ -698,8 +624,8 @@ FGS.petville.Bonuses =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', params, true);
@@ -830,8 +756,8 @@ FGS.petville.Bonuses =
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
