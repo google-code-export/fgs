@@ -123,8 +123,8 @@ var FGS = {
 				}
 				catch(err)
 				{
-					//dump(err);
-					//dump(err.message);
+					FGS.dump(err);
+					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
 						retryThis(game, id, dataPost, newWindow, true);
@@ -180,7 +180,7 @@ var FGS = {
 		
 		for(var id in FGS.iBonusTimeout)
 		{
-			//dump(FGS.getCurrentTime()+'[B] Stopping '+id);
+			FGS.dump(FGS.getCurrentTime()+'[B] Stopping '+id);
 			FGS.stopBonusesForGame(id);
 		}
 		
@@ -211,7 +211,7 @@ var FGS = {
 								
 				if(FGS.jQuery("#login_form", data).length > 0)
 				{
-					//dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
+					FGS.dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
 					FGS.stopAll();
 					return true;
 				}
@@ -274,13 +274,13 @@ var FGS = {
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
 			var ret = $(url).attr('href');
 			
-			//dump(ret);
+			FGS.dump(ret);
 			
 			return ret;
 		}
 		catch(err)
 		{
-			//dump('checkForLocationReload'+err);
+			FGS.dump('checkForLocationReload'+err);
 			return false;
 		}
 	},
@@ -297,14 +297,7 @@ var FGS = {
 			var viewMsg = 'bonusSuccess';
 			var table = 'bonuses';
 		}
-		else
-		{
-			//alert('nieznany type przy SUCCESS - powiedz mezowi: '+type+' ID: '+id);
-			//dump('nieznany typ SUCCESS');
-			//dump(type);
-			//dump(id);
-			//dump('nieznany typ SUCCESS koniec');
-		}
+		
 		FGS.sendView(viewMsg, id, info);
 		FGS.database.updateItem(table, id, info);
 			
@@ -328,14 +321,6 @@ var FGS = {
 		{
 			var viewMsg = 'bonusError';
 			var table = 'bonuses';
-		}
-		else
-		{
-			//alert('nieznany type przy ERROR - powiedz mezowi: '+type+' ID: '+id);
-			//dump('nieznany typ ERROR');
-			//dump(type);
-			//dump(id);
-			//dump('nieznany typ ERROR koniec');
 		}
 		
 		if(error == 'receiving')
@@ -509,11 +494,11 @@ var FGS = {
 	
 	restartBonuses: function()
 	{
-		//dump(FGS.getCurrentTime()+'[B] Restarting bonuses');		
+		FGS.dump(FGS.getCurrentTime()+'[B] Restarting bonuses');		
 		
 		for(var id in FGS.iBonusTimeout)
 		{
-			//dump(FGS.getCurrentTime()+'[B] Stopping '+id);
+			FGS.dump(FGS.getCurrentTime()+'[B] Stopping '+id);
 			FGS.stopBonusesForGame(id);
 		}
 		
@@ -526,7 +511,7 @@ var FGS = {
 				if(typeof(FGS.iBonusTimeout[id]) == 'undefined' || FGS.iBonusTimeout[id] == null)
 				{
 					FGS.startBonusesForGame(id);
-					//dump(FGS.getCurrentTime()+'[B] Starting '+id);
+					FGS.dump(FGS.getCurrentTime()+'[B] Starting '+id);
 				}
 			}
 		}
@@ -534,7 +519,7 @@ var FGS = {
 	
 	restartRequests: function()
 	{
-		//dump(FGS.getCurrentTime()+'[R] Restarting requests');
+		FGS.dump(FGS.getCurrentTime()+'[R] Restarting requests');
 		clearInterval(FGS.iRequestTimeout);
 		FGS.iRequestTimeout = null;
 		FGS.checkRequests();
@@ -690,7 +675,7 @@ var FGS = {
 						var newText = testEl.text();
 					}
 					
-					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1)
+					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1 || newText.indexOf('as my new neighbor') != -1)
 					{
 						var type =  $(el).find('.UIImageBlock_SMALL_Image').find('img').attr('src');				
 					}
@@ -770,11 +755,11 @@ var FGS = {
 				{
 					FGS.database.addRequest(giftArr);
 				}
-				//dump(FGS.getCurrentTime()+'[R] Setting up new update in 10 minutes');
+				FGS.dump(FGS.getCurrentTime()+'[R] Setting up new update in 10 minutes');
 			},
 			error: function(e)
 			{
-				//dump(FGS.getCurrentTime()+'[R] Connection error. Setting up new update in 10 seconds');
+				FGS.dump(FGS.getCurrentTime()+'[R] Connection error. Setting up new update in 10 seconds');
 			}
 		});
 	},
@@ -830,7 +815,7 @@ var FGS = {
 		var downAppID = appID;
 		
 		
-		//dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
+		FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
 		
 		$.ajax({
 			type: "GET",
@@ -847,7 +832,7 @@ var FGS = {
 
 					if(error == 1357001)
 					{
-						//dump(FGS.getCurrentTime()+'[B] Error: logged out');
+						FGS.dump(FGS.getCurrentTime()+'[B] Error: logged out');
 						FGS.stopAll();
 						return true;
 					}
@@ -913,15 +898,15 @@ var FGS = {
 						{
 							if(FGS.userID != targets)
 							{
-								//dump('Rozne id: '+actr+' i '+targets+' userid: '+FGS.userID);
+								FGS.dump('Rozne id: '+actr+' i '+targets+' userid: '+FGS.userID);
 								return;
 							}
 						}
 						
 						if(secs > FGS.options.deleteOlderThan && FGS.options.deleteOlderThan != 0)
 						{
-							//dump(secs);
-							//dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
+							FGS.dump(secs);
+							FGS.dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
 							return false;
 						}
 						
@@ -938,7 +923,7 @@ var FGS = {
 						
 						if(actr == FGS.userID)	
 						{
-							//dump('Wlasny bonus');
+							FGS.dump('Wlasny bonus');
 							return;
 						}
 						
@@ -972,7 +957,7 @@ var FGS = {
 							
 							if(re.test(bTitle))
 							{
-								//dump('Filtering: '+bTitle);
+								FGS.dump('Filtering: '+bTitle);
 								ret = true;
 								return false;
 							}
@@ -1000,16 +985,16 @@ var FGS = {
 					{
 						FGS.bonusLoadingProgress[appID].loaded = true;
 					}
-					//dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+					FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
 				}
 				catch(e)
 				{
-					//dump(e.message);
+					FGS.dump(e.message);
 				}
 			},
 			error: function(e)
 			{
-				//dump(FGS.getCurrentTime()+'[B] There was a connection error. Setting up new update in 10 seconds');
+				FGS.dump(FGS.getCurrentTime()+'[B] There was a connection error. Setting up new update in 10 seconds');
 			}
 		});
 	},
@@ -1029,7 +1014,7 @@ var FGS = {
 	
 	loginStatusChanged: function(bool)
 	{
-		//dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
+		FGS.dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
 		
 		if(bool == true)
 		{
