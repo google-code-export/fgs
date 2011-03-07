@@ -122,6 +122,13 @@ FGS.cafeworld.Requests =
 					return;
 				}
 				
+				if(dataStr.indexOf('/me/apprequests') != -1)
+				{
+					FGS.getAppAccessToken(currentType, id, currentURL, 'api_key=101539264719&app_id=101539264719&channel=http://fb-0.cafe.zynga.com/current//channel/custom_channel.html', FGS.cafeworld.Requests.ParseAppRequests);
+					return;
+				}
+				
+				
 				try
 				{
 					if(dataStr.indexOf('There is a problem in the kitchen') != -1)
@@ -141,7 +148,30 @@ FGS.cafeworld.Requests =
 						FGS.endWithSuccess(currentType, id, info);
 						return;
 					}
-
+					
+					var el = $('#gift_items', dataHTML);
+					
+					if(el.length > 0)
+					{
+						var titleX = el.children('h1').text();
+						
+						if(titleX.indexOf('You just accepted ') != -1)
+						{
+							titleX = titleX.replace('You just accepted ','').replace('!','');
+							var pos1 = titleX.indexOf(' from ');
+							var gift = titleX.slice(0,pos1)+' from';
+							var from = titleX.slice(pos1+6);
+						}
+					
+						info.image = el.children('p:first').children('img').attr('src');
+						info.title = gift;
+						info.text  = from;
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+						return;
+					}
+					
 					if($('#app101539264719_gift_items', dataHTML).length > 0)
 					{
 						var titleX = $('#app101539264719_gift_items', dataHTML).find('h1:first').text();
@@ -215,7 +245,7 @@ FGS.cafeworld.Requests =
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+						retryThis(currentType, id, currentURL, true);
 					}
 					else
 					{
@@ -227,7 +257,7 @@ FGS.cafeworld.Requests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL+'&_fb_noscript=1', true);
+					retryThis(currentType, id, currentURL, true);
 				}
 				else
 				{
@@ -235,7 +265,143 @@ FGS.cafeworld.Requests =
 				}
 			}
 		});
-	}
+	},
+	
+	ParseAppRequests: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+	
+		try
+		{
+			var access_token = params[0].access_token;
+			var data = params[1];
+			
+			var response = JSON.parse(data);
+			var tmpData;
+			
+			for(var i=0; i<response.data.length; i++)
+			{
+				if(response.data[i].id == id)
+				{
+					tmpData = response.data[i];
+					break;
+				}
+			}
+			
+			if (!tmpData) {
+				throw {message: 'old gift'} // not found
+				return;
+			}
+
+            var tmp = tmpData.data.split('|||');
+            var uPar = '?sk=' + tmp[0] + '&rid=' + tmp[2];
+			uPar += '&from=' + tmpData.from.id;
+            uPar += '&skip_tracking=1';
+            uPar += '&fb_request_id=' + tmpData.id;
+			
+			var url = 'http://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php' + uPar;
+			var params2 = {access_token: '?access_token='+access_token}
+			
+			
+			
+			FGS.cafeworld.Requests.ClickNew(currentType, id, url, params2);
+		}
+		catch(err)
+		{
+			FGS.dump(err);
+			FGS.dump(err.message);
+			if(typeof(retry) == 'undefined')
+			{
+				retryThis(currentType, id, currentURL, params, true);
+			}
+			else
+			{
+				FGS.endWithError('receiving', currentType, id);
+			}
+		}
+	},
+	
+	ClickNew: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "GET",
+			url: currentURL,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				var dataHTML = FGS.HTMLParser(dataStr);
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
+				
+				try
+				{
+					if(dataStr.indexOf('There is a problem in the kitchen') != -1 || dataStr.indexOf('but it seems that something went wrong in the kitchen') != -1)
+					{
+						var error_text = 'There was problem receiving this gift. You have probably already accepted it';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					
+					var el = $('#gift_items', dataHTML);
+					
+					if(el.length > 0)
+					{
+						var titleX = el.children('h1').text();
+						
+						if(titleX.indexOf('You just accepted ') != -1)
+						{
+							titleX = titleX.replace('You just accepted ','').replace('!','');
+							var pos1 = titleX.indexOf(' from ');
+							var gift = titleX.slice(0,pos1)+' from';
+							var from = titleX.slice(pos1+6);
+						}
+					
+						info.image = el.children('p:first').children('img').attr('src');
+						info.title = gift;
+						info.text  = from;
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+						FGS.deleteNewRequests(id, params.access_token);		
+						return;
+					}
+					else
+					{
+						throw {message: dataStr}
+					}
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
 };
 
 FGS.cafeworld.Bonuses = 

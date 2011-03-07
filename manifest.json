@@ -26,12 +26,6 @@
 			"js": ["add.js"],
 			"matches": [ "http://www.facebook.com/addfriend.php?id=*&fromFGS=*", "https://www.facebook.com/addfriend.php?id=*&fromFGS=*"],
 			"run_at": "document_end"
-		},
-		{
-			"js": ["fbc.js"],
-			"matches": [ "http://*.fbcdn.net/*", "http://*.facebook.com/*", "https://*.facebook.com/*"],
-			"run_at": "document_end",
-			"all_frames": true
 		}
 	],
 	"homepage_url": "http://fgs.rzadki.eu",
