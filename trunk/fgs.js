@@ -78,6 +78,121 @@ var FGS = {
 		return num;
 	},
 	
+	deleteNewRequests: function(id, access_token)
+	{
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'https://graph.facebook.com/'+id+access_token+'&method=delete',
+			dataType: 'text',
+			success: function(data)
+			{}
+		});
+	},
+	
+	getGameRequests: function(currentType, id, currentURL, params, callback, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var currentType	= 'request';
+		var info = {}
+		
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'https://graph.facebook.com/me/apprequests',
+			data: params,
+			dataType: 'text',
+			success: function(data)
+			{
+				try
+				{
+					callback(currentType, id, currentURL, [params, data]);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, callback, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, callback, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	getAppAccessToken: function(currentType, id, currentURL, params, callback, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var currentType	= 'request';
+		var info = {}
+		
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			data: params,
+			dataType: 'text',
+			success: function(data)
+			{
+				try
+				{
+					var parseStr = data;
+
+					var pos1 = parseStr.indexOf('var config = {');
+					if(pos1 == -1) throw {message:"no URI"}
+					
+					var pos2 = parseStr.indexOf('};',pos1);
+					
+					parseStr = parseStr.slice(pos1+13,pos2+1);
+					var parseStr = JSON.parse(parseStr);
+					
+					var access = {access_token: parseStr.session.access_token};
+					
+					FGS.getGameRequests(currentType, id, currentURL, access, callback);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, callback, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, callback, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
 	prepareLinkForGame: function(game, id, dataPost, newWindow, retry)
 	{
 		var $ = FGS.jQuery;
@@ -105,7 +220,7 @@ var FGS = {
 					var parseStr = data;
 					
 					var pos1 = parseStr.indexOf('goURI');
-					if(!pos1 == -1) throw {message:"no URI"}
+					if(pos1 == -1) throw {message:"no URI"}
 					
 					var pos2 = parseStr.indexOf(');',pos1);
 					parseStr = '{"abc":"'+parseStr.slice(pos1+8,pos2-2)+'"}';
