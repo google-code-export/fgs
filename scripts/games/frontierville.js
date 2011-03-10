@@ -19,7 +19,12 @@ FGS.frontierville.Freegifts =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params2 = $('form[target]', dataHTML).serialize();
 					
-					if(!url) throw {message: 'fail'}
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
 					
 					params.step1url = url;
 					params.step1params = params2;
@@ -253,6 +258,13 @@ FGS.frontierville.Requests =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
 					FGS.frontierville.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
@@ -437,6 +449,13 @@ FGS.frontierville.Bonuses =
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
 					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
 					FGS.frontierville.Bonuses.Click2(currentType, id, url, params);
 				}
 				catch(err)
@@ -556,6 +575,13 @@ FGS.frontierville.Bonuses =
 				{
 					var url = $('form[target]', dataHTML).attr('action');
 					var params = $('form[target]', dataHTML).serialize();
+
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
 					
 					FGS.frontierville.Bonuses.Click4(currentType, id, url, params);
 				}

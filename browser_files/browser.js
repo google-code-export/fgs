@@ -51,10 +51,10 @@
 					"aoColumns": [
 						{ "sTitle": "Fav.", "bSortable": false },
 						{ "sTitle": "Name" },
-						{ "sTitle": "Last bonus" },
-						{ "sTitle": "Last gift" },
-						{ "sTitle": "Total bonuses" },
-						{ "sTitle": "Total gifts" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Last bonus" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Last gift" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Total bonuses" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Total gifts" },
 						{ "sTitle": "Select", "bSortable": false }
 					],
 					"aaSorting": [[ 1, "asc" ]],
@@ -70,10 +70,10 @@
 					"aoColumns": [
 						{ "sTitle": "Fav.", "bSortable": false },
 						{ "sTitle": "Name" },
-						{ "sTitle": "Last bonus" },
-						{ "sTitle": "Last gift" },
-						{ "sTitle": "Total bonuses" },
-						{ "sTitle": "Total gifts" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Last bonus" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Last gift" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Total bonuses" },
+						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": "Total gifts" },
 						{ "sTitle": "Select", "bSortable": false }
 					],
 					"aaSorting": [[ 1, "asc" ]],

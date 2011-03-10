@@ -29,6 +29,15 @@
 
 <script type="text/javascript">
 
+$.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
+{
+	var aData = [];
+	$( 'td:eq('+iColumn+') span', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		aData.push( $(this).text() );
+	} );
+	return aData;
+}
+
 var loaded = 0;
 var isScreenLocked = false;
 var chatInterval = null;
@@ -1505,8 +1514,8 @@ function addDataToScreenLocked(callback, id, data)
 						v.name,
 						'<span class="hide">0</span>never',
 						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
+						'<span class="hide">0</span>0',
+						'<span class="hide">0</span>0',
 						'<input type="checkbox" value="'+id+'" gameID="'+gameID+'" neighID="'+id+'" class="selectNeighborToSend" name="neighArr[]">'
 					]);
 				}
@@ -1520,8 +1529,8 @@ function addDataToScreenLocked(callback, id, data)
 						v.name,
 						'<span class="hide">0</span>never',
 						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
+						'<span class="hide">0</span>0',
+						'<span class="hide">0</span>0',
 						'<input type="checkbox" value="'+id+'" gameID="'+gameID+'" neighID="'+id+'" class="selectNeighborToSend" name="neighArr[]">'
 					]);
 				}	
