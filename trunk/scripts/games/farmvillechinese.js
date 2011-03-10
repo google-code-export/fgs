@@ -14,9 +14,19 @@ FGS.farmvillechinese.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/<iframe[^>].*src=\s*["](.*farmvillechinese.com\/flash.php.*[^"]+)[^>]*>*?.*?<\/iframe>/gm).exec(dataStr);
-					if(tst == null) throw {message:'no farmvillechinese iframe tag'}
-					params.click2url = $(FGS.HTMLParser('<p class="link" href="'+tst[1]+'">abc</p>')).find('p.link').attr('href');
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target="flashAppIframe"]', dataHTML).attr('action');
+					params.click2params = $('form[target="flashAppIframe"]', dataHTML).serialize();
+					params.click2url = url;
+					
+					if(!url)
+					{
+						var tst = new RegExp(/<iframe[^>].*src=\s*["](.*farmvillechinese.com\/flash.php.*[^"]+)[^>]*>*?.*?<\/iframe>/gm).exec(dataStr);
+						if(tst == null) throw {message:'no farmvillechinese iframe tag'}
+						params.click2url = $(FGS.HTMLParser('<p class="link" href="'+tst[1]+'">abc</p>')).find('p.link').attr('href');
+					}
+					
 					FGS.farmvillechinese.Freegifts.Click2(params);
 				}
 				catch(err)
@@ -68,8 +78,9 @@ FGS.farmvillechinese.Freegifts =
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: params.click2url+''+addAntiBot,
+			data: params.click2params,
 			dataType: 'text',
 			success: function(dataStr)
 			{

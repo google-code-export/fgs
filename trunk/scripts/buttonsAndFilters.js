@@ -77,7 +77,7 @@ FGS.gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
-							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan'],
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan', 'Send Satellite Phone', 'Send a set of Documents'],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',
@@ -173,7 +173,7 @@ FGS.gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost'],
 							requests: [],
-							requestsNewWindow: []
+							requestsNewWindow: ['(.*)needs some help with a catering order(.*)']
 						},
 						buttons: [
 							'BonusesPending',
