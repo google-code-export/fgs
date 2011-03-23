@@ -32,7 +32,7 @@ var FGS = {
 			collectXbonusesAtTheSameTime: 2,
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	clearOlderID:	0, likeBonus: false, sendbackGift: false, hideFromFeed: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false };
+		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, sendbackGift: false, hideFromFeed: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false, useRandomTimeoutOnBonuses: false };
 
 		for(var idd in FGS.gamesData)
 		{
@@ -46,10 +46,16 @@ var FGS = {
 		FGS.userName			= null;
 		FGS.newElements = 0;
 		FGS.bonusLoadingProgress = {};
+		
+		FGS.xhrFarmQueue = [];
+		FGS.xhrFarmNextBonus  = 0;		
+		FGS.xhrFarmWorking = 0;
+		
 		FGS.xhrQueue = [];
 		FGS.xhrWorking = 0;
 		FGS.xhrInterval = null;
-		FGS.xhrWorkingQueue = {};
+		
+		
 		FGS.debugLog = [];
 	},
 	
@@ -60,19 +66,19 @@ var FGS = {
 		switch(parseInt(FGS.options.checkBonusesTimeout))
 		{
 			case 30:
-				num = 5;
-				break;
-			case 60:
-				num = 10;
-				break;
-			case 120:
 				num = 20;
 				break;
-			case 300:
+			case 60:
 				num = 30;
 				break;
-			case 600:
+			case 120:
+				num = 40;
+				break;
+			case 300:
 				num = 50;
+				break;
+			case 600:
+				num = 100;
 				break;
 		}
 		return num;
@@ -387,7 +393,7 @@ var FGS = {
 			text = text.replace(/\\u0025/g, '%');
 			text = text.replace(/\\/g,'');
 			var url = $(FGS.HTMLParser('<p class="link" href="'+text+'">abc</p>')).find('p.link');
-			var ret = $(url).attr('href');
+			var ret = url.attr('href');
 			
 			FGS.dump(ret);
 			
@@ -524,7 +530,7 @@ var FGS = {
 				var pos2 = v.indexOf('"', pos1);
 				var url = v.slice(pos1,pos2);
 				var url = $(FGS.HTMLParser('<p class="link" href="'+url+'">abc</p>')).find('p.link');
-				nextUrl = $(url).attr('href');
+				nextUrl = url.attr('href');
 			}
 			else
 			{
@@ -536,6 +542,16 @@ var FGS = {
 		{
 			return '';
 		}
+	},
+	
+	getRandomTimeout: function()
+	{
+		var secs = Math.floor((Math.random()*121)+45);
+		
+		FGS.dump('Next bonus starts in: '+ secs);
+		
+		var start = secs*1000;
+		return (new Date().getTime() + start);
 	},
 	
 	findIframeAfterId: function(id, data)
@@ -560,7 +576,7 @@ var FGS = {
 				var pos2 = v.indexOf('"', pos1);
 				var url = v.slice(pos1,pos2);
 				var url = $(FGS.HTMLParser('<p class="link" href="'+url+'">abc</p>')).find('p.link');
-				nextUrl = $(url).attr('href');
+				nextUrl = url.attr('href');
 			}
 			else
 			{
@@ -576,28 +592,42 @@ var FGS = {
 	
 	stopQueue: function()
 	{
-		var resetArr = FGS.xhrQueue;
-		FGS.xhrQueue = [];
+		var resetArr = FGS.xhrQueue.concat(FGS.xhrFarmQueue);
+		FGS.xhrQueue = FGS.xhrFarmQueue = [];
 		
 		return resetArr;
 	},
 	
+	setNewFarmvilleBonus: function()
+	{
+		FGS.xhrFarmWorking = 0;
+		FGS.xhrFarmNextBonus = FGS.getRandomTimeout();
+	},
+	
 	checkXhrQueue: function()
 	{
+		if(new Date().getTime() > FGS.xhrFarmNextBonus)
+		{
+			if(FGS.xhrFarmQueue.length > 0 && FGS.xhrFarmWorking == 0)
+			{
+				FGS[FGS.xhrFarmQueue[0].game].Bonuses.Click("bonus", FGS.xhrFarmQueue[0].id, FGS.xhrFarmQueue[0].url);
+				FGS.xhrFarmWorking = FGS.xhrFarmQueue[0].id;
+				FGS.xhrFarmQueue = FGS.xhrFarmQueue.slice(1);				
+			}
+		}
+	
 		if(FGS.xhrWorking < FGS.options.collectXbonusesAtTheSameTime)
 		{
 			if(FGS.xhrQueue.length > 0)
 			{
 				if(FGS.xhrQueue[0].type == 'request')
 				{
-					FGS.xhrWorkingQueue[FGS.xhrQueue[0].id] = FGS.xhrQueue[0];
 					FGS.prepareLinkForGame(FGS.xhrQueue[0].game, FGS.xhrQueue[0].id, FGS.xhrQueue[0].post, false);
 					FGS.xhrQueue = FGS.xhrQueue.slice(1);
 					FGS.xhrWorking++;
 				}
 				else if(FGS.xhrQueue[0].type == 'bonus')
 				{
-					FGS.xhrWorkingQueue[FGS.xhrQueue[0].id] = FGS.xhrQueue[0];
 					FGS[FGS.xhrQueue[0].game].Bonuses.Click("bonus", FGS.xhrQueue[0].id, FGS.xhrQueue[0].url);
 					FGS.xhrQueue = FGS.xhrQueue.slice(1);
 					FGS.xhrWorking++;
@@ -943,19 +973,14 @@ var FGS = {
 				try
 				{
 					var str = data.substring(9);
-					var error = parseInt(JSON.parse(str).error);
+					var error = JSON.parse(str).error;
 
-					if(error == 1357001)
+					if(typeof(error) != 'undefined')
 					{
 						FGS.dump(FGS.getCurrentTime()+'[B] Error: logged out');
 						FGS.stopAll();
 						return true;
 					}
-					else if(error == 1357010)
-					{
-						throw {message: FGS.getCurrentTime()+'[B] Facebook error'};			
-					}
-
 					var data = JSON.parse(str).onload.toString();
 
 					var i0 = data.indexOf('"#app_stories"');
@@ -970,23 +995,26 @@ var FGS = {
 					{
 						throw {message: FGS.getCurrentTime()+'[B] No new bonuses. Skipping'};
 					}
-
-					var elIDNext = 	FGS.options.games[appID].clearOlderID;
-					
-					var count = 0;
-					
+				
 					var htmlData = FGS.HTMLParser(tmpData.html);
+					
+					
 					
 					var now = new Date().getTime();
 					
 					
+					var lastBonusTime = FGS.options.games[appID].lastBonusTime;
+					
 					// brak zdarzen
 					if(tmpData.html.indexOf('uiBoxLightblue') != -1)
 					{
-						FGS.sendView('hiddenFeed', appID);
+						FGS.sendView('hiddenFeed', appID);						
+						return;
 					}
 					
 					var bonusArr = [];
+					
+					
 
 					
 					$('li.uiStreamStory', htmlData).each(function()
@@ -1006,6 +1034,11 @@ var FGS = {
 						var elID = bonusData.target_fbid;
 						var actr = bonusData.actor;
 						
+						if(bonusTimeTmp < lastBonusTime)
+						{
+							FGS.dump('Stary bonus. Ostatni check: '+lastBonusTime+', ten bonus: '+bonusTimeTmp);
+							return;
+						}
 						
 						var targets = bonusData.target_profile_id;
 						
@@ -1022,20 +1055,9 @@ var FGS = {
 						{
 							FGS.dump(secs);
 							FGS.dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
-							return false;
+							return;
 						}
-						
-						if(elID.toString() == FGS.options.games[appID].clearOlderID.toString())
-						{
-							return false;
-						}
-						
-						if(count == 0)
-						{
-							count = 1;
-							elIDNext = elID;
-						}
-						
+
 						if(actr == FGS.userID)	
 						{
 							FGS.dump('Wlasny bonus');
@@ -1086,13 +1108,16 @@ var FGS = {
 
 						bonusArr.push(bonus);
 					});
-
+					
+					FGS.options.games[appID].lastBonusTime = now;
+					
+					
 					if(bonusArr.length > 0)
 					{
 						FGS.database.addBonus(bonusArr);
 					}
 					
-					FGS.options.games[appID].clearOlderID = elIDNext;
+					
 					FGS.saveOptions();
 					
 					
