@@ -593,7 +593,8 @@ var FGS = {
 	stopQueue: function()
 	{
 		var resetArr = FGS.xhrQueue.concat(FGS.xhrFarmQueue);
-		FGS.xhrQueue = FGS.xhrFarmQueue = [];
+		FGS.xhrQueue = [];
+		FGS.xhrFarmQueue = [];
 		
 		return resetArr;
 	},
@@ -610,8 +611,8 @@ var FGS = {
 		{
 			if(FGS.xhrFarmQueue.length > 0 && FGS.xhrFarmWorking == 0)
 			{
-				FGS[FGS.xhrFarmQueue[0].game].Bonuses.Click("bonus", FGS.xhrFarmQueue[0].id, FGS.xhrFarmQueue[0].url);
 				FGS.xhrFarmWorking = FGS.xhrFarmQueue[0].id;
+				FGS[FGS.xhrFarmQueue[0].game].Bonuses.Click("bonus", FGS.xhrFarmQueue[0].id, FGS.xhrFarmQueue[0].url);
 				FGS.xhrFarmQueue = FGS.xhrFarmQueue.slice(1);				
 			}
 		}
