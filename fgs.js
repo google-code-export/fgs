@@ -996,12 +996,9 @@ var FGS = {
 						throw {message: FGS.getCurrentTime()+'[B] No new bonuses. Skipping'};
 					}
 				
-					var htmlData = FGS.HTMLParser(tmpData.html);
-					
-					
+					var htmlData = FGS.HTMLParser(tmpData.html);					
 					
 					var now = new Date().getTime();
-					
 					
 					var lastBonusTime = FGS.options.games[appID].lastBonusTime;
 					
@@ -1014,8 +1011,7 @@ var FGS = {
 					
 					var bonusArr = [];
 					
-					
-
+					var curBonusTime = 0;
 					
 					$('li.uiStreamStory', htmlData).each(function()
 					{
@@ -1033,6 +1029,11 @@ var FGS = {
 						
 						var elID = bonusData.target_fbid;
 						var actr = bonusData.actor;
+						
+						if(curBonusTime == 0)
+						{
+							curBonusTime = bonusTimeTmp+1;
+						}
 						
 						if(bonusTimeTmp < lastBonusTime)
 						{
@@ -1069,7 +1070,6 @@ var FGS = {
 						
 						var bTitle = jQuery.trim($(el).find('.UIActionLinks_bottom > a:last').text().replace(/'/gi, ''));
 
-						
 						$(FGS.gamesData[appID].filter.bonuses).each(function(k,v)
 						{
 							var re = new RegExp(v, "i");
@@ -1080,7 +1080,7 @@ var FGS = {
 								return false;
 							}
 						});
-
+						
 						if(ret) return;
 
 						var feedback = $(el).find('input[name="feedback_params"]').val();
@@ -1105,18 +1105,23 @@ var FGS = {
 						var link = $(el).find('.UIActionLinks_bottom > a:last').attr('href');
 						
 						var bonus = [elID, appID, bTitle, $(el).find('.uiAttachmentTitle').text(), $(el).find('.uiStreamAttachments').find('img').attr('src'), link, bonusTime, feedback, link_data];
+						
+						FGS.dump('NOWY BONUS: '+bonusTimeTmp);
 
 						bonusArr.push(bonus);
 					});
 					
-					FGS.options.games[appID].lastBonusTime = now;
-					
+					if(curBonusTime > 0)
+					{
+						FGS.options.games[appID].lastBonusTime = curBonusTime;
+					}					
 					
 					if(bonusArr.length > 0)
 					{
 						FGS.database.addBonus(bonusArr);
 					}
 					
+					FGS.dump('Nowy czas: '+FGS.options.games[appID].lastBonusTime);
 					
 					FGS.saveOptions();
 					
