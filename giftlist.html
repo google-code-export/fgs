@@ -10,8 +10,8 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.16" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.16" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.17" rel="stylesheet" />
+<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.17" rel="stylesheet" />
 
 <script type="text/javascript" src="scripts/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
@@ -19,12 +19,12 @@
 
 
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.16"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.17"></script>
 <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.16"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.16"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.16"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.1.0.17"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.1.0.17"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.17"></script>
 
 
 <script type="text/javascript">
@@ -1310,84 +1310,6 @@ function addDataToScreenLocked(callback, id, data)
 		return s;
 	}
 
-	/*
-
-	function switchEnabled(gameID, reload)
-	{
-		var game = bkP.gamesData[gameID].systemName;
-		var enabled  = bkP.options.games[gameID].enabled;
-		var e =  bkP.options.games[gameID];
-
-		var el = $('.badgeGames', 'label[for="'+gameID+'Selected"]');
-		
-		if(enabled == false)
-		{
-			if(gameID == bkP.options.defaultGame)
-			{
-				bkP.options.defaultGame = 0;
-				bkP.saveOptions();
-			}
-			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').attr('disabled', 'disabled');			
-			$(el).addClass('hide');
-			$('img', 'label[for="'+gameID+'Selected"]').attr('src', 'icons/menu/'+game+'-bw.png');
-			$('div.content', 		$('#'+game+'Game')).addClass('hide');
-			$('div.notEnabledInfo', $('#'+game+'Game')).removeClass('hide');
-			
-			if(typeof(reload) != 'undefined')
-			{
-				bkP.database.clearByGameID(gameID);
-				bkP.options.games[gameID] = bkP.defaultGameOptions;
-				delete bkP.bonusLoadingProgress[gameID];
-				$('div.bonusItem, div.requestItem, div.freegiftHistory, div.manualItem', $('#'+game+'Game')).remove();
-				updateCount();
-				bkP.stopBonusesForGame(gameID);
-			}
-		}
-		else
-		{
-			$('.gameEnabledBox[gameID="'+gameID+'"]').parent().siblings('label').children('input').removeAttr('disabled');
-			$('.gameDefaultBox[gameID="'+gameID+'"], .gameLikeBonusBox[gameID="'+gameID+'"], .gameCommentBonusBox[gameID="'+gameID+'"], .gameSendbackGiftBox[gameID="'+gameID+'"], .gameHideFromFeedBox[gameID="'+gameID+'"]').removeAttr('checked');
-			
-			$('.gameEnabledBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			
-			if(gameID == bkP.options.defaultGame)
-			{
-				$('.gameDefaultBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			}
-
-			if(e.likeBonus)
-			{
-				$('.gameLikeBonusBox[gameID="'+gameID+'"]').attr('checked', 'checked');
-			}
-			
-			if(e.sendbackGift)
-			{
-				$('.gameSendbackGiftBox[gameID="'+gameID+'"]').attr('checked', 'checked');			
-			}
-			
-			if(e.hideFromFeed)
-			{
-				$('.gameHideFromFeedBox[gameID="'+gameID+'"]').attr('checked', 'checked');			
-			}
-			
-			
-			$(el).removeClass('hide');
-			$('img', 'label[for="'+gameID+'Selected"]').attr('src', 'icons/menu/'+game+'.png');
-			$('div.content', 		$('#'+game+'Game')).removeClass('hide');
-			$('div.notEnabledInfo', $('#'+game+'Game')).addClass('hide');
-			
-			
-			if(typeof(reload) != 'undefined')
-			{
-				selectFirstTab(gameID);
-				loadBonuses(gameID);
-				bkP.startBonusesForGame(gameID);
-				showSearchGames([gameID]);				
-			}			
-		}
-	}
-	
-	*/
 	
 	function updateCount(gameID)
 	{
@@ -2834,8 +2756,8 @@ function updateTimeAgo(target)
 		
 		$('#exportSettings').click(function()
 		{
-			var set = bkP.options;
-			var cleanSet = {}
+			var set = jQuery.extend(true,{},bkP.options);
+			var cleanSet = {};
 			
 			for(var id in set)
 			{
@@ -3242,6 +3164,7 @@ function compareTime(itemTime, olderThan)
 
 					<h4>Bonuses check timeout</h4>
 						<select id="checkBonusesTimeout">
+							<option value="15">15 seconds</option>
 							<option value="30">30 seconds</option>
 							<option value="60">1 minute</option>
 							<option value="120">2 minutes</option>

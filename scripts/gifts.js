@@ -300,30 +300,21 @@ FGS.giftsArray = {
 	},
 	10979261223:  // mafia wars
 	{
-		"440": { name: 'Raw Meat'},
-		"439": { name: 'Hollow Warrior'},
-		"405": { name: 'Mystery Shipment'},
-		"422": { name: 'Exotic Animal Feed'},
-		"420": { name: 'Feeding Trough'},
-		"419": { name: 'Bird Cage'},
-		"438": { name: '+2 Mafia Members'},
-		"210": { name: 'Satchel of Lira'},
-		"100": { name: 'Mystery Bag'},
-		"151": { name: 'Mystery Animal'},
-		"189": { name: 'Special Part'},
-		"401": { name: 'Italian Hardwood'},
-		"402": { name: 'Marble Slab'},
-		"164": { name: 'Construction Tool'},
-		"171": { name: 'Deposit Box'},
-		
-		
-		/*
-		"527": { name: 'Mystery bag'} ,
-		"736": { name: 'Red mystery bag' },
-		"2602": { name: 'Stone Column' },
-		"1581": { name: 'Poker Table' },
-		*/
-		
+		"463": { name: 'FALSE IDENTITY'},
+		"462": { name: 'BRAZIL CASH'},
+		"457": { name: 'GAS CAN'},
+		"458": { name: 'BUTTON CAMERA'},
+		"456": { name: 'LOCAL INFORMANT'},
+		"405": { name: 'MYSTERY SHIPMENT'},
+		"100": { name: 'MYSTERY BAG'},
+		"422": { name: 'EXOTIC ANIMAL FEED'},
+		"420": { name: 'FEEDING TROUGH'},
+		"438": { name: '+2 MAFIA MEMBERS'},
+		"419": { name: 'BIRD CAGE'},
+		"214": { name: 'AMMUNITION'},
+		"210": { name: 'SATCHEL OF LIRA'},
+		"151": { name: 'MYSTERY ANIMAL'},
+		"189": { name: 'SPECIAL PART'},		
 	},
 	120563477996213: // ravenwood fair
 	{

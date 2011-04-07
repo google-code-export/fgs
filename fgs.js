@@ -36,7 +36,7 @@ var FGS = {
 
 		for(var idd in FGS.gamesData)
 		{
-			FGS.defaultOptions.games[idd] = FGS.defaultGameOptions;
+			FGS.defaultOptions.games[idd] = FGS.jQuery.extend(true,{},FGS.defaultGameOptions);
 		}
 
 		FGS.post_form_id = '';
@@ -65,6 +65,9 @@ var FGS = {
 		
 		switch(parseInt(FGS.options.checkBonusesTimeout))
 		{
+			case 15:
+				num = 10;
+				break;
 			case 30:
 				num = 20;
 				break;
@@ -690,20 +693,11 @@ var FGS = {
 		});
 	},
 	
-	stopBonusesForGame: function(gameID)
-	{
-		clearInterval(FGS.iBonusTimeout[gameID]);
-	},
-	
 	stopAll: function(wait)
 	{
 		FGS.sendView('close');
 		
-		for(var id in FGS.iBonusTimeout)
-		{
-			FGS.dump(FGS.getCurrentTime()+'[B] Stopping '+id);
-			FGS.stopBonusesForGame(id);
-		}
+		FGS.iBonusTimeout = {};
 		
 		if(FGS.xhrInterval !== null)
 		clearInterval(FGS.xhrInterval);
@@ -1037,19 +1031,37 @@ var FGS = {
 		}
 	},
 	
+	startBonusesForGame: function(gameID)
+	{
+		FGS.iBonusTimeout[gameID] = setTimeout('FGS.checkBonuses("'+gameID+'");', 1000);
+	},
+	
+	stopBonusesForGame: function(gameID)
+	{
+		try
+		{
+			delete(FGS.iBonusTimeout[gameID]);
+		}
+		catch(e)
+		{
+			FGS.dump(e);
+		}
+	},
+	
+	setTimeoutOnBonuses: function(gameID)
+	{
+		if(FGS.options.games[gameID].enabled)
+		{
+			FGS.iBonusTimeout[gameID] = setTimeout('FGS.checkBonuses("'+gameID+'");', FGS.options.checkBonusesTimeout*1000);
+		}
+		else
+		{
+			FGS.stopBonusesForGame(gameID);
+		}
+	},	
 	
 	restartBonuses: function()
 	{
-		FGS.dump(FGS.getCurrentTime()+'[B] Restarting bonuses');		
-		
-		for(var id in FGS.iBonusTimeout)
-		{
-			FGS.dump(FGS.getCurrentTime()+'[B] Stopping '+id);
-			FGS.stopBonusesForGame(id);
-		}
-		
-		FGS.iBonusTimeout = {};
-		
 		for(var id in FGS.options.games)
 		{
 			if(FGS.options.games[id].enabled)
@@ -1073,13 +1085,6 @@ var FGS = {
 	},
 	
 	
-	startBonusesForGame: function(gameID)
-	{
-		FGS.checkBonuses(gameID);
-		FGS.iBonusTimeout[gameID] = setInterval('FGS.checkBonuses("'+gameID+'");', FGS.options.checkBonusesTimeout*1000);
-	},
-	
-	
 	checkRequests: function(apps)
 	{
 		if(typeof(apps) == 'undefined')
@@ -1095,6 +1100,8 @@ var FGS = {
 			{
 				if(typeof(apps) == 'undefined')
 					FGS.checkRequests(true);
+				
+				
 				
 				if(data.indexOf('"content":{"pagelet_requests":"') != -1)
 				{
@@ -1217,18 +1224,39 @@ var FGS = {
 
 					var elID = $(el).children('input[name=id]').val();
 
-					var testEl = $(el).find('.UIImageBlock_ICON_Content:first');
-					
-					if(testEl.children().length > 1)
+					if(el.find('.appRequestBodyNewA').length > 0)
 					{
-						var txtP1 = '<span style="color: blue;font-weight: bold;">'+testEl.children(':last').text()+'</span><br />';
-						var txtP2 = testEl.children(':first').text();
+						var testEl = el.find('.appRequestBodyNewA:first');
 						
-						var newText = txtP1 + txtP2;
+						if(testEl.children().length > 1)
+						{
+							var txtP1 = '<span style="color: blue;font-weight: bold;">'+testEl.children(':last').text()+'</span><br />';
+							var txtP2 = testEl.children(':first').text();
+							
+							var newText = txtP1 + txtP2;
+						}
+						else
+						{
+							var newText = testEl.text();
+						}
 					}
 					else
 					{
-						var newText = testEl.text();
+						var testEl = $(el).find('.UIImageBlock_ICON_Content:first');
+						
+						if(testEl.children().length > 1)
+						{
+							var txtP1 = '<span style="color: blue;font-weight: bold;">'+testEl.children(':last').text()+'</span><br />';
+							var txtP2 = testEl.children(':first').text();
+							
+							var newText = txtP1 + txtP2;
+						}
+						else
+						{
+							var newText = testEl.text();
+						}
+					
+					
 					}
 					
 					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1 || newText.indexOf('as my new neighbor') != -1)
@@ -1287,7 +1315,10 @@ var FGS = {
 						}
 					}
 					
-					var curTime = Math.round(new Date().getTime() / 1000);		
+					var curTime = Math.round(new Date().getTime() / 1000);
+					
+					
+					
 					var bTitle = $(el).find('.UIImageBlock_SMALL_Content').find('a:first').text().replace(/'/gi, '');		
 					
 					var fromUser = $(el).find('input[name="params\[from_id\]"]').val();
@@ -1300,6 +1331,12 @@ var FGS = {
 					{
 						var stats = [];
 					}
+					
+					if(el.find('.appRequestBodyNewA').length > 0)
+					{
+						bTitle = el.find('.uiTooltipText:first').text();
+					}
+					
 					
 					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime, stats];
 					giftArr.push(gift);
@@ -1348,8 +1385,12 @@ var FGS = {
 	
 	checkBonuses: function(appID)
 	{
-		
 		var $ = jQuery = FGS.jQuery;
+		
+		if(typeof(FGS.iBonusTimeout[appID]) == 'undefined' || FGS.FBloginError !== false)
+		{
+			return;
+		}
 		
 		if(typeof(FGS.bonusLoadingProgress[appID]) == 'undefined')
 		{
@@ -1361,15 +1402,16 @@ var FGS = {
 
 		if(FGS.bonusLoadingProgress[appID].loaded == false)
 		{
-			var number = 300;
+			var number = 3;
 		}
 		else
 		{
 			var number = FGS.timeoutToNumber();
 		}
 		
-		var downAppID = appID;
 		
+		
+		var downAppID = appID;
 		
 		FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for '+number+' bonuses for game '+appID);
 		
@@ -1379,11 +1421,11 @@ var FGS = {
 			data: '__a=1&is_game=1&app_ids='+downAppID+'&max_stories='+number+'&user_action=1',		
 			dataType: 'text',
 			timeout: 180000,
-			success: function(data)
+			success: function(str)
 			{
 				try
 				{
-					var str = data.substring(9);
+					var str = str.substring(9);
 					var error = JSON.parse(str).error;
 
 					if(typeof(error) != 'undefined')
@@ -1392,6 +1434,9 @@ var FGS = {
 						FGS.stopAll();
 						return true;
 					}
+					
+					
+					
 					var data = JSON.parse(str).onload.toString();
 
 					var i0 = data.indexOf('"#app_stories"');
@@ -1416,8 +1461,8 @@ var FGS = {
 					// brak zdarzen
 					if(tmpData.html.indexOf('uiBoxLightblue') != -1)
 					{
-						FGS.sendView('hiddenFeed', appID);						
-						return;
+						FGS.sendView('hiddenFeed', appID);		
+						throw {message: 'no feed'}
 					}
 					
 					var bonusArr = [];
@@ -1428,11 +1473,11 @@ var FGS = {
 					{
 						var el = $(this);
 
-						var data = $(this).find('input[name="feedback_params"]').val();
+						var data = el.find('input[name="feedback_params"]').val();
 						
 						var bonusData = JSON.parse(data);
 						
-						var bonusTimeTmp = new Date($(el).find('abbr').attr('data-date')).getTime();					
+						var bonusTimeTmp = new Date(el.find('abbr').attr('data-date')).getTime();					
 						var bonusTime = Math.round(bonusTimeTmp / 1000);
 						
 						var diff = now-bonusTimeTmp;
@@ -1448,7 +1493,6 @@ var FGS = {
 						
 						if(bonusTimeTmp < lastBonusTime)
 						{
-							FGS.dump('Stary bonus. Ostatni check: '+lastBonusTime+', ten bonus: '+bonusTimeTmp);
 							return;
 						}
 						
@@ -1458,28 +1502,24 @@ var FGS = {
 						{
 							if(FGS.userID != targets)
 							{
-								FGS.dump('Rozne id: '+actr+' i '+targets+' userid: '+FGS.userID);
 								return;
 							}
 						}
 						
 						if(secs > FGS.options.deleteOlderThan && FGS.options.deleteOlderThan != 0)
 						{
-							FGS.dump(secs);
-							FGS.dump('starszy niz: ' +FGS.options.deleteOlderThan + ' sekund');
 							return;
 						}
 
 						if(actr == FGS.userID)	
 						{
-							FGS.dump('Wlasny bonus');
 							return;
 						}
 						
 						
 						var ret = false;
 						
-						var bTitle = jQuery.trim($(el).find('.UIActionLinks_bottom > a:last').text().replace(/'/gi, ''));
+						var bTitle = jQuery.trim(el.find('.UIActionLinks_bottom > a:last').text().replace(/'/gi, ''));
 
 						$(FGS.gamesData[appID].filter.bonuses).each(function(k,v)
 						{
@@ -1494,8 +1534,8 @@ var FGS = {
 						
 						if(ret) return;
 
-						var feedback = $(el).find('input[name="feedback_params"]').val();
-						var link_data = $(el).attr('data-ft');			
+						var feedback = el.find('input[name="feedback_params"]').val();
+						var link_data = el.attr('data-ft');			
 
 						//sprawdzanie filtrow usera
 						var ret = false;
@@ -1513,12 +1553,10 @@ var FGS = {
 						if(ret) return;
 						//koniec filtry usera
 						
-						var link = $(el).find('.UIActionLinks_bottom > a:last').attr('href');
+						var link = el.find('.UIActionLinks_bottom > a:last').attr('href');
 						
-						var bonus = [elID, appID, bTitle, $(el).find('.uiAttachmentTitle').text(), $(el).find('.uiStreamAttachments').find('img').attr('src'), link, bonusTime, feedback, link_data];
+						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('src'), link, bonusTime, feedback, link_data];
 						
-						FGS.dump('NOWY BONUS: '+bonusTimeTmp);
-
 						bonusArr.push(bonus);
 					});
 					
@@ -1531,9 +1569,6 @@ var FGS = {
 					{
 						FGS.database.addBonus(bonusArr);
 					}
-					
-					FGS.dump('Nowy czas: '+FGS.options.games[appID].lastBonusTime);
-					
 					FGS.saveOptions();
 					
 					
@@ -1541,15 +1576,19 @@ var FGS = {
 					{
 						FGS.bonusLoadingProgress[appID].loaded = true;
 					}
+					
+					FGS.setTimeoutOnBonuses(appID);
 					FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
 				}
 				catch(e)
 				{
+					FGS.setTimeoutOnBonuses(appID);
 					FGS.dump(e.message);
 				}
 			},
 			error: function(e)
 			{
+				FGS.setTimeoutOnBonuses(appID);
 				FGS.dump(FGS.getCurrentTime()+'[B] There was a connection error. Setting up new update in 10 seconds');
 			}
 		});
