@@ -356,7 +356,7 @@ FGS.loadOptions = function (userID)
 {
 	FGS.database.db.transaction(function(tx)
 	{
-		tx.executeSql("SELECT option FROM options where id = '1'", [], function(tx, res)
+		tx.executeSql("SELECT option FROM options where id = ?", [1], function(tx, res)
 		{
 			var results = [];
 			for(var i = 0; i < res.rows.length; i++)
@@ -364,13 +364,62 @@ FGS.loadOptions = function (userID)
 				results.push(res.rows.item(i)['option']);
 			}
 			
+			var localOpt = false;
+			var localOptObj = false;
+			
+			if(FGS.userID != null)
+			{
+				try
+				{
+					localOpt = localStorage.getItem('options_'+FGS.userID);
+					localOptObj = JSON.parse(localOpt);					
+				}
+				catch(e)
+				{
+					localOpt = false;
+					localOptObj = false;
+				}
+			}
+						
 			if(results.length == 0)
 			{
-				FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions);
+				if(localOptObj !== false && localOpt != '{}')
+				{
+					FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions, localOptObj);
+					FGS.dump('Loading opt from localstorage');
+				}
+				else
+				{
+					FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions);
+					FGS.dump('Loading default opt');
+				}
 			}
 			else
 			{
-				FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions,	JSON.parse(results[0]));
+				if(localOptObj == false || localOpt == '{}')
+				{
+					FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions,	JSON.parse(results[0]));
+					FGS.dump('Loading opt from database');
+				}
+				else
+				{
+					var time1 = 0;
+					var time2 = 0;
+					
+					try	{	var time1 = parseInt(JSON.parse(results[0]).lastOptionsSave);	}	catch(e)	{	console.log(e);		}
+					try	{	var time2 = parseInt(localOptObj.lastOptionsSave);				}	catch(e)	{	console.log(e);		}
+					
+					if(time2 > time1)
+					{
+						FGS.dump('Loading opt from localstorage');
+						FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions,	localOptObj);
+					}
+					else
+					{
+						FGS.dump('Loading opt from database');
+						FGS.options = FGS.jQuery.extend(true,{}, FGS.defaultOptions,	JSON.parse(results[0]));
+					}
+				}
 			}
 			
 			FGS.optionsLoaded = true;
@@ -383,19 +432,47 @@ FGS.loadOptions = function (userID)
 
 FGS.saveOptions = function(callback)
 {
-	FGS.options = FGS.jQuery.extend(true, {}, FGS.options);
-	
-	FGS.database.db.transaction(function(tx)
+	if(FGS.userID != null)
 	{
-		tx.executeSql("UPDATE options SET option = ? where id = '1'", [JSON.stringify(FGS.options)], function()
+		FGS.options.lastOptionsSave = new Date().getTime();
+		
+		var opt = JSON.stringify(FGS.jQuery.extend(true,{},FGS.options));
+		
+		if(opt == '{}')
 		{
 			if(callback)
 			{
 				FGS.stopAll(true);
 				callback();
 			}
-		}, FGS.database.onSuccess, FGS.database.onError);
-	});
+			return;
+		}
+		
+		try
+		{
+			FGS.options.lastOptionsSave = new Date().getTime();
+			var opt = JSON.stringify(FGS.jQuery.extend(true,{},FGS.options));
+			
+			localStorage.removeItem('options_'+FGS.userID);
+			localStorage.setItem('options_'+FGS.userID, opt);
+		}
+		catch(e)
+		{
+			console.log(e);
+		}
+		
+		FGS.database.db.transaction(function(tx)
+		{
+			tx.executeSql("UPDATE options SET option = ? where id = ?", [opt, 1], function()
+			{
+				if(callback)
+				{
+					FGS.stopAll(true);
+					callback();
+				}
+			}, FGS.database.onSuccess, FGS.database.onError);
+		});
+	}
 };
 
 FGS.updateIcon = function()
