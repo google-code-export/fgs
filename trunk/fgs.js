@@ -477,7 +477,7 @@ var FGS = {
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
-		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 					
 		FGS.jQuery.ajax({
 			type: "GET",
@@ -713,6 +713,63 @@ var FGS = {
 		FGS.updateIcon();
 	},
 	
+	loginStatusChanged: function(bool, html)
+	{
+		FGS.dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
+		
+		if(bool == true)
+		{
+			if(FGS.userID == null)
+			{
+				FGS.FBloginError = null;
+				FGS.updateIcon();
+				
+				if(html != undefined)
+					FGS.parseStartupData(html);
+				else
+					FGS.startup();
+			}
+		}
+		else
+		{
+			FGS.stopAll();
+		}
+	},
+	
+	parseStartupData: function(data2)
+	{
+		var data = FGS.HTMLParser(data2);		
+		
+		if(FGS.jQuery("#login_form", data).length > 0)
+		{
+			FGS.dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
+			FGS.stopAll();
+			return true;
+		}
+
+		if(FGS.userID == null || FGS.userName == null)
+		{
+			var pos1 = data2.indexOf('Env={')+4;
+			var pos2 = data2.indexOf('user:', pos1)+5;
+			var pos3 = data2.indexOf(',', pos2);
+
+			FGS.userID = data2.slice(pos2, pos3);
+			FGS.userName = FGS.jQuery('#navAccountName', data).text();
+		}
+		
+		if(FGS.databaseAlreadyOpen == false)
+		{
+			FGS.database.open(FGS.userID);
+			FGS.database.createTable();
+		}
+
+		if(FGS.post_form_id == '' || FGS.fb_dtsg == '')
+		{
+			FGS.fb_dtsg 		= FGS.jQuery('input[name="fb_dtsg"]', data).val();
+			FGS.post_form_id 	= FGS.jQuery('input[name="post_form_id"]', data).val();
+		}
+	},
+	
 	startup: function()
 	{
 		FGS.jQuery.ajax({
@@ -722,36 +779,7 @@ var FGS = {
 			timeout: 30000,
 			success: function(data2)
 			{
-				var data = FGS.HTMLParser(data2);
-								
-				if(FGS.jQuery("#login_form", data).length > 0)
-				{
-					FGS.dump(FGS.getCurrentTime()+'[R] Error: probably logged out');
-					FGS.stopAll();
-					return true;
-				}
-
-				if(FGS.userID == null || FGS.userName == null)
-				{
-					var pos1 = data2.indexOf('Env={')+4;
-					var pos2 = data2.indexOf('user:', pos1)+5;
-					var pos3 = data2.indexOf(',', pos2);
-
-					FGS.userID = data2.slice(pos2, pos3);
-					FGS.userName = FGS.jQuery('#navAccountName', data).text();
-				}
-				
-				if(FGS.databaseAlreadyOpen == false)
-				{
-					FGS.database.open(FGS.userID);
-					FGS.database.createTable();
-				}
-
-				if(FGS.post_form_id == '' || FGS.fb_dtsg == '')
-				{
-					FGS.fb_dtsg 		= FGS.jQuery('input[name="fb_dtsg"]', data).val();
-					FGS.post_form_id 	= FGS.jQuery('input[name="post_form_id"]', data).val();
-				}
+				FGS.parseStartupData(data2);
 			},
 			error: function()
 			{
@@ -1605,27 +1633,6 @@ var FGS = {
 
 		return h+':'+m+':'+s;
 	},
-	
-	loginStatusChanged: function(bool)
-	{
-		FGS.dump(FGS.getCurrentTime()+'[L] Received new login status. Checking if I have to start or stop updates.');
-		
-		if(bool == true)
-		{
-			if(FGS.userID == null)
-			{
-				FGS.FBloginError = null;
-				FGS.updateIcon();				
-				FGS.startup();
-			}
-		}
-		else
-		{
-			FGS.stopAll();
-		}
-	},
-	
-
 	
 	searchForNeighbors:
 	{

@@ -16,12 +16,12 @@ chrome.self.onConnect.addListener(function(port)
 	{
 		port.onMessage.addListener(function(request)
 		{
-			FGS.loginStatusChanged(request.loggedIn);
+			FGS.loginStatusChanged(request.loggedIn, request.html);
 		});
 	}
 });
 
-var FGSdebugMode = true;
+var FGSdebugMode = false;
 
 $(function()
 {
