@@ -65,24 +65,27 @@ FGS.giftsArray = {
 	'102452128776': // farmville
 	{
 		"mysterygift": { name: 'Mystery Gift'},
-		"consume_lucky_penny" : { name: 'Lucky Penny'},
-		
-		"stpattysbasket2011_gold_4": { name: 'Gold Harp'},
-		"stpattysbasket2011_gold_1": { name: 'Gold Bar'},
-		"stpattysbasket2011_gold_2": { name: 'Gold Chunk'},
-		"stpattysbasket2011_gold_5": { name: 'Gold Coin'},
-		"stpattysbasket2011_gold_3": { name: 'Gold Nugget'},
-		"fuelFifth": { name: 'Small Can of Fuel'},
-		
 		
 		"socialplumbingmysterygift": { name: 'Special Delivery'},
+		"consume_lucky_penny": { name: 'Lucky Penny'},
 		"shovel_item_01": { name: '2 Shovels'},
 		"wateringcan": { name: 'Watering Can'},
-		"valentinesbasket2011_valentine_2": { name: 'Rose Vase'},
-		"valentinesbasket2011_valentine_3": { name: 'Baby\'s Breath'},
-		"valentinesbasket2011_valentine_4": { name: 'Valentine Chocolates'},
-		"valentinesbasket2011_valentine_1": { name: 'Stuffed Cow'},
-		"valentinesbasket2011_valentine_5": { name: 'Love Letters'},
+		"springbasket2011_flower_3": { name: 'Daffodil'},
+		"springbasket2011_flower_5": { name: 'Forget-me-not'},
+		"springbasket2011_flower_4": { name: 'Foxglove'},
+		"springbasket2011_flower_1": { name: 'Alstroemeria Lily'},
+		"springbasket2011_flower_2": { name: 'Day Lily'},
+		"walnut": { name: 'Walnut Tree'},
+		"cashew": { name: 'Cashew Tree'},
+		"breadfruit": { name: 'Breadfruit Tree'},
+		"stpattysbasket2011_gold_5": { name: 'Gold Coin'},
+		"stpattysbasket2011_gold_4": { name: 'Gold Harp'},
+		"stpattysbasket2011_gold_1": { name: 'Gold Bar'},
+		"jackfruit": { name: 'Jackfruit Tree'},
+		"stpattysbasket2011_gold_3": { name: 'Gold Nugget'},
+		"stpattysbasket2011_gold_2": { name: 'Gold Chunk'},
+		
+		
 		"vehiclepart": { name: 'Vehicle Part'},
 		"woodenboard": { name: 'Wooden Board'},
 		"nail": { name: 'Nail'},
@@ -874,7 +877,7 @@ FGS.getFBML = function(params, retry)
 						cafeParams += 'ids[]='+v+'&';
 				});
 				
-				if(params.gameID != '25287267406')
+				if(params.gameID != '25287267406' && params.gameID != '213518941553')
 					sendGiftParams += 'cmfs_typeahead_'+reqData.form_id+'=start';
 				
 				if(params.gameID == '10979261223')
@@ -892,9 +895,13 @@ FGS.getFBML = function(params, retry)
 					sendGiftParams += '&'+ $('form[type="Ravenwood Fair"]', data).find('input[name="item_id"],input[name="timestamp"]').serialize();
 				}
 				
-				if(params.gameID == '129547877091100')
+				if(params.gameID == '129547877091100' || params.gameID == '213518941553')
 				{
 					sendGiftParams += '&'+$('form[type]', data).serialize();
+				}
+				if(params.gameID == '213518941553')
+				{
+					params.finalMethod = 'get';
 				}
 				
 				if(params.gameID == '167746316127' || params.gameID == '2405948328' || params.gameID == '2345673396' || params.gameID == '2339854854' || params.gameID == '14852940614')
@@ -970,7 +977,7 @@ FGS.sendGift = function(params, retry)
 				return;
 			}
 			
-			if(typeof(params.cafeUrl) != 'undefined')
+			if(typeof(params.cafeUrl) != 'undefined' || typeof(params.finalMethod) != 'undefined')
 			{
 				var reqMethod = 'GET';
 			}
