@@ -2,7 +2,17 @@ FGS.HTMLParser = function (aHTMLString)
 {
 	if(aHTMLString.indexOf('<body') != -1)
 	{
-		var html = aHTMLString.slice(aHTMLString.indexOf('<body'),aHTMLString.lastIndexOf('</body')+7);
+		var pos0 = aHTMLString.indexOf('<body');
+		var pos1 = aHTMLString.lastIndexOf('</body');
+		
+		if(pos1 == -1)
+		{
+			var html = aHTMLString.slice(pos0);
+		}
+		else
+		{
+			var html = aHTMLString.slice(pos0, pos1+7);
+		}
 	}
 	else
 	{
@@ -37,17 +47,27 @@ FGS.openURI = function (url, background)
 	});
 };
 
-FGS.hideFromFeed = function(bonusID)
+FGS.hideFromFeed = function(bonusID, limit)
 {
-	FGS.database.db.transaction(function(tx)
+	FGS.database.db.readTransaction(function(tx)
 	{
 		tx.executeSql("SELECT * FROM bonuses where id = ?", [bonusID], function(tx2, res)
 		{
 			var v = res.rows.item(0);
 			
-			if(!FGS.options.games[v.gameID].hideFromFeed)
-			{	
-				return;
+			if(limit)
+			{
+				if(!FGS.options.games[v.gameID].hideFromFeedLimitError)
+				{	
+					return;
+				}
+			}
+			else
+			{
+				if(!FGS.options.games[v.gameID].hideFromFeed)
+				{	
+					return;
+				}
 			}
 			
 			var tmpObj = JSON.parse(v.link_data);
@@ -267,12 +287,16 @@ FGS.sendView = function (msg, data, data2, data3)
 			// bonusy //
 			else if(msg == 'bonusError')
 			{
+				if(data2.error == 'limit')
+				{
+					FGS.hideFromFeed(data, true);
+				}
 				view.bonusError(data, data2);
 			}
 			else if(msg == 'bonusSuccess')
 			{
 				FGS.likeBonus(data, true);
-				FGS.hideFromFeed(data);
+				FGS.hideFromFeed(data, false);
 				view.bonusSuccess(data, data2);
 			}
 			else if(msg == 'updateLike')

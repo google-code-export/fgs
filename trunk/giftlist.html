@@ -170,6 +170,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var params = {
 			gift: gift,
+			giftName: giftName,
 			gameID:	gameID,
 			sendTo: sendTo,
 			messageToAdd: messageToAddToGift
@@ -1638,7 +1639,7 @@ function addIconToOptionsMenu(gameID)
 	var d =  bkP.gamesData[gameID];
 	var e =  bkP.options.games[gameID];
 	
-	var addSpecOpt = '<br style="line-height: 19px;" />';
+	var addSpecOpt = '<br style="line-height: 22px;" />';
 	
 	if(gameID == '102452128776')
 	{
@@ -1650,7 +1651,8 @@ function addIconToOptionsMenu(gameID)
 	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(gameID == bkP.options.defaultGame ? 'checked="checked"':'')+' class="gameDefaultBox" gameID="'+gameID+'" /> <label>Go to this game on FGS startup</label><br />'
 	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.likeBonus ? 'checked="checked"':'')+' class="gameLikeBonusBox" gameID="'+gameID+'" /> <label>Auto like bonuses</label><br />'
 	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.sendbackGift ? 'checked="checked"':'')+' class="gameSendbackGiftBox" gameID="'+gameID+'" /> <label>Send thank you gift</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.hideFromFeed ? 'checked="checked"':'')+' class="gameHideFromFeedBox" gameID="'+gameID+'" /> <label>Hide collected bonuses on Facebook</label><br />'
+	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.hideFromFeed ? 'checked="checked"':'')+' class="gameHideFromFeedBox" gameID="'+gameID+'" /> <label>Hide collected bonuses from FB feed</label><br />'
+	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.hideFromFeedLimitError ? 'checked="checked"':'')+' class="gameHideFromFeedLimitErrorBox" gameID="'+gameID+'" /> <label>Hide "limit errors" from FB feed</label><br />'
 	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+' '+(e.listOnSearch? 'checked="checked"':'')+'  class="gameListOnNeighborsSearch" gameID="'+gameID+'" /> <label>List me on neighbors search</label><br />'
 	+ addSpecOpt
 	+ '</span></div>');
@@ -1899,6 +1901,12 @@ function processGameSendbackGiftInput(el)
 function processGameHideFromFeedInput(el)
 {
 	bkP.options.games[$(el).attr('gameID')].hideFromFeed = $(el).is(':checked') ? true : false;
+	bkP.saveOptions();
+}
+
+function processGameHideFromFeedLimitErrorInput(el)
+{
+	bkP.options.games[$(el).attr('gameID')].hideFromFeedLimitError = $(el).is(':checked') ? true : false;
 	bkP.saveOptions();
 }
 
@@ -2297,6 +2305,8 @@ function updateTimeAgo(target)
 				return processGameSendbackGiftInput(el);
 			else if(el.hasClass('gameHideFromFeedBox'))
 				return processGameHideFromFeedInput(el);
+			else if(el.hasClass('gameHideFromFeedLimitErrorBox'))
+				return processGameHideFromFeedLimitErrorInput(el);
 			else if(el.hasClass('gameListOnNeighborsSearch'))
 				return processGameListOnNeighborsSearch(el);
 			else if(el.hasClass('gameUseRandomTimeoutOnBonuses'))
@@ -2813,16 +2823,6 @@ function updateTimeAgo(target)
 		$('#queueItemsCount').text((bkP.xhrQueue.length+bkP.xhrFarmQueue.length));
 	}
 
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 	function processSelectNeighborToSend(e)
 	{
 		var gameID = $(e).attr('gameID');
@@ -2830,11 +2830,6 @@ function updateTimeAgo(target)
 		var opt = 'SendFreeGiftsList';
 
 		var count = parseInt($('input[name="neighArr[]"]:checked', 'div#'+game+opt).length);
-
-		if(e.altKey === undefined)
-		{
-			count++;
-		}
 
 		if(count > 25)
 		{

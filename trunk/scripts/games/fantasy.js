@@ -1,3 +1,217 @@
+FGS.fantasy.Freegifts = 
+{
+	Click: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "GET",
+			url: 'http://apps.facebook.com/fantasykingdoms/FreeGifts'+addAntiBot,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					var url = $('form[target]', dataHTML).attr('action');
+					var params2 = $('form[target]', dataHTML).serialize();
+					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_213518941553', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
+					params.step1url = url;
+					params.step1params = params2;
+					
+					FGS.fantasy.Freegifts.Click2(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	Click2: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "POST",
+			url: params.step1url+addAntiBot,
+			data: params.step1params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					
+					params.step3url = 'http://fantasykingdoms.cloudapp.net/Facebook/SendGifts?v=1.0&storeItemId='+params.gift+'&userId='+$('#UserId', dataHTML).val()+'&giftName='+params.giftName;
+					
+					FGS.fantasy.Freegifts.Click3(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	Click3: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '&_fb_noscript=1');
+
+		$.ajax({
+			type: "POST",
+			url: params.step3url,
+			data: params.step1params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
+					if(tst == null) throw {message: 'no fb.init'}
+					
+					var app_key = tst[1];
+					var channel_url = tst[2];
+					
+					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					if(tst == null) throw {message:'no fbml tag'}
+					var fbml = tst[1];
+					
+					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					
+					params.nextParams = paramsStr;
+					
+					FGS.getFBML(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	}
+};
+
+
 FGS.fantasy.Requests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
