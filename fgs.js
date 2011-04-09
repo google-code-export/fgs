@@ -32,7 +32,7 @@ var FGS = {
 			collectXbonusesAtTheSameTime: 2,
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, sendbackGift: false, hideFromFeed: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false, useRandomTimeoutOnBonuses: false };
+		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, sendbackGift: false, hideFromFeed: false, hideFromFeedLimitError: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false, useRandomTimeoutOnBonuses: false };
 
 		for(var idd in FGS.gamesData)
 		{
@@ -1402,14 +1402,12 @@ var FGS = {
 
 		if(FGS.bonusLoadingProgress[appID].loaded == false)
 		{
-			var number = 3;
+			var number = 300;
 		}
 		else
 		{
 			var number = FGS.timeoutToNumber();
-		}
-		
-		
+		}		
 		
 		var downAppID = appID;
 		
@@ -1513,7 +1511,8 @@ var FGS = {
 
 						if(actr == FGS.userID)	
 						{
-							return;
+							if(appID.toString() != '166309140062981') // wlasny bonus w puzzle hearts
+								return;
 						}
 						
 						
