@@ -174,7 +174,7 @@ FGS.gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help ', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost'],
+							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help\s((?!friend).)*$', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost'],
 							requests: [],
 							requestsNewWindow: ['(.*)needs some help with a catering order(.*)']
 						},
@@ -367,7 +367,7 @@ FGS.gamesData =
 	129547877091100:	{ 	name: 'Crime City',		systemName: 'crimecity', link: 'http://apps.facebook.com/crimecitygame/',
 						filter:	
 						{
-							bonuses: [],
+							bonuses: ['^Help (.*)'],
 							bonusesNewWindow: [],
 							requests: [],
 							requestsNewWindow: ['(.*)']
@@ -603,6 +603,26 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	216230855057280: { 	name: 'Charmed Gems',	systemName: 'charmedgems', link: 'http://apps.facebook.com/charmedgems/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 	167746316127: 	{ 	name: 'Zoo World',		systemName: 'zooworld', link: 'http://apps.facebook.com/playzoo/zoo/home.php',
 						filter:		
 						{
@@ -807,11 +827,51 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	169557846404284:	{ 	name: 'Zombie Lane',	systemName: 'zombielane', link: 'http://apps.facebook.com/zombielane/',
+						filter:	
+						{
+							bonuses: ['Play Zombie Lane'],
+							bonusesNewWindow: ['Ayuda a Sacri', 'Aiuta Tiziana', 'Play Zombie Lane', '¡Ayuda en camino', 'Help is on the way', 'Soccorsi in arrivo', '^Help (.*)$'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
+	175251882520655:	{ 	name: 'Gardens of Time',	systemName: 'gardensoftime', link: 'http://apps.facebook.com/gardensoftime/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 	102518706469143:	{ 	name: 'Wild West Town',	systemName: 'wildwesttown', link: 'http://apps.facebook.com/wildwesttown/',
 						filter:	
 						{
 							bonuses: [],
-							bonusesNewWindow: ['^Send Parts', 'Accept Help'],
+							bonusesNewWindow: ['^Send Parts', 'Accept Help', 'Send Pieces'],
 							requests: [],
 							requestsNewWindow: []
 						},
