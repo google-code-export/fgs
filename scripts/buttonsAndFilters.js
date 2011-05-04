@@ -105,8 +105,8 @@ FGS.gamesData =
 	291549705119: 	{ 	name: 'CityVille',	systemName: 'cityville', 	link: 'http://apps.facebook.com/cityville/',
 						filter:		
 						{
-							bonuses: ['Start your business', 'Start your business!', 'Send collectables', 'Send collectables!', 'Send collectibles', 'iAbre tu negocio', 'Visit CityVille', 'Collectable wanted'],
-							bonusesNewWindow: [],
+							bonuses: [],
+							bonusesNewWindow: ['Start your business', 'Start your business!', 'Send collectables', 'Send collectables!', 'Send collectibles', 'iAbre tu negocio', 'Visit CityVille', 'Collectable wanted', '¡Envía coleccionables', 'Enviar colecionáveis', 'Envoie des collections', 'Invia collezionabili', 'Kirim barang koleksi', 'Send collectables', 'Sende Sammlerstücke', 'Start your business', '¡Abre tu negocio', 'Démarre ton activité', 'Eröffne dein Geschäft', 'Start your business'],
 							requests: [],
 							requestsNewWindow: []
 						},
@@ -174,7 +174,7 @@ FGS.gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help\s((?!friend).)*$', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost'],
+							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help\\s((?!friend).)*$', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost'],
 							requests: [],
 							requestsNewWindow: ['(.*)needs some help with a catering order(.*)']
 						},
@@ -367,8 +367,8 @@ FGS.gamesData =
 	129547877091100:	{ 	name: 'Crime City',		systemName: 'crimecity', link: 'http://apps.facebook.com/crimecitygame/',
 						filter:	
 						{
-							bonuses: ['^Help (.*)'],
-							bonusesNewWindow: [],
+							bonuses: [],
+							bonusesNewWindow: ['^Help (.*)'],
 							requests: [],
 							requestsNewWindow: ['(.*)']
 						},
