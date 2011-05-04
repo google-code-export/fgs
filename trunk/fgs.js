@@ -1539,6 +1539,23 @@ var FGS = {
 			return;
 		}
 		
+		if(typeof(FGS.bonusLoadingProgress[appID]) == 'undefined')
+		{
+			FGS.bonusLoadingProgress[appID] =
+			{
+				loaded: false
+			};
+		}
+		
+		if(FGS.bonusLoadingProgress[appID].loaded == false)
+		{
+			var number = 75;
+		}
+		else
+		{
+			var number = FGS.timeoutToNumber();
+		}
+		
 		if(typeof(params) == 'undefined')
 		{
 			var params = {};
@@ -1553,7 +1570,7 @@ var FGS = {
 		$.ajax({
 			type: "GET",
 			url: 'http://www.facebook.com/ajax/apps/app_stories.php',
-			data: '__a=1&is_game=1&app_ids='+appID+'&max_stories=75&user_action=0&is_game=1&show_hidden=false&ignore_self=false&oldest='+params.time,
+			data: '__a=1&is_game=1&app_ids='+appID+'&max_stories='+number+'&user_action=0&is_game=1&show_hidden=false&ignore_self=false&oldest='+params.time,
 			dataType: 'text',
 			timeout: 180000,
 			success: function(str)
@@ -1630,7 +1647,7 @@ var FGS = {
 						
 						if(params.first == 0)
 						{
-							params.first = bonusTimeTmp;
+							params.first = bonusTimeTmp+1;
 						}
 						
 						oldest = bonusTime;
@@ -1760,6 +1777,11 @@ var FGS = {
 							FGS.database.addBonus(params.items);
 						}
 						
+						if(!FGS.bonusLoadingProgress[appID].loaded)
+						{
+							FGS.bonusLoadingProgress[appID].loaded = true;
+						}
+						
 						FGS.saveOptions();
 						
 						FGS.setTimeoutOnBonuses(appID);
@@ -1794,6 +1816,12 @@ var FGS = {
 						{
 							FGS.database.addBonus(params.items);
 						}
+						
+						if(!FGS.bonusLoadingProgress[appID].loaded)
+						{
+							FGS.bonusLoadingProgress[appID].loaded = true;
+						}
+						
 						FGS.saveOptions();
 						
 						FGS.setTimeoutOnBonuses(appID);
@@ -1819,6 +1847,12 @@ var FGS = {
 					{
 						FGS.database.addBonus(params.items);
 					}
+					
+					if(!FGS.bonusLoadingProgress[appID].loaded)
+					{
+						FGS.bonusLoadingProgress[appID].loaded = true;
+					}
+					
 					FGS.saveOptions();
 					
 					FGS.setTimeoutOnBonuses(appID);
