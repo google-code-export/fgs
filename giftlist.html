@@ -847,62 +847,83 @@ function addDataToScreenLocked(callback, id, data)
 		}, 1000);
 	}
 	
-	function ClearManualBonuses(gameID)
+	function ClearManualBonuses(gameID, onlyVisible)
 	{
 		var game = bkP.gamesData[gameID].systemName;
 		
+		if(onlyVisible != undefined)
+			var addParam = ':visible';
+		else
+			var addParam = '';
 		
-		var delReqArr = delBonArr = [];
+		$('#dialog-confirm').dialog({
+			buttons:
+			{
+				"Delete all items": function()
+				{
+					var delReqArr = delBonArr = [];
 
-		$('#'+game+'ManualBonusesList').children('div').each(function()
-		{
-			var elID = $(this).attr('id');
-			if($(this).hasClass('manualRequest'))
-			{
-				var postData = $(this).attr('postData');
-				var pos1 = postData.indexOf('&actions%5B');
-				
-				var postData = postData.slice(0,pos1);
-				postData += '&actions[reject]=Ignore';
-				bkP.emptyUnwantedGifts(postData);
-				
-				delReqArr.push(elID);
-			}
-			else
-			{
-				delBonArr.push(elID);
-			}
-			
-			$(this).remove();
-		});
-		
-		processSwitchItemsDisplay();
-		updateCount(gameID);
-		
-		while(delReqArr.length > 0)
-		{
-			var tmpArr = delReqArr.slice(0,500);
-			
-			var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
-			bkP.database.deleteItemArray('requests', gameID, str, 0);
-			
-			delReqArr = delReqArr.slice(500);						
-		}
-		
-		while(delBonArr.length > 0)
-		{
-			var tmpArr = delBonArr.slice(0,500);
-			
-			var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
-			bkP.database.deleteItemArray('bonuses', gameID, str, 0);
-			
-			delBonArr = delBonArr.slice(500);						
-		}
+					$('#'+game+'ManualBonusesList').children('div'+addParam).each(function()
+					{
+						var elID = $(this).attr('id');
+						if($(this).hasClass('manualRequest'))
+						{
+							var postData = $(this).attr('postData');
+							var pos1 = postData.indexOf('&actions%5B');
+							
+							var postData = postData.slice(0,pos1);
+							postData += '&actions[reject]=Ignore';
+							bkP.emptyUnwantedGifts(postData);
+							
+							delReqArr.push(elID);
+						}
+						else
+						{
+							delBonArr.push(elID);
+						}
+						
+						$(this).remove();
+					});
+					
+					processSwitchItemsDisplay();
+					updateCount(gameID);
+					
+					while(delReqArr.length > 0)
+					{
+						var tmpArr = delReqArr.slice(0,500);
+						
+						var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
+						bkP.database.deleteItemArray('requests', gameID, str, 0);
+						
+						delReqArr = delReqArr.slice(500);						
+					}
+					
+					while(delBonArr.length > 0)
+					{
+						var tmpArr = delBonArr.slice(0,500);
+						
+						var str = ' where id = "'+tmpArr.join('" or id = "')+'" ';
+						bkP.database.deleteItemArray('bonuses', gameID, str, 0);
+						
+						delBonArr = delBonArr.slice(500);						
+					}					
+					
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}});
 	}
 	
 	function ClearVisibleBonuses(gameID)
 	{
 		ClearPendingBonuses(gameID, true);
+	}
+	
+	function ClearVisibleManualBonuses(gameID)
+	{
+		ClearManualBonuses(gameID, true);
 	}
 	
 	function ClearPendingBonuses(gameID, onlyVisible)
@@ -2119,6 +2140,7 @@ function processSwitchItemsDisplay()
 		{
 			var tstTitle = $('.title:Contains("'+textFilter+'")', this).length > 0 ? true : false;
 			var tstDesc  = $('.description:Contains("'+textFilter+'")', this).length > 0 ? true : false;
+			
 			
 			switch(filterType)
 			{

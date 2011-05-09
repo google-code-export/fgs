@@ -62,6 +62,10 @@ FGS.giftsArray = {
 		"flowerpot_round": { name: 'Round Flower Pot'},
 		"picnic_basket": { name: 'Picnic Basket'},
 	},
+	'176611639027113':
+	{
+		'1': { name: 'Mystery gift' },
+	},
 	'102452128776': // farmville
 	{
 		"mysterygift": { name: 'Mystery Gift'},
@@ -693,6 +697,7 @@ FGS.giftsArray = {
 FGS.freeGiftForGame =
 {
 	201278444497: 'picnic_basket',
+	176611639027113: '1',
 	102452128776: 'brick',
 	234860566661: 'construction_gears',
 	101539264719: '2548',
@@ -826,12 +831,17 @@ FGS.getFBML = function(params, retry)
 				}
 				
 				var arr = [];
+				var neiObj = {};
+				
 				$(tst).each(function(k,v)
 				{
 					var v = v.replace(/\\\"/g, '"');
-					arr.push(JSON.parse('{'+v+'}'));
+					var di = JSON.parse('{'+v+'}');
+					arr.push(di);
+					for(var id in di)
+						neiObj[id] = true;
 				});
-			
+				
 				if(typeof(params.cafeUrl) != 'undefined')
 				{
 					var cafeParams = '';
@@ -872,32 +882,21 @@ FGS.getFBML = function(params, retry)
 				// test czy nie jest spoza listy
 				if(typeof(params.sendTo) != 'undefined' && typeof(params.thankYou) != 'undefined')
 				{
-					var pos0 = dataStr.indexOf('exclude_ids="')+13;
-					if(pos0 != 12)
+					var newArr = [];
+					$(params.sendTo).each(function(k,v)
 					{
-						var pos1 = dataStr.indexOf('"', pos0);
-						var exc_ids = dataStr.slice(pos0, pos1);
-						
-						var exclArr = exc_ids.split(',');
-						
-						var newArr = [];
-						
-						$(params.sendTo).each(function(k,v)
-						{
-							if($.inArray(v, exclArr) == -1)
-								newArr.push(v);
-						});
-						
-						params.sendTo = newArr;
-						
-						if(params.sendTo.length == 0)
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''), true);
-							return;
-						}
+						if(typeof neiObj[v] != 'undefined')
+							newArr.push(v);
+					});
+
+					params.sendTo = newArr;
+
+					if(params.sendTo.length == 0)
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''), true);
+						return;
 					}
 				}
-				
 				// test czy nie jest spoza listy - koniec
 				
 				
@@ -1089,6 +1088,7 @@ FGS.sendGift = function(params, retry)
 						{
 							var id = i;
 						}
+						
 						var v = val[id];					
 						
 						if($.inArray(id, params.sendTo) > -1)
