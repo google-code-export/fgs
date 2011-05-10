@@ -1754,7 +1754,7 @@ var FGS = {
 					
 					if(tmpData.html == "")
 					{
-						throw {message: FGS.getCurrentTime()+'[B] No new bonuses. Skipping'};
+						throw {message: 'empty'};
 					}
 				
 					var htmlData = FGS.HTMLParser(tmpData.html);					
@@ -1856,7 +1856,7 @@ var FGS = {
 								return;
 						}
 						var testLink = testLink.first();
-												
+						
 						var bTitle = jQuery.trim(testLink.text().replace(/'/gi, ''));
 
 						$(FGS.gamesData[appID].filter.bonuses).each(function(k,v)
