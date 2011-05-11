@@ -2008,6 +2008,44 @@ var FGS = {
 		return h+':'+m+':'+s;
 	},
 	
+	processPageletOnFacebook: function(dataStr)
+	{
+		var pos0 = dataStr.indexOf('"content":{"pagelet');
+		if(pos0 != -1)
+		{
+			var pos0 = 0;
+			var dataStr2 = '';
+			
+			while(true)
+			{
+				var pos0a = dataStr.indexOf('"content":{"pagelet', pos0);
+				if(pos0a == -1) break;
+				
+				var pos0c = dataStr.indexOf('":',  pos0a+10);
+				var pos0b = dataStr.indexOf('>"}', pos0a);
+				if(pos0b == -1)
+				{
+					pos0 = pos0a+15;
+					continue;
+				}
+				try
+				{
+					dataStr2 += JSON.parse(dataStr.slice(pos0a+10, pos0b+3))[dataStr.slice(pos0a+12, pos0c)];
+				}
+				catch(e)
+				{
+					pos0 = pos0a+15;
+					continue;
+				}
+				
+				pos0 = pos0b;
+			}
+			
+			var dataStr = dataStr2;
+		}
+		return dataStr;
+	},
+	
 	searchForNeighbors:
 	{
 		Step1: function(gameID)

@@ -201,6 +201,7 @@ FGS.giftsArray = {
 		"acornsquashbushel": { name: 'AcornSquash (-.-.W)'},
 		"yellowmelonbushel": { name: 'YellowMelon (-.-.W)'},
 		"watermelonbushel": { name: 'Watermelon (-.-.W)'},
+		"squashbushel": { name: 'Squash (-.-.W)'},
 	},
 	'234860566661': // treasure isle
 	{
@@ -763,18 +764,9 @@ FGS.getFBML = function(params, retry)
 		{
 			var dataCheck = dataStr;
 			
-			var isNewLayout = false;
-			
 			if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined' || typeof(params.customUrl) != 'undefined')
 			{
-				var pos0 = dataStr.indexOf('"content":{"pagelet_canvas_content":');
-				
-				if(pos0 != -1)
-				{
-					var pos1 = dataStr.indexOf('>"}', pos0);
-					var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_canvas_content;
-					isNewLayout = true;
-				}
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
 			}
 			
 			var data = FGS.HTMLParser(dataStr);
@@ -819,7 +811,7 @@ FGS.getFBML = function(params, retry)
 				var tst = tst[1];
 				
 				
-				if( (typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined' || typeof(params.customUrl) != 'undefined') && isNewLayout)
+				if(typeof(params.cafeUrl) != 'undefined' || typeof(params.bakinglifeUrl) != 'undefined' || typeof(params.customUrl) != 'undefined')
 				{
 					var tst = tst.match(/(\\"[0-9]+\\":{\\"name\\":\\\s*["][^"]+[^}]})/g);
 					if(tst == null) throw {message:'no friends'}
@@ -879,27 +871,27 @@ FGS.getFBML = function(params, retry)
 				
 				
 				
-				// test czy nie jest spoza listy
-				if(typeof(params.sendTo) != 'undefined' && typeof(params.thankYou) != 'undefined')
-				{
-					var newArr = [];
-					$(params.sendTo).each(function(k,v)
+				/*
+					// test czy nie jest spoza listy
+					if(typeof(params.sendTo) != 'undefined' && typeof(params.thankYou) != 'undefined')
 					{
-						if(typeof neiObj[v] != 'undefined')
-							newArr.push(v);
-					});
+						var newArr = [];
+						$(params.sendTo).each(function(k,v)
+						{
+							if(typeof neiObj[v] != 'undefined')
+								newArr.push(v);
+						});
 
-					params.sendTo = newArr;
+						params.sendTo = newArr;
 
-					if(params.sendTo.length == 0)
-					{
-						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''), true);
-						return;
+						if(params.sendTo.length == 0)
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''), true);
+							return;
+						}
 					}
-				}
-				// test czy nie jest spoza listy - koniec
-				
-				
+					// test czy nie jest spoza listy - koniec
+				*/
 				
 				
 				
