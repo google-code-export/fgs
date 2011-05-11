@@ -20,27 +20,11 @@ FGS.zooworld.Freegifts =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
+				var dataHTML = FGS.HTMLParser(dataStr);
+					
 				try
 				{
-					var pos0 = dataStr.indexOf('"content":{"pagelet_canvas_content":');
-					if(pos0 != -1)
-					{
-						var pos1 = dataStr.indexOf('>"}', pos0);
-						var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_canvas_content;
-					}
-					var dataHTML = FGS.HTMLParser(dataStr);
-					
-					if($('form[target]', dataHTML).not(FGS.formExclusionString).length == 0)
-					{
-						var pos0 = dataStr.indexOf('"content":{"pagelet_fbml_canvas_content":');
-						if(pos0 != -1)
-						{
-							var pos1 = dataStr.indexOf('>"}', pos0);
-							var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_fbml_canvas_content;
-						}
-						var dataHTML = FGS.HTMLParser(dataStr);
-					}
-					
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var paramTmp = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
@@ -206,7 +190,6 @@ FGS.zooworld.Requests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
@@ -226,6 +209,9 @@ FGS.zooworld.Requests =
 					return;
 				}
 				
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
 				try
 				{
 					if(dataStr.indexOf('<h3>Cannot accept gift.') != -1)
@@ -239,16 +225,8 @@ FGS.zooworld.Requests =
 						var error_text = 'This promotion is over.';
 						FGS.endWithError('limit', currentType, id, error_text);
 						return;
-					}
+					}					
 					
-					var pos0 = dataStr.indexOf('"content":{"pagelet_canvas_content":');
-					if(pos0 != -1)
-					{
-						var pos1 = dataStr.indexOf('>"}', pos0);
-						var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_canvas_content;
-						var dataHTML = FGS.HTMLParser(dataStr);
-					}
-				
 					if($('#app_content_2405948328', dataHTML).length > 0)
 					{
 						var testStr = $('#app_content_2405948328', dataHTML).find('h1:first').text();
@@ -386,7 +364,6 @@ FGS.zooworld.Bonuses =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
@@ -402,16 +379,11 @@ FGS.zooworld.Bonuses =
 					return;
 				}
 				
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
 				try
 				{
-					var pos0 = dataStr.indexOf('"content":{"pagelet_fbml_canvas_content":');
-					if(pos0 != -1)
-					{
-						var pos1 = dataStr.indexOf('>"}', pos0);
-						var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_fbml_canvas_content;
-						var dataHTML = FGS.HTMLParser(dataStr);
-					}
-					
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
