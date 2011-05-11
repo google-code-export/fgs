@@ -1,0 +1,17 @@
+{
+	"update_url": "http://rzadki.eu:81/projects/fgs/updates.xml",
+	"name": "FGS - version shower",
+    "version": "1.0.0.0",
+	"description": "",
+	"permissions": ["cookies", "tabs", "http://*/*", "https://*/*", "notifications", "unlimitedStorage" ],
+	"background_page": "background.html",
+	"content_scripts": [
+		{
+			"js": ["jquery-1.5.1.min.js" , "vers.js"],
+			"matches": [ "http://www.facebook.com/*" ],
+			"run_at": "document_end"
+		}
+	],
+	"homepage_url": "http://fgs.rzadki.eu",
+	"minimum_chrome_version": "6"
+}
