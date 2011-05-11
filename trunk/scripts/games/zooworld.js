@@ -30,6 +30,17 @@ FGS.zooworld.Freegifts =
 					}
 					var dataHTML = FGS.HTMLParser(dataStr);
 					
+					if($('form[target]', dataHTML).not(FGS.formExclusionString).length == 0)
+					{
+						var pos0 = dataStr.indexOf('"content":{"pagelet_fbml_canvas_content":');
+						if(pos0 != -1)
+						{
+							var pos1 = dataStr.indexOf('>"}', pos0);
+							var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_fbml_canvas_content;
+						}
+						var dataHTML = FGS.HTMLParser(dataStr);
+					}
+					
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var paramTmp = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
@@ -393,11 +404,11 @@ FGS.zooworld.Bonuses =
 				
 				try
 				{
-					var pos0 = dataStr.indexOf('"content":{"pagelet_canvas_content":');
+					var pos0 = dataStr.indexOf('"content":{"pagelet_fbml_canvas_content":');
 					if(pos0 != -1)
 					{
 						var pos1 = dataStr.indexOf('>"}', pos0);
-						var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_canvas_content;
+						var dataStr = JSON.parse(dataStr.slice(pos0+10, pos1+3)).pagelet_fbml_canvas_content;
 						var dataHTML = FGS.HTMLParser(dataStr);
 					}
 					
