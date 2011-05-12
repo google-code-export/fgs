@@ -369,10 +369,8 @@ function addDataToScreenLocked(callback, id, data)
 				return;
 			ids.push(itID);
 			
-			
 			var v = {	id: data[0],	title: data[2],	text: data[3],	image: data[4],	url: data[5],	time: data[6]	}
 			
-					
 			if(checkIfBonusIsManual(gameID, v.title))
 			{
 				htmlManual += getNewManualBonusRow(gameID, v);

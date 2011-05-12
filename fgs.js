@@ -2099,8 +2099,6 @@ var FGS = {
 				dataStr2 += tmpObj[h];
 			}
 			
-			console.log(FGS.jQuery(dataStr2));
-			
 			var dataStr = dataStr2;
 		}
 		return dataStr;
