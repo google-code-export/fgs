@@ -2015,6 +2015,7 @@ var FGS = {
 		{
 			var pos0 = 0;
 			var dataStr2 = '';
+			var tmpObj = {};
 			
 			while(true)
 			{
@@ -2028,9 +2029,35 @@ var FGS = {
 					pos0 = pos0a+15;
 					continue;
 				}
+				
+				var objName = dataStr.slice(pos0a+12, pos0c);
+									
 				try
 				{
-					dataStr2 += JSON.parse(dataStr.slice(pos0a+10, pos0b+3))[dataStr.slice(pos0a+12, pos0c)];
+					// tmpObj[objName]
+					var tmpStr = JSON.parse(dataStr.slice(pos0a+10, pos0b+3))[objName];
+					var added = false;
+					
+					for(var h in tmpObj)
+					{
+						var str = tmpObj[h];
+						
+						var i1 = str.indexOf('id="'+objName+'"');
+						
+						if(i1 != -1)
+						{
+							
+							
+							
+							
+							break;
+						}
+					}
+					
+					if(!added)
+					{
+						tmpObj[objName] = tmpStr;
+					}
 				}
 				catch(e)
 				{
