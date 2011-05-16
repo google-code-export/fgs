@@ -2126,8 +2126,6 @@ var FGS = {
 			}
 			
 			var dataStr = dataStr2;
-			
-			FGS.dump(FGS.jQuery(dataStr));
 		}
 		return dataStr;
 	},
