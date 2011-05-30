@@ -602,9 +602,6 @@ FGS.checkVersion = function()
 
 FGS.preStartup = function() 
 {
-	var observer = new FGSobserver();
-	
-	
 	FGS.loadLibraries();	
 	
 	FGS.jQuery.ajaxSetup({
