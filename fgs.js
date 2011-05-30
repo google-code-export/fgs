@@ -159,7 +159,7 @@ var FGS = {
 		FGS.jQuery.ajax({
 			type: "GET",
 			url: 'https://www.facebook.com/dialog/apprequests',
-			data: $.param(params.reqData)+'&'+$.param(params.access)+'&'+params.getToken+'&sdk=joey&display=iframe&locale=en_US',
+			data: $.param(params.reqData)+'&'+$.param(params.access)+'&'+params.getToken+'&sdk=joey&display=iframe&locale=en_US&lazy=1&stale_ok=1',
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -265,7 +265,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'https://www.facebook.com/ajax/typeahead/first_degree.php?__a=1',
+			url: 'https://www.facebook.com/ajax/typeahead/first_degree.php?__a=1&lazy=1&stale_ok=1',
 			data: params.requestPost,
 			dataType: 'text',
 			success: function(dataStr)
@@ -345,7 +345,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "POST",
-			url: 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&app_id='+params.gameID,
+			url: 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&lazy=1&stale_ok=1&app_id='+params.gameID,
 			data: 'post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&lsd&post_form_id_source=AsyncRequest&lazy=1&stale_ok=1',
 			dataType: 'text',
 			success: function(dataStr)
@@ -381,7 +381,7 @@ var FGS = {
 						return;
 					}
 					
-					$.post(params.formUrl, params.formParam+'&ok_clicked=Send%20Requests', function()
+					$.post(params.formUrl, params.formParam+'&ok_clicked=Send%20Requests&lazy=1&stale_ok=1', function()
 					{
 						var curTime = Math.round(new Date().getTime() / 1000);
 
@@ -848,9 +848,9 @@ var FGS = {
 		var info = {}
 		
 		if(FGS.Gup('secondLink', dataPost) == 1)
-			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
+			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1&lazy=1&stale_ok=1'
 		else
-			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1';
+			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1&lazy=1&stale_ok=1';
 		
 		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests&lazy=1&stale_ok=1';
 		
@@ -926,9 +926,9 @@ var FGS = {
 	emptyUnwantedGifts: function(dataPost)
 	{
 		if(FGS.Gup('secondLink', dataPost) == 1)
-			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
+			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1&lazy=1&stale_ok=1'
 		else
-			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1';
+			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1&lazy=1&stale_ok=1';
 		
 		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests&lazy=1&stale_ok=1';
 		
