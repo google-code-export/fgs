@@ -381,7 +381,7 @@ var FGS = {
 						return;
 					}
 					
-					$.post(params.formUrl, params.formParam+'&ok_clicked=Send%20Requests&lazy=1&stale_ok=1', function()
+					$.post(params.formUrl, params.formParam+'&ok_clicked=Send%20Requests&lazy=1&stale_ok=1', function(dataStr2)
 					{
 						var curTime = Math.round(new Date().getTime() / 1000);
 
@@ -437,8 +437,8 @@ var FGS = {
 							
 							FGS.sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
 						}
-					});
-					
+						callback(params, dataStr2);
+					});					
 				}
 				catch(err)
 				{
@@ -1475,10 +1475,11 @@ var FGS = {
 				FGS.jQuery('input[name="params\[app_id\]"]',data).parent('form').each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
-
+					
 					if(FGS.options.games[APPID] == undefined || FGS.options.games[APPID].enabled == false)
 					{
-						return;
+						if(APPID != '167746316127' || (APPID == '167746316127' && !FGS.options.games['1677463161271'].enabled))
+							return;
 					}
 
 					var el = $(this);
@@ -1584,7 +1585,7 @@ var FGS = {
 						{
 							var searchStr = 'gid';
 						}
-						else if(APPID == 167746316127 || APPID == 2405948328 || APPID == 2345673396 || APPID == 2339854854 || APPID == 14852940614)
+						else if(APPID == 167746316127 || APPID == 1677463161271 || APPID == 2405948328 || APPID == 2345673396 || APPID == 2339854854 || APPID == 14852940614)
 						{
 							var searchStr = 'giftId';
 						}
@@ -1625,6 +1626,16 @@ var FGS = {
 							var type = pos1;
 						}
 					}
+					
+					if(APPID == '167746316127' && newText.indexOf('Zoo World 2') != -1)
+					{
+						APPID = '1677463161271';					
+					}
+					
+					if(!FGS.options.games[APPID].enabled)
+					{
+						return;
+					}	
 					
 					var curTime = Math.round(new Date().getTime() / 1000);
 					
@@ -1755,10 +1766,19 @@ var FGS = {
 			var paramsStr = '&show_hidden=false&ignore_self=false&oldest='+params.time;
 		}
 		
+		var isZW2 = false;
+		
+		var collectID = appID;
+		
+		if(appID == '1677463161271')
+			collectID = '167746316127';
+		
+		
+		
 		$.ajax({
 			type: "GET",
 			url: 'http://www.facebook.com/ajax/apps/app_stories.php',
-			data: '__a=1&is_game=1&app_ids='+appID+'&max_stories='+number+'&user_action=0&lazy=1&stale_ok=1'+paramsStr,
+			data: '__a=1&is_game=1&app_ids='+collectID+'&max_stories='+number+'&user_action=0&lazy=1&stale_ok=1'+paramsStr,
 			dataType: 'text',
 			timeout: 180000,
 			success: function(str)
@@ -1878,6 +1898,26 @@ var FGS = {
 							if(appID.toString() != '166309140062981' && appID.toString() != '216230855057280') // wlasny bonus w puzzle hearts i charmed gems
 								return true;
 						}
+						
+						var link = el.find('.UIActionLinks_bottom > a:last').attr('href');
+						
+						if(link == undefined)
+						{
+							var link = el.find('.uiAttachmentTitle').find('a').attr('href');
+							if(link == undefined)
+								return;							
+						}
+						
+						if(appID == '1677463161271')
+						{
+							if(link.indexOf('landingZoo2.php') == -1)
+								return;
+						}
+						else if(appID == '167746316127')
+						{
+							if(link.indexOf('landingZoo2.php') != -1)
+								return;
+						}
 
 						var ret = false;
 						
@@ -1927,14 +1967,6 @@ var FGS = {
 						if(ret) return;
 						//koniec filtry usera
 						
-						var link = el.find('.UIActionLinks_bottom > a:last').attr('href');
-						
-						if(link == undefined)
-						{
-							var link = el.find('.uiAttachmentTitle').find('a').attr('href');
-							if(link == undefined)
-								return;							
-						}						
 						
 						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('src'), link, bonusTime, feedback, link_data];
 						
