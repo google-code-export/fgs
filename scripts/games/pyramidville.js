@@ -90,45 +90,11 @@ FGS.pyramidville.Requests =
 				{
 					var dataHTML = FGS.HTMLParser(dataStr);
 					
-					if(dataStr.indexOf('You have already collected this bonus') != -1)
-					{
-						var error_text = 'You have already collected this bonus!';
-						FGS.endWithError('limit', currentType, id, error_text);
-						return;
-					}
+					var singleRequest = FGS.Gup('request_ids', currentURL);
 					
-					var dataHTML = FGS.HTMLParser(dataStr);
+					var sig = $('input[name="signed_user"]', dataHTML).val();
 					
-					var tst = new RegExp(/<fb:serverfbml[^>]*?>[\s\S]*?<fb:fbml[^>]*?>([\s\S]*?)<\/fb:fbml>[\s\S]*?<\/fb:serverfbml>/m).exec(dataStr);
-					if(tst != null)
-					{
-						var dataHTML = FGS.HTMLParser('<div>'+tst[1]+'</div>');	
-					}
-					
-					if($('.gift_table', dataHTML).length > 0)
-					{
-						var tmp = $.trim($('.gift_table', dataHTML).find('h2:first').text());
-						
-						var pos1 = tmp.indexOf('You have accepted th');
-						var title = '';
-						
-						if(pos1 != -1)
-						{
-							var pos2 = tmp.indexOf('!', pos1);							
-							var title = tmp.slice(pos1+23, pos2);
-						}
-						
-						info.title = title;
-						info.image = $('.gift_image', dataHTML).children('img').attr('src');
-						info.time  = Math.round(new Date().getTime() / 1000);
-						info.text  = tmp;						
-						
-						FGS.endWithSuccess(currentType, id, info);
-					}
-					else
-					{
-						throw {message: dataStr}
-					}
+					FGS.getAppAccessToken(currentType, id, currentURL, 'api_key=115301331874715&app_id=115301331874715&channel=http://front.pyramid.kobojo.com/custom_channel.html', FGS.pyramidville.Requests.ParseAppRequests, {single: singleRequest, signed_user: sig});
 				}
 				catch(err)
 				{
@@ -156,7 +122,125 @@ FGS.pyramidville.Requests =
 				}
 			}
 		});
-	}
+	},
+	
+	ParseAppRequests: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+	
+		try
+		{
+			var data = params[1];
+			
+			var fbrequest = JSON.parse(data);
+
+			if (fbrequest.data.substr(0, 1) != '{')
+				fbrequestData = $.base64Decode(fbrequest.data);
+
+			var pvrequest = $.parseJSON(fbrequestData);
+			
+			
+			if(pvrequest.type == 'invite')
+			{
+				var title = 'New neighbor';
+				var image = 'http://graph.facebook.com/'+fbrequest.from.id+'/picture';
+			}
+			else
+			{
+				var title = (pvrequest.loot.Amount > 1 ? pvrequest.loot.Amount + " ": "") + pvrequest.loot.Caption;
+				var image = 'http://s.cn.kobojo.com/pyramidville/assets/thumbnails70/'+pvrequest.loot.LocId.toLowerCase()+'.png';
+			}
+			
+			var user = typeof fbrequest.from != 'undefined'
+					? fbrequest.from.name
+					: 'Cleopatra';
+						
+			var paramsNew = {
+				access: '?'+$.param(params[0]),
+				rid: fbrequest.id,
+				post: {signed_user: params[2].signed_user, id: pvrequest.id},
+				data: {image: image, user: user, title: title}
+			};
+			
+			FGS.pyramidville.Requests.ClickNew(currentType, id, currentURL, paramsNew);
+		}
+		catch(err)
+		{
+			FGS.dump(err);
+			FGS.dump(err.message);
+			if(typeof(retry) == 'undefined')
+			{
+				retryThis(currentType, id, currentURL, params, true);
+			}
+			else
+			{
+				FGS.endWithError('receiving', currentType, id);
+			}
+		}
+	},
+	
+	ClickNew: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			url: 'http://front.pyramid.kobojo.com/inbox/accept',
+			data: params.post,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var x = JSON.parse(dataStr);
+					
+					if(x.status != 0)
+					{
+						FGS.endWithError('limit', currentType, id, 'Expired!');
+						FGS.deleteNewRequests(id, params.access);
+						return;
+					}
+					
+					info.image = params.data.image;
+					info.title = params.data.title;
+					info.text  = params.data.user;
+					info.time = Math.round(new Date().getTime() / 1000);
+						
+					FGS.endWithSuccess(currentType, id, info);
+					
+					FGS.deleteNewRequests(id, params.access);	
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	}	
 };
 
 FGS.pyramidville.Bonuses = 
