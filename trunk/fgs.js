@@ -149,6 +149,57 @@ var FGS = {
 		});
 	},
 	
+	getSingleGameRequest: function(currentType, id, currentURL, params, callback, params2, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var currentType	= 'request';
+		var info = {}
+		
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'https://graph.facebook.com/'+params2.single,
+			data: params,
+			dataType: 'text',
+			success: function(data)
+			{
+				try
+				{
+					callback(currentType, id, currentURL, [params, data, params2]);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, callback, params2, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function(e)
+			{
+				if(e.status == 400)
+				{
+					FGS.endWithError('limit', currentType, id, 'Already received!');
+					return;
+				}
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, callback, params2, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
 	getSendingForm: function(params, callback, retry)
 	{
 		var $ = FGS.jQuery;
@@ -720,7 +771,7 @@ var FGS = {
 		});
 	},
 	
-	getAppAccessToken: function(currentType, id, currentURL, params, callback, retry)
+	getAppAccessToken: function(currentType, id, currentURL, params, callback, params2, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
@@ -748,7 +799,10 @@ var FGS = {
 					
 					var access = {access_token: parseStr.session.access_token};
 					
-					FGS.getGameRequests(currentType, id, currentURL, access, callback);
+					if(!params2.single)
+						FGS.getGameRequests(currentType, id, currentURL, access, callback);
+					else
+						FGS.getSingleGameRequest(currentType, id, currentURL, access, callback, params2);
 				}
 				catch(err)
 				{
@@ -756,7 +810,7 @@ var FGS = {
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, params, callback, true);
+						retryThis(currentType, id, currentURL, params, callback, params2, true);
 					}
 					else
 					{
@@ -768,7 +822,7 @@ var FGS = {
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, params, callback, true);
+					retryThis(currentType, id, currentURL, params, callback, params2, true);
 				}
 				else
 				{

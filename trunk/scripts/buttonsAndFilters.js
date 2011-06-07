@@ -877,16 +877,16 @@ FGS.gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['Aiuta (.*)', 'Help (.*)', 'Ayudar a (.*)'],
 							requests: [],
-							requestsNewWindow: ['(.*)']
+							requestsNewWindow: []
 						},
 						buttons: [
 							'BonusesPending',
-							//'RequestsPending',
+							'RequestsPending',
 							'ManualBonuses',
 							'BonusesHistory',
-							//'RequestsHistory',
+							'RequestsHistory',
 							'FailedBonuses',
-							//'FailedGifts',
+							'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
