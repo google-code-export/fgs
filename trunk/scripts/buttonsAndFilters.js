@@ -871,6 +871,26 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	115301331874715:	{ 	name: 'Pyramidville',	systemName: 'pyramidville', link: 'http://apps.facebook.com/pyramidville/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['Aiuta (.*)', 'Help (.*)', 'Ayudar a (.*)'],
+							requests: [],
+							requestsNewWindow: ['(.*)']
+						},
+						buttons: [
+							'BonusesPending',
+							//'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							//'RequestsHistory',
+							'FailedBonuses',
+							//'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 	123837014322698:	{ 	name: 'My Shops',	systemName: 'myshops', link: 'http://apps.facebook.com/myshopsgame/',
 						filter:	
 						{
