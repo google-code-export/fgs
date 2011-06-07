@@ -1534,8 +1534,10 @@ var FGS = {
 						
 						dataPost += '&'+escape(el.find('input[type="submit"]:first').attr('name'))+'='+el.find('input[type="submit"]:first').attr('value');
 					}
-
-					var elID = el.children('input[name=id]').val();
+					
+					var elID = el.children('input[name="request_id"]').val();
+					if(typeof elID == 'undefined')
+						elID = el.children('input[name="id"]').val();
 					if(el.find('.appRequestBodyNewA').length > 0)
 					{
 						var testEl = el.find('.appRequestBodyNewA:first');
@@ -1567,8 +1569,6 @@ var FGS = {
 						{
 							var newText = testEl.text();
 						}
-					
-					
 					}
 					
 					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1 || newText.indexOf('as my new neighbor') != -1)
@@ -1658,7 +1658,6 @@ var FGS = {
 					{
 						bTitle = el.find('.uiTooltipText:first').text();
 					}
-					
 					
 					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime, stats];
 					giftArr.push(gift);
