@@ -136,10 +136,10 @@ FGS.pyramidville.Requests =
 			
 			var fbrequest = JSON.parse(data);
 
-			if (fbrequest.data.substr(0, 1) != '{')
-				fbrequestData = $.base64Decode(fbrequest.data);
-
+			var fbrequestData = $.base64Decode(fbrequest.data);
+			
 			var pvrequest = $.parseJSON(fbrequestData);
+			
 			
 			
 			if(pvrequest.type == 'invite')
