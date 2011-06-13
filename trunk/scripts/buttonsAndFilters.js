@@ -126,7 +126,7 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
-	164285363593426:	{ 	name: 'Empire and Allies',	systemName: 'empiresandallies', 	link: 'http://apps.facebook.com/empiresandallies/',
+	164285363593426:	{ 	name: 'Empires and Allies',	systemName: 'empiresandallies', 	link: 'http://apps.facebook.com/empiresandallies/',
 						filter:		
 						{
 							bonuses: [],
