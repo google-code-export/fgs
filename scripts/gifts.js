@@ -403,9 +403,34 @@ FGS.giftsArray = {
 		"greenBubbleCoral": { name: 'Green Bubble Coral'},
 	},
 	
-	164285363593426:
+	164285363593426: // Empires & Allies
 	{
-		"energy01": { name: '+1 Energy'}
+		"energy01": { name: '+1 Energy'},
+		"energy02": { name: '+2 Energy'},
+		"energy03": { name: '+3 Energy'},
+		"expansionkey01": { name: 'Liberty Bond'},
+		"coins": { name: 'Coins'},
+		"wood": { name: 'Wood'},
+		"oil": { name: 'Oil'},
+		"gold": { name: 'Gold'},
+		"Rubberband+Ball": { name: 'Rubber Band Ball'},
+		"Statue+Cat": { name: 'Cat Statue'},
+		"Arch": { name: 'Arch'},
+		"FlyingSaucer": { name: 'Flying Saucer'},
+		"Statue+Muffler+Guy": { name: 'Muffler Guy Statue'},
+		"Column+01": { name: 'Column'},
+		"statue02": { name: 'Pole 1'},
+		"statue03": { name: 'Pole 2'},
+		"statue01": { name: 'Flagpole'},
+		"Totem": { name: 'Totem'},
+		"Mail+Box+Blue": { name: 'Mailbox'},
+		"statue04": { name: 'Statue'},
+		"statue04": { name: 'Obelisk'},
+		"tatue+Viking": { name: 'Viking Statue'},
+		"Statue+Dinosaur+Skeleton": { name: 'Dinosaur Skeleton Statue'},
+		"Statue+Elephant+02": { name: 'Elephant Statue'},
+		"Statue+Elephant+01": { name: 'Seated Elephant Statue'},
+		"BirdBath": { name: 'Bird Bath'},
 	},
 	
 	291549705119: // cityville
