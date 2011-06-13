@@ -855,6 +855,11 @@ function addDataToScreenLocked(callback, id, data)
 			var addParam = '';
 		
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
 				Clear: function()
@@ -937,9 +942,14 @@ function addDataToScreenLocked(callback, id, data)
 			
 			
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					var delArr = [];
@@ -986,9 +996,14 @@ function addDataToScreenLocked(callback, id, data)
 			var addParam = '';
 			
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 		
@@ -1032,9 +1047,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedBonuses(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'BonusesHistoryList').html('<br style="clear:both" />');
@@ -1053,9 +1073,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearPendingBonusesOtherError(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('Clear')+' "Other errors"');
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete other errors": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					
@@ -1097,9 +1122,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedBonusesLimitError(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('Clear')+' "Limit errors"');
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete limit errors": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedBonusesList').children('div').each(function(){
@@ -1123,9 +1153,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearAllFailedBonuses(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete failed bonuses": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedBonusesList').children('div').each(function(){
@@ -1145,9 +1180,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearAllFailedRequests(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete failed gifts": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedGiftsList').children('div').each(function(){
@@ -1168,9 +1208,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedBonusesReceivingError(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('Clear')+' "Receiving errors"');
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete receiving errors": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedBonusesList').children('div').each(function()
@@ -1195,9 +1240,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedRequestsReceivingError(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('Clear')+' "Receiving errors"');
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete receiving errors": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedGiftsList').children('div').each(function(){
@@ -1221,9 +1271,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedRequestsLimitError(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('Clear')+' "Limit errors"');
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete limit errors": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'FailedGiftsList').children('div').each(function(){
@@ -1248,9 +1303,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearCollectedRequests(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'RequestsHistoryList').html('<br style="clear:both" />');
@@ -1269,9 +1329,14 @@ function addDataToScreenLocked(callback, id, data)
 	function ClearSentFreeGifts(gameID)
 	{
 		$('#dialog-confirm').dialog({
+			open: function()
+			{
+				$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+				$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+			},
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var game = bkP.gamesData[gameID].systemName;
 					$('#'+game+'SendFreeGiftsHistoryList').html('<br style="clear:both" />');
@@ -1468,14 +1533,14 @@ function addDataToScreenLocked(callback, id, data)
 		var opt = 'NeighborsSearchList';
 		
 		if(!status)
-			var html = '<h3 class="center">There was a problem. Please try again later.</h3>';
+			var html = '<h3 class="center">'+bkP.getMsg('ThereWasAProblemTryAgainLater')+'</h3>';
 		else
 		{
 			if(status.length == 0)
-				var html = '<h3 class="center">Currently there are no people for this game, that are looking for neighbors.</h3>';
+				var html = '<h3 class="center">'+bkP.getMsg('NoPeopleLookingForNeighborsInThisGame')+'</h3>';
 			else
 			{
-				var html = '<h3 class="center">These people are looking for new neighbors:</h3>';
+				var html = '<h3 class="center">'+bkP.getMsg('ThesePeopleAreLookingForNeighbors')+':</h3>';
 				$(status).each(function(k,v)
 				{
 					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'&fromFGS='+escape(bkP.gamesData[gameID].name)+'" class="friendLink" target="_blank">'+v+'</a></div>';
@@ -1493,7 +1558,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		if(!$(".gameListOnNeighborsSearch[gameID='"+gameID+"']").is(':checked'))
 		{
-			alert('You must check "List me on the neighbors search" before you can search.');
+			alert(bkP.getMsg('MustCheckListMeOnNeighborsSearchBeforeSearch'));
 			return;
 		}
 		
@@ -1511,7 +1576,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		if(!users)
 		{
-			var html = '<h3 class="center">There was a problem. Please try again later.</h3>';
+			var html = '<h3 class="center">'+bkP.getMsg('ThereWasAProblemTryAgainLater')+'</h3>';
 			$('.sendToNeighboursList','div#'+game+opt).html(html);
 		}
 		else
@@ -1535,9 +1600,9 @@ function addDataToScreenLocked(callback, id, data)
 					favArr.push([
 						'<img src="icons/favourite.png" gameID="'+gameID+'" neighID="'+id+'" class="toggleFavourite">',
 						'<a href="http://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>0',
 						'<span class="hide">0</span>0',
 						'<span class="hide">0</span>0',
@@ -1552,9 +1617,9 @@ function addDataToScreenLocked(callback, id, data)
 					norArr.push([
 						'<img src="icons/favourite-bw.png" gameID="'+gameID+'" neighID="'+id+'" class="toggleFavourite">', 
 						'<a href="http://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
-						'<span class="hide">0</span>never',
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
+						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>0',
 						'<span class="hide">0</span>0',
 						'<span class="hide">0</span>0',
@@ -1589,32 +1654,7 @@ function addDataToScreenLocked(callback, id, data)
 		setTimeout(function(){ bkP.ListNeighbours(gameID) }, 100);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 function startup()
 {
 	$('#currentVersion').text(bkP.currentVersion);
@@ -1666,7 +1706,13 @@ function prepareGameSelector()
 	$('#gameSelector').children('label').tooltip({
 		delay: 0,
 		track: true,
-		bodyHandler: function(){ return '<h2>'+$(this).attr("gameName")+'</h2>'; }, 
+		bodyHandler: function()
+			{
+				if($(this).is('[gamename="Contact"], [gamename="Chat"], [gamename="Options"]'))
+					return '<h2>'+bkP.getMsg($(this).attr("gameName"))+'</h2>'; 
+				else
+					return '<h2>'+$(this).attr("gameName")+'</h2>'; 
+			}, 
 		positionLeft: true,
 		showURL: false
 	});
@@ -1780,19 +1826,19 @@ function addGameMenu(gameID)
 				if(bkP.gamesData[gameID].bonusNotice != undefined)
 					curEl.prepend('<div style="font-size: 1.5em; font-weight:bolder;text-align: center;color: red;padding: 5px; border: 1px dotted red;margin-bottom: 10px;">'+bkP.gamesData[gameID].bonusNotice+'</div>');
 
-			var addSearch = '<h3>Simple filter</h3> <input type="text" class="filterBonusText" /> <select class="searchWhat"><option value="1">Only title</option><option value="2">Only description</option><option value="0" selected="selected">Both</option>';
+			var addSearch = '<h3>'+bkP.getMsg('SimpleFilter')+'</h3> <input type="text" class="filterBonusText" /> <select class="searchWhat"><option value="1">'+bkP.getMsg('OnlyTitles')+'</option><option value="2">'+bkP.getMsg('OnlyDescriptions')+'</option><option value="0" selected="selected">'+bkP.getMsg('Both')+'</option>';
 		
-			curEl.find('.submenu').css('margin', '0 300px').append('<div style="float: left;position: absolute; left: 15px; width: 290px;" class="showAllButtonDiv"><span class="showAllText"></span><input type="checkbox" id="'+game+'ShowAll'+id+'" gameID="'+gameID+'" class="ShowAllItems" /><label for="'+game+'ShowAll'+id+'">Show all</label> <input type="checkbox" id="'+game+'ShowDescriptions'+id+'" gameID="'+gameID+'" class="ShowDescriptions" '+ ( bkP.options.showDescriptionsOnStartup == 1 ? ' checked="checked"' : '')+' /><label for="'+game+'ShowDescriptions'+id+'">Show descriptions</label><br />'+addSearch+'<br /></div>');
+			curEl.find('.submenu').css('margin', '0 300px').append('<div style="float: left;position: absolute; left: 15px; width: 290px;" class="showAllButtonDiv"><span class="showAllText"></span><input type="checkbox" id="'+game+'ShowAll'+id+'" gameID="'+gameID+'" class="ShowAllItems" /><label for="'+game+'ShowAll'+id+'">'+bkP.getMsg('ShowAllItems')+'</label> <input type="checkbox" id="'+game+'ShowDescriptions'+id+'" gameID="'+gameID+'" class="ShowDescriptions" '+ ( bkP.options.showDescriptionsOnStartup == 1 ? ' checked="checked"' : '')+' /><label for="'+game+'ShowDescriptions'+id+'">'+bkP.getMsg('ShowDescriptions')+'</label><br />'+addSearch+'<br /></div>');
 		}
 		
 		if(id == 'NeighborsSearch')
 		{
-			curEl.find('#'+game+id+'List').html('<h2 class="center">Click above button to start looking for new neighbors</h2>');
+			curEl.find('#'+game+id+'List').html('<h2 class="center">'+bkP.getMsg('ClickAboveToStartSearchingForNeighbors')+'</h2>');
 		}
 		
 		if(id == 'SendFreeGifts')
 		{
-			curEl.find('#'+game+id+'List').html('<h2 class="center">Click above button to load your neighbors list</h2>');
+			curEl.find('#'+game+id+'List').html('<h2 class="center">'+bkP.getMsg('ClickAboveToLoadYourNeighborsList')+'</h2>');
 		}
 		
 		for(var id2 in bkP.submenuButtons[id].submenu)
@@ -1828,7 +1874,7 @@ function checkIconsCountInGameSelector(dontSwitchGame)
 	if($('#gameSelector').find('label:visible').length == 3)
 	{
 		processGameSelectorInput($('#gameSelector').find('input:visible:last').attr('checked', 'checked'));
-		$('#gameSelector').prepend('<h2>You haven\'t selected any games! Go to options menu to select some.<br /><br /></h2>');
+		$('#gameSelector').prepend('<h2>'+bkP.getMsg('NoGamesSelectPleaseSelectSomeBelow')+'<br /><br /></h2>');
 		$("#gameSelector").buttonset('refresh');
 	}
 	else
@@ -2021,11 +2067,11 @@ function loadComments()
 	{
 		$(bkP.options.defaultCommentsMessages).each(function(i,msg)
 		{
-			el.append('<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteComment" title="Delete comment"> '+msg+'</div>');
+			el.append('<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteComment" title="'+bkP.getMsg('DeleteComment')+'"> '+msg+'</div>');
 		});	
 	}
 
-	el.append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button id="saveNewComment">Add new comment</button>');
+	el.append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button id="saveNewComment">'+bkP.getMessage('SaveComment')+'</button>');
 }
 
 function processSaveNewComment(el)
@@ -2081,7 +2127,7 @@ function processLoadFiltersForGame(gameID, opt)
 		for(var i = 0; i < arr.length; i++)
 		{
 			var v = arr[i];
-			html += '<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteFilter" title="Delete filter"> '+v+'</div>';
+			html += '<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteFilter" title="'+bkP.getMsg('DeleteFilter')+'"> '+v+'</div>';
 		}
 		
 		html+= '<br style="clear:both" />';
@@ -2183,7 +2229,7 @@ function processSwitchItemsDisplay()
 	
 	if($('input.ShowAllItems', elSub).button().is(':checked'))
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL items</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>'+bkP.getMsg('ShowingAllItems')+'</h3>');
 		matchingItems.removeClass('hide');		
 		appendSrcToImages(el.attr('id'));
 		switchDescriptions(el.attr('id'), showDesc);
@@ -2192,17 +2238,17 @@ function processSwitchItemsDisplay()
 	
 	if(total > 100 && total == matchingItems.length)
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing 100 items (total: '+total+')</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>'+bkP.getMsg('Showing100ItemsTotalX', [total])+'</h3>');
 		$('input.ShowAllItems', elSub).next().removeClass('hide');
 	}
 	else if(total > 100 && total != matchingItems.length)
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing '+matchingItems.length+' items (filtered: '+(total-matchingItems.length)+')</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>'+bkP.getMsg('ShowingXItemsFilteredX', [matchingItems.length, (total-matchingItems.length)])+'</h3>');
 		$('input.ShowAllItems', elSub).next().removeClass('hide');
 	}
 	else
 	{
-		$('input.ShowAllItems', elSub).prev('span').html('<h3>Showing ALL items</h3>');
+		$('input.ShowAllItems', elSub).prev('span').html('<h3>'+bkP.getMsg('ShowingAllItems')+'</h3>');
 		$('input.ShowAllItems', elSub).next().addClass('hide');
 	}
 	matchingItems.slice(0, 99).removeClass('hide');
@@ -2580,9 +2626,14 @@ function onMouseDownTest(e)
 				else if(action == 'deleteSimilar')
 				{
 					$('#dialog-confirm').dialog({
+						open: function()
+						{
+							$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+							$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+						},
 						buttons:
 						{
-							"Delete all items": function()
+							Clear: function()
 							{
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
@@ -2677,9 +2728,14 @@ function onMouseDownTest(e)
 				else if(action == 'deleteSimilar')
 				{
 					$('#dialog-confirm').dialog({
+						open: function()
+						{
+							$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+							$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+						},
 						buttons:
 						{
-							"Delete all items": function()
+							Clear: function()
 							{
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
@@ -3093,15 +3149,15 @@ function onMouseDownTest(e)
 	{
 		if(success)
 		{
-			$('img.sendBack', '#'+bonusID).addClass('disabledSendback').removeClass('sendBack').attr('src', 'gfx/23check.png').css('cursor', 'default').attr('title', 'Thank you gift was sent successfully');
+			$('img.sendBack', '#'+bonusID).addClass('disabledSendback').removeClass('sendBack').attr('src', 'gfx/23check.png').css('cursor', 'default').attr('title', bkP.getMsg('ThankYouGiftAlreadySent'));
 		}
 		else if(isDailyLimit)
 		{
-			$('img.sendBack', '#'+bonusID).addClass('disabledSendback').removeClass('sendBack').attr('src', 'gfx/23error.png').css('cursor', 'default').attr('title', 'You have already sent thank you gift today to this person!');
+			$('img.sendBack', '#'+bonusID).addClass('disabledSendback').removeClass('sendBack').attr('src', 'gfx/23error.png').css('cursor', 'default').attr('title', bkP.getMsg('ThankYouGiftAlreadySentToday'));
 		}
 		else
 		{
-			$('img.sendBack', '#'+bonusID).removeClass('disabledSendback').attr('src', 'gfx/23error.png').attr('title', 'There was an error sending thank you gift')
+			$('img.sendBack', '#'+bonusID).removeClass('disabledSendback').attr('src', 'gfx/23error.png').attr('title', bkP.getMsg('ErrorWhileSendingThankYouGift'))
 		}
 	}
 	
@@ -3127,7 +3183,7 @@ function onMouseDownTest(e)
 	{
 		if(error == 0)
 		{
-			$('img.likeBonus', selector).addClass('disabledLike').removeClass('likeBonus').attr('src', 'gfx/like-off.png').css('cursor', 'default').attr('title', 'You already liked this');
+			$('img.likeBonus', selector).addClass('disabledLike').removeClass('likeBonus').attr('src', 'gfx/like-off.png').css('cursor', 'default').attr('title', bkP.getMsg('YouHaveAlreadyLikedThis'));
 		}
 		else
 		{
@@ -3139,7 +3195,7 @@ function onMouseDownTest(e)
 	{
 		if(error == 0)
 		{
-			$('img.commentBonus', selector).addClass('disabledComment').removeClass('commentBonus').attr('src', 'gfx/comment-off.png').css('cursor', 'default').attr('title', 'You already commented this');
+			$('img.commentBonus', selector).addClass('disabledComment').removeClass('commentBonus').attr('src', 'gfx/comment-off.png').css('cursor', 'default').attr('title', bkP.getMsg('YouHaveAlreadyPostedCommentOnThis'));
 		}
 		else
 		{
