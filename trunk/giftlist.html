@@ -125,7 +125,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var el = $('.sendToGiftsList','div#'+game+opt);
 		
-		el.append('<h3 style="text-align: center">Add message to your gift: <input type="text" name="messageToAdd" class="messageToAddToGift" /></h3><br /><br class="clear" style="clear:both"/>');
+		el.append('<h3 style="text-align: center">'+bkP.getMsg('MessageToAddToYourGift')+': <input type="text" name="messageToAdd" class="messageToAddToGift" /></h3><br /><br class="clear" style="clear:both"/>');
 		
 		for(var id in bkP.giftsArray[gameID])
 		{
@@ -159,7 +159,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		if(sendTo.length == 0)
 		{
-			alert('You must select at least one person');
+			alert(bkP.getMsg('YouMustSelectAtLeastOnePerson'));
 			return;
 		}
 		
@@ -178,7 +178,7 @@ function addDataToScreenLocked(callback, id, data)
 		$('div#'+game+opt, '#'+game+'Game').children().addClass('hide');
 		$('div#'+game+'SendFreeGifts > .submenu', '#'+game+'Game').children('button:gt(0)').addClass('hide');
 		
-		$('div#'+game+opt, '#'+game+'Game').prepend('<div class="sendingGiftProgress"><h3 class="center"><img src="gfx/loading.gif"><br />Sending "'+giftName+'" to '+sendTo.length+' people</h3></div>');
+		$('div#'+game+opt, '#'+game+'Game').prepend('<div class="sendingGiftProgress"><h3 class="center"><img src="gfx/loading.gif"><br />'+bkP.getMsg('SendingGiftToNumberOfPeople', [giftName, sendTo.length])+'</h3></div>');
 				
 		bkP[game].Freegifts.Click(params);
 		
@@ -191,7 +191,7 @@ function addDataToScreenLocked(callback, id, data)
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'SendFreeGiftsList';
 		
-		$('div#'+game+opt, '#'+game+'Game').children('.sendingGiftProgress').html('<h3 class="center"><img src="gfx/90px-check.png"><br /><img src="gfx/loading.gif"><br /> Gift was succesfully sent. Waiting for new neighbor list to load.</h3>');
+		$('div#'+game+opt, '#'+game+'Game').children('.sendingGiftProgress').html('<h3 class="center"><img src="gfx/90px-check.png"><br /><img src="gfx/loading.gif"><br /> '+bkP.getMsg('Success')+'<br />'+bkP.getMsg('WaitingForUpdatedNeighborsList')+'</h3>');
 		
 		$(getGiftHistoryRow(gameID, data, data2)).prependTo('#'+game+'SendFreeGiftsHistoryList');
 	}
@@ -215,7 +215,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		if(thankYou != '' && thankYou != 0)
 		{
-			var thankText = '<br /><br />Thank you gift';
+			var thankText = '<br /><br />'+bkP.getMsg('ThankYouGift');
 		}
 		else
 		{
@@ -558,7 +558,7 @@ function addDataToScreenLocked(callback, id, data)
 				
 				if(data.error == 'receiving')
 				{
-					el.addClass('processManualBonusClick').css('cursor', 'pointer !important').attr('title', 'Click to manually receive');
+					el.addClass('processManualBonusClick').css('cursor', 'pointer !important').attr('title', bkP.getMsg('ClickToOpenThisItemInNewTab'));
 				}
 				
 				updateCount(gameID);
@@ -668,7 +668,7 @@ function addDataToScreenLocked(callback, id, data)
 				var enabled = 'true';
 				var cursor = 'cursor: pointer';
 				var className = 'sendBack';
-				var desc = 'Click to send Thank You Gift';
+				var desc = bkP.getMsg('ClickToSendThankYouGift');
 			}
 			else
 			{
@@ -676,7 +676,7 @@ function addDataToScreenLocked(callback, id, data)
 				var enabled = 'false';
 				var cursor = '';
 				var className = '';
-				var desc = 'Thank you gift was sent successfully';
+				var desc = bkP.getMsg('ThankYouGiftAlreadySent');
 			}
 			sendBackHtml = '<img src="'+img3+'" class="'+className+'" isEnabled="'+enabled+'" title="'+desc+'" style="'+cursor+'"><span style="display: none">'+sendBack+'</span>';
 		}
@@ -709,7 +709,7 @@ function addDataToScreenLocked(callback, id, data)
 				var addClassComm = ' disabledComment';
 			}
 		
-			return '<div style="position: relative"><div style="position: absolute;left:0;"><img src="'+img+'" class="likeBonus'+addClassLike+'" title="Click to like this bonus" style="cursor: pointer"></div><div style="position: absolute;left:60;">'+sendBackHtml+'</div><div style="position: absolute;right:0;"><img src="'+img2+'" class="commentBonus'+addClassComm+'" title="Click to send random comment on this bonus" style="cursor: pointer"></div></div>';
+			return '<div style="position: relative"><div style="position: absolute;left:0;"><img src="'+img+'" class="likeBonus'+addClassLike+'" title="'+bkP.getMsg('ClickToLike')+'" style="cursor: pointer"></div><div style="position: absolute;left:60;">'+sendBackHtml+'</div><div style="position: absolute;right:0;"><img src="'+img2+'" class="commentBonus'+addClassComm+'" title="'+bkP.getMsg('ClickToPostComment')+'" style="cursor: pointer"></div></div>';
 		}
 	}
 	
@@ -763,7 +763,7 @@ function addDataToScreenLocked(callback, id, data)
 				
 				if(data.error == 'receiving')
 				{
-					el.addClass('processManualRequestClick').css('cursor', 'pointer !important').attr('title', 'Click to manually receive');
+					el.addClass('processManualRequestClick').css('cursor', 'pointer !important').attr('title', bkP.getMsg('ClickToOpenThisItemInNewTab'));
 				}				
 				updateCount(gameID);
 			}, 1000);
@@ -857,7 +857,7 @@ function addDataToScreenLocked(callback, id, data)
 		$('#dialog-confirm').dialog({
 			buttons:
 			{
-				"Delete all items": function()
+				Clear: function()
 				{
 					var delReqArr = [];
 					var delBonArr = [];
