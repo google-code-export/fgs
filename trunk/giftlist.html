@@ -2617,7 +2617,20 @@ function onMouseDownTest(e)
 			bkP.saveOptions();
 		});
 		
+		for(var l in bkP.transObj)
+		{
+			$('#selectFGSLanguage').append('<option value="'+l+'">'+bkP.transObj[l].name+'</option>');
+		}
 		
+		$('#selectFGSLanguage > option[value="'+bkP.options.language+'"]').attr('selected', 'selected');
+		$('#selectFGSLanguage').change(function()
+		{
+			bkP.options.language = $('option:selected', this).val();
+			bkP.loadSubmenu();
+			bkP.saveOptions();
+			alert(bkP.getMsg('LanguageChanged'));			
+			bkP.sendView('close');			
+		});
 		
 		$('#deleteOlderThan > option[value="'+bkP.options.deleteOlderThan+'"]').attr('selected', 'selected');
 		$('#deleteOlderThan').change(function()
@@ -3411,7 +3424,12 @@ function onMouseDownTest(e)
 				<p>
 					
 					<div style="float: left;width: 45%;">
-						<h1 dataLang="MainOptions"></h1>					
+						<h1 dataLang="MainOptions"></h1>
+						
+						<h4 dataLang="SelectFGSLanguage"></h4>
+							<select id="selectFGSLanguage">
+								<option value="0" dataLang="UseFacebookLanguage"></option>
+							</select>
 						
 						<h4 dataLang="DeleteBonusesOlderThan"></h4>
 							<select id="deleteOlderThan">
