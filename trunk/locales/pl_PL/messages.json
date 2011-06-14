@@ -158,7 +158,7 @@
 	"FoundCertainAmountOfFeeds": "certain amount of feeds was found",
 	"BonusesAreOlderThanSpecifiedTime": "bonusy starsze niż z okresu ????",
 	"ReadBeforeChangingNotice": "Przeczytaj zanim wprowadzisz tutaj jakiekolwiek zmiany:",
-	"AdvancedOptionsNotice": "Lekkomyślna zmiana tych ustawień może spowodować, że Twój FGS przestanie działać (lub proces uruchamiania wydłuży się do 30-60 minut). Opcje te przeznaczone są jedynie dla zaawansowanych użytkowników (i posiadających szybkie łącze). Pamiętaj, że FGS nie pozwoli Ci na zebranie jednorazowo więcej niż 2500 bonusów (it's coded maximum and switching settings won't increae it).\n\nWhat I mean is: even if you set it to collect bonuses up to 1 day old, FGS przestanie działać po 2500-tnym znalezionym bonusie.\n\nFGS przestanie działać także, jeśli znajdzie bonus, który jest/był już na liście."
+	"AdvancedOptionsNotice": "Lekkomyślna zmiana tych ustawień może spowodować, że Twój FGS przestanie działać (lub proces uruchamiania wydłuży się do 30-60 minut). Opcje te przeznaczone są jedynie dla zaawansowanych użytkowników (i posiadających szybkie łącze). Pamiętaj, że FGS nie pozwoli Ci na zebranie jednorazowo więcej niż 2500 bonusów (it's coded maximum and switching settings won't increae it).\n\nWhat I mean is: even if you set it to collect bonuses up to 1 day old, FGS przestanie działać po 2500-tnym znalezionym bonusie.\n\nFGS przestanie działać także, jeśli znajdzie bonus, który jest/był już na liście.",
 	"SelectFGSLanguage": "Wybierz język FGS",
 	"UseFacebookLanguage": "Użyj ustawień Facebook'a (jeżeli możliwe)",
 	"LanguageChanged": "Język został zmieniony. Użyj ikony FGS, aby ponownie otworzyć tę stronę."
