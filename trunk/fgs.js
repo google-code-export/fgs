@@ -3,7 +3,7 @@ var FGS = {
 	transObj:
 	{
 		"en_US": 	{name: "English"},
-		//"pl_PL": 	{name: "Polski"},
+		"pl_PL": 	{name: "Polski"},
 	},
 	
 	translations: {},
@@ -1101,7 +1101,7 @@ var FGS = {
 
 			var pos4 = data2.indexOf('locale:', pos1)+7;
 			var pos5 = data2.indexOf(',', pos4);
-			FGS.userLoc = data2.slice(pos4+1, pos5-1).toString();			
+			FGS.userLoc = data2.slice(pos4+1, pos5-1).toString();
 			
 			FGS.userName = FGS.jQuery('#navAccountName', data).text();
 

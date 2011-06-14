@@ -81,7 +81,7 @@ function addDataToScreenLocked(callback, id, data)
 		var el1		= $('div#'+game+'BonusesPendingList');
 		var el2 	= $('div#'+game+'ManualBonusesList');
 		
-		var text = '<strong>There was a problem collecting bonuses. You may have this game hidden in your news feeds.<br /><br />To unhide it, follow this steps: <br /><br />Go to the Facebook homepage. Select news feed. Scroll down until you reach the bottom of the page. There (just above the copyright Facebook information) is an option bar (if you haven\'t reached the bottom yet it displays a timer of 3 flashing bars). This bar has 2 options -1- older post (to read further back) and -2- edit options. Select -2- and you will get a popup screen where you can select what you want to see in your news feeds and what persons/applications are hidden from your newsfeed, you can deselect the application there (Thanks to Raymond for the guide).</strong><br /><br /><br /><br />';
+		var text = '<strong>'+bkP.getMsg('HiddenFeedNotice')+'</strong><br /><br /><br /><br />';
 		
 		if(el1.length > 0)
 		{
@@ -204,7 +204,7 @@ function addDataToScreenLocked(callback, id, data)
 		$('div#'+game+'SendFreeGifts > .submenu', '#'+game+'Game').children('button:gt(0)').removeClass('hide');
 		$('div#'+game+opt, '#'+game+'Game').children().removeClass('hide');
 		
-		$('div#'+game+opt, '#'+game+'Game').children('.sendingGiftProgress').html('<h3 class="center"><img src="gfx/90px-cancel.png"><br /> There was an error with sending gifts. It could one of this:<br />- you reached facebook limit for sending gifts for this application,<br />- there was a connection error,<br />- you choose gift that requires level that you don\'t have. Try again.</h3>');
+		$('div#'+game+opt, '#'+game+'Game').children('.sendingGiftProgress').html('<h3 class="center"><img src="gfx/90px-cancel.png"><br />'+bkP.getMsg('ErrorWhileSendingGiftNotice')+'</h3>');
 		
 	}
 	
@@ -266,7 +266,7 @@ function addDataToScreenLocked(callback, id, data)
 
 		var newUrl = v.url;
 		
-		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="Click to delete"></span></div>';
+		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)
@@ -292,7 +292,7 @@ function addDataToScreenLocked(callback, id, data)
 		var title = v.title;
 		title = title.replace(/'/gi, '');
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem showContextManual updateTimeAgo manualBonus processManualBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="Click to delete"></span></div>';
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" time="'+v.time+'" url="'+v.url+'" class="manualItem showContextManual updateTimeAgo manualBonus processManualBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
 	}
 	
 	function getNewManualRequestRow(gameID, v)
@@ -1647,7 +1647,7 @@ function addDataToScreenLocked(callback, id, data)
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'SendFreeGiftsList';
 		
-		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center hide">Favourite neighbors:</h2> <div class="sendToFavouritesList hide"></div> <h2 class="center hide">Gifts list:</h2> <div class="hide sendToGiftsList"></div> <h2 class="center">Neighbors list:</h2> <div class="sendToNeighboursList"><h3 class="center"><img src="gfx/loading.gif"><br />Loading your neighbors... Please wait...</h3></div>');
+		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center hide">'+bkP.getMsg('FavouriteNeighbors')+'</h2> <div class="sendToFavouritesList hide"></div> <h2 class="center hide">'+bkP.getMsg('AvailableGifts')+'</h2> <div class="hide sendToGiftsList"></div> <h2 class="center">'+bkP.getMsg('Neighbors')+'</h2> <div class="sendToNeighboursList"><h3 class="center"><img src="gfx/loading.gif"><br />'+bkP.getMsg('LoadingNeighborsPleaseWait')+'</h3></div>');
 		
 		listGifts(gameID);
 		
@@ -1672,6 +1672,7 @@ function prepareGameSelector()
 	}
 	
 	$('#gameOptionsTab').append('<br style="clear: both" />');
+	
 	
 	// dodaj chat i opcje
 	$('<input type="radio" class="gameSelectorInput" name="gameSelectorInput" id="chatSelected" /><label gameName="Chat" for="chatSelected"><img src="icons/menu/chat.png"></label>').appendTo('#gameSelector');
@@ -1729,39 +1730,49 @@ function addIconToOptionsMenu(gameID)
 	
 	if(gameID == '102452128776')
 	{
-		addSpecOpt = '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+' '+(e.useRandomTimeoutOnBonuses ? 'checked="checked"':'')+'  class="gameUseRandomTimeoutOnBonuses" gameID="'+gameID+'" /> <label>Use random timeout on bonuses</label><br />';
+		addSpecOpt = '<input type="checkbox" '+(e.useRandomTimeoutOnBonuses ? 'checked="checked"':'')+'  class="gameUseRandomTimeoutOnBonuses" gameID="'+gameID+'" /> <label>'+bkP.getMsg('UseSmallDelayBetweenBonuses')+'</label><br />';
 	}
 	
-	var el = $('<div gameName="'+d.name+'" class="optionsGameDiv"><img style="float: left" src="icons/menu/48'+d.systemName+'.png" /><span style="float: left;">'
-	+ '<input type="checkbox" '+(e.enabled ? 'checked="checked"':'')+' class="gameEnabledBox" gameID="'+gameID+'" /> <label>Enable <strong>'+d.name+'</strong></label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(gameID == bkP.options.defaultGame ? 'checked="checked"':'')+' class="gameDefaultBox" gameID="'+gameID+'" /> <label>Go to this game on FGS startup</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.likeBonus ? 'checked="checked"':'')+' class="gameLikeBonusBox" gameID="'+gameID+'" /> <label>Auto like bonuses</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.sendbackGift ? 'checked="checked"':'')+' class="gameSendbackGiftBox" gameID="'+gameID+'" /> <label>Send thank you gift</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.hideFromFeed ? 'checked="checked"':'')+' class="gameHideFromFeedBox" gameID="'+gameID+'" /> <label>Hide collected bonuses from FB feed</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+'  '+(e.hideFromFeedLimitError ? 'checked="checked"':'')+' class="gameHideFromFeedLimitErrorBox" gameID="'+gameID+'" /> <label>Hide "limit errors" from FB feed</label><br />'
-	+ '<input type="checkbox" '+(!e.enabled ? 'disabled="disabled"':'')+' '+(e.listOnSearch? 'checked="checked"':'')+'  class="gameListOnNeighborsSearch" gameID="'+gameID+'" /> <label>List me on neighbors search</label><br />'
+	var el = $('<div gameName="'+d.name+'" class="optionsGameDiv'+(!e.enabled ? ' hide':'')+'"><img style="float: left" src="icons/menu/48'+d.systemName+'.png" /><span style="float: left;">'
+	+ '<input type="checkbox" '+(e.enabled ? 'checked="checked"':'')+' class="gameEnabledBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('Enable')+' <strong>'+d.name+'</strong></label><br />'
+	+ '<input type="checkbox" '+(gameID == bkP.options.defaultGame ? 'checked="checked"':'')+' class="gameDefaultBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('ShowThisGameBonusesOnFGSStart')+'</label><br />'
+	+ '<input type="checkbox" '+(e.likeBonus ? 'checked="checked"':'')+' class="gameLikeBonusBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('AutoLikeBonuses')+'</label><br />'
+	+ '<input type="checkbox" '+(e.sendbackGift ? 'checked="checked"':'')+' class="gameSendbackGiftBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('AutoSendThankYouGift')+'</label><br />'
+	+ '<input type="checkbox" '+(e.hideFromFeed ? 'checked="checked"':'')+' class="gameHideFromFeedBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('HideSuccessfulBonusFromFBFeed')+'</label><br />'
+	+ '<input type="checkbox" '+(e.hideFromFeedLimitError ? 'checked="checked"':'')+' class="gameHideFromFeedLimitErrorBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('HideLimitErrorBonusFromFBFeed')+'</label><br />'
+	+ '<input type="checkbox" '+(e.listOnSearch? 'checked="checked"':'')+'  class="gameListOnNeighborsSearch" gameID="'+gameID+'" /> <label>'+bkP.getMsg('ListMeOnNeighborsSearch')+'</label><br />'
 	+ addSpecOpt
 	+ '</span></div>');
+	
+	var el2 = $('<div gameName="'+d.name+'" class="optionsGameDiv width180'+(e.enabled ? ' hide':'')+'"><img style="float: left;width:32px;height:32px;" src="icons/menu/48'+d.systemName+'.png" /><span style="margin-left: 10px;">'
+	+ '<input type="checkbox" '+(e.enabled ? 'checked="checked"':'')+' class="gameEnabledBox" style="float: left;" gameID="'+gameID+'" /> <label style="float: right; width: 125px;">'+bkP.getMsg('Enable')+' <strong>'+d.name+'</strong></label></div>');
 
-	var gs = $('#gameOptionsTab');	
+	var gs  = $('#gameOptionsTab').children('div:first');
+	var gs2 = $('#gameOptionsTab').children('div:last');
 	
 	if(gs.children('div').length == 0)
 	{
 		gs.append(el);
+		gs2.append(el2);
 	}
 	else
 	{
 		var added = false;
-		gs.children('div').each(function(){
+		gs.children('div').each(function(k,v)
+		{
 			if($(this).attr('gameName') > d.name)
 			{
 				$(this).before(el);
+				gs2.children('div:nth-child('+(k+1)+')').before(el2);
 				added = true;
 				return false;
 			}
 		});
 		if(!added)
-			gs.append(el);
+		{
+			gs.append(el);	
+			gs2.append(el2);			
+		}
 	}
 }
 
@@ -1874,7 +1885,7 @@ function checkIconsCountInGameSelector(dontSwitchGame)
 	if($('#gameSelector').find('label:visible').length == 3)
 	{
 		processGameSelectorInput($('#gameSelector').find('input:visible:last').attr('checked', 'checked'));
-		$('#gameSelector').prepend('<h2>'+bkP.getMsg('NoGamesSelectPleaseSelectSomeBelow')+'<br /><br /></h2>');
+		$('#gameSelector').prepend('<h2>'+bkP.getMsg('NoGamesSelectedPleaseSelectSomeBelow')+'<br /><br /></h2>');
 		$("#gameSelector").buttonset('refresh');
 	}
 	else
@@ -1938,16 +1949,24 @@ function processGameEnabledInput(el)
 	
 	var ico = $('#gameSelector').find('input[gameID="'+gameID+'"]').next('label').find('img');
 	
+	$('#gameOptionsTab').find('input.gameEnabledBox[gameID="'+gameID+'"]').attr('checked', chk);
+	
 	if(chk)
 	{
-		el.siblings().removeAttr('disabled');
+		el.closest('.optionsGameDiv').hide();
+		$('#gameOptionsTab').find('input[gameID="'+gameID+'"]:first').closest('.optionsGameDiv').show();
+		
+		
+		//el.siblings().removeAttr('disabled');
 		ico.closest('label').removeClass('hide');
 		ico.attr('src', ico.attr('nosrc'));
 		addGameMenu(gameID);
 	}
 	else
 	{
-		el.siblings().attr('disabled', 'disabled');
+		el.closest('.optionsGameDiv').hide();
+		$('#gameOptionsTab').find('input[gameID="'+gameID+'"]:last').closest('.optionsGameDiv').show();
+		//el.siblings().attr('disabled', 'disabled');
 		var d =  bkP.gamesData[$(el).attr('gameID')];
 		$('#'+d.systemName+'Game').remove();
 		ico.closest('label').addClass('hide');
@@ -2033,15 +2052,36 @@ function switchEnabled(gameID, reload)
 
 	if(enabled == false)
 	{
-		if(typeof(reload) != 'undefined')
+		if(typeof reload != 'undefined')
 		{
-			/*
-			bkP.database.clearByGameID(gameID);
-			bkP.options.games[gameID] = bkP.defaultGameOptions;
-			*/
+			$('#dialog-confirm').dialog({
+				open: function()
+				{
+					$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+					$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+					$(this).text(bkP.getMsg('ClearThisGameSettings')+' ('+bkP.gamesData[gameID].name+')');
+				},
+				buttons:
+				{
+					Clear: function()
+					{
+						bkP.database.clearByGameID(gameID);
+						
+						$( this ).dialog( "close" );
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				beforeClose: function()
+				{
+					$(this).text(bkP.getMsg('AreYouSure'));
+				}				
+			}).dialog( "open" );
+			
 			delete bkP.bonusLoadingProgress[gameID];
 			updateCount();
-			bkP.stopBonusesForGame(gameID);
+			bkP.stopBonusesForGame(gameID);		
 		}
 	}
 	else
@@ -2061,7 +2101,7 @@ function loadComments()
 	
 	if(bkP.options.defaultCommentsMessages.length == 0)
 	{
-		el.html('You have currently no comments setup to post on successful bonuses.');
+		el.html(bkP.getMsg('NoCommentsAddedPleaseAddSomeBelow'));
 	}
 	else
 	{
@@ -2071,7 +2111,7 @@ function loadComments()
 		});	
 	}
 
-	el.append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button id="saveNewComment">'+bkP.getMessage('SaveComment')+'</button>');
+	el.append('<br style="clear:both" /><textarea style="margin-top: 50px;" class="newCommentText"></textarea><button id="saveNewComment">'+bkP.getMsg('SaveComment')+'</button>');
 }
 
 function processSaveNewComment(el)
@@ -2117,7 +2157,7 @@ function processLoadFiltersForGame(gameID, opt)
 	
 	if(arr.length == 0)
 	{
-		$('div#'+opt+'List').html('<h4>You have currently no filters.</h4>To add some: Right click unwanted bonus and select "Don\'t collect this type of bonuses"</h4><br style="clear:both" />');
+		$('div#'+opt+'List').html('<h4>'+bkP.getMsg('NoFiltersAdded')+'</h4><br style="clear:both" />');
 	}
 	else
 	{
@@ -2399,7 +2439,24 @@ function onMouseDownTest(e)
 	{
 		$('[dataLang]').each(function()
 		{
-			$(this).html(bkP.getMsg($(this).attr('dataLang')));		
+			var l = $(this).attr('dataLang');
+			var d = l.split(',');
+			
+			if(d.length > 0)
+			{
+				if(d[0] == 'OlderThan')
+				{
+					var arr = [bkP.getMsg(d[2], [d[1]])];
+					$(this).html(bkP.getMsg(d[0], arr));
+				}
+				else
+				{
+					var arr = d.slice(0, d.length-1);				
+					$(this).html(bkP.getMsg(d[d.length-1], arr));
+				}
+			}
+			else
+				$(this).html(bkP.getMsg(d[0]));
 		});
 		
 		startup();
@@ -2659,9 +2716,14 @@ function onMouseDownTest(e)
 				else if(action == 'stopCollect')
 				{
 					$('#dialog-confirm').dialog({
+						open: function()
+						{
+							$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('StopCollecting'));
+							$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+						},
 						buttons:
 						{
-							"Stop collecting": function()
+							StopCollecting: function()
 							{
 								bkP.options.games[el.attr('gameID')].filter.push(el.attr('search-title'));
 								bkP.saveOptions();
@@ -2793,9 +2855,14 @@ function onMouseDownTest(e)
 				else if(action == 'deleteSimilar')
 				{
 					$('#dialog-confirm').dialog({
+						open: function()
+						{
+							$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('ClearEverything'));
+							$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+						},
 						buttons:
 						{
-							"Delete all items": function()
+							Clear: function()
 							{
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
@@ -2815,9 +2882,14 @@ function onMouseDownTest(e)
 				else if(action == 'stopCollect')
 				{
 					$('#dialog-confirm').dialog({
+						open: function()
+						{
+							$(this).parent().find('.ui-dialog-buttonset').find('span:first').text(bkP.getMsg('StopCollecting'));
+							$(this).parent().find('.ui-dialog-buttonset').find('span:last').text(bkP.getMsg('Cancel'));
+						},
 						buttons:
 						{
-							"Stop collecting": function()
+							StopCollecting: function()
 							{
 								bkP.options.games[el.attr('gameID')].filter.push(el.attr('search-title'));
 								bkP.saveOptions();
@@ -2897,11 +2969,11 @@ function onMouseDownTest(e)
 			
 			if($(this).is(':checked'))
 			{
-				$(this).button('option', 'label', 'Screen is: LOCKED (no new bonuses will show until you unlock it)');
+				$(this).button('option', 'label', bkP.getMsg('ScreenIsLocked'));
 			}
 			else
 			{
-				$(this).button('option', 'label', 'Screen is: UNLOCKED (click to lock)');
+				$(this).button('option', 'label', bkP.getMsg('ScreenIsUnlocked'));
 				updateCount();
 				var procArr = screenLockedData;
 				screenLockedData = [];
@@ -3000,7 +3072,7 @@ function onMouseDownTest(e)
 					}
 				}
 				
-				alert('New data loaded. Use FGS icon to open this page again');
+				alert(bkP.getMsg('ImportSuccessful'));
 				bkP.options = bkP.jQuery.extend(true,{}, bkP.defaultOptions,	cleanSet);
 				bkP.FBloginError = null;
 				bkP.updateIcon();
@@ -3008,7 +3080,7 @@ function onMouseDownTest(e)
 			}
 			catch(e)
 			{
-				alert('There was a problem importing data, make sure you have copied whole text from your file.');
+				alert(bkP.getMsg('ImportError'));
 			}			
 		});
 		
@@ -3109,7 +3181,7 @@ function onMouseDownTest(e)
 	{
 		if(bkP.options.defaultCommentsMessages.length == 0)
 		{
-			alert('You must setup comment messages first in options tab');
+			alert(bkP.getMsg('SetupCommentsBeforePosting'));
 		}
 		else
 		{
@@ -3241,22 +3313,18 @@ function onMouseDownTest(e)
 	
 	function updateSendbackState(selector)
 	{
-		$('img.sendBack', selector).addClass('disabledSendback').css('cursor', 'default').attr('src', 'gfx/act_indicator.gif').attr('title', 'Sending back is in progress');
+		$('img.sendBack', selector).addClass('disabledSendback').css('cursor', 'default').attr('src', 'gfx/act_indicator.gif').attr('title', bkP.getMsg('InProgress'));
 	}
-
-	
-	
-	
-function compareTime(itemTime, olderThan)
-{
-	var now = new Date().getTime();
-	var itemTime = new Date(itemTime*1000).getTime();
-	
-	var diff = now-itemTime;
-	var secs = Math.floor(diff.valueOf()/1000);		
-	return(secs > olderThan ? true : false);
-}
-	
+		
+	function compareTime(itemTime, olderThan)
+	{
+		var now = new Date().getTime();
+		var itemTime = new Date(itemTime*1000).getTime();
+		
+		var diff = now-itemTime;
+		var secs = Math.floor(diff.valueOf()/1000);		
+		return(secs > olderThan ? true : false);
+	}
 </script>
 </head>
 <body>
@@ -3292,11 +3360,11 @@ function compareTime(itemTime, olderThan)
 		<br style="clear: both" />
 		
 		<h2 style="text-align: center">
-			<button style="font-size: 0.8em;" id="receiveBonusesAllGames">Receive bonuses from all games</button>
-			<input type="checkbox" id="lockScreen" /><label for="lockScreen" style="font-size: 0.9em;">Screen is: UNLOCKED (click to lock)</label>
-			<button style="font-size: 0.8em;" id="receiveGiftsAllGames">Receive gifts from all games</button>
+			<button style="font-size: 0.8em;" id="receiveBonusesAllGames" dataLang="ReceiveBonusesFromAllGames"></button>
+			<input type="checkbox" id="lockScreen" /><label for="lockScreen" style="font-size: 0.9em;" dataLang="ScreenIsUnlocked"></label>
+			<button style="font-size: 0.8em;" id="receiveGiftsAllGames" dataLang="ReceiveGiftsFromAllGames"></button>
 			<br /><br />
-			<button style="font-size: 0.8em;" id="stopReceivingQueue">Reset queue (<span id="queueItemsCount">0</span>)</button>
+			<button style="font-size: 0.8em;" id="stopReceivingQueue"><span dataLang="ResetItemsQueue"></span> (<span id="queueItemsCount">0</span>)</button>
 		</h2>
 	</div>
 		<br style="clear: both" />
@@ -3304,21 +3372,20 @@ function compareTime(itemTime, olderThan)
 
 		<div id="chat" style="padding: 20px" class="hide gameContent  ui-widget ui-tabs ui-widget-content ui-corner-all">
 				<div align="left" id="chatUsers" class="chatContent right">
-					<h2 style="text-align:center;border-bottom:1px dashed #000;padding-bottom:5px;">All users Chat</h2>
+					<h2 style="text-align:center;border-bottom:1px dashed #000;padding-bottom:5px;" dataLang="Chat"></h2>
 					<div class="shoutbox">
 						<div class="shouts"></div>
 					</div>
 					
 					<div class="onlinelist">
-						<div class="onlineText"><strong>Users online:</strong></div>
+						<div class="onlineText"><strong dataLang="UsersOnline"></strong></div>
 						<div class="users"></div>
 					</div>
 					
 					<div style="border-top: 1px dashed #000;padding-top: 10px;">
 						<form method="post" action="javascript:void(0);" onsubmit="send(this)" id="publicChat" autocomplete="off">
 							<img src="./gfx/act_indicator.gif" class="act_indicator" style="visibility: hidden; ">
-							<strong>Message:</strong> <input type="text" tabindex="1" disabled="disabled" name="message" class="message" value="Chat is disabled, because your userdata was not retrieved yet">
-								<!-- <input type="submit" class="sendChatBut button1" disabled="disabled" value="Send" name="submit" tabindex="6" accesskey="s">  -->
+							<strong dataLang="Message"></strong> <input type="text" tabindex="1" disabled="disabled" name="message" class="message" value="">
 						</form>
 					</div>
 				</div>
@@ -3327,52 +3394,57 @@ function compareTime(itemTime, olderThan)
 		
 		<div id="options" class="hide gameContent">
 			<ul>
-				<li><a href="#gameOptionsTab">Game options</a></li>
-				<li><a href="#optionTab-2">Settings</a></li>
-				<li><a href="#optionTab-3">Import / Export</a></li>
+				<li><a href="#gameOptionsTab" dataLang="GameSelector"></a></li>
+				<li><a href="#optionTab-2" dataLang="Options"></a></li>
+				<li><a href="#optionTab-3" dataLang="ImportExport"></a></li>
 			</ul>
 			<div id="gameOptionsTab">
-			
+				<h2 dataLang="EnabledGames"></h2>
+				<div></div>
 				
+				<br style="clear: both;" />
+				
+				<h2 style="margin-top: 30px;" dataLang="AvailableGames"></h2>
+				<div></div>			
 			</div>
 			<div id="optionTab-2">
 				<p>
 					
 					<div style="float: left;width: 45%;">
-						<h1>Main work settings</h1>					
+						<h1 dataLang="MainOptions"></h1>					
 						
-						<h4>Delete bonuses older than</h4>
+						<h4 dataLang="DeleteBonusesOlderThan"></h4>
 							<select id="deleteOlderThan">
-								<option value="0">Don't</option>
-								<option value="1800">30 minutes</option>
-								<option value="3600">1 hour</option>
-								<option value="7200">2 hours</option>
-								<option value="10800">3 hours</option>
-								<option value="21600">6 hours</option>
-								<option value="43200">12 hours</option>
-								<option value="86400">1 day</option>
-								<option value="172800">2 days</option>
-								<option value="259200">3 days</option>
-								<option value="604800">7 days</option>
-								<option value="1209600">14 days</option>
-								<option value="2592000">30 days</option>
+								<option value="0" dataLang="Never"></option>
+								<option value="1800" dataLang="30,Minutes"></option>
+								<option value="3600" dataLang="1,Hour"></option>
+								<option value="7200" dataLang="2,Hours"></option>
+								<option value="10800" dataLang="3,Hours"></option>
+								<option value="21600" dataLang="6,Hours"></option>
+								<option value="43200" dataLang="12,Hours"></option>
+								<option value="86400" dataLang="1,Day"></option>
+								<option value="172800" dataLang="2,Days"></option>
+								<option value="259200" dataLang="3,Days"></option>		
+								<option value="604800" dataLang="7,Days"></option>
+								<option value="1209600" dataLang="14,Days"></option>
+								<option value="2592000" dataLang="30,Days"></option>
 							</select>
 						
-						<h4>Delete history older than</h4>
+						<h4 dataLang="DeleteHistoryOlderThan"></h4>
 							<select id="deleteHistoryOlderThan">
-								<option value="0">Don't</option>
-								<option value="1800">30 minutes</option>
-								<option value="3600">1 hour</option>
-								<option value="7200">2 hours</option>
-								<option value="10800">3 hours</option>
-								<option value="21600">6 hours</option>
-								<option value="43200">12 hours</option>
-								<option value="86400">1 day</option>
-								<option value="172800">2 days</option>
-								<option value="259200">3 days</option>		
-								<option value="604800">7 days</option>
-								<option value="1209600">14 days</option>
-								<option value="2592000">30 days</option>
+								<option value="0" dataLang="Never"></option>
+								<option value="1800" dataLang="30,Minutes"></option>
+								<option value="3600" dataLang="1,Hour"></option>
+								<option value="7200" dataLang="2,Hours"></option>
+								<option value="10800" dataLang="3,Hours"></option>
+								<option value="21600" dataLang="6,Hours"></option>
+								<option value="43200" dataLang="12,Hours"></option>
+								<option value="86400" dataLang="1,Day"></option>
+								<option value="172800" dataLang="2,Days"></option>
+								<option value="259200" dataLang="3,Days"></option>		
+								<option value="604800" dataLang="7,Days"></option>
+								<option value="1209600" dataLang="14,Days"></option>
+								<option value="2592000" dataLang="30,Days"></option>
 							</select>
 					
 
@@ -3391,86 +3463,69 @@ function compareTime(itemTime, olderThan)
 								<option value="30">30</option>
 							</select>
 						
-						<h4>Show descriptions on FGS startup</h4>
+						<h4 dataLang="ShowItemsDescriptions"></h4>
 							<select id="showDescriptionsOnStartup">
-								<option value="0">No</option>
-								<option value="1">Yes</option>
+								<option value="0" dataLang="No"></option>
+								<option value="1" dataLang="Yes"></option>
 							</select>
 						
 
-						<h4>Bonuses check timeout</h4>
+						<h4 dataLang="BonusesCheckTimeout"></h4>
 							<select id="checkBonusesTimeout">
-								<option value="15">15 seconds</option>
-								<option value="30">30 seconds</option>
-								<option value="60">1 minute</option>
-								<option value="120">2 minutes</option>
-								<option value="180">3 minutes</option>
-								<option value="300">5 minutes</option>
-								<option value="600">10 minutes</option>
-								<option value="900">15 minutes</option>
-								<option value="1800">30 minutes</option>
-								<option value="3600">60 minutes</option>
-								<option value="10800">180 minutes</option>
+								<option value="15" dataLang="15,Seconds"></option>
+								<option value="30" dataLang="30,Seconds"></option>
+								<option value="60" dataLang="1,Minute"></option>
+								<option value="120" dataLang="2,Minutes"></option>
+								<option value="180" dataLang="3,Minutes"></option>
+								<option value="300" dataLang="5,Minutes"></option>
 							</select>
 						
-						<!---
-						<h4>Gifts check timeout</h4>
-							<select id="checkRequestsTimeout">
-								<option value="30">30 seconds</option>
-								<option value="60">1 minute</option>
-								<option value="120">2 minutes</option>
-								<option value="300">5 minutes</option>
-								<option value="600">10 minutes</option>
-							</select>
-						-->
-						
-						<h4>Chat check timeout</h4>
+						<h4 dataLang="ChatRefreshTimeout"></h4>
 							<select id="checkChatTimeout">
-								<option value="15">15 seconds</option>
-								<option value="30">30 seconds</option>
-								<option value="60">1 minute</option>
-								<option value="120">2 minutes</option>
+								<option value="15" dataLang="15,Seconds"></option>
+								<option value="30" dataLang="30,Seconds"></option>
+								<option value="60" dataLang="1,Minute"></option>
+								<option value="120" dataLang="2,Minutes"></option>
 							</select>
 						
 						<br /><br /><br /><br />
-						<h4>Default Comments Messages</h4>
+						<h4 dataLang="RandomCommentMessages"></h4>
 						<div id="defaultCommentsMessages"></div>
 					</div>
 					
 					<div style="float: right;width: 45%;">
-						<h1>Startup collecting settings (advanced)</h1>
+						<h1 dataLang="AdvancedOptions"></h1>
 						
-						<h2 style="color: red">Read this before changing anything in this section:</h2>
+						<h2 style="color: red" dataLang="ReadBeforeChangingNotice"></h2>
 						
-						Changing this settings RECKLESSLY might cause your FGS to stop working (or increase startup loading process up to 30-60 minutes). This settings are only meant for advanced users (and with high speed connections). Keep in mind that FGS won't allow you to get at once more than 2500 bonuses (it's coded maximum and switching settings won't increae it).<br /><br />
-						What I mean is: even if you set it to collect bonuses up to 1 day old, FGS will stop after 2500th bonus was found.<br /><br />
-						FGS will also stop, if it finds bonus that is/was already on your list.<br /><br />
+						<div dataLang="AdvancedOptionsNotice"></div>
+						<br /><br />
 						
-						<h3>When should FGS stop processing feeds:</h3>
+						<h3 dataLang="StopSearchingForFeedsWhen"></h3>
 						
 							<select id="breakStartupLoadingOption">
-								<option value="0">after certain amount of bonuses was found</option>
-								<option value="1">after bonuses are older then specific time</option>
+								<option value="0" dataLang="FoundCertainAmountOfFeeds"></option>
+								<option value="1" dataLang="BonusesAreOlderThanSpecifiedTime"></option>
 							</select>
 						
 							<select id="breakStartupLoadingCount" style="display: none">
-								<option value="100">100 items</option>
-								<option value="200">200 items</option>
-								<option value="300">300 items</option>
-								<option value="500">500 items</option>
-								<option value="1000">1000 items</option>
-								<option value="1500">1500 items</option>
-								<option value="2500">2500 items</option>
+								<option value="100" dataLang="100,Items"></option>
+								<option value="200" dataLang="200,Items"></option>
+								<option value="300" dataLang="300,Items"></option>
+								<option value="500" dataLang="500,Items"></option>
+								<option value="1000" dataLang="1000,Items"></option>
+								<option value="1500" dataLang="1500,Items"></option>
+								<option value="2500" dataLang="2500,Items"></option>
 							</select>
 							
 							<select id="breakStartupLoadingTime" style="display: none">
-								<option value="1800">older than 30 minutes</option>
-								<option value="3600">older than 1 hour</option>
-								<option value="7200">older than 2 hours</option>
-								<option value="10800">older than 3 hours</option>
-								<option value="21600">older than 6 hours</option>
-								<option value="43200">older than 12 hours</option>
-								<option value="86400">older than 1 day</option>
+								<option value="1800" dataLang="OlderThan,30,Minutes"></option>
+								<option value="3600" dataLang="OlderThan,1,Hour"></option>
+								<option value="7200" dataLang="OlderThan,2,Hours"></option>
+								<option value="10800" dataLang="OlderThan,3,Hours"></option>
+								<option value="21600" dataLang="OlderThan,6,Hours"></option>
+								<option value="43200" dataLang="OlderThan,12,Hours"></option>
+								<option value="86400" dataLang="OlderThan,1,Day"></option>
 							</select>
 					
 					</div>
@@ -3480,29 +3535,25 @@ function compareTime(itemTime, olderThan)
 			</div>
 			<div id="optionTab-3">
 				<p>			
-					<h3 class="settings">Import / export settings</h3>
+					<h3 class="settings" dataLang="ImportExportSettings"></h3>
 					
 					<textarea cols="40" rows="5" id="settingsTextarea"></textarea><br /><br />
 					
-					<button id="importSettings">Import</button> <button id="exportSettings">Export</button>	<br /><br /><br />
+					<button id="importSettings" dataLang="Import"></button> <button id="exportSettings" dataLang="Export"></button>	<br /><br /><br />
 					
 					
-					<h4>How to import:</h4>
-					- open the file with previously exported settings<br />
-					- select whole text inside it<br />
-					- paste text into the above box and press import button
-					
+					<h4 dataLang="HowToImport"></h4>
+					<div dataLang="ImportInstructions"></div>
 					<br /><br />
 					
-					<h4>How to export:</h4>
-					- press export button<br />
-					- copy selected text to the new file
+					<h4 dataLang="HowToExport"></h4>
+					<div dataLang="ExportInstructions"></div>
 				</p>
 			</div>
 		</div>
 			
 		<div id="contact" style="padding: 20px" class="hide gameContent  ui-widget ui-tabs ui-widget-content ui-corner-all">
-			<h2>Please donate, if you feel this extension deserves it:</h2><br />
+			<h2 dataLang="DonateNotice"></h2><br />
 			
 					
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
@@ -3513,14 +3564,14 @@ function compareTime(itemTime, olderThan)
 			
 			<br /><br />
 			
-			<h2>If you need to contact me, use these links:</h2><br />
+			<h2 dataLang="ContactInfoNotice"></h2><br />
 				<a href="http://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="48" height="48" alt="Facebook"></a>
 				<a href="http://fgs.rzadki.eu/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="48" height="48" alt="E-mail"></a>
 				<a href="http://blog.fgs.rzadki.eu" target="_blank" title="Go to FGS Blog"><img src="gfx/blogger.png" width="48" height="48" alt="Blogger"></a>
 			
 			<br /><br /><br />
 			
-			<h2>If you encountered a problem, bug or want to file feature request, visit our message board:</h2><br />
+			<h2 dataLang="VisitMessageBoardNotice"></h2><br />
 				<a href="http://rzadki.eu/projects/fgs/board/" target="_blank" title="Go to FGS Board"><img src="gfx/forum.png" width="48" height="48" alt="Message Board"></a>
 		</div>
 	
@@ -3535,7 +3586,7 @@ function compareTime(itemTime, olderThan)
 	
 	<div id="dialog-loading" title="Loading Gifts and Bonuses List">
 		<h3 class="center"><img src="gfx/dl.gif"><br /><span dataLang="NotLoadedYetPleaseWait"></span></h3><br /><br />
-		<span>(It may take a few minutes if you've got many bonuses in the database. If it takes very long - consider using Panic Button option)</span><br />
+		<span dataLang="LoadingScreenLongWaitNotice"></span><br />
 		<div id="progressbar"></div>
 	</div>
 	
@@ -3552,7 +3603,7 @@ function compareTime(itemTime, olderThan)
 		<li class="delete"><a href="#deleteSimilar"><span dataLang="Clear"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
 		<li class="delete separator"><a href="#stopCollect" dataLang="StopCollecting"></span> "<span class="bonusName"></span>"</a></li>
 		<li class="copy separator"><a href="#copylink" dataLang="CopyLink"></a></li>
-		<li class="open separator"><a href="#openAndDelete">Open in new tab and delete</a></li>
+		<li class="open separator"><a href="#openAndDelete" dataLang="OpenInNewTabAndClear"></a></li>
 		<li class="debug separator"><a href="#debug" dataLang="DebugItem"></a></li>
 	</ul>
 	

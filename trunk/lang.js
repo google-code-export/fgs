@@ -1,3 +1,8 @@
+FGS.nl2br = function(s)
+{
+	return s.replace( /\n/g, '<br />\n' );
+}
+
 FGS.getMsg = function(m, params)
 {
 	try
@@ -26,13 +31,13 @@ FGS.getMsg = function(m, params)
 		
 		if(typeof params != 'undefined')
 		{
-			for(var i=0; i<params.length; i++)
+			for(var i=0; i < params.length; i++)
 			{
-				str.replace('__VARIABLE__', params[i]);
+				str = str.replace('__VARIABLE__', params[i]);
 			}
 		}
 		
-		return str;
+		return FGS.nl2br(str);
 	}
 	catch(e)
 	{
