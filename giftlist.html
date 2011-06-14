@@ -2397,6 +2397,11 @@ function onMouseDownTest(e)
 
 	$(function()
 	{
+		$('[dataLang]').each(function()
+		{
+			$(this).html(bkP.getMsg($(this).attr('dataLang')));		
+		});
+		
 		startup();
 		
 		$( "#dialog-loading" ).dialog({
@@ -3521,7 +3526,7 @@ function compareTime(itemTime, olderThan)
 	
 
 	<div id="dialog-confirm" title="Delete?">
-		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span class="text">Are you sure?</span></p>
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span class="text" dataLang="AreYouSure"></span></p>
 	</div>
 	
 	<div id="dialog-error" title="Error">
@@ -3529,7 +3534,7 @@ function compareTime(itemTime, olderThan)
 	</div>
 	
 	<div id="dialog-loading" title="Loading Gifts and Bonuses List">
-		<h3 class="center"><img src="gfx/dl.gif"><br />FGS is loading... Please wait.</h3><br /><br />
+		<h3 class="center"><img src="gfx/dl.gif"><br /><span dataLang="NotLoadedYetPleaseWait"></span></h3><br /><br />
 		<span>(It may take a few minutes if you've got many bonuses in the database. If it takes very long - consider using Panic Button option)</span><br />
 		<div id="progressbar"></div>
 	</div>
@@ -3541,37 +3546,37 @@ function compareTime(itemTime, olderThan)
 
 	
 	<ul id="myMenu" class="contextMenu">
-		<li class="receive"><a href="#receive">Receive this bonus</a></li>
-		<li class="receive"><a href="#receiveSimilar">Receive all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
-		<li class="delete separator"><a href="#delete">Delete this bonus</a></li>
-		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
-		<li class="delete separator"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
-		<li class="copy separator"><a href="#copylink">Copy link</a></li>
+		<li class="receive"><a href="#receive"dataLang="ReceiveThisItem"></a></li>
+		<li class="receive"><a href="#receiveSimilar" dataLang="Receive"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#delete" dataLang="ClearThisItem"></a></li>
+		<li class="delete"><a href="#deleteSimilar"><span dataLang="Clear"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#stopCollect" dataLang="StopCollecting"></span> "<span class="bonusName"></span>"</a></li>
+		<li class="copy separator"><a href="#copylink" dataLang="CopyLink"></a></li>
 		<li class="open separator"><a href="#openAndDelete">Open in new tab and delete</a></li>
-		<li class="debug separator"><a href="#debug">Debug (for developer)</a></li>
+		<li class="debug separator"><a href="#debug" dataLang="DebugItem"></a></li>
 	</ul>
 	
 	<ul id="myMenuManualBonuses" class="contextMenu">
-		<li class="delete separator"><a href="#delete">Delete this bonus</a></li>
-		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
-		<li class="delete separator"><a href="#stopCollect">Don't collect this type of bonuses "<span class="bonusName"></span>"</a></li>
-		<li class="copy separator"><a href="#copylink">Copy link</a></li>
+		<li class="delete separator"><a href="#delete" dataLang="ClearThisItem"></a></li>
+		<li class="delete"><a href="#deleteSimilar"><span dataLang="Clear"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#stopCollect"><span dataLang="StopCollecting"></span> "<span class="bonusName"></span>"</a></li>
+		<li class="copy separator"><a href="#copylink" dataLang="CopyLink"></a></li>
 	</ul>
 	
 	<ul id="myMenuRequests" class="contextMenu">
-		<li class="receive"><a href="#receive">Receive this gift</a></li>
-		<li class="receive"><a href="#receiveSimilar">Receive all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
-		<li class="delete separator"><a href="#delete">Delete this gift</a></li>
-		<li class="delete"><a href="#deleteSimilar">Delete all "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
-		<li class="debug"><a href="#debug">Debug (for developer)</a></li>
+		<li class="receive"><a href="#receive" dataLang="ReceiveThisItem"></a></li>
+		<li class="receive"><a href="#receiveSimilar"><span dataLang="Receive"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="delete separator"><a href="#delete" dataLang="ClearThisItem"></a></li>
+		<li class="delete"><a href="#deleteSimilar"><span dataLang="Clear"></span> "<span class="bonusName"></span> (<span class="bonusNameCount"></span>)"</a></li>
+		<li class="debug"><a href="#debug" dataLang="DebugItem"></a></li>
 	</ul>
 	
 	<ul id="myMenuDefaultGift" class="contextMenu">
-		<li class="receive"><a href="#selectDefault">Select as default gift</a></li>
+		<li class="receive"><a href="#selectDefault" dataLang="SelectAsDefaultGift"></a></li>
 	</ul>
 	
 	<ul id="myMenuGameIcon" class="contextMenu">
-		<li class="goToGame"><a href="#goToGame"><strong>Go to this game!</strong></a></li>
+		<li class="goToGame"><a href="#goToGame"><strong dataLang="GoToThisGame"></strong></a></li>
 	</ul>
 </body>
 </html>
