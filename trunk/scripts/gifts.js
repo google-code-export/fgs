@@ -748,6 +748,16 @@ FGS.giftsArray = {
 		"503": { name: 'Swamp Wood Tree'},
 		"347": { name: 'Wood Bench'},
 	},
+	
+	174582889219848: //army attack
+	{
+		"Energy": { name: 'Energy' }	
+	},
+	
+	26947445683://country life
+	{
+		"16": {name: "Wheat"}
+	}
 };
 
 FGS.freeGiftForGame =
@@ -781,6 +791,9 @@ FGS.freeGiftForGame =
 	102518706469143: 'parts',
 	
 	213518941553: '347',
+	174582889219848: 'Energy',
+	
+	26947445683: "16"
 };
 
 
@@ -816,6 +829,9 @@ FGS.getFBML = function(params, retry)
 	{
 		params.nextParams = {};
 	}
+	
+	if(typeof params.overrideMethod != 'undefined')
+		thisMethod = params.overrideMethod;
 
 	params.nextParams.lazy = 1;
 	params.nextParams.stale_ok = 1;
@@ -894,9 +910,16 @@ FGS.getFBML = function(params, retry)
 				{
 					var v = v.replace(/\\\"/g, '"');
 					var di = JSON.parse('{'+v+'}');
-					arr.push(di);
 					for(var id in di)
-						neiObj[id] = true;
+					{
+						var nid = id;
+						var t = di[nid].name;
+					}
+					di[nid].name = JSON.parse('{"abc": "'+t+'"}').abc;
+					arr.push(di);
+					
+					neiObj[nid] = true;
+					
 				});
 				
 				if(typeof(params.cafeUrl) != 'undefined')

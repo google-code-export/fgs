@@ -625,6 +625,14 @@ FGS.empiresandallies.Requests =
 						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
+					
+					if(dataStr.indexOf('You can only collect feed rewards from your allies!') != -1)
+					{
+						var error_text = 'You can only collect feed rewards from your allies!';
+						FGS.endWithError('limit', currentType, id, error_text);	
+						return;
+					}
+					
 
 					info.title = $(".giftConfirm_name",dataHTML).children().text();
 					info.time = Math.round(new Date().getTime() / 1000);
