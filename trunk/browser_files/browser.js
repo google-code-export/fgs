@@ -59,7 +59,7 @@
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalBonuses') },
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalGifts') },
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalGiftsSent') },
-						{ "sTitle": bkP.getMessage('Select'), "bSortable": false }
+						{ "sTitle": bkP.getMsg('Select'), "bSortable": false }
 					],
 					"aaSorting": [[ 1, "asc" ]],
 					"iDisplayLength": 100,
@@ -80,7 +80,7 @@
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalBonuses') },
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalGifts') },
 						{ "sSortDataType": "dom-text", "sType": "numeric", "sTitle": bkP.getMsg('TotalGiftsSent') },
-						{ "sTitle": bkP.getMessage('Select'), "bSortable": false }
+						{ "sTitle": bkP.getMsg('Select'), "bSortable": false }
 					],
 					"aaSorting": [[ 1, "asc" ]],
 					"iDisplayLength": 100,
