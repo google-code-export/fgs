@@ -757,6 +757,11 @@ FGS.giftsArray = {
 	26947445683://country life
 	{
 		"16": {name: "Wheat"}
+	},
+	
+	175251882520655:
+	{
+		"0": {name: "Mystery Gift"}
 	}
 };
 
@@ -793,7 +798,9 @@ FGS.freeGiftForGame =
 	213518941553: '347',
 	174582889219848: 'Energy',
 	
-	26947445683: "16"
+	26947445683: "16",
+	
+	175251882520655: "0"
 };
 
 
@@ -955,41 +962,7 @@ FGS.getFBML = function(params, retry)
 				{
 					FGS.sendView('updateNeighbors', arr, params.gameID);
 					return;
-				}
-				
-				
-				
-				/*
-					// test czy nie jest spoza listy
-					if(typeof(params.sendTo) != 'undefined' && typeof(params.thankYou) != 'undefined')
-					{
-						var newArr = [];
-						$(params.sendTo).each(function(k,v)
-						{
-							if(typeof neiObj[v] != 'undefined')
-								newArr.push(v);
-						});
-
-						params.sendTo = newArr;
-
-						if(params.sendTo.length == 0)
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''), true);
-							return;
-						}
-					}
-					// test czy nie jest spoza listy - koniec
-				*/
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+				}				
 				
 				$(params.sendTo).each(function(k,v)
 				{
@@ -1010,6 +983,11 @@ FGS.getFBML = function(params, retry)
 				if(params.gameID == '10979261223')
 				{
 					sendGiftParams += '&ajax=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig;
+				}
+				
+				if(params.gameID == '175251882520655')
+				{
+					sendGiftParams += '&hash='+params.gHash+'&key='+params.gift+'&type='+params.gType+'&track=invite-gift-maingiftpage-'+params.gTitle+'&st='+Math.round(new Date().getTime()/1000)+'&giftName='+params.gTitle;
 				}
 				
 				if(params.gameID == '25287267406')
