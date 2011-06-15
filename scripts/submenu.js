@@ -55,7 +55,7 @@ FGS.submenuButtons =
 										'SelectFavourites': { name: 				FGS.getMsg('SelectFavourites')+' (max 25)' },
 										'SelectNonFavourites': { name: 				FGS.getMsg('SelectNotFavourites')+' (max 25)' },
 										'ClearSelection': { name: 					FGS.getMsg('UncheckAll') },
-										'SendGifts': { name: 						'<strong>'+FGS.getMsg('Send')+'</strong>' },
+										'SendGifts': { name: 						FGS.getMsg('Send') },
 									}
 						}, 
 	'SendFreeGiftsHistory':	{	name: FGS.getMsg('SendingHistory'),
