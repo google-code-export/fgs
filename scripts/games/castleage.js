@@ -142,9 +142,7 @@ FGS.castleage.Freegifts =
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f14a74d238&origin=http%3A%2F%2Fweb.castleagegame.com%2Ff242e834cc&relation=parent&transport=postmessage&frame=f1c17b0df&result=%22xxRESULTTOKENxx%22';
-		
-		params.getToken = 'api_key=46755028429&app_id=46755028429&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
+		params.channel = 'http://web.castleagegame.com/castle/';
 		
 		
 		FGS.getAppAccessTokenForSending(params, function(params, d)

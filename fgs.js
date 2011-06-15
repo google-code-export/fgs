@@ -579,7 +579,11 @@ var FGS = {
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
-					
+		
+		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
+		
+		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);		
+		
 		FGS.jQuery.ajax({
 			type: "GET",
 			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
