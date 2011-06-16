@@ -301,6 +301,15 @@ var FGS = {
 					
 					$('input[name="profileChooserItems"]', dataHTML).remove();
 					
+					var pos0 = dataStr.indexOf(').preloadCache({');
+					if(pos0 != -1)
+					{
+						var pos1 = dataStr.indexOf('[', pos0);
+						var pos2 = dataStr.indexOf(']', pos1)+1;
+						
+						params.custom = JSON.parse('{"abc": '+dataStr.slice(pos1, pos2)+'}').abc;
+					}
+					
 					params.formUrl = $('#uiserver_form', dataHTML).attr('action');
 					params.formParam = $('#uiserver_form', dataHTML).serialize()+parStr+'&profileChooserItems='+encodeURIComponent(JSON.stringify(tmpObj));
 					
@@ -456,6 +465,10 @@ var FGS = {
 					}
 					
 					var finalArr = [];
+					
+					if(typeof params.custom != 'undefined')
+						data.payload.ids = params.custom;
+					
 					
 					$(data.payload.ids).each(function(k, v)
 					{
