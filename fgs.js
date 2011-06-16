@@ -594,12 +594,7 @@ var FGS = {
 		
 		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
 		
-		var addit = '';
-		
-		if(typeof params.addit != 'undefined')
-			addit = params.addit;
-		
-		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel)+addit;		
+		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
 		
 		FGS.jQuery.ajax({
 			type: "GET",

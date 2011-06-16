@@ -21,14 +21,6 @@ FGS.HTMLParser = function (aHTMLString)
 	return html;
 };
 
-FGS.SetCookieToken = function(params, callback)
-{
-	chrome.cookies.set(params.cookieToSet, function(c)
-	{
-		callback(params);
-	});
-};
-
 FGS.GetCookieToken = function(params, callback)
 {
 	chrome.cookies.get(params.cookieToGet, function(c)
