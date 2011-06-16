@@ -43,8 +43,7 @@ var FGS = {
 			});
 		}
 	},
-	
-	formExclusionString: '[action*="www\\.facebook\\.com\\/connect\\/connect.php"],[action*="custom_ads\\/islandAd\\.php"]',
+	formExclusionString: '[action*="www\\.facebook\\.com\\/connect\\/connect.php"],[action*="custom_ads\\/islandAd\\.php"],[action*="www\\.facebook\\.com\\/plugins"]',
 	
 	initializeDefaults: function ()
 	{
