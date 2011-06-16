@@ -228,7 +228,6 @@ FGS.armyattack.Freegifts =
 		
 		FGS.getAppAccessTokenForSending(params, function(params, d)
 		{
-			console.log(d);
 			var pos0 = d.indexOf('&result=')+8;
 			var pos1 = d.indexOf('"', pos0);
 			
