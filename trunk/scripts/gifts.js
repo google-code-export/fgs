@@ -767,6 +767,11 @@ FGS.giftsArray = {
 	175251882520655:
 	{
 		"0": {name: "Mystery Gift"}
+	},
+	
+	123837014322698:
+	{
+		"220": {name: "Wooden Window"}
 	}
 };
 
@@ -807,6 +812,8 @@ FGS.freeGiftForGame =
 	121763384533823: "16",
 	
 	175251882520655: "0",
+	
+	123837014322698: "220",
 };
 
 
@@ -1015,6 +1022,10 @@ FGS.getFBML = function(params, retry)
 					params.finalMethod = 'get';
 				}
 				
+				if(params.gameID == '123837014322698')
+				{
+					sendGiftParams += '&'+$('form[type]', data).find('input[name="token"]').serialize();
+				}
 				
 				if(params.gameID == '21526880407')
 				{
