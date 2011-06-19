@@ -1030,8 +1030,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							'FailedBonuses',
 							'FailedGifts',
-							//'SendFreeGifts',
-							//'SendFreeGiftsHistory',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
