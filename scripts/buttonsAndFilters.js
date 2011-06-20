@@ -682,6 +682,8 @@ FGS.gamesData =
 							'ManualBonuses',
 							'RequestsHistory',
 							'FailedGifts',	
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],

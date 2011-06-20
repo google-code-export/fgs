@@ -1010,6 +1010,8 @@ FGS.getFBML = function(params, retry)
 					
 					if(params.gameID == '120563477996213' || params.gameID == '166309140062981')
 						sendGiftParams += 'ids[]='+v+'&';
+					else if(params.gameID == '94483022361')
+						sendGiftParams += 'ids['+k+']='+v+'&';
 					else
 						sendGiftParams += 'ids%5B%5D='+v+'&';
 					
@@ -1028,6 +1030,13 @@ FGS.getFBML = function(params, retry)
 				if(params.gameID == '175251882520655')
 				{
 					sendGiftParams += '&hash='+params.gHash+'&key='+params.gift+'&type='+params.gType+'&track=invite-gift-maingiftpage-'+params.gTitle+'&st='+Math.round(new Date().getTime()/1000)+'&giftName='+params.gTitle;
+				}
+				
+				if(params.gameID == '94483022361')
+				{
+					sendGiftUrl = $('form[type]', data).attr('action').replace('apps.facebook.com/myownisland', 'apps.meteorgames.com/facebook/island')+'&'+sendGiftParams;		
+					sendGiftParams = params.step2params;
+					
 				}
 				
 				
