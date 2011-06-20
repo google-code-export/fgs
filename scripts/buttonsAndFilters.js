@@ -256,8 +256,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							//'FailedBonuses',
 							'FailedGifts',
-							//'SendFreeGifts',
-							//'SendFreeGiftsHistory',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -279,8 +279,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							//'FailedBonuses',
 							'FailedGifts',
-							//'SendFreeGifts',
-							//'SendFreeGiftsHistory',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -889,6 +889,8 @@ FGS.gamesData =
 							'ManualBonuses',
 							'RequestsHistory',
 							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
