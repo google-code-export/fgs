@@ -976,6 +976,26 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	108854979142742:	{ 	name: 'Bingo Blitz',	systemName: 'bingoblitz', link: 'http://apps.facebook.com/bingoblitz/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							//'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							//'BonusesHistory',
+							'RequestsHistory',
+							//'FailedBonuses',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 	115301331874715:	{ 	name: 'Pyramidville',	systemName: 'pyramidville', link: 'http://apps.facebook.com/pyramidville/',
 						filter:	
 						{
