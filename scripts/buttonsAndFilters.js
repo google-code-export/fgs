@@ -956,6 +956,26 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	40343401983:	{ 	name: 'Bejeweled Blitz',	systemName: 'bejeweled', link: 'http://apps.facebook.com/bejeweledblitz/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: ['(.*)'],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							//'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							//'BonusesHistory',
+							'RequestsHistory',
+							//'FailedBonuses',
+							'FailedGifts',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 	115301331874715:	{ 	name: 'Pyramidville',	systemName: 'pyramidville', link: 'http://apps.facebook.com/pyramidville/',
 						filter:	
 						{

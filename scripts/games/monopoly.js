@@ -79,7 +79,7 @@ FGS.monopoly.Freegifts =
 			{
 				try
 				{
-					
+					// trzeba wziac z typeahead ludzi z gry i usunac z request'a do restserver'a
 					/*
 pf_content_body	Here is a Prius mover for you in Monopoly Millionaires! Could you help me by sending a gift back?
 pf_content_acceptButton	Accept
