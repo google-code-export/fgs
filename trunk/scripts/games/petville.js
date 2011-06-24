@@ -453,7 +453,7 @@ FGS.petville.Requests =
 				{
 					if($('.reqFrom_img', dataHTML).length > 0 && $(".giftConfirm_img" ,dataHTML).length == 0)
 					{
-						info.image = $(".reqFrom_img" ,dataHTML).children().attr("src");
+						info.image = $(".reqFrom_img" ,dataHTML).children().attr("path");
 						info.title = 'New neighbour';
 						info.text  = $(".reqFrom_name" ,dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
@@ -486,7 +486,7 @@ FGS.petville.Requests =
 						}
 						info.thanks = sendInfo;
 						
-						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("src");
+						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("path");
 						info.title = $(".giftConfirm_name" ,dataHTML).children().text();
 						info.text  = $(".giftFrom_name" ,dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
@@ -573,8 +573,6 @@ FGS.petville.Bonuses =
 					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
 					FGS.petville.Bonuses.Click2(currentType, id, url, params);
-
-					//FGS.petville.Bonuses.Click2(currentType, id, src);
 				}
 				catch(err)
 				{

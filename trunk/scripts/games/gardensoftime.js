@@ -322,13 +322,6 @@ FGS.gardensoftime.Requests =
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
-					if(!url)
-					{
-						var src = FGS.findIframeAfterId('#app_content_175251882520655', dataStr);
-						if (src == '') throw {message:"no iframe"}
-						url = src;
-					}
-					
 					FGS.gardensoftime.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
@@ -432,7 +425,7 @@ FGS.gardensoftime.Requests =
 						
 						if(data.indexOf('You are now neighbors') != -1)
 						{
-							info.image = $('#sender', dataHTML).children('img').attr('src');
+							info.image = $('#sender', dataHTML).children('img').attr('path');
 							info.title = '';
 							info.text  = 'New neighbour';
 							info.time = Math.round(new Date().getTime() / 1000);
@@ -461,7 +454,7 @@ FGS.gardensoftime.Requests =
 							return;	
 						}
 						
-						var tmpImg = $('#gift_box', dataHTML).children('img').attr('src');
+						var tmpImg = $('#gift_box', dataHTML).children('img').attr('path');
 						
 						info.image = tmpImg;
 						
@@ -548,12 +541,6 @@ FGS.gardensoftime.Bonuses =
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
-					if(!url)
-					{
-						var src = FGS.findIframeAfterId('#app_content_175251882520655', dataStr);
-						if (src == '') throw {message:"no iframe"}
-						url = src;
-					}
 					FGS.gardensoftime.Bonuses.Click2(currentType, id, url, params);
 				} 
 				catch(err)
