@@ -759,17 +759,32 @@ FGS.giftsArray = {
 	
 	26947445683://country life
 	{
-		"16": {name: "Wheat"}
+		"5": { name: "Holstein Cow"},
+		"13": { name: "Corn"},
+		"14": { name: "Tomatoes"},
+		"15": { name: "Clover"},
+		"16": { name: "Wheat"},
+		"17": { name: "Milk"},
+		"46": { name: "Honey"},
+		"48": { name: "Apple Tree"},
 	},
 	
 	121763384533823: //country life lite
 	{
-		"16": {name: "Wheat"}
+		"5": { name: "Holstein Cow"},
+		"13": { name: "Corn"},
+		"14": { name: "Tomatoes"},
+		"15": { name: "Clover"},
+		"16": { name: "Wheat"},
+		"17": { name: "Milk"},
+		"46": { name: "Honey"},
+		"48": { name: "Apple Tree"},
 	},
 	
 	175251882520655:
 	{
-		"0": {name: "Mystery Gift"}
+		"Mystery Gift": {name: "Mystery Gift"},
+		"Energy +5": 	{name: "Energy +5"}
 	},
 	
 	123837014322698:
@@ -906,7 +921,7 @@ FGS.freeGiftForGame =
 	26947445683: "16",
 	121763384533823: "16",
 	
-	175251882520655: "0",
+	175251882520655: "Mystery Gift",
 	
 	123837014322698: "220",
 	
@@ -1099,7 +1114,7 @@ FGS.getFBML = function(params, retry)
 				{
 					reqData['to_ids['+k+']'] = v;
 					
-					if(params.gameID == '120563477996213' || params.gameID == '166309140062981')
+					if(params.gameID == '120563477996213' || params.gameID == '166309140062981' || params.gameID == '175251882520655')
 						sendGiftParams += 'ids[]='+v+'&';
 					else if(params.gameID == '94483022361')
 						sendGiftParams += 'ids['+k+']='+v+'&';
@@ -1120,7 +1135,7 @@ FGS.getFBML = function(params, retry)
 				
 				if(params.gameID == '175251882520655')
 				{
-					sendGiftParams += '&hash='+params.gHash+'&key='+params.gift+'&type='+params.gType+'&track=invite-gift-maingiftpage-'+params.gTitle+'&st='+Math.round(new Date().getTime()/1000)+'&giftName='+params.gTitle;
+					sendGiftParams += '&track=invite-gift-maingiftpage-'+params.gift+'&st='+Math.round(new Date().getTime()/1000)+'&giftName='+params.gift+'&req_key='+params.reqkey;
 				}
 				
 				if(params.gameID == '94483022361')
