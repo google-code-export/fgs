@@ -354,7 +354,7 @@ FGS.countrylifelite.Requests =
 				{
 					if($(".giftConfirm_img" ,dataHTML).length > 0)
 					{			
-						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("src");
+						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("path");
 						info.title = $(".giftConfirm_name" ,dataHTML).text();
 						info.text  = $(".giftFrom_name" ,dataHTML).text();
 						info.time = Math.round(new Date().getTime() / 1000);

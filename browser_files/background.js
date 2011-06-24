@@ -18,6 +18,10 @@ FGS.HTMLParser = function (aHTMLString)
 	{
 		var html = '<div>'+aHTMLString+'</div>';
 	}
+	
+	html = html.replace(/ src=\"/gi, ' path="');
+	html = html.replace(/ src=\'/gi, " path='");
+	
 	return html;
 };
 

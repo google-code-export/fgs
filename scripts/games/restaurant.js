@@ -94,9 +94,9 @@ FGS.restaurant.Requests =
 					}
 					
 					if($('#app43016202276_gift_img', dataHTML).length > 0)
-						info.image = $('#app43016202276_gift_img', dataHTML).children('img').attr('src');
+						info.image = $('#app43016202276_gift_img', dataHTML).children('img').attr('path');
 					else
-						info.image = $('#app43016202276_request_img', dataHTML).children('img').attr('src');
+						info.image = $('#app43016202276_request_img', dataHTML).children('img').attr('path');
 					
 					info.time = Math.round(new Date().getTime() / 1000);
 					

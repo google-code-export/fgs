@@ -119,7 +119,7 @@ FGS.luckytrain.Requests =
 						}
 						
 						info.title = title;
-						info.image = $('.gift_image', dataHTML).children('img').attr('src');
+						info.image = $('.gift_image', dataHTML).children('img').attr('path');
 						info.time  = Math.round(new Date().getTime() / 1000);
 						info.text  = tmp;						
 						
