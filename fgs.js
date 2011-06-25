@@ -66,6 +66,8 @@ var FGS = {
 			chatSessions: {},
 			language: 0,
 			
+			thankYouGiftMessage: '',
+			
 			defaultCommentsMessages: [],
 			
 			checkChatTimeout: 60,
@@ -1882,6 +1884,7 @@ var FGS = {
 		{
 			FGS.rewardville.Freegifts.Click({onlyLogin: true});
 			
+			/*
 			if(FGS.options.games[appID].enabled)
 			{
 				FGS.iBonusTimeout[appID] = setTimeout('FGS.checkBonuses2("'+appID+'");', 180000);
@@ -1891,6 +1894,7 @@ var FGS = {
 				FGS.stopBonusesForGame(appID);
 			}
 			return;
+			*/
 		}
 		
 		if(typeof(FGS.iBonusTimeout[appID]) == 'undefined' || FGS.FBloginError !== false)
@@ -2207,6 +2211,7 @@ var FGS = {
 		{
 			FGS.rewardville.Freegifts.Click({onlyLogin: true});
 			
+			/*
 			if(FGS.options.games[appID].enabled)
 			{
 				FGS.iBonusTimeout[appID] = setTimeout('FGS.checkBonuses("'+appID+'");', 180000);
@@ -2215,7 +2220,8 @@ var FGS = {
 			{
 				FGS.stopBonusesForGame(appID);
 			}
-			return;
+			*/
+			//return;
 		}
 		
 		if(typeof(FGS.iBonusTimeout[appID]) == 'undefined' || FGS.FBloginError !== false)

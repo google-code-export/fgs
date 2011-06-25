@@ -2573,6 +2573,12 @@ function onMouseDownTest(e)
 			bkP.saveOptions();
 		});
 		
+		$('#thankYouGiftMessage').val(bkP.options.thankYouGiftMessage);
+		
+		$('#saveThankYouGiftMessage').click(function(){
+		
+			bkP.options.thankYouGiftMessage = $('#thankYouGiftMessage').val();
+		});
 		
 		$('#breakStartupLoadingOption > option[value="'+bkP.options.breakStartupLoadingOption+'"]').attr('selected', 'selected');
 		$('#breakStartupLoadingCount > option[value="'+bkP.options.breakStartupLoadingCount+'"]').attr('selected', 'selected');
@@ -3500,6 +3506,12 @@ function onMouseDownTest(e)
 							</select>
 						
 						<br /><br /><br /><br />
+						
+						<h4 dataLang="ThankYouGiftMessage"></h4>
+						<input type="text" id="thankYouGiftMessage" />
+						<button id="saveThankYouGiftMessage" dataLang="Save" />
+						
+						
 						<h4 dataLang="RandomCommentMessages"></h4>
 						<div id="defaultCommentsMessages"></div>
 					</div>
