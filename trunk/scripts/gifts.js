@@ -950,6 +950,27 @@ FGS.giftsArray = {
 		"lady_bug": { name: "Lady Bug"},
 		"bee": { name: "Bee"},
 	},
+	
+	256799621935: // car town
+	{
+		"62": { name: '1 Gallon of Fuel'},
+		"2": { name: 'Concrete Barrier'},
+		"56": { name: 'Pistons'},
+		"71": { name: 'Hood Pins'},
+		"1": { name: 'Orange Cone (Large)'},
+		"6": { name: 'Tall Red Cabinet'},
+		"50": { name: 'Garbage'},
+		"65": { name: 'Carbon Fiber'},
+		"68": { name: 'Nitrous Oxide'},
+		"11": { name: 'Red Barstool'},
+		"4": { name: 'Orange Vertical Storage'},
+		"3": { name: 'Velvet Rope'},
+		"70": { name: 'Reinforcements'},
+		"67": { name: 'Suspension Arms'},
+		"59": { name: 'Sheet Metal'},
+		"61": { name: 'Race Gauges'},
+		"58": { name: 'Gears'},
+	},
 };
 
 FGS.freeGiftForGame =
@@ -1001,6 +1022,8 @@ FGS.freeGiftForGame =
 	216230855057280: "delightful_bow",
 	
 	166309140062981: "assorty",
+	
+	256799621935: "58"
 };
 
 
