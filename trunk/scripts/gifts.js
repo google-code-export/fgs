@@ -1061,10 +1061,19 @@ FGS.getFBML = function(params, retry)
 			
 			try
 			{
+				if(typeof params.thankYou != 'undefined')
+				{
+					var addMessage = FGS.options.thankYouGiftMessage;
+				}
+				else
+				{
+					var addMessage = (params.messageToAdd ? params.messageToAdd : '');
+				}
+				
 				var reqData =
 				{
 					prefill: true,
-					message: (params.messageToAdd ? params.messageToAdd : ''),
+					message: addMessage,
 					preview: false,
 					donot_send: false,
 					__d: 1,
@@ -1074,26 +1083,13 @@ FGS.getFBML = function(params, retry)
 					lsd: ''
 				}
 			
-				if(params.gameID != '166309140062981')
-				{
-					var tst = new RegExp(/PlatformInvite.sendInvitation.*(\&#123.*.?125;)[(\(;)]/g).exec(dataStr);
-					if(tst == null) throw {message:'no api_key tag'}
-					var reqData2 = JSON.parse(tst[1].replace(/&quot;/g,'"').replace(/&#123;/g,'{').replace(/&#125;/g,'}'));
-					
-					$.extend(reqData, reqData2);
-					reqData.form_id = reqData2.request_form;
-					delete(reqData.request_form);
-				}
-				else
-				{
-					reqData.form_id = $('form[type]', data).attr('id');
-					reqData.app_id = params.gameID;
-					reqData.request_type = 'A Heart Accept';
-					reqData.invite = false
-					reqData.is_multi = true;
-					reqData.is_in_canvas = false;
-					reqData.include_ci = false;
-				}
+				var tst = new RegExp(/PlatformInvite.sendInvitation.*(\&#123.*.?125;)[(\(;)]/g).exec(dataStr);
+				if(tst == null) throw {message:'no api_key tag'}
+				var reqData2 = JSON.parse(tst[1].replace(/&quot;/g,'"').replace(/&#123;/g,'{').replace(/&#125;/g,'}'));
+				
+				$.extend(reqData, reqData2);
+				reqData.form_id = reqData2.request_form;
+				delete(reqData.request_form);
 				
 				var tst = new RegExp(/<form[^>].*content=\s*["]([^"]+)[^>]*>/gm).exec(dataStr);
 				if(tst == null) throw {message:'no content'}
@@ -1194,6 +1190,12 @@ FGS.getFBML = function(params, retry)
 				
 				if(params.gameID != '25287267406' && params.gameID != '213518941553')
 					sendGiftParams += 'cmfs_typeahead_'+reqData.form_id+'=start';
+				
+				if(params.gameID == '105557406133988')
+				{
+					sendGiftParams += '&'+$('form[type]', data).find('input[name="ts"]').serialize()+'&'+$('form[type]', data).find('input[name="gid"]').serialize();
+				}
+				
 				
 				if(params.gameID == '10979261223')
 				{

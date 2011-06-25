@@ -162,5 +162,7 @@
 	"SelectFGSLanguage": "Select FGS language",
 	"UseFacebookLanguage": "Use Facebook language (if possible)",
 	"LanguageChanged": "Language has been changed. Use FGS icon to open this page again.",
-	"HowManyBonusesToCollectAtOnce": "How many bonuses should FGS collect at once? (don't set it high unless you know what you're doing, change it only if you have very fast connection)"
+	"HowManyBonusesToCollectAtOnce": "How many bonuses should FGS collect at once? (don't set it high unless you know what you're doing, change it only if you have very fast connection)",
+	"ThankYouGiftMessage": "Message that is sent with 'Thank you' gift",
+	"Save": "Save"
 }

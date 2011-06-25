@@ -29,7 +29,7 @@ FGS.gamesData =
 						name: 'RewardVille',	systemName: 'rewardville', link: 'http://apps.facebook.com/zyngarv/',
 						filter:		
 						{	
-							bonuses: [],		
+							bonuses: ['(.*)'],		
 							bonusesNewWindow: [],
 							requests: [],
 							requestsNewWindow: [],
@@ -38,7 +38,7 @@ FGS.gamesData =
 						[
 						//	'BonusesPending',
 							'RequestsPending',
-						//	'ManualBonuses',
+							'ManualBonuses',
 						//	'BonusesHistory',
 							'RequestsHistory',
 						//	'FailedBonuses',
@@ -954,6 +954,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							'FailedBonuses',
 							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
