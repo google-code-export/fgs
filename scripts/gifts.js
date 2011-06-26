@@ -794,7 +794,9 @@ FGS.giftsArray = {
 	
 	169557846404284: // zombie lane
 	{
-		"EnergyCola": {name: "Energy Cola"}
+		"EnergyCola": {name: "Energy Cola"},
+		"Grenade": 	  {name: "Grenade"},
+		"Shoutgun":	  {name: "Shoutgun"}
 	},
 	
 	115301331874715: 

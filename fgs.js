@@ -82,7 +82,7 @@ var FGS = {
 			breakStartupLoadingTime: 300
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, sendbackGift: false, hideFromFeed: false, hideFromFeedLimitError: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false, useRandomTimeoutOnBonuses: false };
+		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, likeItemsRequiringAction: false, sendbackGift: false, hideFromFeed: false, hideFromFeedLimitError: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, hiddenIcon: false, useRandomTimeoutOnBonuses: false };
 
 		for(var idd in FGS.gamesData)
 		{
@@ -873,7 +873,7 @@ var FGS = {
 				}
 				catch(err)
 				{
-					console.log(err);
+					//console.log(err);
 				}
 			}
 		});
