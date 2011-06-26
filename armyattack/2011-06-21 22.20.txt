@@ -1,0 +1,4 @@
+		"Energy": { name: "Small energy pack"},
+		"SupplyPack": { name: "Small supply pack"},
+		"AllyReport": { name: "Ally Report"},
+		"Medal1": { name: "Bronze Cross"},
