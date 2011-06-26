@@ -85,6 +85,9 @@ FGS.hideFromFeed = function(bonusID, limit)
 			
 			var tmpObj = JSON.parse(v.link_data);
 			
+			if(typeof tmpObj.targets == 'undefined')
+				tmpObj.targets = tmpObj.actrs;
+			
 			
 			var postData = { 
 				'action': 'uninteresting',
