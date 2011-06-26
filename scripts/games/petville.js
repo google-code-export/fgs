@@ -81,7 +81,7 @@ FGS.petville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://fb-client-0.petville.zynga.com/current/gifts_send.php?pv_session='+params.pv_session+'&giftRecipient=&ref=tab&view=petville&overlayed=true&send_gift=Proceed+to+Send+%3E%3E%3E&gift='+params.gift+addAntiBot,
+			url: 'http://zc-prod.petville.zynga.com/current/gifts_send.php?pv_session='+params.pv_session+'&giftRecipient=&ref=tab&view=petville&overlayed=true&send_gift=Proceed+to+Send+%3E%3E%3E&gift='+params.gift+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -250,7 +250,7 @@ FGS.petville.Freegifts =
 		var outStr = params.outStr;
 		
 		
-		$.post('http://fb-client-0.petville.zynga.com/current/SNAPIProxy.php', params.postData, function(data2)
+		$.post('http://zc-prod.petville.zynga.com/current/SNAPIProxy.php', params.postData, function(data2)
 		{
 		
 			var nextParams = 'api_key=163576248142&locale=en_US&sdk=joey';
