@@ -340,7 +340,7 @@ FGS.fantasy.Requests =
 					
 					if(el.length > 0)
 					{
-						info.image = el.find('img:first').attr('path');
+						info.image = el.find('img:first').attr('longdesc');
 						info.title = el.find('.giftname:first').text();
 						info.text  = el.find('.textbold:last').text();
 						info.time = Math.round(new Date().getTime() / 1000);

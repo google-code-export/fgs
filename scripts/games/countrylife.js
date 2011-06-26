@@ -131,7 +131,7 @@ FGS.countrylife.Requests =
 						info.thanks = sendInfo;	
 						
 						
-						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("path");
+						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("longdesc");
 						info.title = $(".giftConfirm_name" ,dataHTML).children().text();
 						info.text  = $(".giftFrom_name" ,dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);

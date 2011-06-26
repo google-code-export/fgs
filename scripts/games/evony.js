@@ -121,7 +121,7 @@ FGS.evony.Requests =
 				
 				try 
 				{
-					info.image = $('.shop', dataHTML).find('img:first').attr('path');
+					info.image = $('.shop', dataHTML).find('img:first').attr('longdesc');
 					info.title = $('.shop', dataHTML).find('h2:first').text();
 					info.text  = $('.shop', dataHTML).next('div').find('h2:first').text();
 					info.time = Math.round(new Date().getTime() / 1000);

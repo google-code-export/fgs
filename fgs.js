@@ -3,7 +3,7 @@ var FGS = {
 	transObj:
 	{
 		"en_US": 	{name: "English"},
-		"pl_PL": 	{name: "Polski"},
+		//"pl_PL": 	{name: "Polski"},
 	},
 	
 	translations: {},
@@ -1745,7 +1745,7 @@ var FGS = {
 					
 					if(newText.indexOf('to be neighbors') != -1 || newText.indexOf('join my mafia') != -1 || newText.indexOf('be neighbours in') != -1 || newText.indexOf('be neighbors in') != -1 || newText.indexOf('be my neighbor') != -1 || newText.indexOf('neighbor in YoVille') != -1 || newText.indexOf('my neighbor in') != -1 || newText.indexOf('Come be my friend') != -1 || newText.indexOf('neighbor in') != -1 || newText.indexOf('Come join me in Evony') != -1 || newText.indexOf('as my new neighbor') != -1)
 					{
-						var type =  el.find('.UIImageBlock_SMALL_Image').find('img').attr('path');				
+						var type =  el.find('.UIImageBlock_SMALL_Image').find('img').attr('longdesc');				
 					}
 					else
 					{
@@ -2116,7 +2116,7 @@ var FGS = {
 						//koniec filtry usera
 						
 						
-						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('path'), link, bonusTime, feedback, link_data];
+						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
 						
 						params.items.push(bonus);
 						
@@ -2469,7 +2469,7 @@ var FGS = {
 						//koniec filtry usera
 						
 						
-						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('path'), link, bonusTime, feedback, link_data];
+						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
 						
 						params.items.push(bonus);
 						
