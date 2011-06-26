@@ -490,7 +490,7 @@ FGS.vampirewars.Requests =
 					}
 					
 					
-					info.image = $('img:first', dataHTML).attr('path');
+					info.image = $('img:first', dataHTML).attr('longdesc');
 					info.title = $('img:first', dataHTML).attr('title');
 					info.text = $('div.senderPic', dataHTML).parent().find('p').text();
 					

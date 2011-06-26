@@ -260,7 +260,7 @@ FGS.paradiselife.Requests =
 					
 					if($('.gift_wrap', dataHTML).length > 0)
 					{
-						info.image = $('.gift_wrap', dataHTML).find('img').attr('path');
+						info.image = $('.gift_wrap', dataHTML).find('img').attr('longdesc');
 						info.title = $('.gift_wrap', dataHTML).find('p').text();
 						info.text  = ' ';
 						info.time = Math.round(new Date().getTime() / 1000);
@@ -410,7 +410,7 @@ FGS.paradiselife.Bonuses =
 				
 				try
 				{
-					var testElem = $('.title_text_pos', dataHTML).children().attr('path')
+					var testElem = $('.title_text_pos', dataHTML).children().attr('longdesc')
 					if(testElem != undefined)
 					{
 						if(testElem.indexOf('feed_expire_title') != -1)
@@ -423,7 +423,7 @@ FGS.paradiselife.Bonuses =
 					
 					if($('.gift_wrap', dataHTML).length == 0) throw {message: 'something is wrong'}
 					
-					info.image = $('.gift_wrap', dataHTML).find('img').attr('path');
+					info.image = $('.gift_wrap', dataHTML).find('img').attr('longdesc');
 					info.title = $('.gift_wrap', dataHTML).find('p').text();
 					
 					info.text  = ' ';

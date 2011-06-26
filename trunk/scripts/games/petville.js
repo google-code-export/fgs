@@ -453,7 +453,7 @@ FGS.petville.Requests =
 				{
 					if($('.reqFrom_img', dataHTML).length > 0 && $(".giftConfirm_img" ,dataHTML).length == 0)
 					{
-						info.image = $(".reqFrom_img" ,dataHTML).children().attr("path");
+						info.image = $(".reqFrom_img" ,dataHTML).children().attr("longdesc");
 						info.title = 'New neighbour';
 						info.text  = $(".reqFrom_name" ,dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);
@@ -486,7 +486,7 @@ FGS.petville.Requests =
 						}
 						info.thanks = sendInfo;
 						
-						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("path");
+						info.image = $(".giftConfirm_img" ,dataHTML).children().attr("longdesc");
 						info.title = $(".giftConfirm_name" ,dataHTML).children().text();
 						info.text  = $(".giftFrom_name" ,dataHTML).children().text();
 						info.time = Math.round(new Date().getTime() / 1000);

@@ -425,7 +425,7 @@ FGS.gardensoftime.Requests =
 						
 						if(data.indexOf('You are now neighbors') != -1)
 						{
-							info.image = $('#sender', dataHTML).children('img').attr('path');
+							info.image = $('#sender', dataHTML).children('img').attr('longdesc');
 							info.title = '';
 							info.text  = 'New neighbour';
 							info.time = Math.round(new Date().getTime() / 1000);
@@ -454,7 +454,7 @@ FGS.gardensoftime.Requests =
 							return;	
 						}
 						
-						var tmpImg = $('#gift_box', dataHTML).children('img').attr('path');
+						var tmpImg = $('#gift_box', dataHTML).children('img').attr('longdesc');
 						
 						info.image = tmpImg;
 						

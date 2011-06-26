@@ -240,7 +240,7 @@ FGS.islandparadise.Requests =
 					{
 						if($('#view_gift_accept', dataHTML).length > 0)
 						{
-							info.image = $('#view_gift_accept', dataHTML).find('.item').find('img:first').attr('path');
+							info.image = $('#view_gift_accept', dataHTML).find('.item').find('img:first').attr('longdesc');
 							info.title = '';
 							info.text =$('#view_gift_accept', dataHTML).find('.item').text();
 						}

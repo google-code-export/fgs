@@ -282,7 +282,7 @@ FGS.poker.Requests =
 					if($(el).length > 0)
 					{
 						info.title = $('.acceptedGift', dataHTML).find('h1:first').children('span:first').text();
-						info.image = $('.acceptGiftIcon', dataHTML).children('img').attr("path");
+						info.image = $('.acceptGiftIcon', dataHTML).children('img').attr("longdesc");
 						info.text  = $('.acceptGiftFrom', dataHTML).find('img:first').attr('title');
 						info.time = Math.round(new Date().getTime() / 1000);
 					

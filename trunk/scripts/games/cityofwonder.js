@@ -113,7 +113,7 @@ FGS.cityofwonder.Requests =
 						return;
 					}
 					
-					info.image = $('.ally_accept', dataHTML).find('img:first').attr('path');
+					info.image = $('.ally_accept', dataHTML).find('img:first').attr('longdesc');
 					var txt = $('.ally_accept', dataHTML).find('h1').text();
 					
 					if(txt.indexOf('You can not accept this gift') != -1)
