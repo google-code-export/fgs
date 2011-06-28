@@ -613,10 +613,41 @@ FGS.checkVersion = function()
 	FGS.currentVersion = manifest.version;
 };
 
-FGS.getBGurl = function(file)
+FGS.loadTranslations = function()
 {
-	return chrome.extension.getURL(file);
-}
+	for(var loc in FGS.transObj)
+	{
+		FGS.jQuery.ajax({
+			url: chrome.extension.getURL('locales/'+loc+'/messages.json'),
+			beforeSend: function(xhr)
+			{
+				if (xhr.overrideMimeType)
+				{
+					xhr.overrideMimeType("application/json");
+				}
+			},
+			dataType: 'json',
+			method: 'GET',
+			async: false,
+			success: function(lang)
+			{
+				try
+				{
+					var lang = JSON.parse(lang);
+				}
+				catch(e)
+				{
+					//console.log(e);
+				}
+				
+				if(typeof FGS.translations[loc] == 'undefined')
+				{
+					FGS.translations[loc] = lang;
+				}
+			}
+		});
+	}
+};
 
 FGS.preStartup = function() 
 {
