@@ -1551,8 +1551,9 @@ var FGS = {
 			timeout: 180000,
 			success: function(data)
 			{
+				FGS.dump('req start');
 				if(typeof(apps) == 'undefined')
-					FGS.checkRequests(true);
+					setTimeout(function() { FGS.checkRequests(true); }, 5000);
 				
 				if(data.indexOf('"content":{"pagelet_requests":"') != -1)
 				{
@@ -1579,38 +1580,34 @@ var FGS = {
 					data = tempD.pagelet_requests;	
 				}
 
+				var $ = FGS.jQuery;
+				var giftArr = [];
 				var data = FGS.HTMLParser(data);
 				
-				var $ = FGS.jQuery;
-				
-				var FBdata = $('input[name="params\[app_id\]"]', data).parent('form:first');
-				
-				if(FGS.post_form_id == '')
-				{
-					var p = $(FBdata).children('input[name=post_form_id]').val();
-					if(p != undefined)
-						FGS.post_form_id = p;
-				}
-				
-				if(FGS.fb_dtsg == '' )
-				{
-					var p = FGS.fb_dtsg = $(FBdata).children('input[name=fb_dtsg]').val();
-					if(p != undefined)
-						FGS.fb_dtsg = p;
-				}
-				
-				if(FGS.charset_test == '')
-				{
-					var p = $(FBdata).children('input[name=charset_test]').val();
-					if(p != undefined)
-						FGS.charset_test = p;
-				}
-				
-				var giftArr = [];
-				
-				FGS.jQuery('input[name="params\[app_id\]"]',data).parent('form').each(function()
+				FGS.jQuery('form',data).each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
+					
+					if(FGS.post_form_id == '')
+					{
+						var p = $(this).children('input[name=post_form_id]').val();
+						if(p != undefined)
+							FGS.post_form_id = p;
+					}
+					
+					if(FGS.fb_dtsg == '' )
+					{
+						var p = $(this).children('input[name=fb_dtsg]').val();
+						if(p != undefined)
+							FGS.fb_dtsg = p;
+					}
+					
+					if(FGS.charset_test == '')
+					{
+						var p = $(this).children('input[name=charset_test]').val();
+						if(p != undefined)
+							FGS.charset_test = p;
+					}
 					
 					if(FGS.options.games[APPID] == undefined || FGS.options.games[APPID].enabled == false)
 					{
@@ -1800,12 +1797,13 @@ var FGS = {
 					giftArr.push(gift);
 				});
 				
-				
-				
+
+
 				if(giftArr.length > 0)
 				{
 					FGS.database.addRequest(giftArr);
 				}
+				FGS.dump('req end'); 
 				FGS.dump(FGS.getCurrentTime()+'[R] Setting up new update in 10 minutes');
 			},
 			error: function(e)
@@ -2248,8 +2246,10 @@ var FGS = {
 			timeout: 180000,
 			success: function(str)
 			{
+				return;
 				try
 				{
+					
 					var str = str.substring(9);
 					var error = JSON.parse(str).error;
 
