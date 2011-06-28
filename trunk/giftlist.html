@@ -10,21 +10,21 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.30" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.30" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.32" rel="stylesheet" />
+<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.32" rel="stylesheet" />
 
-<script type="text/javascript" src="scripts/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.tooltip.min.js"></script>
 
 
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.30"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.32"></script>
 <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.30"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.30"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.30"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.1.0.32"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.1.0.32"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.32"></script>
 
 
 <script type="text/javascript">
@@ -1762,17 +1762,7 @@ function prepareGameSelector()
 			menu: 'myMenuGameIcon'
 		}, function(action, el, pos)
 		{
-			if(action == 'hideIcon')
-			{
-				var gameID = $(el).prev().attr('gameID');
-				$(el).addClass('hide');
-				bkP.options.games[gameID].hiddenIcon = true;					
-				bkP.saveOptions();
-				
-				if(!$('#options').hasClass('hide'))
-					loadOptionsData();					
-			}
-			else if(action == 'goToGame')
+			if(action == 'goToGame')
 			{
 				var gameID = $(el).prev().attr('gameID');
 				bkP.openURI(bkP.gamesData[gameID].link, false);
@@ -1990,7 +1980,6 @@ function processGameSelectorInput(el)
 	
 	clearInterval(chatInterval);
 	chatInterval = null;
-	
 	
 	if($(el).attr('id') == 'chatSelected')
 	{
@@ -2741,13 +2730,6 @@ function onMouseDownTest(e)
 			bkP.saveOptions();
 		});
 		
-		$('#displayXbonuses > option[value="'+bkP.options.displayXbonuses+'"]').attr('selected', 'selected');
-		$('#displayXbonuses').change(function()
-		{
-			bkP.options.displayXbonuses = $('option:selected', this).val();
-			bkP.saveOptions();
-		});
-		
 		$('#collectXbonusesAtTheSameTime > option[value="'+bkP.options.collectXbonusesAtTheSameTime+'"]').attr('selected', 'selected');
 		$('#collectXbonusesAtTheSameTime').change(function()
 		{
@@ -2761,6 +2743,7 @@ function onMouseDownTest(e)
 			bkP.options.showDescriptionsOnStartup = $('option:selected', this).val();
 			bkP.saveOptions();
 		});
+		
 		$('.filterBonusText').data('timeout', null).live('keyup', function()
 		{
             clearTimeout(jQuery(this).data('timeout'));
@@ -3608,12 +3591,13 @@ function onMouseDownTest(e)
 								<option value="120" dataLang="2,Minutes"></option>
 							</select>
 						
-						<br /><br /><br /><br />
+						<br /><br />
 						
 						<h4 dataLang="ThankYouGiftMessage"></h4>
 						<input type="text" id="thankYouGiftMessage" />
-						<button id="saveThankYouGiftMessage" dataLang="Save" />
+						<button id="saveThankYouGiftMessage" dataLang="Save"></button>
 						
+						<br /><br />
 						
 						<h4 dataLang="RandomCommentMessages"></h4>
 						<div id="defaultCommentsMessages"></div>
@@ -3666,7 +3650,6 @@ function onMouseDownTest(e)
 					<textarea cols="40" rows="5" id="settingsTextarea"></textarea><br /><br />
 					
 					<button id="importSettings" dataLang="Import"></button> <button id="exportSettings" dataLang="Export"></button>	<br /><br /><br />
-					
 					
 					<h4 dataLang="HowToImport"></h4>
 					<div dataLang="ImportInstructions"></div>
