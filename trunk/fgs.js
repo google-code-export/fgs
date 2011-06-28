@@ -1551,7 +1551,6 @@ var FGS = {
 			timeout: 180000,
 			success: function(data)
 			{
-				FGS.dump('req start');
 				if(typeof(apps) == 'undefined')
 					setTimeout(function() { FGS.checkRequests(true); }, 5000);
 				
@@ -2246,7 +2245,6 @@ var FGS = {
 			timeout: 180000,
 			success: function(str)
 			{
-				return;
 				try
 				{
 					
