@@ -78,7 +78,7 @@ FGS.castleage.Freegifts =
 			{
 				try
 				{
-					var pos0 = dataStr.indexOf('onclick="showRequestForm(');
+					var pos0 = dataStr.lastIndexOf('onclick="showRequestForm(');
 					if(pos0 == -1) throw {}
 					
 					var pos1 = dataStr.indexOf(')', pos0);
