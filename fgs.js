@@ -8,41 +8,6 @@ var FGS = {
 	
 	translations: {},
 	
-	loadTranslations: function()
-	{
-		for(var loc in FGS.transObj)
-		{
-			FGS.jQuery.ajax({
-				url: FGS.getBGurl('../locales/'+loc+'/messages.json'),
-				beforeSend: function(xhr)
-				{
-					if (xhr.overrideMimeType)
-					{
-						xhr.overrideMimeType("application/json");
-					}
-				},
-				dataType: 'json',
-				method: 'GET',
-				async: false,
-				success: function(lang)
-				{
-					try
-					{
-						var lang = JSON.parse(lang);
-					}
-					catch(e)
-					{
-						//console.log(e);
-					}
-					
-					if(typeof FGS.translations[loc] == 'undefined')
-					{
-						FGS.translations[loc] = lang;
-					}
-				}
-			});
-		}
-	},
 	formExclusionString: '[action*="www\\.facebook\\.com\\/connect\\/connect.php"],[action*="custom_ads\\/islandAd\\.php"],[action*="www\\.facebook\\.com\\/plugins"]',
 	
 	initializeDefaults: function ()
