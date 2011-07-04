@@ -135,7 +135,7 @@ FGS.gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Visit market', 'Visita mercato', 'Visiter le marché', 'Send collectables', 'Send collectables!', 'Send collectibles', 'iAbre tu negocio', 'Collectable wanted', '¡Envía coleccionables', 'Enviar colecionáveis', 'Envoie des collections', 'Invia collezionabili', 'Kirim barang koleksi', 'Send collectables', 'Sende Sammlerstücke', 'Start your business', '¡Abre tu negocio', 'Démarre ton activité', 'Eröffne dein Geschäft', 'Start your business', 'Comece um negócio', '"Start your business"'],
+							bonusesNewWindow: ['Visit market', 'Visita mercato', 'Visiter le marché', 'Send collectables', 'Send collectables!', 'Send collectibles', 'iAbre tu negocio', 'Collectable wanted', '¡Envía coleccionables', 'Enviar colecionáveis', 'Envoie des collections', 'Invia collezionabili', 'Kirim barang koleksi', 'Send collectables', 'Sende Sammlerstücke', 'Start your business', '¡Abre tu negocio', 'Démarre ton activité', 'Eröffne dein Geschäft', 'Start your business', 'Comece um negócio', '"Start your business"', 'Visit Market'],
 							requests: [],
 							requestsNewWindow: []
 						},
