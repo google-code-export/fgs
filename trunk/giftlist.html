@@ -10,7 +10,7 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.32" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.33" rel="stylesheet" />
 <link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.32" rel="stylesheet" />
 
 <script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
@@ -1613,25 +1613,63 @@ function addDataToScreenLocked(callback, id, data)
 			var html = '<h3 class="center">'+bkP.getMsg('ThereWasAProblemTryAgainLater')+'</h3>';
 		else
 		{
-			if(status.length == 0)
+			if(status.users.length == 0)
 				var html = '<h3 class="center">'+bkP.getMsg('NoPeopleLookingForNeighborsInThisGame')+'</h3>';
 			else
 			{
 				var html = '<h3 class="center">'+bkP.getMsg('ThesePeopleAreLookingForNeighbors')+':</h3>';
-				$(status).each(function(k,v)
+				$(status.users).each(function(k,v)
 				{
 					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'&fromFGS='+escape(bkP.gamesData[gameID].name)+'" class="friendLink" target="_blank">'+v+'</a></div>';
 				});
-				html+= '<br style="clear: both" />';
+				html+= '<br style="clear: both" /><br /><div class="pagination">';
+				
+				var page = status.page;
+				var totalPage = status.total;
+				
+				if(page > 1)
+				{
+					html += '<a class="friendsPageLink paginxtext" style="cursor: pointer;" gameID="'+gameID+'" page="'+1+'">First</a> ';	
+					html += '<a class="friendsPageLink paginxtext" style="cursor: pointer;" gameID="'+gameID+'" page="'+(page-1)+'">Previous</a> ';		
+				}
+				
+				for(var i=(page-3 > 0 ? page-3 : 1);i<page;i++)
+				{
+					html += '<a class="friendsPageLink paginx" style="cursor: pointer;" gameID="'+gameID+'" page="'+(i)+'">'+i+'</a> ';
+				}
+				
+				html += '<a class="paginxsel">'+i+'</a> ';
+				
+				for(var i = page+1; i < totalPage && i < (page+4); i++)
+				{
+					html += '<a class="friendsPageLink paginx" style="cursor: pointer;" gameID="'+gameID+'" page="'+(i)+'">'+i+'</a> ';
+				}
+				
+				if(totalPage > page)
+				{
+					html += '<a class="friendsPageLink paginxtext" style="cursor: pointer;" gameID="'+gameID+'" page="'+(page+1)+'">Next</a> ';	
+					html += '<a class="friendsPageLink paginxtext" style="cursor: pointer;" gameID="'+gameID+'" page="'+totalPage+'">Last</a> ';		
+				}
+				html += '</div>';
 			}
 		}
 		$('div#'+game+opt, '#'+game+'Game').find('.searchForPeopleList').html(html);
 	}
 	
-	function CheckIfNeighborsAvailable(gameID)
+	function friendsPaginate(el)
+	{
+		CheckIfNeighborsAvailable(el.attr('gameID'), el.attr('page'));
+	}
+	
+	function CheckIfNeighborsAvailable(gameID, page)
 	{
 		var game = bkP.gamesData[gameID].systemName;
 		var opt = 'NeighborsSearchList';
+		
+		if(!page)
+		{
+			var page = 1;
+		}
 		
 		if(!$(".gameListOnNeighborsSearch[gameID='"+gameID+"']").is(':checked'))
 		{
@@ -1641,7 +1679,7 @@ function addDataToScreenLocked(callback, id, data)
 		
 		$('div#'+game+opt, '#'+game+'Game').html('<h2 class="center">Found people:</h2> <div class="searchForPeopleList"><h3 class="center"><img src="gfx/loading.gif"><br />Looking for people who are not already your neighbors... Please wait...</h3></div>');
 		
-		bkP.searchForNeighbors.Step1(gameID);
+		bkP.searchForNeighbors.Step1(gameID, page);
 	}
 	
 	function neighborsLoaded(users, gameID)
@@ -2626,6 +2664,9 @@ function onMouseDownTest(e)
 				return processSendBack(el);
 			else if(el.hasClass('commentBonus'))
 				return processCommentBonus(el);
+				
+			else if(el.hasClass('friendsPageLink'))
+				return friendsPaginate(el);
 				
 			if(el.attr('id') == 'saveNewComment')
 				return processSaveNewComment(el);

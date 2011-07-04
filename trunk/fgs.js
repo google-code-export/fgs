@@ -2635,7 +2635,7 @@ var FGS = {
 	
 	searchForNeighbors:
 	{
-		Step1: function(gameID)
+		Step1: function(gameID, page)
 		{
 			FGS.jQuery.ajax({
 				url: 'https://developers.facebook.com/docs/api',
@@ -2643,15 +2643,22 @@ var FGS = {
 				dataType: 'text',
 				success: function(d)
 				{
-					var pos1 = d.indexOf('?access_token=')+1;
-					if(pos1 == 0)
+					try
+					{
+						var pos1 = d.indexOf('?access_token=')+1;
+						if(pos1 == 0)
+						{
+							FGS.sendView('friendsLoaded', gameID, false);
+							return;
+						}
+						var pos2 = d.indexOf('"', pos1);
+						
+						FGS.searchForNeighbors.Step2(gameID, d.slice(pos1,pos2), page);
+					}
+					catch(e)
 					{
 						FGS.sendView('friendsLoaded', gameID, false);
-						return;
 					}
-					var pos2 = d.indexOf('"', pos1);
-					
-					FGS.searchForNeighbors.Step2(gameID, d.slice(pos1,pos2));
 				},
 				error: function()
 				{
@@ -2659,7 +2666,7 @@ var FGS = {
 				}
 			});
 		},
-		Step2: function(gameID, access)
+		Step2: function(gameID, access, page)
 		{
 			FGS.jQuery.ajax({
 				url: 'https://graph.facebook.com/me/friends?'+access,
@@ -2677,7 +2684,7 @@ var FGS = {
 							usersObj[v.id] = v.name;
 						});
 						
-						FGS.searchForNeighbors.Step3(gameID, usersObj);
+						FGS.searchForNeighbors.Step3(gameID, usersObj, page);
 					}
 					catch(e)
 					{
@@ -2690,29 +2697,23 @@ var FGS = {
 				}
 			});
 		},
-		Step3: function(gameID, users)
+		Step3: function(gameID, users, page)
 		{
 			FGS.jQuery.ajax({
-				url: 'http://rzadki.eu/projects/fgs/jsonp/friends.php',
-				data: {callback: '?', action: 'get', games: gameID, userID: FGS.userID},
+				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php?action=get&games='+gameID+'&userID='+FGS.userID+'&page='+page,
+				//data: {callback: '?', action: 'get', games: gameID, userID: FGS.userID},
 				method: 'GET',
 				dataType: 'json',
 				success:function(obj)
 				{
 					try
 					{
-						var usersArr = [];
-						
-						//var obj = JSON.parse(data);
-						
-						FGS.jQuery(obj).each(function(k,v)
+						var a = obj.users.indexOf(FGS.userID.toString());
+						if(a != -1)
 						{
-							if(typeof(users[v]) == 'undefined' && v.toString() != FGS.userID.toString())
-							{
-								usersArr.push(v);
-							}
-						});
-						FGS.sendView('friendsLoaded', gameID, usersArr);
+							obj.users.splice(a,1);
+						}
+						FGS.sendView('friendsLoaded', gameID, obj);
 					}
 					catch(e)
 					{
