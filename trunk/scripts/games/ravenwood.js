@@ -245,7 +245,7 @@ FGS.ravenwood.Requests =
 					var paramTmp = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 
 					
-					FGS.fantasy.Requests.Click2(currentType, id, url, paramTmp);
+					FGS.ravenwood.Requests.Click2(currentType, id, url, paramTmp);
 				} 
 				catch(err)
 				{
@@ -310,7 +310,7 @@ FGS.ravenwood.Requests =
 						var dataHTML = FGS.HTMLParser(dataStr);	
 					}
 					
-					var el = $('div:contains("You just accepted this"):last', dataHTML);		
+					var el = $('div:contains("You just accepted this"):last', dataHTML);
 					
 					if(el.length > 0)
 					{
