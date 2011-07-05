@@ -1256,7 +1256,7 @@ FGS.getFBML = function(params, retry)
 				
 				if(params.gameID == '120563477996213')
 				{
-					sendGiftParams += '&'+ $('form[type="Ravenwood Fair"]', data).find('input[name="item_id"],input[name="timestamp"]').serialize();
+					sendGiftParams += '&'+$('form[type]', data).find('input[name="request_ids"],input[name="default_tab"],input[name="iframe"],').serialize();
 				}
 				
 				if(params.gameID == '129547877091100' || params.gameID == '213518941553')
