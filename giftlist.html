@@ -2180,6 +2180,7 @@ function switchEnabled(gameID, reload)
 					Clear: function()
 					{
 						bkP.database.clearByGameID(gameID);
+						bkP.options.games[gameID] = $.extend(true,{},bkP.defaultGameOptions);						
 						
 						$( this ).dialog( "close" );
 					},

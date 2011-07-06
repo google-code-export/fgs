@@ -5,7 +5,7 @@ FGS.gamesData =
 						hasSendback: true,
 						filter:		
 						{	
-							bonuses: ['Go see my gift', 'Go Play FrontierVille', 'Go to FrontierVille', 'Send items'],		
+							bonuses: ['Go see my gift', 'Go Play FrontierVille', 'Go to FrontierVille', 'Send items', 'Send Mighty Cheers'],		
 							bonusesNewWindow: ['Send Free Sauce', 'Send Free Potatoes', 'Send Free Pie', 'Send Free Turkey', 'Send RSVP' ],
 							requests: ['r4r'],
 							requestsNewWindow: [],
@@ -56,7 +56,7 @@ FGS.gamesData =
 						filter:
 						{	
 							bonuses: ['Play Farmville Now'],
-							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels'],
+							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels', 'Complete order', 'Visit Trading Post', 'Feed Their Chickens'],
 							
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
