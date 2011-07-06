@@ -677,6 +677,14 @@ FGS.frontierville.Bonuses =
 						
 						var tempImage = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
 						
+						if($.trim(tempTitle).match(/^a \d{1,5} XP$/))
+						{
+							var tempImage = 'http://assets.frontier.zgncdn.com/production/R.1.6.018.001.67197/assets/assets/inventory/xp.png';
+						}
+						else if($.trim(tempTitle).match(/^a \d{1,5} Coins$/))
+						{
+							var tempImage = 'http://images.wikia.com/frontierville/images/a/a3/Coins-icon.png';
+						}
 						
 						FGS.jQuery.ajax({
 							type: "POST",

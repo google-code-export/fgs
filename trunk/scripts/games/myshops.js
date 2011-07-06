@@ -175,7 +175,6 @@ FGS.myshops.Requests =
 						return;
 					}
 					
-					
 					info.image 	= $('#giftImage',dataHTML).children('img:first').attr('longdesc');
 					info.title 	= $.trim($('#giftText',dataHTML).text());
 					info.text  	=  $('#senderText',dataHTML).text();

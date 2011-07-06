@@ -1955,6 +1955,9 @@ var FGS = {
 						if(typeof(tmpDateStr) == 'undefined')
 								return;
 						
+						if(bonusData.source_app_id != collectID)
+							return;
+						
 						var bonusTimeTmp = new Date(tmpDateStr).getTime();                                      
 						var bonusTime = Math.round(bonusTimeTmp / 1000);
 						
@@ -2306,6 +2309,9 @@ var FGS = {
 						var tmpDateStr = el.find('abbr').attr('data-date');
 						
 						if(typeof(tmpDateStr) == 'undefined')
+							return;
+						
+						if(bonusData.source_app_id != collectID)
 							return;
 						
 						var bonusTimeTmp = new Date(tmpDateStr).getTime();					
