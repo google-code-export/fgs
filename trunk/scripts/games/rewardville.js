@@ -334,9 +334,10 @@ FGS.rewardville.Requests =
 					}
 					info.thanks = sendInfo;
 
-					info.title = data.result + ' ' + data.type;
+					info.text  = data.result + ' ' + data.type;
+					info.title = '';
 					info.image = 'gfx/90px-check.png';
-					info.text = 'You have received: '+data.result + ' ' + data.type;
+					
 					info.time = Math.round(new Date().getTime() / 1000);
 					
 					FGS.endWithSuccess(currentType, id, info);
