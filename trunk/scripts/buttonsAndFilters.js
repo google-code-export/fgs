@@ -56,7 +56,7 @@ FGS.gamesData =
 						filter:
 						{	
 							bonuses: ['Play Farmville Now'],
-							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels', 'Complete order', 'Visit Trading Post', 'Feed Their Chickens'],
+							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels', 'Complete order', 'Visit Trading Post', 'Feed Their Chickens', 'Get some slop'],
 							
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
