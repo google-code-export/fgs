@@ -1838,30 +1838,20 @@ var FGS = {
 		}
 	},
 	
-	checkBonuses2: function(appID, params, retry)
+	checkBonuses: function(appID, params, checkType, retry)
 	{
 		var $ = jQuery = FGS.jQuery;
+		
+		var checkType = checkType || 1;
 		
 		if(appID == '176611639027113')
 		{
 			FGS.rewardville.Freegifts.Click({onlyLogin: true});
-			
-			/*
-			if(FGS.options.games[appID].enabled)
-			{
-				FGS.iBonusTimeout[appID] = setTimeout('FGS.checkBonuses2("'+appID+'");', 180000);
-			}
-			else
-			{
-				FGS.stopBonusesForGame(appID);
-			}
-			return;
-			*/
 		}
 		
 		if(typeof(FGS.iBonusTimeout[appID]) == 'undefined' || FGS.FBloginError !== false)
 		{
-				return;
+			return;
 		}
 		
 		if(typeof(FGS.bonusLoadingProgress[appID]) == 'undefined')
@@ -1872,32 +1862,87 @@ var FGS = {
 			};
 		}
 		
-
-		
-		if(typeof(params) == 'undefined')
-		{
-				var params = {};
-				
-				params.items = [];
-				params.time = Math.floor(new Date().getTime()/1000);
-				params.first = 0;
-				params.scroll = 1;
-				
-				FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID);
-		}               
-		var isZW2 = false;
-		
 		var collectID = appID;
 		
 		if(appID == '1677463161271')
 			collectID = '167746316127';
 		
+		if(typeof(params) == 'undefined')
+		{
+			var params = {};
+			
+			params.items = [];
+			params.time = 0;
+			params.first = 0;
+			params.scroll = 1;
+			
+			var paramsStr = '';
+			
+			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - '+checkType+' - step 1');
+		}
+		else
+		{
+			var paramsStr = '';
+			
+			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - '+checkType+' - step '+params.scroll+(retry ? ' - retry' : ''));
+			if(params.time != 0)
+				var paramsStr = '&oldest='+params.time;
+		}
 		
+		if(checkType == 1)
+		{
+			var number = 150;
+		
+			if(FGS.bonusLoadingProgress[appID].loaded == false)
+			{
+				if(FGS.options.breakStartupLoadingOption === 0)
+					if(FGS.options.breakStartupLoadingCount > 500)
+						var number = 300;
+			}
+			else
+			{
+				var number = FGS.timeoutToNumber();
+			}
+			
+			var feedUrl = 'http://www.facebook.com/ajax/apps/app_stories.php';
+			var feedParams = '__a='+params.scroll+'&is_game=1&app_ids='+collectID+'&max_stories='+number+'&user_action=0&show_hidden=false&ignore_self=false'+paramsStr;
+		}
+		else
+		{
+			if(params.time == 0)
+			{
+				var feedUrl = 'http://www.facebook.com/ajax/home/feed.php';
+				var feedParams = '__a=8&sk=cg&key=appm_'+collectID+'&show_hidden=false&ignore_self=false';
+			}
+			else
+			{
+				var feedUrl = 'http://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+',%22last_seen_time%22:'+params.first+',%22oldest%22:'+params.time+'}';
+			}
+		}
+		
+		function finishThat(params)
+		{
+			if(params.first > 0)
+				FGS.options.games[appID].lastBonusTime = params.first;
+			
+			if(params.items.length > 0)
+			{
+				FGS.database.addBonus(params.items);
+				
+				if(!FGS.bonusLoadingProgress[appID].loaded)
+					FGS.bonusLoadingProgress[appID].loaded = true;
+			}
+			
+			FGS.saveOptions();						
+			FGS.setTimeoutOnBonuses(appID);
+			FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+		}
 		
 		$.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/pagelet/generic.php/pagelet/home/morestories.php',
-			data: '__a='+(params.scroll+8)+'&data={%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+',%22last_seen_time%22:'+Math.floor(params.first/1000)+',%22oldest%22:'+params.time+'}',    
+			url: feedUrl,
+			data: feedParams,
 			dataType: 'text',
 			timeout: 180000,
 			success: function(str)
@@ -1909,35 +1954,57 @@ var FGS = {
 
 					if(typeof(error) != 'undefined')
 					{
-							FGS.dump(FGS.getCurrentTime()+'[B] Error: logged out');
-							FGS.stopAll();
-							return true;
+						FGS.dump(FGS.getCurrentTime()+'[B] Error: logged out');
+						FGS.stopAll();
+						return true;
 					}
 					
-					var data = JSON.parse(str).payload;
+					if(checkType == 1)
+					{
+						var data = JSON.parse(str).onload.toString();
 
-					var htmlData = FGS.HTMLParser(data);                                    
+						var i0 = data.indexOf('"#app_stories"');
+						var pos1 = data.indexOf('HTML("', i0)+6;
+						var pos2 = data.indexOf('"))',pos1);
+						
+						var data = data.slice(pos1,pos2);
+						
+						var tmpData = JSON.parse('{"html": "'+data+'"}');
+						
+						if(tmpData.html == "")
+						{
+							throw {message: 'empty'};
+						}
 					
-					var now = new Date().getTime();
+						var htmlData = FGS.HTMLParser(tmpData.html);
+					}
+					else
+					{
+						var data = JSON.parse(str).payload;
+						var htmlData = FGS.HTMLParser(data);
+					}
 					
-					var lastBonusTime = FGS.options.games[appID].lastBonusTime;
-					
+					var now = Math.round(new Date().getTime() / 1000);
+
 					var finishCollecting = false;
-					var oldest = params.time;
-		
+					
+					var oldestFeed = 0;
+					
+					/*
 					if(data.indexOf('uiBoxLightblue') != -1)
 					{
-						
-						FGS.sendView('hiddenFeed', appID); 
-						throw {message: 'no feed'}
+						FGS.bonusLoadingProgress[appID].hidden = true;
+						FGS.checkBonuses2(appID);
+						return;
 					}
+					*/
 					
 					if($('li.uiStreamStory', htmlData).length == 0)
 					{
-						if(params.scroll == 1)
+						if(params.scroll == 1 && checkType == 2)
 						{
 							FGS.sendView('hiddenFeed', appID); 
-							throw {message: 'no feed'}
+							throw {message: 'no_feed'}
 						}
 						throw {message: 'empty'}
 					}
@@ -1945,69 +2012,79 @@ var FGS = {
 					$('li.uiStreamStory', htmlData).each(function()
 					{
 						var el = $(this);
-
+						
 						var data = el.find('input[name="feedback_params"]').val();
+						
+						if(typeof data == 'undefined')
+							return;
 						
 						var bonusData = JSON.parse(data);
 						
-						var tmpDateStr = el.find('abbr').attr('data-date');
+						var curBonusAppID = bonusData.source_app_id || bonusData.app_id;
 						
-						if(typeof(tmpDateStr) == 'undefined')
-								return;
+						if(curBonusAppID != collectID)
+							return true;
 						
-						if(bonusData.source_app_id != collectID)
-							return;
+						var bonusTime = bonusData.pub_time || bonusData.content_timestamp;
 						
-						var bonusTimeTmp = new Date(tmpDateStr).getTime();                                      
-						var bonusTime = Math.round(bonusTimeTmp / 1000);
+						if(typeof(bonusTime) == 'undefined')
+						{
+							bonusTime = el.find('abbr').attr('data-date');
+							
+							if(typeof(bonusTime) == 'undefined')
+								return true;
+							
+							bonusTime = Math.round(new Date(bonusTime).getTime() / 1000);
+						}
 						
-						var diff = now-bonusTimeTmp;
-						var secs = Math.floor(diff.valueOf()/1000);
+						var diff = now-bonusTime;
+						var secs = diff.valueOf()/1000;
 						
 						var elID = bonusData.target_fbid;
-						var actr = bonusData.actor;
+						var bonusActor = bonusData.actor || bonusData.actrs;
+						
 						
 						if(params.first == 0)
 						{
-								params.first = bonusTimeTmp+1;
+							params.first = bonusTime+1;
 						}
 						
-						oldest = bonusTime;
+						oldestFeed = bonusTime;
 
-						if(bonusTimeTmp < lastBonusTime)
+						if(bonusTime < FGS.options.games[appID].lastBonusTime)
 						{
-								finishCollecting = true;
-								return false;
+							finishCollecting = true;
+							return false;
 						}
 						
-						var targets = bonusData.target_profile_id;
+						var bonusTarget = bonusData.target_profile_id;
 						
-						if(actr != targets)
+						if(bonusActor != bonusTarget)
 						{
-								if(FGS.userID != targets)
-								{
-										return true;
-								}
+							if(FGS.userID != bonusTarget)
+							{
+								return true;
+							}
 						}
 						
 						if(FGS.options.breakStartupLoadingOption == 0)
 						{
-								if(params.items.length >= parseInt(FGS.options.breakStartupLoadingCount))
-								{
-										finishCollecting = true;
-										return false;
-								}
+							if(params.items.length >= parseInt(FGS.options.breakStartupLoadingCount))
+							{
+								finishCollecting = true;
+								return false;
+							}
 						}
 						else
 						{
-								if(secs >= parseInt(FGS.options.breakStartupLoadingTime))
-								{
-										finishCollecting = true;
-										return false;
-								}
+							if(secs >= parseInt(FGS.options.breakStartupLoadingTime))
+							{
+								finishCollecting = true;
+								return false;
+							}
 						}
 							
-						if(actr == FGS.userID)	
+						if(bonusActor == FGS.userID)	
 						{
 							if(appID.toString() != '166309140062981' && appID.toString() != '216230855057280') // wlasny bonus w puzzle hearts i charmed gems
 								return true;
@@ -2064,7 +2141,9 @@ var FGS = {
 
 						if(typeof(link_data) == 'undefined' || link_data == null)
 							return;
+						
 						//sprawdzanie filtrow usera
+						
 						var ret = false;
 						$(FGS.options.games[appID].filter).each(function(k,v)
 						{
@@ -2080,6 +2159,11 @@ var FGS = {
 						if(ret) return;
 						//koniec filtry usera
 						
+						//var bonusType = 0;
+						//if(FGS.checkIfBonusIsManual(appID, bTitle))
+						//{
+						//	bonusType = 1;
+						//}
 						
 						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
 						
@@ -2091,417 +2175,46 @@ var FGS = {
 								return false;
 						}
 					});
-
+					
 					if(finishCollecting)
 					{
-						if(params.first > 0)
-							FGS.options.games[appID].lastBonusTime = params.first;
-
-						if(params.items.length > 0)
-							FGS.database.addBonus(params.items);
-
-						if(!FGS.bonusLoadingProgress[appID].loaded)
-							FGS.bonusLoadingProgress[appID].loaded = true;
-						
-						FGS.saveOptions();						
-						FGS.setTimeoutOnBonuses(appID, true);
-						FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+						finishThat(params);
 					}
 					else
 					{
-						params.time = oldest;
+						params.time = oldestFeed;				
 						params.scroll++;
 						
-						FGS.checkBonuses2(appID, params);
+						FGS.checkBonuses(appID, params, checkType);
 					}
 				}
 				catch(e)
 				{
+					FGS.dump(e);
 					if(typeof(retry) == 'undefined')
 					{
-							if(e.message == 'empty')
-							{
-								params.time = oldest;
-								params.scroll++;
-							}
-							FGS.checkBonuses2(appID, params, true);
-					}
-					else
-					{
-						if(params.first > 0)
-							FGS.options.games[appID].lastBonusTime = params.first;
-
-						if(params.items.length > 0)
-							FGS.database.addBonus(params.items);
-
-						if(!FGS.bonusLoadingProgress[appID].loaded)
-							FGS.bonusLoadingProgress[appID].loaded = true;
-						
-						FGS.saveOptions();
-						FGS.setTimeoutOnBonuses(appID, true);
-						FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
-					}
-				}
-			},
-			error: function(e)
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					FGS.checkBonuses2(appID, params, true);
-				}
-				else
-				{
-					if(params.first > 0)
-						FGS.options.games[appID].lastBonusTime = params.first;
-					
-					if(params.items.length > 0)
-						FGS.database.addBonus(params.items);
-
-					if(!FGS.bonusLoadingProgress[appID].loaded)
-						FGS.bonusLoadingProgress[appID].loaded = true;
-					
-					FGS.saveOptions();					
-					FGS.setTimeoutOnBonuses(appID, true);					
-					FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
-				}
-			}
-		});
-	},
-	
-	checkBonuses: function(appID, params, retry)
-	{
-		var $ = jQuery = FGS.jQuery;
-		
-		if(appID == '176611639027113')
-		{
-			FGS.rewardville.Freegifts.Click({onlyLogin: true});
-			
-			/*
-			if(FGS.options.games[appID].enabled)
-			{
-				FGS.iBonusTimeout[appID] = setTimeout('FGS.checkBonuses("'+appID+'");', 180000);
-			}
-			else
-			{
-				FGS.stopBonusesForGame(appID);
-			}
-			*/
-			//return;
-		}
-		
-		if(typeof(FGS.iBonusTimeout[appID]) == 'undefined' || FGS.FBloginError !== false)
-		{
-			return;
-		}
-		
-		if(typeof(FGS.bonusLoadingProgress[appID]) == 'undefined')
-		{
-			FGS.bonusLoadingProgress[appID] =
-			{
-				loaded: false
-			};
-		}
-		
-		var number = 150;
-		
-		if(FGS.bonusLoadingProgress[appID].loaded == false)
-		{
-			if(FGS.options.breakStartupLoadingOption === 0)
-				if(FGS.options.breakStartupLoadingCount > 500)
-					var number = 300;
-		}
-		else
-		{
-			var number = FGS.timeoutToNumber();
-		}
-		
-		if(typeof(params) == 'undefined')
-		{
-			var params = {};
-			
-			params.items = [];
-			params.time = 0;
-			params.first = 0;
-			var paramsStr = '';
-			
-			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID);
-		}
-		else
-		{
-			var paramsStr = '&show_hidden=false&ignore_self=false&oldest='+params.time;
-		}
-		
-		var isZW2 = false;
-		
-		var collectID = appID;
-		
-		if(appID == '1677463161271')
-			collectID = '167746316127';
-		
-		
-		
-		$.ajax({
-			type: "GET",
-			url: 'http://www.facebook.com/ajax/apps/app_stories.php',
-			data: '__a=1&is_game=1&app_ids='+collectID+'&max_stories='+number+'&user_action=0'+paramsStr,
-			dataType: 'text',
-			timeout: 180000,
-			success: function(str)
-			{
-				try
-				{
-					
-					var str = str.substring(9);
-					var error = JSON.parse(str).error;
-
-					if(typeof(error) != 'undefined')
-					{
-						FGS.dump(FGS.getCurrentTime()+'[B] Error: logged out');
-						FGS.stopAll();
-						return true;
-					}
-					
-					var data = JSON.parse(str).onload.toString();
-
-					var i0 = data.indexOf('"#app_stories"');
-					var pos1 = data.indexOf('HTML("', i0)+6;
-					var pos2 = data.indexOf('"))',pos1);
-					
-					var data = data.slice(pos1,pos2);
-					
-					var tmpData = JSON.parse('{"html": "'+data+'"}');
-					
-					if(tmpData.html == "")
-					{
-						throw {message: 'empty'};
-					}
-				
-					var htmlData = FGS.HTMLParser(tmpData.html);					
-					
-					var now = new Date().getTime();
-					
-					var lastBonusTime = FGS.options.games[appID].lastBonusTime;
-					
-					var finishCollecting = false;
-					var oldest = 0;
-					
-					
-					if(data.indexOf('uiBoxLightblue') != -1)
-					{
-						FGS.bonusLoadingProgress[appID].hidden = true;
-						FGS.checkBonuses2(appID);
-						return;
-					}
-					
-					if($('li.uiStreamStory', htmlData).length == 0)
-					{
-						throw {message: 'empty'}
-					}
-					
-					$('li.uiStreamStory', htmlData).each(function()
-					{
-						var el = $(this);
-
-						var data = el.find('input[name="feedback_params"]').val();
-						
-						var bonusData = JSON.parse(data);
-						
-						var tmpDateStr = el.find('abbr').attr('data-date');
-						
-						if(typeof(tmpDateStr) == 'undefined')
-							return;
-						
-						if(bonusData.source_app_id != collectID)
-							return;
-						
-						var bonusTimeTmp = new Date(tmpDateStr).getTime();					
-						var bonusTime = Math.round(bonusTimeTmp / 1000);
-						
-						var diff = now-bonusTimeTmp;
-						var secs = Math.floor(diff.valueOf()/1000);
-						
-						var elID = bonusData.target_fbid;
-						var actr = bonusData.actor;
-						
-						if(params.first == 0)
+						if(e.message == 'no_feed' && params.items.length == 0)
 						{
-							params.first = bonusTimeTmp+1;
-						}
-						
-						oldest = bonusTime;
-						
-						if(bonusTimeTmp < lastBonusTime)
-						{
-							finishCollecting = true;
-							return true;
-						}
-						
-						var targets = bonusData.target_profile_id;
-						
-						if(actr != targets)
-						{
-							if(FGS.userID != targets)
-							{
-								return true;
-							}
-						}
-						
-						if(FGS.options.breakStartupLoadingOption == 0)
-						{
-							if(params.items.length >= parseInt(FGS.options.breakStartupLoadingCount))
-							{
-								finishCollecting = true;
-								return false;
-							}
-						}
-						else
-						{
-							if(secs >= parseInt(FGS.options.breakStartupLoadingTime))
-							{
-								finishCollecting = true;
-								return false;
-							}
-						}
-
-						if(actr == FGS.userID)	
-						{
-							if(appID.toString() != '166309140062981' && appID.toString() != '216230855057280') // wlasny bonus w puzzle hearts i charmed gems
-								return true;
-						}
-						
-						var link = el.find('.UIActionLinks_bottom > a:last').attr('href');
-						
-						if(link == undefined)
-						{
-							var link = el.find('.uiAttachmentTitle').find('a').attr('href');
-							if(link == undefined)
-								return;							
-						}
-						
-						if(appID == '1677463161271')
-						{
-							if(link.indexOf('landingZoo2.php') == -1)
-								return;
-						}
-						else if(appID == '167746316127')
-						{
-							if(link.indexOf('landingZoo2.php') != -1)
-								return;
-						}
-
-						var ret = false;
-						
-						var testLink = el.find('.UIActionLinks_bottom > a:last');
-						if(testLink.length == 0)
-						{
-							var testLink = el.find('.uiAttachmentTitle').find('a');
-							if(testLink.length == 0)
-								return;
-						}
-						var testLink = testLink.first();
-						
-						var bTitle = jQuery.trim(testLink.text().replace(/'/gi, ''));
-
-						$(FGS.gamesData[appID].filter.bonuses).each(function(k,v)
-						{
-							var re = new RegExp(v, "i");
-							
-							if(re.test(bTitle))
-							{
-								ret = true;
-								return false;
-							}
-						});
-						
-						if(ret) return;
-
-						var feedback = el.find('input[name="feedback_params"]').val();
-						var link_data = el.attr('data-ft');
-						
-						if(typeof(link_data) == 'undefined' || link_data == null)
-							return;
-
-						//sprawdzanie filtrow usera
-						var ret = false;
-						$(FGS.options.games[appID].filter).each(function(k,v)
-						{
-							var re = new RegExp(v, "i") ;
-							
-							if($.trim(v) != '' && re.test(bTitle))
-							{
-								FGS.dump('Filtering: '+bTitle);
-								ret = true;
-								return false;
-							}
-						});
-						if(ret) return;
-						//koniec filtry usera
-						
-						
-						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
-						
-						params.items.push(bonus);
-						
-						if(params.items.length >= 2500)
-						{
-							finishCollecting = true;
-							return false;
-						}
-					});
-					
-					if(finishCollecting)
-					{
-						if(params.first > 0)
-							FGS.options.games[appID].lastBonusTime = params.first;
-						
-						if(params.items.length > 0)
-							FGS.database.addBonus(params.items);
-						
-						if(!FGS.bonusLoadingProgress[appID].loaded)
-							FGS.bonusLoadingProgress[appID].loaded = true;
-						
-						FGS.saveOptions();						
-						FGS.setTimeoutOnBonuses(appID);
-						FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
-					}
-					else
-					{
-						if(oldest > 0)
-							params.time = oldest;
-						FGS.checkBonuses(appID, params);
-					}
-				}
-				catch(e)
-				{
-					if(typeof(retry) == 'undefined')
-					{
-						if(oldest == 0 && params.items.length == 0)
-						{
-							FGS.checkBonuses(appID, undefined, true);
+							finishThat(params);
 							return;
 						}
 						
 						if(e.message == 'empty')
-						{	
-							if(oldest > 0)
-								params.time = oldest;
+						{
+							if(checkType == 1 && params.items.length == 0)
+							{
+								FGS.checkBonuses(appID, undefined, 2);
+								return;
+							}
 						}
-						FGS.checkBonuses(appID, params, true);
+						FGS.checkBonuses(appID, params, checkType, true);
 					}
 					else
 					{
-						if(params.first > 0)
-							FGS.options.games[appID].lastBonusTime = params.first;
-						
-						if(params.items.length > 0)
-							FGS.database.addBonus(params.items);
-						
-						if(!FGS.bonusLoadingProgress[appID].loaded)
-							FGS.bonusLoadingProgress[appID].loaded = true;
-						
-						FGS.saveOptions();
-						FGS.setTimeoutOnBonuses(appID);
-						FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+						if(checkType == 1 && params.items.length == 0)
+							FGS.checkBonuses(appID, undefined, 2);
+						else
+							finishThat(params);
 					}
 				}
 			},
@@ -2509,22 +2222,14 @@ var FGS = {
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					FGS.checkBonuses(appID, params, true);
+					FGS.checkBonuses(appID, params, checkType, true);
 				}
 				else
 				{
-					if(params.first > 0)
-						FGS.options.games[appID].lastBonusTime = params.first;
-					
-					if(params.items.length > 0)
-						FGS.database.addBonus(params.items);
-					
-					if(!FGS.bonusLoadingProgress[appID].loaded)
-						FGS.bonusLoadingProgress[appID].loaded = true;
-					
-					FGS.saveOptions();					
-					FGS.setTimeoutOnBonuses(appID);					
-					FGS.dump(FGS.getCurrentTime()+'[B] Setting up new update in '+FGS.options.checkBonusesTimeout+' seconds');
+					if(checkType == 1 && params.items.length == 0)
+						FGS.checkBonuses(appID, undefined, 2);
+					else
+						finishThat(params);
 				}
 			}
 		});

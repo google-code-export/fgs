@@ -83,19 +83,19 @@ FGS.hideFromFeed = function(bonusID, limit)
 				}
 			}
 			
-			var tmpObj = JSON.parse(v.link_data);
+			var tmpObj = JSON.parse(v.feedback);
 			
-			if(typeof tmpObj.targets == 'undefined')
-				tmpObj.targets = tmpObj.actrs;
+			if(typeof tmpObj.target_profile_id == 'undefined')
+				tmpObj.target_profile_id = tmpObj.actor;
 			
 			
 			var postData = { 
 				'action': 'uninteresting',
 				'post_form_id': FGS.post_form_id,
 				'fb_dtsg':	FGS.fb_dtsg,
-				'object_ids[0]': tmpObj.targets,
-				'object_ids[1]': tmpObj.app_id,
-				'story_fbids[0]': tmpObj.targets+':'+tmpObj.fbid,
+				'object_ids[0]': tmpObj.target_profile_id,
+				'object_ids[1]': tmpObj.source_app_id,
+				'story_fbids[0]': tmpObj.target_profile_id+':'+tmpObj.target_fbid,
 				'source': 'home',
 				'nctr[_mod]': 'pagelet_home_stream',
 				'lsd':	'',
