@@ -1,6 +1,12 @@
 FGS.giftsArray = {
 	'201278444497': // frontierville
 	{
+		"bh_golden_hammer": { name: 'Golden Hammer'},
+		"fireworks_fuse": { name: 'Fuse'},
+		"fireworks_firework_shell": { name: 'Firework Shell'},
+		"lantern": { name: 'Lantern'},
+		"camping_kettle": { name: 'Coffee Pot'},
+		
 		"sourcherryfront": { name: 'Sour Cherry Tree'},
 		"greenapplefront": { name: 'Green Apple Tree'},
 		"whitepeachfront": { name: 'White Peach Tree'},
@@ -76,10 +82,19 @@ FGS.giftsArray = {
 	},
 	'102452128776': // farmville
 	{
-		"mysterygift": { name: 'Mystery Gift'},
-		
+		"mysterygift": { name: 'Mystery Gift'},		
 		"socialplumbingmysterygift": { name: 'Special Delivery'},
-
+		
+		
+		"hinge": { name: 'Hinge'},
+		"screwdriver": { name: 'Screwdriver'},		
+		"tinsheet": { name: 'Tin Sheet'},
+		"summerbasket2011_ticket_5": { name: 'Spade'},
+		"summerbasket2011_ticket_4": { name: 'Pail'},
+		"summerbasket2011_ticket_2": { name: 'Pair of Sunglasses'},
+		"summerbasket2011_ticket_1": { name: 'Beach Ball'},
+		"summerbasket2011_ticket_3": { name: 'Crab'},
+		
 		"bottle": { name: 'Bottle'},
 		"haypink": { name: 'Pink Heart Hay'},
 		"socialplumbingmysterygift": { name: 'Special Delivery'},
