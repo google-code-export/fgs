@@ -594,7 +594,36 @@ FGS.pyramidville.Bonuses =
 			{
 				try
 				{
+					if(dataStr.indexOf('top.location = "') != -1)
+					{
+						var pos0 = dataStr.indexOf('top.location = "')+16;
+						var pos1 = dataStr.indexOf('"', pos0);
+						
+						var redirectUrl = dataStr.slice(pos0, pos1);
+						
+						FGS.pyramidville.Bonuses.Click(currentType, id, redirectUrl);
+						return;
+					}
+					
+					
 					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					if(dataStr.indexOf('pages.setPage("') != -1)
+					{
+						var pos0a = dataStr.indexOf('pages.setPage("')+15;
+						var pos1a = dataStr.indexOf('"', pos0a);
+					
+						var pos1 = 0;
+						var pos2 = currentURL.lastIndexOf('/');
+					
+						var nextUrl = currentURL.slice(pos1,pos2);
+						nextUrl += dataStr.slice(pos0a, pos1a);
+						
+						params += '&signed_user='+$('input[name="signed_user"]', dataHTML).val();
+						
+						retryThis(currentType, id, nextUrl, params, true);
+						return;
+					}
 					
 					if(dataStr.indexOf('You have already collected this bonus') != -1)
 					{

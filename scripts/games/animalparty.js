@@ -302,9 +302,9 @@ FGS.animalparty.Requests =
 					
 					if($('.accept_gift_mid', dataHTML).length > 0)
 					{
-						info.title = $.trim($('.gift_name', dataHTML).text());
+						info.title = $.trim($('.accept_gift_mid', dataHTML).find('.gift_name').text());
 						
-						info.image = $('.gift_image', dataHTML).children('img:first').attr('longdesc');
+						info.image = $('.accept_gift_mid', dataHTML).find('.gift_image').children('img:first').attr('longdesc');
 						info.time  = Math.round(new Date().getTime() / 1000);
 						
 						if(dataStr.indexOf('has been sent to') != -1)

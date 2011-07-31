@@ -185,16 +185,16 @@ FGS.gamesData =
 							bonuses: ['Play Now', 'Look at my bouquet'],
 							bonusesNewWindow: ['Help (.*) buy Cupid'],
 							requests: [],
-							requestsNewWindow: []
+							requestsNewWindow: ['(.*)']
 						},
 						buttons: [
 							'BonusesPending',
-							'RequestsPending',
+							//'RequestsPending',
 							'ManualBonuses',
 							'BonusesHistory',
-							'RequestsHistory',
+							//'RequestsHistory',
 							'FailedBonuses',
-							'FailedGifts',
+							//'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
 							'NeighborsSearch',
@@ -251,7 +251,7 @@ FGS.gamesData =
 					},
 	127148832824: 	{ 
 						name: 'Happy Pets',		systemName: 'happypets', link: 'http://apps.facebook.com/happy-pets/',
-						hasSendback: true,
+						//hasSendback: true,
 						filter:		
 						{
 							bonuses: [],
@@ -290,8 +290,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							//'FailedBonuses',
 							'FailedGifts',
-							'SendFreeGifts',
-							'SendFreeGiftsHistory',
+							//'SendFreeGifts',
+							//'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -301,18 +301,18 @@ FGS.gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Roll on my board'],
+							bonusesNewWindow: ['(.*)'],
 							requests: [],
-							requestsNewWindow: ['Will you invest in my Hotel(.*)']
+							requestsNewWindow: ['(.*)']
 						},
 						buttons: [
-							'BonusesPending',
-							'RequestsPending',
+							//'BonusesPending',
+							//'RequestsPending',
 							'ManualBonuses',
-							'BonusesHistory',
-							'RequestsHistory',
-							'FailedBonuses',
-							'FailedGifts',
+							//'BonusesHistory',
+							//'RequestsHistory',
+							//'FailedBonuses',
+							//'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],

@@ -171,15 +171,12 @@ FGS.monopoly.Requests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
 				{
-					if(FGS.checkForNotFound(redirectUrl) === true)
-					{
-						FGS.endWithError('not found', currentType, id);
-					}
-					else if(typeof(retry) == 'undefined')
+					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, redirectUrl, true);
 					}
@@ -193,8 +190,66 @@ FGS.monopoly.Requests =
 				var dataStr = FGS.processPageletOnFacebook(dataStr);
 				var dataHTML = FGS.HTMLParser(dataStr);
 				
+				try 
+				{
+					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
+					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
+					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_216230855057280', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
+					FGS.monopoly.Requests.Click2(currentType, id, url, params);
+				} 
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	Click2:	function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			url: currentURL,
+			data: params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
 				try
 				{
+					console.log($(dataHTML));
 					if(dataStr.indexOf('That item has already been claimed') != -1)
 					{
 						var error_text = 'That item has already been claimed.';
@@ -233,7 +288,7 @@ FGS.monopoly.Requests =
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, true);
+						retryThis(currentType, id, currentURL, params, true);
 					}
 					else
 					{
@@ -245,7 +300,7 @@ FGS.monopoly.Requests =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, true);
+					retryThis(currentType, id, currentURL, params, true);
 				}
 				else
 				{
@@ -270,6 +325,80 @@ FGS.monopoly.Bonuses =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				var dataHTML = FGS.HTMLParser(dataStr);
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
+				
+				if(redirectUrl != false)
+				{
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, redirectUrl, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+					return;
+				}
+				
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
+				try 
+				{
+					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
+					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
+					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_216230855057280', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
+					FGS.monopoly.Bonuses.Click2(currentType, id, url, params);
+				} 
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	Click2:	function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			url: currentURL,
+			data: params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
@@ -280,7 +409,7 @@ FGS.monopoly.Bonuses =
 					}
 					else if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, redirectUrl, true);
+						retryThis(currentType, id, redirectUrl, params, true);
 					}
 					else
 					{
@@ -322,7 +451,7 @@ FGS.monopoly.Bonuses =
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, true);
+						retryThis(currentType, id, currentURL, params, true);
 					}
 					else
 					{
@@ -334,7 +463,7 @@ FGS.monopoly.Bonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, true);
+					retryThis(currentType, id, currentURL, params, true);
 				}
 				else
 				{
