@@ -94,6 +94,30 @@ FGS.kingdomsofcamelot.Requests =
 			{
 				try
 				{
+					if(dataStr.indexOf('top.location.href = "') != -1)
+					{
+						var pos0 = dataStr.indexOf('top.location.href = "')+21;
+						var pos1 = dataStr.indexOf('"', pos0);
+						
+						var redirectUrl = dataStr.slice(pos0, pos1);
+						
+						FGS.kingdomsofcamelot.Requests.Click(currentType, id, redirectUrl);
+						return;
+					}
+					
+					if(dataStr.indexOf('<fb:iframe') != -1)
+					{
+					
+						var pos0 = dataStr.indexOf('<fb:iframe');
+						var pos0 = dataStr.indexOf(' src=', pos0)+6;
+						var pos1 = dataStr.indexOf("'", pos0);
+						
+						var redirectUrl = dataStr.slice(pos0, pos1);
+						
+						FGS.kingdomsofcamelot.Requests.Click2(currentType, id, redirectUrl, params);
+						return;
+					}
+					
 					var dataHTML = FGS.HTMLParser(dataStr);
 					
 					var el = $(dataHTML);

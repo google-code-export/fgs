@@ -1911,8 +1911,10 @@ var FGS = {
 		{
 			if(params.time == 0)
 			{
-				var feedUrl = 'http://www.facebook.com/ajax/home/feed.php';
-				var feedParams = '__a=8&sk=cg&key=appm_'+collectID+'&show_hidden=false&ignore_self=false';
+				//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
+				//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
+				var feedUrl = 'http://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+'}';
 			}
 			else
 			{

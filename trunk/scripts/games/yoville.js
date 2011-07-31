@@ -219,7 +219,7 @@ FGS.yoville.Requests =
 	Click: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;		
+		var retryThis 	= arguments.callee;
 		var info = {}
 		
 		$.ajax({
@@ -228,15 +228,12 @@ FGS.yoville.Requests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
 				
 				if(redirectUrl != false)
 				{
-					if(FGS.checkForNotFound(redirectUrl) === true)
-					{
-						FGS.endWithError('not found', currentType, id);
-					}
-					else if(typeof(retry) == 'undefined')
+					if(typeof(retry) == 'undefined')
 					{
 						retryThis(currentType, id, redirectUrl, true);
 					}
@@ -250,58 +247,20 @@ FGS.yoville.Requests =
 				var dataStr = FGS.processPageletOnFacebook(dataStr);
 				var dataHTML = FGS.HTMLParser(dataStr);
 				
-				try
+				try 
 				{
-					if(dataStr.indexOf('seem to have already accepted this request') != -1)
+					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
+					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
+					
+					if(!url)
 					{
-						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
-						FGS.endWithError('limit', currentType, id, error_text);
-						return;
+						var paramTmp = FGS.findIframeAfterId('#app_content_129547877091100', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
 					}
 					
-					if(dataStr.indexOf('You are neighbors now') != -1)
-					{
-						info.image = '';
-						info.title = '';
-						info.text  = 'New neighbour';
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						FGS.endWithSuccess(currentType, id, info);
-						return;
-					}
-					else if($('#app21526880407_main-gift-body', dataHTML).find('div > b').length > 0)
-					{
-						var sendInfo = '';
-						
-						var tmpStr = unescape(currentURL);
-						
-						if(tmpStr.indexOf('iid') != -1)
-						{
-							var giftRecipient = FGS.Gup('sid', currentURL);
-							var giftName = FGS.Gup('iid', currentURL);
-
-							sendInfo = {
-								gift: giftName,
-								destInt: giftRecipient,
-								destName: $('#app21526880407_main-gift-body', dataHTML).find('div > b').text()
-							}
-						}
-						
-						info.thanks = sendInfo;				
-						
-						info.image = $('#app21526880407_main-gift-body', dataHTML).find('div > img').attr("longdesc");
-						info.title = $('#app21526880407_main-gift-body', dataHTML).find('div > h2').text();
-						info.text  = $('#app21526880407_main-gift-body', dataHTML).find('div > b').text();
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						FGS.endWithSuccess(currentType, id, info);
-						return;
-					}
-					else
-					{	
-						throw {message: dataStr}
-					}
-				}
+					FGS.yoville.Requests.Click2(currentType, id, url, params);
+				} 
 				catch(err)
 				{
 					FGS.dump(err);
@@ -321,6 +280,129 @@ FGS.yoville.Requests =
 				if(typeof(retry) == 'undefined')
 				{
 					retryThis(currentType, id, currentURL, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	Click2:	function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			url: currentURL,
+			data: params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				var redirectUrl = FGS.checkForLocationReload(dataStr);
+				
+				if(redirectUrl != false)
+				{
+					if(FGS.checkForNotFound(redirectUrl) === true)
+					{
+						FGS.endWithError('not found', currentType, id);
+					}
+					else if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, redirectUrl, params, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+					return;
+				}
+				
+				var dataStr = FGS.processPageletOnFacebook(dataStr);
+				var dataHTML = FGS.HTMLParser(dataStr);
+				
+				try
+				{
+					var tst = new RegExp(/<fb:serverfbml[^>]*?>[\s\S]*?<script[^>]*?>([\s\S]*?)<\/script>[\s\S]*?<\/fb:serverfbml>/m).exec(dataStr);
+					if(tst != null)
+					{
+						var dataStr = tst[1];
+						var dataHTML = FGS.HTMLParser(dataStr);	
+					}
+					
+					
+					if(dataStr.indexOf('seem to have already accepted this request') != -1)
+					{
+						var error_text = 'Sorry, you seem to have already accepted this request from the Message Center';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					
+					if(dataStr.indexOf('You are neighbors now') != -1)
+					{
+						info.image = '';
+						info.title = '';
+						info.text  = 'New neighbour';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+						return;
+					}
+					else if($('#main-gift-body', dataHTML).find('div > b').length > 0)
+					{
+						var sendInfo = '';
+						
+						var tmpStr = unescape(currentURL);
+						
+						if(tmpStr.indexOf('iid') != -1)
+						{
+							var giftRecipient = FGS.Gup('sid', currentURL);
+							var giftName = FGS.Gup('iid', currentURL);
+
+							sendInfo = {
+								gift: giftName,
+								destInt: giftRecipient,
+								destName: $('#main-gift-body', dataHTML).find('div > b').text()
+							}
+						}
+						
+						info.thanks = sendInfo;				
+						
+						info.image = $('#main-gift-body', dataHTML).find('div > img').attr("longdesc");
+						info.title = $('#main-gift-body', dataHTML).find('div > h2').text();
+						info.text  = $('#main-gift-body', dataHTML).find('div > b').text();
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						FGS.endWithSuccess(currentType, id, info);
+						return;
+					}
+					else
+					{	
+						throw {message: dataStr}
+					}
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, true);
 				}
 				else
 				{

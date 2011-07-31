@@ -483,6 +483,21 @@ FGS.zooworld2.Bonuses =
 						return;
 					}
 					
+					if(dataStr.indexOf('All of the bonuses from this post have been claimed.') != -1)
+					{
+						var error_text = 'All of the bonuses from this post have been claimed.';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					
+					if(dataStr.indexOf('Oops, there was a problem with this reward.') != -1)
+					{
+						var error_text = 'Oops, there was a problem with this reward.';
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					
+					
 					var el = $('#zw2_feed_landing_content', dataHTML);
 					
 					info.title = $.trim(el.children('li:first').text());

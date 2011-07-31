@@ -87,7 +87,7 @@ FGS.castleage.Freegifts =
 					var reqData = {};
 
 					reqData.data = tmp[2];
-					reqData.title = tmp[0];
+					reqData.title = tmp[0].slice(1);
 					reqData.message = tmp[1];
 					
 					params.reqData = reqData;					

@@ -355,6 +355,17 @@ FGS.mafiawars.Requests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
+				if(dataStr.indexOf('top.location.href = "') != -1)
+				{
+					var pos0 = dataStr.indexOf('top.location.href = "')+21;
+					var pos1 = dataStr.indexOf('"', pos0);
+					
+					var redirectUrl = dataStr.slice(pos0, pos1);
+					
+					FGS.mafiawars.Requests.Click(currentType, id, redirectUrl);
+					return;
+				}
+				
 				var dataHTML = FGS.HTMLParser(dataStr);
 
 				try 
@@ -446,7 +457,7 @@ FGS.mafiawars.Requests =
 					if(data.indexOf('This gift is expired') != -1)		throw {message:"Gift expired"}
 					
 					
-					if(dataStr.indexOf('this request has expired') != -1 || dataStr.indexOf('This gift is expired') != -1)
+					if(dataStr.indexOf('this request has expired') != -1 || dataStr.indexOf('This gift is expired') != -1 || dataStr.indexOf('Request not found') != -1)
 					{
 						FGS.endWithError('limit', currentType, id, 'This request has expired');
 						return;
@@ -707,10 +718,21 @@ FGS.mafiawars.Bonuses =
 			//dataType: 'text',
 			success: function(dataStr)
 			{
+				if(dataStr.indexOf('top.location.href = "') != -1)
+				{
+					var pos0 = dataStr.indexOf('top.location.href = "')+21;
+					var pos1 = dataStr.indexOf('"', pos0);
+					
+					var redirectUrl = dataStr.slice(pos0, pos1);
+					
+					FGS.mafiawars.Bonuses.Click(currentType, id, redirectUrl);
+					return;
+				}
+				
 				var dataStr = dataStr.substr(dataStr.indexOf('<body'),dataStr.lastIndexOf('</body'));
 				
 				try
-				{
+				{					
 					var tst = new RegExp(/<form.*[^>]action="(.*)" .*>/).exec(dataStr);
 					if(tst == null) throw {message: 'no form'}
 					
@@ -959,6 +981,15 @@ FGS.mafiawars.Bonuses =
 						info.image = 'gfx/90px-check.png';
 						info.text  = newT;
 						info.title = newT.slice(pos1, pos2);
+					}
+					else if(dataStr.indexOf('You just claimed:') != -1)
+					{
+						var pos1 = dataStr.indexOf('You just claimed:');
+						var pos2 = dataStr.indexOf('<', pos1);
+
+						info.text  = dataStr.slice(pos1,pos2);
+						info.image = $('td.message_body', dataHTML).find('img:first').attr('longdesc');
+						info.title = dataStr.slice(pos1+18,pos2);
 					}
 					else if(dataStr.indexOf('You collected a') != -1)
 					{
