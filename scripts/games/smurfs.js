@@ -72,7 +72,7 @@ FGS.smurfs.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://thesmurfsco.ubi.com/facebook/requestSend.php?type=Gift&filter=1&params=17',
+			url: 'http://thesmurfsco.ubi.com/facebook/requestSend.php?type=Gift&filter=1&params='+params.gift+'',
 			data: params.step1params,
 			dataType: 'text',
 			success: function(dataStr)
@@ -87,78 +87,6 @@ FGS.smurfs.Freegifts =
 					
 					var paramsStr = 'app_key='+app_key+'&fbml='+encodeURIComponent(fbml);
 
-					params.nextParams = paramsStr;
-					
-					FGS.getFBML(params);
-				}
-				catch(err)
-				{
-					FGS.dump(err);
-					FGS.dump(err.message);
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(params, true);
-					}
-					else
-					{
-						if(typeof(params.sendTo) == 'undefined')
-						{
-							FGS.sendView('updateNeighbors', false, params.gameID);
-						}
-						else
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-						}
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(params, true);
-				}
-				else
-				{
-					if(typeof(params.sendTo) == 'undefined')
-					{
-						FGS.sendView('updateNeighbors', false, params.gameID);
-					}
-					else
-					{
-						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-					}
-				}
-			}
-		});
-	},
-	
-	Click3: function(params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
-		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
-
-		$.ajax({
-			type: "POST",
-			url: 'http://'+params.domain+'/gifts_send.php?overlayed=1&gift='+params.gift+'&'+unescape(params.zyParam)+addAntiBot,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				try
-				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
-					
-					var app_key = tst[1];
-					var channel_url = tst[2];
-					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
-					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
-					
 					params.nextParams = paramsStr;
 					
 					FGS.getFBML(params);
@@ -377,9 +305,31 @@ FGS.smurfs.Requests =
 					else if($(".request_accept_giftbox",dataHTML).length > 0)
 					{
 						info.image = $(".request_accept_giftbox",dataHTML).children().attr("longdesc");
-						info.title = $(".request_accept_name:first",dataHTML).text();
+						info.title = $.trim($(".request_accept_name:first",dataHTML).text());
 						info.text  = $(".request_accept_title:last",dataHTML).text();
 						info.time = Math.round(new Date().getTime() / 1000);
+						
+						for(var gift in FGS.giftsArray['130095157064351'])
+						{
+							if(FGS.giftsArray['130095157064351'][gift].name == info.title)
+							{
+								var txtG = $(".request_accept_friendbox",dataHTML).children().attr("longdesc").attr('src');
+								
+								var pos1 = txtG.indexOf('graph.facebook.com')+19;
+								var pos2 = txtG.indexOf('/', pos1);
+								
+								var giftRecipient = txtG.slice(pos1, pos2);					
+								var destName = $.trim($(".request_accept_name:last",dataHTML).text());
+								
+								info.thanks = 
+								{
+									gift: gift,
+									destInt: giftRecipient,
+									destName: destName,
+								}
+								break;
+							}
+						}
 						
 						FGS.endWithSuccess(currentType, id, info);
 						return;
