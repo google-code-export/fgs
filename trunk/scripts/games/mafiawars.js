@@ -133,7 +133,7 @@ FGS.mafiawars.Freegifts =
 					
 					
 					params.sf_xw_user_id = $('input[name="sf_xw_user_id"]', dataHTML).val();
-					params.sf_xw_sig = $('input[name="sf_xw_sig"]', dataHTML).val();				
+					params.sf_xw_sig = $('input[name="sf_xw_sig"]', dataHTML).val();
 					
 					params.click3param = nextParams;
 					params.click3url = 'http://facebook.mafiawars.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=friend_selector&xw_city=1&req_controller=freegifts&free_gift_id='+params.gift+'&free_gift_cat=1&xw_client_id=8&ajax=1&liteload=1&fbml_iframe=1&xw_person='+useridfin+tmpTmp+tmpCb;
@@ -197,17 +197,17 @@ FGS.mafiawars.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]Facebook[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
+					var app_key = '10979261223';
 					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var pos1 = dataStr.indexOf('id="request_form_interstitial_exclude_type_2"');
+					
+					dataStr = dataStr.slice(pos1);
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					var paramsStr = 'app_key='+app_key+'&fbml='+encodeURIComponent(fbml);
 
 					params.nextParams = paramsStr;
 					

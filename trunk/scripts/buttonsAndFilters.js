@@ -25,6 +25,31 @@ FGS.gamesData =
 							'GameOptionsTab'
 						]
 					},
+	266989143414: 	{ 	
+						name: 'Pioneer Trail',	systemName: 'pioneertrail', link: 'http://apps.facebook.com/pioneertrail/', 
+						hasSendback: true,
+						filter:		
+						{	
+							bonuses: ['Go see my gift', 'Go Play FrontierVille', 'Go to FrontierVille', 'Send items', 'Send Mighty Cheers'],		
+							bonusesNewWindow: ['Send Free Sauce', 'Send Free Potatoes', 'Send Free Pie', 'Send Free Turkey', 'Send RSVP' ],
+							requests: ['r4r'],
+							requestsNewWindow: [],
+						},
+						buttons:
+						[	
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						]
+					},
 	176611639027113: 	{ 	
 						name: 'RewardVille',	systemName: 'rewardville', link: 'http://apps.facebook.com/zyngarv/',
 						hasSendback: true,
@@ -1145,7 +1170,7 @@ FGS.gamesData =
 						],
 					},
 	175251882520655:	{ 	name: 'Gardens of Time',	systemName: 'gardensoftime', link: 'http://apps.facebook.com/gardensoftime/',
-						hasSendback: true,
+						//hasSendback: true,
 						filter:	
 						{
 							bonuses: [],
@@ -1163,6 +1188,29 @@ FGS.gamesData =
 							'FailedGifts',
 							//'SendFreeGifts',
 							//'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
+	130095157064351: { 	name: 'The Smurfs & Co',	systemName: 'smurfs', link: 'http://apps.facebook.com/thesmurfsco/',
+						//hasSendback: true,
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: []
+						},
+						buttons: [
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],

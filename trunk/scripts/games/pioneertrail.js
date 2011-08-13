@@ -1,4 +1,4 @@
-FGS.frontierville.Freegifts = 
+FGS.pioneertrail.Freegifts = 
 {
 	Click: function(params, retry)
 	{
@@ -8,7 +8,7 @@ FGS.frontierville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/frontierville/?crt=&aff=tab&src=direct&newUser=&sendkey=&ref=tab'+addAntiBot,
+			url: 'http://apps.facebook.com/pioneertrail/?crt=&aff=tab&src=direct&newUser=&sendkey=&ref=tab'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -22,7 +22,7 @@ FGS.frontierville.Freegifts =
 					
 					if(!url)
 					{
-						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						var paramTmp = FGS.findIframeAfterId('#app_content_266989143414', dataStr);
 						if(paramTmp == '') throw {message: 'no iframe'}
 						var url = paramTmp;
 					}
@@ -30,7 +30,7 @@ FGS.frontierville.Freegifts =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.frontierville.Freegifts.ClickForm(params);
+					FGS.pioneertrail.Freegifts.ClickForm(params);
 				}
 				catch(err)
 				{
@@ -92,7 +92,7 @@ FGS.frontierville.Freegifts =
 					var dataHTML = FGS.HTMLParser(dataStr);
 				
 					var tst = new RegExp(/<iframe[^>].*src=\s*["].*populateFbCache\.php[?]([^"]+)/m).exec(dataStr);
-					if(tst == null) throw {message:'no frontierville iframe tag'}
+					if(tst == null) throw {message:'no pioneertrail iframe tag'}
 					
 					var zyParams = {}
 					
@@ -107,7 +107,7 @@ FGS.frontierville.Freegifts =
 					}
 					params.zyParam = $.param(zyParams);
 					
-					FGS.frontierville.Freegifts.Click2(params);
+					FGS.pioneertrail.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -159,7 +159,7 @@ FGS.frontierville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://fb-0.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
+			url: 'http://pt-fb-client-0.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -224,7 +224,7 @@ FGS.frontierville.Freegifts =
 	}
 };
 
-FGS.frontierville.Requests = 
+FGS.pioneertrail.Requests = 
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -270,12 +270,12 @@ FGS.frontierville.Requests =
 					
 					if(!url)
 					{
-						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						var paramTmp = FGS.findIframeAfterId('#app_content_266989143414', dataStr);
 						if(paramTmp == '') throw {message: 'no iframe'}
 						var url = paramTmp;
 					}
 					
-					FGS.frontierville.Requests.Click2(currentType, id, url, params);
+					FGS.pioneertrail.Requests.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -435,7 +435,7 @@ FGS.frontierville.Requests =
 	}
 };
 
-FGS.frontierville.Bonuses = 
+FGS.pioneertrail.Bonuses = 
 {
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -481,12 +481,12 @@ FGS.frontierville.Bonuses =
 					
 					if(!url)
 					{
-						var paramTmp = FGS.findIframeAfterId('#app_content_201278444497', dataStr);
+						var paramTmp = FGS.findIframeAfterId('#app_content_266989143414', dataStr);
 						if(paramTmp == '') throw {message: 'no iframe'}
 						var url = paramTmp;
 					}
 					
-					FGS.frontierville.Bonuses.Click2(currentType, id, url, params);
+					FGS.pioneertrail.Bonuses.Click2(currentType, id, url, params);
 				}
 				catch(err)
 				{
@@ -515,7 +515,7 @@ FGS.frontierville.Bonuses =
 			}
 		});
 	},
-	
+			
 	Click2: function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -531,7 +531,7 @@ FGS.frontierville.Bonuses =
 			{
 				var dataHTML = FGS.HTMLParser(dataStr);
 				var redirectUrl = FGS.checkForLocationReload(dataStr);
-	
+				
 				try
 				{
 					var pos1 = dataStr.indexOf('top.location.href = "');
@@ -540,7 +540,7 @@ FGS.frontierville.Bonuses =
 						var pos2 = dataStr.indexOf('"', pos1+21);
 						var url = dataStr.slice(pos1+21, pos2);
 						
-						FGS.frontierville.Bonuses.Click(currentType, id, url);
+						FGS.pioneertrail.Bonuses.Click(currentType, id, url);
 						return;
 					}
 					
@@ -575,7 +575,7 @@ FGS.frontierville.Bonuses =
 						}
 						else if($.trim(tempTitle).match(/^a \d{1,5} Coins$/))
 						{
-							var tempImage = 'http://images.wikia.com/frontierville/images/a/a3/Coins-icon.png';
+							var tempImage = 'http://images.wikia.com/pioneertrail/images/a/a3/Coins-icon.png';
 						}
 						
 						FGS.jQuery.ajax({
