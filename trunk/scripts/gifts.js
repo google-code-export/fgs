@@ -1071,11 +1071,17 @@ FGS.giftsArray = {
 		"61": { name: 'Race Gauges'},
 		"58": { name: 'Gears'},
 	},
+	
+	130095157064351: // smurfs
+	{
+		"1": { name: '1 Energy Kit'}
+	}
 };
 
 FGS.freeGiftForGame =
 {
 	201278444497: 'picnic_basket',
+	266989143414: 'picnic_basket',
 	176611639027113: '1',
 	102452128776: 'brick',
 	234860566661: 'construction_gears',
@@ -1123,7 +1129,9 @@ FGS.freeGiftForGame =
 	
 	166309140062981: "assorty",
 	
-	256799621935: "58"
+	256799621935: "58",
+	
+	130095157064351: '1',
 };
 
 
