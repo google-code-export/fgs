@@ -10,8 +10,8 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.33" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.33" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.34" rel="stylesheet" />
+<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.34" rel="stylesheet" />
 
 <script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
@@ -19,12 +19,12 @@
 
 
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.33"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.34"></script>
 <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.33"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.33"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.33"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.1.0.34"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.1.0.34"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.34"></script>
 
 
 <script type="text/javascript">
@@ -130,9 +130,10 @@ function addDataToScreenLocked(callback, id, data)
 		for(var id in bkP.giftsArray[gameID])
 		{
 			var v = bkP.giftsArray[gameID][id];
-			el.append('<div class="selectGiftToSend" gameID="'+gameID+'" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+id+'.png"><div style="font-size: 11px;">'+v.name+'</div></div>');
+			var img = (typeof v.image == 'undefined' ? 'http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+id+'.png' : v.image);
+			
+			el.append('<div class="selectGiftToSend" gameID="'+gameID+'" title="'+v.name+'" alt="'+v.name+'" giftID="'+id+'"><img  style="width: 32px; height: 32px;margin:2px auto;" src="'+img+'"><div style="font-size: 11px;">'+v.name+'</div></div>');
 		}
-		
 		
 		if(bkP.options.games[gameID].defaultGift == 0)
 		{

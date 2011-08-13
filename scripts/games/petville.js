@@ -22,13 +22,12 @@ FGS.petville.Freegifts =
 					
 					if(!url) throw {message: 'fail'}
 					
+					params.step2url = url;
+					params.step2params = params2;
 					
-
-					var pos1 = url.indexOf('pv_session=')+11;
-					var pos2 = url.indexOf('&', pos1);
+					console.log(params);
 					
-					params.pv_session = url.slice(pos1, pos2);
-					FGS.petville.Freegifts.Click2(params);
+					FGS.petville.Freegifts.Click1a(params);
 					
 				}
 				catch(err)
@@ -72,6 +71,76 @@ FGS.petville.Freegifts =
 			}
 		});
 	},
+	
+	Click1a: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;		
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+
+		$.ajax({
+			type: "POST",
+			url: params.step2url,
+			data: params.step2params,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var pos1 = dataStr.indexOf('pv_session=')+11;
+					var pos2 = dataStr.indexOf('"', pos1);
+					
+					params.pv_session = dataStr.slice(pos1, pos2);
+					
+					FGS.petville.Freegifts.Click2(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	
+	
+	
+	
+	
 
 	Click2: function(params, retry)
 	{
@@ -81,7 +150,7 @@ FGS.petville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://zc-prod.petville.zynga.com/current/gifts_send.php?pv_session='+params.pv_session+'&giftRecipient=&ref=tab&view=petville&overlayed=true&send_gift=Proceed+to+Send+%3E%3E%3E&gift='+params.gift+addAntiBot,
+			url: 'http://zc-prod-fb.petville.zynga.com/current/gifts_send.php?pv_session='+params.pv_session+'&giftRecipient=&ref=tab&view=petville&overlayed=true&send_gift=Proceed+to+Send+%3E%3E%3E&gift='+params.gift+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -250,7 +319,7 @@ FGS.petville.Freegifts =
 		var outStr = params.outStr;
 		
 		
-		$.post('http://zc-prod.petville.zynga.com/current/SNAPIProxy.php', params.postData, function(data2)
+		$.post('http://zc-prod-fb.petville.zynga.com/current/SNAPIProxy.php', params.postData, function(data2)
 		{
 		
 			var nextParams = 'api_key=163576248142&locale=en_US&sdk=joey';

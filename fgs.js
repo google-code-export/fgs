@@ -211,6 +211,180 @@ var FGS = {
 		});
 	},
 	
+	getAppAccessTokenForSingleItem: function(params, success, error, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+		
+		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
+		
+		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
+		
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			data: params.getToken,
+			dataType: 'text',
+			success: function(data)
+			{
+				try
+				{
+					var parseStr = data;
+
+					var pos1 = parseStr.indexOf('var config = {');
+					if(pos1 == -1) throw {message:"no URI"}
+					
+					var pos2 = parseStr.indexOf('};',pos1);
+					
+					parseStr = parseStr.slice(pos1+13,pos2+1);
+					var parseStr = JSON.parse(parseStr);
+					
+					params.access = {access_token: parseStr.session.access_token};
+					
+					FGS.getSingleUserSendForm(params, success, error);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, success, error, true);
+					}
+					else
+					{
+						error(params);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, success, error, true);
+				}
+				else
+				{
+					error(params);
+				}
+			}
+		});
+	},
+	
+	getSingleUserSendForm: function(params, success, error, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var currentType	= 'request';
+		var info = {}
+		
+		FGS.jQuery.ajax({
+			type: "GET",
+			url: 'https://www.facebook.com/dialog/apprequests',
+			data: $.param(params.reqData)+'&'+$.param(params.access)+'&'+params.getToken+'&sdk=joey&display=iframe&locale=en_US',
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					if($('input[name="to"]', dataHTML).length == 0)
+						throw {'message': 'no to input'}
+					
+					params.formUrl = $('#uiserver_form', dataHTML).attr('action');
+					params.formParam = $('#uiserver_form', dataHTML).serialize();
+					
+					
+					FGS.sendToSingleUser(params, success, error);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, success, error, true);
+					}
+					else
+					{
+						error(params);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, success, error, true);
+				}
+				else
+				{
+					error(params);
+				}
+			}
+		});
+	},
+	
+	sendToSingleUser: function(params, success, error, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var currentType	= 'request';
+		var info = {}
+		
+		FGS.jQuery.ajax({
+			type: "POST",
+			url: params.formUrl,
+			data: params.formParam+'&ok_clicked=Send%20Requests',
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					if(dataStr.indexOf('&result=') == -1)
+						throw {'message': 'no result'}
+					
+					var pos0 = dataStr.indexOf('&result=')+8;
+					var pos1 = dataStr.indexOf('"', pos0);
+					
+					var str = dataStr.slice(pos0, pos1);
+					var arr = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc)).request_ids;
+					
+					params.request_ids = arr;
+					
+					success(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, success, error, true);
+					}
+					else
+					{
+						error(params);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, success, error, true);
+				}
+				else
+				{
+					error(params);
+				}
+			}
+		});
+	},
+	
+	
 	getSendingForm: function(params, callback, retry)
 	{
 		var $ = FGS.jQuery;
