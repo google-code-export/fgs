@@ -1774,30 +1774,38 @@ var FGS = {
 				var giftArr = [];
 				var data = FGS.HTMLParser(data);
 				
+				var alreadyCheckedFBvalues = false;
+				
 				FGS.jQuery('form',data).each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
 					
-					if(FGS.post_form_id == '' || typeof FGS.post_form_id == 'undefined')
+					if(!alreadyCheckedFBvalues)
 					{
-						var p = $(this).children('input[name=post_form_id]').val();
-						if(p != undefined)
-							FGS.post_form_id = p;
+						// post_form_id
+						var p = $(this).children('input[name="post_form_id"]').val();
+						if(typeof p != 'undefined')
+							if(FGS.post_form_id == '' || typeof FGS.post_form_id == 'undefined' || FGS.post_form_id != p)
+								FGS.post_form_id = p;
+						
+						
+						// fb_dtsg
+						var p = $(this).children('input[name="fb_dtsg"]').val();
+						if(typeof p != 'undefined')
+							if(FGS.fb_dtsg == ''  || typeof FGS.fb_dtsg == 'undefined' || FGS.fb_dtsg != p)
+								FGS.fb_dtsg = p;
+						
+						
+						// charset						
+						var p = $(this).children('input[name="charset_test"]').val();
+						if(typeof p != 'undefined')
+							if(FGS.charset_test == '' || typeof FGS.charset_test == 'undefined'|| FGS.charset_test != p)
+								FGS.charset_test = p;
+						
+						alreadyCheckedFBvalues = true;
 					}
 					
-					if(FGS.fb_dtsg == ''  || typeof FGS.fb_dtsg == 'undefined')
-					{
-						var p = $(this).children('input[name=fb_dtsg]').val();
-						if(p != undefined)
-							FGS.fb_dtsg = p;
-					}
 					
-					if(FGS.charset_test == '' || typeof FGS.charset_test == 'undefined')
-					{
-						var p = $(this).children('input[name=charset_test]').val();
-						if(p != undefined)
-							FGS.charset_test = p;
-					}
 					
 					if(FGS.options.games[APPID] == undefined || FGS.options.games[APPID].enabled == false)
 					{
@@ -1987,8 +1995,6 @@ var FGS = {
 					giftArr.push(gift);
 				});
 				
-
-
 				if(giftArr.length > 0)
 				{
 					FGS.database.addRequest(giftArr);
