@@ -1298,11 +1298,34 @@ var FGS = {
 			FGS.stopAll();
 			return true;
 		}
-
+		
+		var pos1 = data2.indexOf('Env={')+4;
+		var pos2 = data2.indexOf('user:', pos1)+5;
+		
+		var posPF = data2.indexOf('post_form_id:', pos2);
+		if(posPF != -1)
+		{
+			posPF+=13;
+			var posPF2 = data2.indexOf(',', posPF);
+			var t = data2.slice(posPF, posPF2);
+			t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+			
+			FGS.post_form_id = t;
+		}
+		
+		var posDT = data2.indexOf('fb_dtsg:', pos2);
+		if(posDT != -1)
+		{
+			posDT+=8;
+			var posDT2 = data2.indexOf(',', posDT);
+			var t = data2.slice(posDT, posDT2);
+			t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+			
+			FGS.fb_dtsg = t;
+		}
+			
 		if(FGS.userID == null || FGS.userName == null)
 		{
-			var pos1 = data2.indexOf('Env={')+4;
-			var pos2 = data2.indexOf('user:', pos1)+5;
 			var pos3 = data2.indexOf(',', pos2);
 
 			FGS.userID = data2.slice(pos2, pos3);
@@ -1320,13 +1343,7 @@ var FGS = {
 		{
 			FGS.database.open(FGS.userID);
 			FGS.database.createTable();
-		}
-
-		if(FGS.post_form_id == '' || FGS.fb_dtsg == '')
-		{
-			FGS.fb_dtsg 		= FGS.jQuery('input[name="fb_dtsg"]', data).val();
-			FGS.post_form_id 	= FGS.jQuery('input[name="post_form_id"]', data).val();
-		}
+		}		
 	},
 	
 	startup: function()
@@ -1761,21 +1778,21 @@ var FGS = {
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
 					
-					if(FGS.post_form_id == '')
+					if(FGS.post_form_id == '' || typeof FGS.post_form_id == 'undefined')
 					{
 						var p = $(this).children('input[name=post_form_id]').val();
 						if(p != undefined)
 							FGS.post_form_id = p;
 					}
 					
-					if(FGS.fb_dtsg == '' )
+					if(FGS.fb_dtsg == ''  || typeof FGS.fb_dtsg == 'undefined')
 					{
 						var p = $(this).children('input[name=fb_dtsg]').val();
 						if(p != undefined)
 							FGS.fb_dtsg = p;
 					}
 					
-					if(FGS.charset_test == '')
+					if(FGS.charset_test == '' || typeof FGS.charset_test == 'undefined')
 					{
 						var p = $(this).children('input[name=charset_test]').val();
 						if(p != undefined)
