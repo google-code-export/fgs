@@ -1239,4 +1239,24 @@ FGS.gamesData =
 							'GameOptionsTab'
 						],
 					},
+	144959615576466:	{ 	
+						name: 'Sims Social',		systemName: 'simssocial', link: 'http://apps.facebook.com/thesimssocial/',
+						filter:	
+						{
+							bonuses: [],
+							bonusesNewWindow: [],
+							requests: [],
+							requestsNewWindow: ['(.*)']
+						},
+						buttons: [
+							'BonusesPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'FailedBonuses',
+							//'SendFreeGifts',
+							//'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						],
+					},
 };
