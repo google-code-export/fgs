@@ -268,7 +268,7 @@ function addDataToScreenLocked(callback, id, data)
 
 		var newUrl = v.url;
 		
-		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+v.text+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
+		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" title="'+escape(v.text)+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)

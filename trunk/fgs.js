@@ -1350,7 +1350,7 @@ var FGS = {
 	{
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/help/',
+			url: 'http://www.facebook.com/terms.php',
 			dataType: 'text',
 			timeout: 30000,
 			success: function(data2)
@@ -2362,9 +2362,7 @@ var FGS = {
 						//koniec filtry usera
 						
 						var bText = el.find('.uiAttachmentTitle').text();						
-						var subText = el.find('.messageBody:first');
-						
-						
+						var subText = el.find('.messageBody:first').text();
 						
 						if(subText.length > 0)
 						{
