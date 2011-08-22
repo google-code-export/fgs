@@ -1343,7 +1343,7 @@ var FGS = {
 		{
 			FGS.database.open(FGS.userID);
 			FGS.database.createTable();
-		}		
+		}
 	},
 	
 	startup: function()
@@ -1779,6 +1779,9 @@ var FGS = {
 				FGS.jQuery('form',data).each(function()
 				{
 					var APPID = $(this).find('input[name="params\[app_id\]"]').val();
+					
+					if(typeof APPID == 'undefined')
+						return true;
 					
 					if(!alreadyCheckedFBvalues)
 					{
@@ -2358,13 +2361,19 @@ var FGS = {
 						if(ret) return;
 						//koniec filtry usera
 						
-						//var bonusType = 0;
-						//if(FGS.checkIfBonusIsManual(appID, bTitle))
-						//{
-						//	bonusType = 1;
-						//}
+						var bText = el.find('.uiAttachmentTitle').text();						
+						var subText = el.find('.messageBody:first');
 						
-						var bonus = [elID, appID, bTitle, el.find('.uiAttachmentTitle').text(), el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
+						
+						
+						if(subText.length > 0)
+						{
+							var txtP1 = '<span style="color: blue;font-weight: bold;">'+subText+'</span><br />';
+							bText = txtP1 + bText;
+						}
+						
+						
+						var bonus = [elID, appID, bTitle, bText, el.find('.uiStreamAttachments').find('img').attr('longdesc'), link, bonusTime, feedback, link_data];
 						
 						params.items.push(bonus);
 						
