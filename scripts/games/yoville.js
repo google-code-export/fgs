@@ -149,7 +149,7 @@ FGS.yoville.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\(.*'(.*)'.*\)/g).exec(dataStr);
+					var tst = new RegExp(/SNAPIHelper\.init/g).exec(dataStr);
 					if(tst == null)
 					{
 						params.customUrl = 'http://apps.facebook.com/yoville/send_gift.php?view=yoville&fb_force_mode=fbml&id='+params.gift;
@@ -157,7 +157,7 @@ FGS.yoville.Freegifts =
 						return;
 					}
 					
-					var app_key = tst[1];
+					var app_key = params.gameID;
 					var channel_url = 'http://'+params.domain+'/channel.html';
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
