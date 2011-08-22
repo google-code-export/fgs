@@ -1221,11 +1221,8 @@ var FGS = {
 	
 	emptyUnwantedGifts: function(dataPost)
 	{
-		if(FGS.Gup('secondLink', dataPost) == 1)
-			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
-		else
-			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1';
-		
+		var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
+			
 		dataPost = dataPost.replace(/%5B/g,'[').replace(/%5D/g,']');
 		
 		var x = FGS.Gup('actions\\[(.*)\\]', dataPost);
@@ -1233,7 +1230,7 @@ var FGS = {
 		
 		dataPost = dataPost.replace('&actions['+x+']='+y, '');
 		
-		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests&actions[reject]=Ignore';
+		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests&actions[reject]=&lsd=';
 		
 		FGS.jQuery.ajax({
 			type: "POST",
