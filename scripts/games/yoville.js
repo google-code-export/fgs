@@ -139,11 +139,22 @@ FGS.yoville.Freegifts =
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
-
+		
+		if(typeof params.click3otherUrl == 'undefined')
+		{
+			var url = 'http://'+params.domain+'/fb/send_free_gift_social.php';
+			var data = 'mode=game&game=45&id='+params.gift+'&type=overlay&pre_selected=false&uids=&backtgt=2'+params.step3params+addAntiBot;
+		}
+		else
+		{
+			var url = params.click3otherUrl;
+			var data = params.click3otherParam;
+		}
+		
 		$.ajax({
 			type: "GET",
-			url: 'http://'+params.domain+'/fb/send_free_gift_social.php',
-			data: 'mode=game&game=45&id='+params.gift+'&type=overlay&pre_selected=false&uids=&backtgt=2'+params.step3params+addAntiBot,
+			url: url,
+			data: data,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -152,10 +163,19 @@ FGS.yoville.Freegifts =
 					var tst = new RegExp(/SNAPIHelper\.init/g).exec(dataStr);
 					if(tst == null)
 					{
-						params.customUrl = 'http://apps.facebook.com/yoville/send_gift.php?view=yoville&fb_force_mode=fbml&id='+params.gift;
-						FGS.getFBML(params);
-						return;
-					}
+						if(typeof retry == 'undefined')
+						{
+							params.click3otherUrl = 'http://'+params.domain+'/fb/send_gift5.php';
+							params.click3otherParam = 'id='+params.gift+'&mode=game&game=45&backtgt=2&'+params.step3params;
+							
+							FGS.yoville.Freegifts.Click3(params, true);
+							return;
+						}
+						else
+						{
+							throw {}
+						}
+					}	
 					
 					var app_key = params.gameID;
 					var channel_url = 'http://'+params.domain+'/channel.html';

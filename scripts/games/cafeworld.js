@@ -538,11 +538,27 @@ FGS.cafeworld.Bonuses =
 						
 						if(typeof(URL) == 'undefined') 
 						{
-							var URL = $('div.center', dataHTML).find('a[href^="http://apps.facebook.com/cafeworld/track.php"]:first').attr('href');
+							var testArr = $('div.center', dataHTML).find('a');
 							
-							if(typeof(URL) == 'undefined')
+							
+							var test = jQuery.map(testArr, function (a) {
+								var tmp = $(a).attr('href');
+								
+								if(typeof tmp != 'undefined')
+								{
+									var pos1 = tmp.lastIndexOf('/')+1;
+									var tmpStr = tmp.slice(pos1);
+									
+									if(tmpStr.indexOf('track.php') == 0 || tmpStr.indexOf('accept') == 0)
+									{
+										return tmp;
+									}
+								}
+							});
+							
+							if(test.length > 0)
 							{
-								var URL = $('div.center', dataHTML).find('a[href^="http://apps.facebook.com/cafeworld/accept"]:first').attr('href');
+								var URL = test[0];
 							}
 						}
 					}
