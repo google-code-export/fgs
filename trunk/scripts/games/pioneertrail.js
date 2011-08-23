@@ -586,7 +586,8 @@ FGS.pioneertrail.Bonuses =
 							{
 								if(d.indexOf('giftLimit') != -1)
 								{
-									var pos1 = d.indexOf('class="giftLimit')+18;
+									var pos1 = d.indexOf('class="giftLimit')+16;
+									pos1 = d.indexOf('>', pos1)+1;
 									var pos2 = d.indexOf('div>', pos1)-2;
 									
 									var error_text = $.trim(d.slice(pos1,pos2));

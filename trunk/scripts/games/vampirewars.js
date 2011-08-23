@@ -64,88 +64,6 @@ FGS.vampirewars.Freegifts =
 		});
 	},
 	
-	Login:	function(params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
-		var info = {}
-		
-		$.ajax({
-			type: "GET",
-			url: params.loginUrl,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				var dataStr = FGS.processPageletOnFacebook(dataStr);
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				try
-				{
-					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
-					var paramTmp = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
-					
-					if(!url)
-					{
-						var url = FGS.findIframeAfterId('#app_content_25287267406', dataStr);
-						if(url == '') throw {message: 'no iframe'}
-						var pos1 = url.lastIndexOf('/')+2;
-						params.step2params = url.slice(pos1);
-					}
-					else
-					{
-						params.step2params = paramTmp;
-					}
-					
-					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-					params.domain = url.match(re)[1].toString();
-					var pos1 = url.lastIndexOf('?')+1;
-					params.step3param = 'send_gifts_mfs.php?ajax=1&noredirect=1&giftId='+params.gift+'&mfsID=5&source=normal&'+url.slice(pos1);
-					
-					
-					FGS.vampirewars.Freegifts.Click3(params);
-				}
-				catch(err)
-				{
-					FGS.dump(err);
-					FGS.dump(err.message);
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(params, true);
-					}
-					else
-					{
-						if(typeof(params.sendTo) == 'undefined')
-						{
-							FGS.sendView('updateNeighbors', false, params.gameID);
-						}
-						else
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-						}
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(params, true);
-				}
-				else
-				{
-					if(typeof(params.sendTo) == 'undefined')
-					{
-						FGS.sendView('updateNeighbors', false, params.gameID);
-					}
-					else
-					{
-						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-					}
-				}
-			}
-		});
-	},
-	
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -169,6 +87,26 @@ FGS.vampirewars.Freegifts =
 						FGS.vampirewars.Freegifts.Login(params);
 						return;
 					}
+					
+					var dataStr = FGS.processPageletOnFacebook(dataStr);
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					var url = $(dataHTML).filter('form#index_redirector').attr('action');
+					var paramTmp = $(dataHTML).filter('form#index_redirector').serialize();
+					
+					if(typeof url != 'undefined')
+					{
+						var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+						params.domain = url.match(re)[1].toString();
+						
+						params.step3url = 'http://'+params.domain+'/send_gifts_mfs.php';
+						params.step3param = 'ajax=1&noredirect=1&giftId='+params.gift+'&mfsID=5&sf_xw_user_id='+FGS.Gup('sf_xw_user_id', paramTmp)+'&sf_xw_sig='+FGS.Gup('sf_xw_sig', paramTmp)+'&xw_client_id=8&skipLink=index2.php&source=normal';	
+						
+						FGS.vampirewars.Freegifts.Click3(params);
+						return;
+					}
+					
+					
 					throw {message: dataStr}
 				}
 				catch(err)
@@ -220,8 +158,9 @@ FGS.vampirewars.Freegifts =
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 
 		$.ajax({
-			type: "POST",
-			url: 'http://'+params.domain+'/'+params.step3param,
+			type: "GET",
+			url: params.step3url,
+			data: params.step3param,
 			dataType: 'text',
 			success: function(dataStr)
 			{
