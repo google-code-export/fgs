@@ -1094,10 +1094,15 @@ function addDataToScreenLocked(callback, id, data)
 					
 					$('#'+game+'RequestsPendingList').children('div'+addParam).not('.inProgress').each(function()
 					{
-						var postData = $(this).attr('postData');
-						$(this).remove();
-						bkP.emptyUnwantedGifts(postData);
-						delArr.push($(this).attr('id'));
+						var el = $(this);
+						
+						var postData = el.attr('postData');
+						delArr.push(el.attr('id'));
+						try
+						{
+							bkP.emptyUnwantedGifts(postData);
+						} catch(e) {}
+						el.remove();
 					});
 					
 					while(delArr.length > 0)

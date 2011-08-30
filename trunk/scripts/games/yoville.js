@@ -160,7 +160,8 @@ FGS.yoville.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/SNAPIHelper\.init/g).exec(dataStr);
+					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
+					
 					if(tst == null)
 					{
 						if(typeof retry == 'undefined')
@@ -175,14 +176,13 @@ FGS.yoville.Freegifts =
 						{
 							throw {}
 						}
-					}	
+					}
+					
+					var fbml = tst[1];				
 					
 					var app_key = params.gameID;
 					var channel_url = 'http://'+params.domain+'/channel.html';
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
 					
 					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
 					

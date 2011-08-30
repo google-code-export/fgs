@@ -471,10 +471,17 @@ FGS.petville.Requests =
 					var pos2 = dataStr.indexOf(",'", pos1)+2;
 					var pos3 = dataStr.indexOf("'", pos2);
 					
-					nextUrl = nextUrl+dataStr.slice(pos2,pos3);
+					var newUrl = dataStr.slice(pos2,pos3);
 					
+					if(newUrl.indexOf('http:') == 0)
+					{
+					}
+					else
+					{
+						newUrl = nextUrl+newUrl.replace(nextUrl, '');
+					}					
 					
-					FGS.petville.Requests.Click3(currentType, id, nextUrl);
+					FGS.petville.Requests.Click3(currentType, id, newUrl);
 				}
 				catch(err)
 				{
@@ -703,12 +710,17 @@ FGS.petville.Bonuses =
 					var pos2 = dataStr.indexOf(",'", pos1)+2;
 					var pos3 = dataStr.indexOf("'", pos2);
 					
-					var nextUrl2 = dataStr.slice(pos2,pos3).replace('http://fb-client-0.petville.zynga.com/current/', '');
+					var newUrl = dataStr.slice(pos2,pos3);
 					
-					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					if(newUrl.indexOf('http:') == 0)
+					{
+					}
+					else
+					{
+						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					}					
 					
-					
-					FGS.petville.Bonuses.Click3(currentType, id, nextUrl);
+					FGS.petville.Bonuses.Click3(currentType, id, newUrl);
 				}
 				catch(err)
 				{
