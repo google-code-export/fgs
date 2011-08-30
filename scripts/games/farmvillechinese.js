@@ -439,7 +439,15 @@ FGS.farmvillechinese.Requests =
 						var pos2 = dataStr.indexOf("'", pos1)+1;
 						var pos3 = dataStr.indexOf("'", pos2);
 						
-						var newUrl = nextUrl+dataStr.slice(pos2,pos3).replace(nextUrl, '');
+						var newUrl = dataStr.slice(pos2,pos3);
+						
+						if(newUrl.indexOf('http:') == 0)
+						{
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '');
+						}
 						
 						var pos1 = dataStr.indexOf('new ZY(');
 						if(pos1 == -1) throw {message: 'No new ZY'}

@@ -99,7 +99,17 @@ FGS.cityville.Freegifts =
 						var pos2 = dataStr.indexOf("'", pos1)+1;
 						var pos3 = dataStr.indexOf("'", pos2);
 						
-						params.step1url = nextUrl+dataStr.slice(pos2,pos3).replace(nextUrl, '');
+						var newUrl = dataStr.slice(pos2,pos3);
+						
+						if(newUrl.indexOf('http:') == 0)
+						{
+							params.step1url = newUrl;
+						}
+						else
+						{
+							params.step1url = nextUrl+newUrl.replace(nextUrl, '');
+						}
+						
 						retryThis(params);
 						return;
 					}
@@ -542,11 +552,17 @@ FGS.cityville.Requests =
 					var pos2 = dataStr.indexOf("'", pos1)+1;
 					var pos3 = dataStr.indexOf("'", pos2);
 					
-					var nextUrl2 = dataStr.slice(pos2,pos3).replace(nextUrl, '');
+					var newUrl = dataStr.slice(pos2,pos3);
 					
-					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					if(newUrl.indexOf('http:') == 0)
+					{
+					}
+					else
+					{
+						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					}
 
-					FGS.cityville.Requests.Click3(currentType, id, nextUrl);
+					FGS.cityville.Requests.Click3(currentType, id, newUrl);
 				}
 				catch(err)
 				{
@@ -848,12 +864,18 @@ FGS.cityville.Bonuses =
 					var pos2 = dataStr.indexOf("'", pos1)+1;
 					var pos3 = dataStr.indexOf("'", pos2);
 					
-					var nextUrl2 = dataStr.slice(pos2,pos3).replace(nextUrl, '');
+					var newUrl = dataStr.slice(pos2,pos3);
 					
-					nextUrl = nextUrl+nextUrl2+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					if(newUrl.indexOf('http:') == 0)
+					{
+					}
+					else
+					{
+						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+					}
 					
 					
-					FGS.cityville.Bonuses.Click3(currentType, id, nextUrl);
+					FGS.cityville.Bonuses.Click3(currentType, id, newUrl);
 				}
 				catch(err)
 				{

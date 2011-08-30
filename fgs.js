@@ -8,7 +8,7 @@ var FGS = {
 	
 	translations: {},
 	
-	formExclusionString: '[action*="www\\.facebook\\.com\\/connect\\/connect.php"],[action*="custom_ads\\/islandAd\\.php"],[action*="www\\.facebook\\.com\\/plugins"]',
+	formExclusionString: '[action*="zbar-new\\/banner.php"],[action*="www\\.facebook\\.com\\/connect\\/connect.php"],[action*="custom_ads\\/islandAd\\.php"],[action*="www\\.facebook\\.com\\/plugins"]',
 	
 	initializeDefaults: function ()
 	{
