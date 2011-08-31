@@ -260,6 +260,13 @@ FGS.treasure.Requests =
 						return;
 					}
 					
+					if(dataStr.indexOf('<h1>Oh no!</h1>') != -1)
+					{
+						var error_text = $('h2', dataHTML).text();
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					
 					if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length == 0)
 					{
 						if(dataStr.indexOf('Great! You helped the ') != -1)
