@@ -153,6 +153,10 @@ FGS.giftsArray = {
 		"flowerpot_round": { name: 'Round Flower Pot'},
 		"picnic_basket": { name: 'Picnic Basket'},
 	},
+	130479640376964:
+	{
+		'gift_goods_fuel_tier_1': { name: 'Fuel'},
+	},
 	'176611639027113':
 	{
 		'1': { name: 'Mystery gift' },
@@ -1132,6 +1136,8 @@ FGS.freeGiftForGame =
 	256799621935: "58",
 	
 	130095157064351: '1',
+	
+	130479640376964: 'gift_goods_fuel_tier_1',
 };
 
 

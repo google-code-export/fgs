@@ -243,8 +243,8 @@ FGS.rewardville.Freegifts =
 		
 		$.ajax({
 			type: "GET",
-			url: 'https://sslrewards.zynga.com/regLoginFb.php',
-			data: {"fbphp": true, "altLogin": true, "session": JSON.stringify(params.auth_info.session)},
+			url: 'https://sslrewards.zynga.com/fbOauth.php',
+			data: "accessToken="+params.auth_info.session.access_token,
 			dataType: 'text',
 			success: function(dataStr)
 			{

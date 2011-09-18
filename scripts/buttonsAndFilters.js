@@ -50,6 +50,31 @@ FGS.gamesData =
 							'GameOptionsTab'
 						]
 					},
+	130479640376964: 	{ 	
+						name: 'Adventure World',	systemName: 'adventureworld', link: 'http://apps.facebook.com/playadventureworld/', 
+						hasSendback: true,
+						filter:		
+						{	
+							bonuses: [ ],		
+							bonusesNewWindow: [ ],
+							requests: [],
+							requestsNewWindow: [],
+						},
+						buttons:
+						[	
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						]
+					},
 	176611639027113: 	{ 	
 						name: 'RewardVille',	systemName: 'rewardville', link: 'http://apps.facebook.com/zyngarv/',
 						hasSendback: true,

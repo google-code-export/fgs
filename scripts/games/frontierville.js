@@ -13,7 +13,7 @@ FGS.frontierville.Freegifts =
 			success: function(dataStr)
 			{
 				var dataStr = FGS.processPageletOnFacebook(dataStr);
-				var dataHTML = FGS.HTMLParser(dataStr);				
+				var dataHTML = FGS.HTMLParser(dataStr);
 				
 				try
 				{
@@ -159,7 +159,7 @@ FGS.frontierville.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://fb-0.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
+			url: 'http://zc-prod-fb.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
 			dataType: 'text',
 			success: function(dataStr)
 			{

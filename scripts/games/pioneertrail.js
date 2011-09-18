@@ -159,7 +159,7 @@ FGS.pioneertrail.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://pt-fb-client-0.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
+			url: 'http://zc-prod-pt-fb.frontier.zynga.com/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+Math.round(new Date().getTime() / 1000)+addAntiBot+'#overlay',
 			dataType: 'text',
 			success: function(dataStr)
 			{
