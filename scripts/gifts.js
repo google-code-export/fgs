@@ -153,9 +153,16 @@ FGS.giftsArray = {
 		"flowerpot_round": { name: 'Round Flower Pot'},
 		"picnic_basket": { name: 'Picnic Basket'},
 	},
-	130479640376964:
+	130479640376964: // adventure world
 	{
-		'gift_goods_fuel_tier_1': { name: 'Fuel'},
+		"gift_goods_fuel_tier_1": { name: 'Fuel - Small'},
+		"gift_item_reso_tile": { name: 'Tile'},
+		"gift_item_reso_paint": { name: 'Paint'},
+		"gift_meso_supplies_tier_1": { name: '5 Supplies'},
+		"gift_energy_tier_1": { name: 'Small Energy Gift'},
+		"gift_decor_meso_tent_basic": { name: 'Tent'},
+		"gift_decor_meso_mushroom": { name: 'Potted Mushrooms'},
+		"gift_decor_meso_cocoatree": { name: 'Cocoa Tree'},
 	},
 	'176611639027113':
 	{
