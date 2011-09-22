@@ -437,7 +437,7 @@ FGS.adventureworld.Freegifts =
 		str = str.replace('/fb:req-choice', '/fb:req');
 		
 		var fbml = '<fb:fbml>'+str+'</fb:fbml>';
-		var nextParams = 'api_key=164285363593426&locale=en_US&sdk=joey&fbml='+encodeURIComponent(fbml);
+		var nextParams = 'api_key=130479640376964&locale=en_US&sdk=joey&fbml='+encodeURIComponent(fbml);
 		
 		params.nextParams = nextParams;
 
