@@ -165,11 +165,8 @@ FGS.pioneertrail.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
-					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var app_key = '266989143414';
+					var channel_url = 'http://zc-prod-pt.frontier.zynga.com/channel.html';
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}
@@ -348,6 +345,16 @@ FGS.pioneertrail.Requests =
 						var url = dataStr.slice(pos1+21, pos2);
 						
 						FGS.pioneertrail.Requests.Click(currentType, id, url);
+						return;
+					}
+					
+					var pos1 = dataStr.indexOf("top.location.href='");
+					if(pos1 != -1)
+					{
+						var pos2 = dataStr.indexOf("'", pos1+19);
+						var url = dataStr.slice(pos1+19, pos2);
+						
+						FGS.pioneertrail.Bonuses.Click(currentType, id, url);
 						return;
 					}
 					
@@ -539,6 +546,16 @@ FGS.pioneertrail.Bonuses =
 					{
 						var pos2 = dataStr.indexOf('"', pos1+21);
 						var url = dataStr.slice(pos1+21, pos2);
+						
+						FGS.pioneertrail.Bonuses.Click(currentType, id, url);
+						return;
+					}
+					
+					var pos1 = dataStr.indexOf("top.location.href='");
+					if(pos1 != -1)
+					{
+						var pos2 = dataStr.indexOf("'", pos1+19);
+						var url = dataStr.slice(pos1+19, pos2);
 						
 						FGS.pioneertrail.Bonuses.Click(currentType, id, url);
 						return;

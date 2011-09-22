@@ -156,11 +156,8 @@ FGS.treasure.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
-					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var app_key = '234860566661';
+					var channel_url = 'http://zc-prod.treasure.zynga.com/FBProxy.php';
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}

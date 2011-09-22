@@ -152,17 +152,13 @@ FGS.farmville.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
-					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var app_key = '102452128776';
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}
 					var fbml = tst[1];
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					var paramsStr = 'app_key='+app_key+'&fbml='+encodeURIComponent(fbml);
 					
 					params.nextParams = paramsStr;
 					
