@@ -113,12 +113,13 @@ FGS.empiresandallies.Freegifts =
 						return;
 					}
 					
-					var pos1 = dataStr.indexOf('new ZY(');
+					var pos1 = dataStr.indexOf('window) window.top.location = "');
 					if(pos1 == -1) throw {message: 'No new ZY'}
-					pos1+=7;
-					var pos2 = dataStr.indexOf('},', pos1)+1;
+					var pos1 = dataStr.indexOf('?', pos1);
+					pos1+=1;
+					var pos2 = dataStr.indexOf('"', pos1);
 					
-					var zyParam = JSON.parse(dataStr.slice(pos1,pos2));
+					var zyParam = $.unparam(dataStr.slice(pos1,pos2));
 					
 					zyParam.snapi_auth = zyParam.zyAuthHash;
 					

@@ -268,8 +268,9 @@ function addDataToScreenLocked(callback, id, data)
 
 		var newUrl = v.url;
 		
+		var cleanText = replaceSpanInText(v.text);		
 		
-		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" search-title= "'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
+		return '<div onmousedown="onMouseDownTest(event)" id="'+v.id+'" gameID="'+gameID+'" title="'+cleanText+'" search-title= "'+title+'" time="'+v.time+'" url="'+newUrl+'" class="bonusItem showContext updateTimeAgo processBonusClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+v.image+'"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span><span class="deleteIcon" title="'+bkP.getMsg('ClearThisItem')+'"></span></div>';
 	}
 	
 	function getNewRequestRow(gameID, v)
@@ -287,7 +288,9 @@ function addDataToScreenLocked(callback, id, data)
 			var url = 'http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+v.image+'.png';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo processRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
+		var cleanText = replaceSpanInText(v.text);
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+cleanText+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo processRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -1579,7 +1582,21 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" error='+v.error+' gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+v.text+'" class="bonusItem withDesc disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
+		var cleanText = replaceSpanInText(v.text);
+		
+		return '<div id="'+v.id+'" error='+v.error+' gameID="'+v.gameID+'" time="'+v.time+'" url="'+v.url+'" title="'+cleanText+'" class="bonusItem withDesc disabled updateTimeAgo '+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+showImage+'"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
+	}
+	
+	function replaceSpanInText(t)
+	{
+		var pos0 = t.indexOf('><br');
+		if(pos0 == -1)
+			return t;
+		var pos1 = t.indexOf('>', pos0+1)+1;
+		
+		t = t.slice(pos1);
+		
+		return t;
 	}
 	
 	function getRequestHistoryRow(v)
@@ -1608,7 +1625,9 @@ function addDataToScreenLocked(callback, id, data)
 			addClass = ' noErrorClass ';
 		}
 		
-		return '<div id="'+v.id+'" error="'+v.error+'" gameID="'+v.gameID+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
+		var cleanText = replaceSpanInText(v.text);
+		
+		return '<div id="'+v.id+'" error="'+v.error+'" gameID="'+v.gameID+'" title="'+cleanText+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
 	}
 	
 	function friendsLoaded(gameID, status)
