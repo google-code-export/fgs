@@ -238,10 +238,14 @@ FGS.petville.Freegifts =
 							str+= ',';
 					});
 					
-					var pos1 = data.indexOf('"zy_user":"')+11;
+					var pos1 = data.indexOf('"currentUser":"')+15;
 					var pos2 = data.indexOf('"', pos1);
 					var zy_user = data.slice(pos1,pos2);	
 					
+					var pos1 = data.indexOf('"authHash":"')+12;
+					var pos2 = data.indexOf('"', pos1);
+					var authHash = data.slice(pos1,pos2);	
+										
 					
 					if(typeof(params.thankYou) != 'undefined')
 					{
@@ -254,7 +258,7 @@ FGS.petville.Freegifts =
 						params:	'[['+str+'],"1"]',
 						cmd_id:	cmd_id,
 						app_id:	'75',
-						authHash: session,
+						authHash: authHash,
 						zid:	zy_user,
 						snid:	1,
 					}

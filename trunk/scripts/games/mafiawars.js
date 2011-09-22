@@ -136,7 +136,7 @@ FGS.mafiawars.Freegifts =
 					params.sf_xw_sig = $('input[name="sf_xw_sig"]', dataHTML).val();
 					
 					params.click3param = nextParams;
-					params.click3url = 'http://facebook.mafiawars.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=friend_selector&xw_city=1&req_controller=freegifts&free_gift_id='+params.gift+'&free_gift_cat=1&xw_client_id=8&ajax=1&liteload=1&fbml_iframe=1&xw_person='+useridfin+tmpTmp+tmpCb;
+					params.click3url = 'http://facebook.mafiawars.zynga.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=friend_selector&xw_city=1&req_controller=freegifts&free_gift_id='+params.gift+'&free_gift_cat=1&xw_client_id=8&ajax=1&liteload=1&fbml_iframe=1&xw_person='+useridfin+tmpTmp+tmpCb;
 				
 					FGS.mafiawars.Freegifts.Click3(params);
 				}
@@ -536,7 +536,7 @@ FGS.mafiawars.Requests =
 						}
 						else if(data.indexOf('Requests from other Mafias') != -1)
 						{
-							var pos1 = data.indexOf('http://facebook.mafiawars.com/mwfb/remote/html_server.php?xw_controller=recruit&xw_action=accept');
+							var pos1 = data.indexOf('http://facebook.mafiawars.zynga.com/mwfb/remote/html_server.php?xw_controller=recruit&xw_action=accept');
 							var pos2 = data.indexOf('"', pos1);
 							
 							var newURL = data.slice(pos1,pos2);
