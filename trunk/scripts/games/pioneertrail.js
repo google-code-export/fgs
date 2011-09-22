@@ -349,7 +349,7 @@ FGS.pioneertrail.Requests =
 					}
 					
 					var pos1 = dataStr.indexOf("top.location.href='");
-					if(pos1 != -1)
+					if(pos1 != -1 && dataStr.slice(pos1-1,pos1) != '"')
 					{
 						var pos2 = dataStr.indexOf("'", pos1+19);
 						var url = dataStr.slice(pos1+19, pos2);
@@ -552,7 +552,7 @@ FGS.pioneertrail.Bonuses =
 					}
 					
 					var pos1 = dataStr.indexOf("top.location.href='");
-					if(pos1 != -1)
+					if(pos1 != -1 && dataStr.slice(pos1-1,pos1) != '"')
 					{
 						var pos2 = dataStr.indexOf("'", pos1+19);
 						var url = dataStr.slice(pos1+19, pos2);

@@ -98,7 +98,7 @@ FGS.fantasy.Freegifts =
 						giftName = FGS.giftsArray['213518941553'][params.gift].name;
 					}
 					params.giftName2 = giftName;
-					params.step3url = 'http://fantasykingdoms.cloudapp.net/FK/Kingdoms/GetGiftString?storeItemId='+params.gift+'&userId='+$('#UserId', dataHTML).val();
+					params.step3url = 'https://live.fantasykingdomsgame.com/FK/Kingdoms/GetGiftString?storeItemId='+params.gift+'&userId='+$('#UserId', dataHTML).val();
 					
 					FGS.fantasy.Freegifts.Click3(params);
 				}
@@ -218,7 +218,7 @@ FGS.fantasy.Freegifts =
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		params.channel = 'http://fantasykingdoms.cloudapp.net/FK/Kingdoms/channel.html';
+		params.channel = 'https://live.fantasykingdomsgame.com/Facebook/channel.html';
 		
 		FGS.getAppAccessTokenForSending(params, function(){});
 	},
