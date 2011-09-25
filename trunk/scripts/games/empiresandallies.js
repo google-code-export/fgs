@@ -361,6 +361,7 @@ FGS.empiresandallies.Freegifts =
 			{
 				try
 				{
+					dataStr = dataStr.replace('&nbsp;&nbsp;', '');
 					var info = JSON.parse(dataStr);
 					
 					var str = '';
