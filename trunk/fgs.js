@@ -2,8 +2,65 @@ var FGS = {
 	alreadyOpened: false,
 	transObj:
 	{
-		"en_US": 	{name: "English"},
-		//"pl_PL": 	{name: "Polski"},
+		"fr_FR": 	{name: "Français (France)"},
+		"ko_KR": 	{name: "한국어"},
+		"af_ZA": 	{name: "Afrikaans"},
+		"az_AZ": 	{name: "Azərbaycan dili"},
+		"es_VE": 	{name: "Español (Venezuela)"},
+		"es_LA": 	{name: "Español"},
+		"ar_AR": 	{name: "العربية"},
+		"mt_MT": 	{name: "Malti"},
+		"ms_MY": 	{name: "Bahasa Melayu"},
+		"fr_CA": 	{name: "Français (Canada)"},
+		"cs_CZ": 	{name: "Čeština"},
+		"fi_FI": 	{name: "Suomi"},
+		"ca_ES": 	{name: "Català"},
+		"sv_SE": 	{name: "Svenska"},
+		"nl_BE": 	{name: "Nederlands (België)"},
+		"pt_BR": 	{name: "Português (Brasil)"},
+		"tl_PH": 	{name: "Filipino"},
+		"es_CL": 	{name: "Español (Chile)"},
+		"pt_PT": 	{name: "Português (Portugal)"},
+		"el_GR": 	{name: "Ελληνικά"},
+		"en_PI": 	{name: "English (Pirate)"},
+		"de_DE": 	{name: "Deutsch"},
+		"es_MX": 	{name: "Español (México)"},
+		"en_GB": 	{name: "English (UK)"},
+		"nl_NL": 	{name: "Nederlands"},
+		"da_DK": 	{name: "Dansk"},
+		"es_ES": 	{name: "Español (España)"},
+		"th_TH": 	{name: "ภาษาไทย"},
+		"tr_TR": 	{name: "Türkçe"},
+		"hi_IN": 	{name: "हिन्दी"},
+		"hu_HU": 	{name: "Magyar"},
+		"ka_GE": 	{name: "ქართული"},
+		"sk_SK": 	{name: "Slovenčina"},
+		"bn_IN": 	{name: "বাংলা"},
+		"zh_TW": 	{name: "中文(台灣)"},
+		"id_ID": 	{name: "Bahasa Indonesia"},
+		"hr_HR": 	{name: "Hrvatski"},
+		"he_IL": 	{name: "עברית"},
+		"bg_BG": 	{name: "Български"},
+		"pl_PL": 	{name: "Polski"},
+		"ro_RO": 	{name: "Română"},
+		"nn_NO": 	{name: "Norsk (nynorsk)"},
+		"en_US": 	{name: "English (US)"},
+		"et_EE": 	{name: "Eesti"},
+		"en_UD": 	{name: "English (Upside Down)"},
+		"ja_JP": 	{name: "日本語"},
+		"zh_HK": 	{name: "中文(香港)"},
+		"mk_MK": 	{name: "Македонски"},
+		"vi_VN": 	{name: "Tiếng Việt"},
+		"ru_RU": 	{name: "Русский"},
+		"bs_BA": 	{name: "Bosanski"},
+		"kn_IN": 	{name: "ಕನ್ನಡ"},
+		"zh_CN": 	{name: "中文(简体)"},
+		"nb_NO": 	{name: "Norsk (bokmål)"},
+		"fb_FI": 	{name: "Suomi (koe)"},
+		"it_IT": 	{name: "Italiano"},
+		"uk_UA": 	{name: "Українська"},
+		"pa_IN": 	{name: "ਪੰਜਾਬੀ"},
+		"sr_RS": 	{name: "Српски"},
 	},
 	
 	translations: {},
@@ -13,6 +70,8 @@ var FGS = {
 	initializeDefaults: function ()
 	{
 		FGS.giftlistFocus = false;
+		
+		FGS.isHTTPS = false;
 
 		FGS.databaseAlreadyOpen = false;
 		
@@ -1268,6 +1327,11 @@ var FGS = {
 			FGS.userName = FGS.jQuery('#navAccountName', data).text();
 
 			FGS.loadSubmenu();
+		}
+		
+		if(data2.indexOf('https://fbcdn-profile-a.akamaihd.ne') != -1)
+		{
+			FGS.isHTTPS = true;
 		}
 		
 		if(FGS.databaseAlreadyOpen == false)
