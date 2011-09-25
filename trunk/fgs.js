@@ -1499,7 +1499,7 @@ var FGS = {
 	
 	checkForNotFound: function(url)
 	{
-		var errorsArr = ['gifterror=notfound', 'countrylife/play', 'apps.facebook.com/ravenwoodfair/home', '/cafeworld/?ref=requests', '/cityofwonder/gift/?track=bookmark', '/myshopsgame/?ref=received_gift_failed'];
+		var errorsArr = ['gifterror=notfound', 'gifterror=invalid', 'countrylife/play', 'apps.facebook.com/ravenwoodfair/home', '/cafeworld/?ref=requests', '/cityofwonder/gift/?track=bookmark', '/myshopsgame/?ref=received_gift_failed'];
 		
 		var errorsFullArr = ['http://apps.facebook.com/cafeworld/?ref=requests'];
 		

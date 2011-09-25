@@ -560,7 +560,15 @@ FGS.adventureworld.Requests =
 					}
 					else
 					{
-						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						if(newUrl == 'gifts.php')
+						{
+							FGS.endWithError('not found', currentType, id);
+							return;
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						}
 					}
 
 					FGS.adventureworld.Requests.Click3(currentType, id, newUrl);
@@ -605,11 +613,22 @@ FGS.adventureworld.Requests =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				
 				try
 				{
+					if(dataStr.match(/<!DOCTYPE/g).length > 1 && dataStr.indexOf('<div class="rightPanel">') != -1)
+					{
+						var pos0 = dataStr.indexOf('<div class="rightPanel">');
+						
+						var pos1 = dataStr.indexOf('<!DOCTYPE', pos0);
+						
+						var dataStr = dataStr.slice(pos0, pos1)+'</div></div>';
+						
+						dataStr = dataStr.replace(/<!--/g, '').replace(/-->/g, '');						
+					}
+					
+					var dataHTML = FGS.HTMLParser(dataStr);
+				
+				
 					if($('.rewardFail', dataHTML).length > 0 || $('.giftLimit', dataHTML).length > 0 || dataStr.indexOf('Always accept requests as soon as possible') != -1 || dataStr.indexOf('You are already neighbors with this person') != -1 || $('.main_crewError_cont	', dataHTML).length > 0)
 					{
 						if($('.rewardFail', dataHTML).length > 0)
@@ -875,7 +894,15 @@ FGS.adventureworld.Bonuses =
 					}
 					else
 					{
-						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						if(newUrl == 'gifts.php')
+						{
+							FGS.endWithError('not found', currentType, id);
+							return;
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						}
 					}
 					
 					
