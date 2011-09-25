@@ -615,6 +615,20 @@ FGS.adventureworld.Requests =
 			{
 				try
 				{
+					
+					if(dataStr.indexOf("you’ve reached your gift limit") != -1)
+					{
+						var error_text = "You’ve reached your gift limit";
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+					else if(dataStr.indexOf('Looks like all the rewards have been claimed.') != -1)
+					{
+						var error_text = "Looks like all the rewards have been claimed.";
+						FGS.endWithError('limit', currentType, id, error_text);
+						return;
+					}
+				
 					if(dataStr.match(/<!DOCTYPE/g).length > 1 && dataStr.indexOf('<div class="rightPanel">') != -1)
 					{
 						var pos0 = dataStr.indexOf('<div class="rightPanel">');
