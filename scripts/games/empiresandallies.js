@@ -561,7 +561,15 @@ FGS.empiresandallies.Requests =
 					}
 					else
 					{
-						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						if(newUrl == 'gifts.php')
+						{
+							FGS.endWithError('not found', currentType, id);
+							return;
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						}
 					}
 
 					FGS.empiresandallies.Requests.Click3(currentType, id, newUrl);
@@ -876,7 +884,15 @@ FGS.empiresandallies.Bonuses =
 					}
 					else
 					{
-						newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						if(newUrl == 'gifts.php')
+						{
+							FGS.endWithError('not found', currentType, id);
+							return;
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						}
 					}
 					
 					

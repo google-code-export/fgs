@@ -100,7 +100,7 @@ FGS.vampirewars.Freegifts =
 						params.domain = url.match(re)[1].toString();
 						
 						params.step3url = 'http://'+params.domain+'/send_gifts_mfs.php';
-						params.step3param = 'ajax=1&noredirect=1&giftId='+params.gift+'&mfsID=5&sf_xw_user_id='+FGS.Gup('sf_xw_user_id', paramTmp)+'&sf_xw_sig='+FGS.Gup('sf_xw_sig', paramTmp)+'&xw_client_id=8&skipLink=index2.php&source=normal';	
+						params.step3param = 'ajax=1&noredirect=1&giftId='+params.gift+'&mfsID=5&sf_xw_user_id='+FGS.Gup('sf_xw_user_id', paramTmp)+'&sf_xw_sig='+FGS.Gup('sf_xw_sig', paramTmp)+'&xw_client_id=8&skipLink=index2.php&source=normal&'+params.step1params;	
 						
 						FGS.vampirewars.Freegifts.Click3(params);
 						return;
