@@ -158,7 +158,7 @@
 	"FoundCertainAmountOfFeeds": "certain amount of feeds was found",
 	"BonusesAreOlderThanSpecifiedTime": "bonuses are older than specified time",
 	"ReadBeforeChangingNotice": "Read this before changing anything in this section:",
-	"AdvancedOptionsNotice": "Changing this settings RECKLESSLY might cause your FGS to stop working (or increase startup loading process up to 30-60 minutes). This settings are only meant for advanced users (and with high speed connections). Keep in mind that FGS won't allow you to get at once more than 2500 bonuses (it's coded maximum and switching settings won't increae it).\n\nWhat I mean is: even if you set it to collect bonuses up to 1 day old, FGS will stop after 2500th bonus was found.<br /><br />FGS will also stop, if it finds bonus that is/was already on your list.",
+	"AdvancedOptionsNotice": "Changing these settings RECKLESSLY might cause your FGS to stop working (or increase startup loading process up to 30-60 minutes). This settings are only meant for advanced users (and with high speed connections). Keep in mind that FGS won't allow you to get at once more than 2500 bonuses (it's coded maximum and switching settings won't increae it).\n\nWhat I mean is: even if you set it to collect bonuses up to 1 day old, FGS will stop after 2500th bonus was found.<br /><br />FGS will also stop, if it finds bonus that is/was already on your list.",
 	"SelectFGSLanguage": "Select FGS language",
 	"UseFacebookLanguage": "Use Facebook language (if possible)",
 	"LanguageChanged": "Language has been changed. Use FGS icon to open this page again.",
@@ -167,6 +167,8 @@
 	"Save": "Save",
 	"RemoveRequiringActionFromAllGames": "Remove \"Items requiring action\"",
 	"AutoLikeItemsRequiringActionWhenClicked": "Auto 'Like' \"Items requiring action\" when clicked",
-	"SendThankYouGiftNotPossible": "Auto send 'Thank you' gift is not possible in this game"
-	
+	"SendThankYouGiftNotPossible": "Auto send 'Thank you' gift is not possible in this game",
+	"HTTPSmodeMessageDisappear": "This message will disappear after changing described settings and restarting your browser.",
+	"HTTPSmodeNotice": "You have enabled HTTPS mode on Facebook and FGS doesn't operate correctly in this mode. To fix this issue follow instructions from this page:",
+	"HTTPSmodeDetected": "HTTPS MODE DETECTED"
 }
