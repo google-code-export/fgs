@@ -89,10 +89,27 @@ FGS.vampirewars.Freegifts =
 					}
 					
 					var dataStr = FGS.processPageletOnFacebook(dataStr);
+					
+					var pos0 = dataStr.indexOf('<body');
+					var pos1 = dataStr.lastIndexOf('</body');
+					
+					var pos0a = dataStr.indexOf('>', pos0)+1;
+					
+					if(pos1 == -1)
+					{
+						
+						dataStr = dataStr.slice(pos0a);
+					}
+					else
+					{
+						dataStr = dataStr.slice(pos0a, pos1);
+					}
+					dataStr = '<div><div>'+dataStr+'</div></div>';
+					
 					var dataHTML = FGS.HTMLParser(dataStr);
 					
-					var url = $(dataHTML).filter('form#index_redirector').attr('action');
-					var paramTmp = $(dataHTML).filter('form#index_redirector').serialize();
+					var url = $(dataHTML).find('form#index_redirector').attr('action');
+					var paramTmp = $(dataHTML).find('form#index_redirector').serialize();
 					
 					if(typeof url != 'undefined')
 					{

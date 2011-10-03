@@ -149,7 +149,7 @@ FGS.crimecity.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://50.17.195.217/crimetown/index.php/frame/gift_frame/'+addAntiBot,
+			url: 'http://fb.crimecitygame.com/crimetown/index.php/frame/gift_frame/'+addAntiBot,
 			data: params.step1params+'&'+$.param({gift_id: params.gift, cc_fbuid: params.cc_fbuid, token: params.token}),
 			dataType: 'text',
 			success: function(dataStr)
@@ -165,6 +165,13 @@ FGS.crimecity.Freegifts =
 					var tst = new RegExp(/requestDialogParams\[\'message\'\] = \'(.*)\'\;/).exec(dataStr);
 					if(tst == null) throw {message:'no message tag'}
 					reqData.message = tst[1];
+					
+					var tst = new RegExp(/var filterIds = \'(.*)\'\;/).exec(dataStr);
+					
+					console.log(tst);
+					
+					if(tst != null)
+						reqData.to = tst[1];
 					
 					params.reqData = reqData;
 					
@@ -218,7 +225,7 @@ FGS.crimecity.Freegifts =
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		params.channel = 'http://50.17.195.217/crimetown/index.php/requestchannel';
+		params.channel = 'http://fb.crimecitygame.com/crimetown/index.php/requestchannel';
 		
 		FGS.getAppAccessTokenForSending(params, function(){});
 	},

@@ -8,7 +8,7 @@ FGS.farmvillechinese.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/farmvillechinese/'+addAntiBot,
+			url: 'https://apps.facebook.com/farmvillechinese/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -146,7 +146,7 @@ FGS.farmvillechinese.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://'+params.domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+addAntiBot+Math.round(new Date().getTime() / 1000)+'#overlay',
+			url: 'https://'+params.domain+'/gifts_send.php?gift='+params.gift+'&view=farmville&src=direct&aff=&crt=&sendkey=&'+params.zyParam+'&overlayed=true&'+addAntiBot+Math.round(new Date().getTime() / 1000)+'#overlay',
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -434,14 +434,14 @@ FGS.farmvillechinese.Requests =
 						var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 						var domain = currentURL.match(re)[1].toString();
 						
-						var nextUrl = 'http://'+domain+'/';	
+						var nextUrl = 'https://'+domain+'/';	
 						
 						var pos2 = dataStr.indexOf("'", pos1)+1;
 						var pos3 = dataStr.indexOf("'", pos2);
 						
 						var newUrl = dataStr.slice(pos2,pos3);
 						
-						if(newUrl.indexOf('http:') == 0)
+						if(newUrl.indexOf('http:') == 0 || newUrl.indexOf('https:') == 0)
 						{
 						}
 						else

@@ -372,6 +372,11 @@ FGS.gardensoftime.Requests =
 			data: params,
 			url: currentURL,
 			dataType: 'text',
+			beforeSend: function(xhr)
+			{
+				if(method == 'GET')
+					xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			},
 			success: function(dataStr)
 			{
 				try
@@ -388,7 +393,7 @@ FGS.gardensoftime.Requests =
 						if(typeof(retry) != 'undefined')
 							throw {message:'something wrong'}
 						
-						var getStr = $.param(params);
+						var obj1 = $.unparam(params);
 						
 						var pos0 = dataStr.indexOf('GameData.query_string');
 						var pos1 = dataStr.indexOf("'", pos0)+1;
@@ -398,8 +403,10 @@ FGS.gardensoftime.Requests =
 						var pos4 = dataStr.indexOf("'", pos3)+1;
 						var pos5 = dataStr.indexOf("'", pos4);
 						
-						getStr = getStr + '&'+dataStr.slice(pos1, pos2) + '&new_user='+dataStr.slice(pos4, pos5);
-						var getStr = $.unparam(getStr);
+						var obj2 = $.unparam(dataStr.slice(pos1, pos2));
+						var obj3 = $.unparam('new_user='+dataStr.slice(pos4, pos5)+'&_='+new Date().getTime());
+						
+						var getStr = $.extend(true, {}, obj1, obj2, obj3);
 						
 						FGS.gardensoftime.Requests.Click2(currentType, id, currentURL, getStr, true);
 						return;

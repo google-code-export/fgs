@@ -10,8 +10,8 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.41" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.41" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.42" rel="stylesheet" />
+<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.42" rel="stylesheet" />
 
 <script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
@@ -19,12 +19,12 @@
 
 
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.41"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.42"></script>
 <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.41"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.41"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.41"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.1.0.42"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.1.0.42"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.42"></script>
 
 
 <script type="text/javascript">
@@ -53,12 +53,10 @@ function updateLoaded()
 {
 	if(loaded == 0)
 	{
-		/*
 		if(bkP.isHTTPS)
 		{
 			$('body').children('br:first').after('<br /><br /><div id="httpsNotice" style="margin:0 auto;width:90%;text-align:center;" class="section"><span style="color: red;text-align: center; font-size: 2em;">'+bkP.getMsg('HTTPSmodeDetected')+'</span><br /><span style="color: red;text-align: center; font-size: 1.5em;">'+bkP.getMsg('HTTPSmodeNotice')+' <a href="http://www.howtonew.com/how-to-disable-https-in-facebook" target="_blank">http://www.howtonew.com/how-to-disable-https-in-facebook</a><br /></span><span>'+bkP.getMsg('HTTPSmodeMessageDisappear')+'</span></div>');
 		}
-		*/
 	}
 	loaded++;
 	$( "#progressbar" ).progressbar('option', 'value', loaded*20);

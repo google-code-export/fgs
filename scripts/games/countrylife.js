@@ -8,7 +8,7 @@ FGS.countrylife.Freegifts =
 		
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/countrylife/'+addAntiBot,
+			url: 'https://apps.facebook.com/countrylife/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -223,7 +223,7 @@ FGS.countrylife.Freegifts =
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		params.channel = 'http://countrylife.joyeurs.com/my_ranch/channel.html';
+		params.channel = 'https://countrylife.joyeurs.com/my_ranch/channel.html';
 		
 		FGS.getAppAccessTokenForSending(params, function(params, d)
 		{
@@ -244,7 +244,7 @@ FGS.countrylife.Freegifts =
 			
 			
 			
-			$.post('http://countrylife.joyeurs.com/my_ranch/request_sent/', params.step1params+str);		
+			$.post('https://countrylife.joyeurs.com/my_ranch/request_sent/', params.step1params+str);		
 		
 		});
 	},
