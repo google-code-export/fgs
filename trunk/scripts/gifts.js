@@ -1172,7 +1172,7 @@ FGS.getFBML = function(params, retry)
 	}
 	else
 	{
-		var thisUrl = 'http://www.connect.facebook.com/widgets/serverfbml.php'; // http://www.facebook.com/plugins/serverfbml.php
+		var thisUrl = 'https://www.connect.facebook.com/widgets/serverfbml.php'; // http://www.facebook.com/plugins/serverfbml.php
 		var thisMethod = 'post';
 	}
 	
@@ -1295,7 +1295,7 @@ FGS.getFBML = function(params, retry)
 						}
 					});
 					
-					var sendGiftUrl = 'http://apps.facebook.com/cafeworld/send_request.php';
+					var sendGiftUrl = 'https://apps.facebook.com/cafeworld/send_request.php';
 				}
 				else
 				{
@@ -1304,7 +1304,7 @@ FGS.getFBML = function(params, retry)
 				
 				if(params.gameID == '46755028429')
 				{
-					sendGiftUrl = 'http://apps.facebook.com/castle_age/'+sendGiftUrl;
+					sendGiftUrl = 'https://apps.facebook.com/castle_age/'+sendGiftUrl;
 				}
 
 				var sendGiftParams = '';
@@ -1459,7 +1459,7 @@ FGS.sendGift = function(params, retry)
 	
 	$.ajax({
 		type: "POST",
-		url: 'http://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
+		url: 'https://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
 		cache: false,
 		dataType: 'text',
 		data: params.promptParams,
@@ -1505,7 +1505,7 @@ FGS.sendGift = function(params, retry)
 							var vampUrl = data.slice(pos0, pos1);
 							var newPar = params.step3param.replace('send_gifts_mfs.php?', '');
 							$.post(vampUrl, newPar);
-							$.post('http://'+params.domain+'/index2.php', newPar);						
+							$.post('https://'+params.domain+'/index2.php', newPar);						
 						}
 					}
 					

@@ -1329,7 +1329,7 @@ var FGS = {
 			FGS.loadSubmenu();
 		}
 		
-		if(data2.indexOf('media="handheld" href="https://www.facebook.com/terms.php"') != -1)
+		if(data2.indexOf(',www_base:"https') != -1)
 		{
 			FGS.isHTTPS = true;
 		}
