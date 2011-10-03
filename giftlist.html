@@ -1653,7 +1653,7 @@ function addDataToScreenLocked(callback, id, data)
 				var html = '<h3 class="center">'+bkP.getMsg('ThesePeopleAreLookingForNeighbors')+':</h3>';
 				$(status.users).each(function(k,v)
 				{
-					html+='<div class="friendsList"><a href="http://www.facebook.com/addfriend.php?id='+v+'&fromFGS='+escape(bkP.gamesData[gameID].name)+'" class="friendLink" target="_blank">'+v+'</a></div>';
+					html+='<div class="friendsList"><a href="https://www.facebook.com/addfriend.php?id='+v+'&fromFGS='+escape(bkP.gamesData[gameID].name)+'" class="friendLink" target="_blank">'+v+'</a></div>';
 				});
 				html+= '<br style="clear: both" /><br /><div class="pagination">';
 				
@@ -1747,7 +1747,7 @@ function addDataToScreenLocked(callback, id, data)
 					favCnt++;
 					favArr.push([
 						'<img src="icons/favourite.png" gameID="'+gameID+'" neighID="'+id+'" class="toggleFavourite">',
-						'<a href="http://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
+						'<a href="https://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
@@ -1764,7 +1764,7 @@ function addDataToScreenLocked(callback, id, data)
 					
 					norArr.push([
 						'<img src="icons/favourite-bw.png" gameID="'+gameID+'" neighID="'+id+'" class="toggleFavourite">', 
-						'<a href="http://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
+						'<a href="https://www.facebook.com/profile.php?id='+id+'" target="_blank">'+v.name+'</a>',
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
 						'<span class="hide">0</span>'+bkP.getMsg('Never'),
@@ -2309,13 +2309,21 @@ function processLoadFiltersForGame(gameID, opt)
 	}
 	else
 	{
-		
 		var html = '';
 		
 		for(var i = 0; i < arr.length; i++)
 		{
 			var v = arr[i];
-			html += '<div style="float: left; width: 250px;margin-right: 10px;"><img src="icons/delete-16.png" delIndex="'+i+'" gameID="'+gameID+'" style="cursor: pointer;width: 10px;height: 10px" class="deleteFilter" title="'+bkP.getMsg('DeleteFilter')+'"> '+v+'</div>';
+			
+			if(typeof v == 'string')
+			{
+				var title = v;
+				v = {};
+				
+				v.title = title;
+				v.image = 'icons/noimage.png';
+			}
+				html += '<div style="float: left; width: 250px;margin-right: 10px; height: 64px; border: 1px dotted #000;"><img src="icons/delete-48.png" delIndex="'+i+'" gameID="'+gameID+'" style="margin: 16px 8px 16px 7px; cursor: pointer;height: 32px; width: 32px;border: 1px solid #000; float: left;" class="deleteFilter" title="'+bkP.getMsg('DeleteFilter')+'"> <img style="float: left; margin: 8px 4px 8px 4px; height: 48px; width: 48px;" src="'+v.image+'" /><span style="float: right;width: 140px;font-weight:bold;margin-top:4px;">'+v.title+'</span></div>';
 		}
 		
 		html+= '<br style="clear:both" />';
@@ -2890,7 +2898,8 @@ function onMouseDownTest(e)
 						{
 							StopCollecting: function()
 							{
-								bkP.options.games[el.attr('gameID')].filter.push(el.attr('search-title'));
+								var image = el.find('img:last').attr('src');
+								bkP.options.games[el.attr('gameID')].filter.push({"title": el.attr('search-title'), "image": image});
 								bkP.saveOptions();
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
@@ -3049,7 +3058,8 @@ function onMouseDownTest(e)
 						{
 							StopCollecting: function()
 							{
-								bkP.options.games[el.attr('gameID')].filter.push(el.attr('search-title'));
+								var image = el.find('img:last').attr('src');
+								bkP.options.games[el.attr('gameID')].filter.push({"title": el.attr('search-title'), "image": image});
 								bkP.saveOptions();
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
@@ -3520,11 +3530,11 @@ function onMouseDownTest(e)
 				<input style="width: 90px;background-color: transparent;border:0px;" type="image" src="gfx/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
 			</form>
 			
-			<a name="fb_share" target="_blank" type="button" share_url="http://rzadki.eu/projects/fgs/?from=giftlist" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Frzadki.eu%2Fprojects%2Ffgs%2F%3Ffrom%3Dgiftlist&amp;src=sp"  style="float: right; margin-top: 8px;margin-right: 8px;text-decoration: none; "><span class="FBConnectButton FBConnectButton_Small" style="cursor:pointer;"><span class="FBConnectButton_Text">Share</span></span></a>
+			<a name="fb_share" target="_blank" type="button" share_url="http://rzadki.eu/projects/fgs/?from=giftlist" href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Frzadki.eu%2Fprojects%2Ffgs%2F%3Ffrom%3Dgiftlist&amp;src=sp"  style="float: right; margin-top: 8px;margin-right: 8px;text-decoration: none; "><span class="FBConnectButton FBConnectButton_Small" style="cursor:pointer;"><span class="FBConnectButton_Text">Share</span></span></a>
 			
 		
 			<div id="fbLike" style="float: right; margin-top: 6px;">
-				<iframe type="content" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFGS%2F150480078326371&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+				<iframe type="content" src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFGS%2F150480078326371&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 			</div>
 			
 		</h1>
@@ -3745,7 +3755,7 @@ function onMouseDownTest(e)
 			<br /><br />
 			
 			<h2 dataLang="ContactInfoNotice"></h2><br />
-				<a href="http://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="48" height="48" alt="Facebook"></a>
+				<a href="https://facebook.com/fliesPL" target="_blank" title="Go to my Facebook profile"><img src="gfx/facebook.png" width="48" height="48" alt="Facebook"></a>
 				<a href="http://fgs.rzadki.eu/#contact" target="_blank" title="Send me an e-mail"><img src="gfx/mail.png" width="48" height="48" alt="E-mail"></a>
 				<a href="http://blog.fgs.rzadki.eu" target="_blank" title="Go to FGS Blog"><img src="gfx/blogger.png" width="48" height="48" alt="Blogger"></a>
 			

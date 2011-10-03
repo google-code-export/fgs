@@ -108,7 +108,7 @@ FGS.hideFromFeed = function(bonusID, limit)
 			
 			FGS.jQuery.ajax({
 				type: "POST",
-				url: 'http://www.facebook.com/ajax/feed/filter_action.php?__a=1',
+				url: 'https://www.facebook.com/ajax/feed/filter_action.php?__a=1',
 				data: postData,
 				dataType: 'text',
 				success: function(data)
@@ -146,7 +146,7 @@ FGS.commentBonus = function(bonusID, comment)
 			
 			FGS.jQuery.ajax({
 				type: "POST",
-				url: 'http://www.facebook.com/ajax/ufi/modify.php?__a=1',
+				url: 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
 				data: postData,
 				dataType: 'text',
 				success: function(data)
@@ -205,7 +205,7 @@ FGS.likeBonus = function (bonusID, autolike)
 			
 			FGS.jQuery.ajax({
 				type: "POST",
-				url: 'http://www.facebook.com/ajax/ufi/modify.php?__a=1',
+				url: 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
 				data: postData,
 				dataType: 'text',
 				success: function(data)
@@ -587,7 +587,7 @@ FGS.openGiftList = function()
 
 FGS.openFacebook = function()
 {
-	var FBUrl = "http://www.facebook.com/login.php";
+	var FBUrl = "https://www.facebook.com/login.php";
 
 	chrome.tabs.getAllInWindow(null, function tabSearch(tabs)
 	{

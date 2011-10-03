@@ -276,13 +276,13 @@ var FGS = {
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
+		var channel = 'https://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
 		
 		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params.getToken,
 			dataType: 'text',
 			success: function(data)
@@ -799,13 +799,13 @@ var FGS = {
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		var channel = 'http://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
+		var channel = 'https://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
 		
 		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params.getToken,
 			dataType: 'text',
 			success: function(data)
@@ -874,7 +874,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params,
 			dataType: 'text',
 			success: function(data)
@@ -912,7 +912,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params.app_info,
 			dataType: 'text',
 			success: function(data)
@@ -982,7 +982,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params,
 			dataType: 'text',
 			success: function(data)
@@ -1020,7 +1020,7 @@ var FGS = {
 		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
+			url: 'https://www.facebook.com/extern/login_status.php?locale=en_US&sdk=joey&session_version=3&display=hidden&extern=0',
 			data: params,
 			dataType: 'text',
 			success: function(data)
@@ -1137,9 +1137,9 @@ var FGS = {
 		var info = {}
 		
 		if(FGS.Gup('secondLink', dataPost) == 1)
-			var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
+			var url = 'https://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
 		else
-			var url = 'http://www.facebook.com/ajax/reqs.php?__a=1';
+			var url = 'https://www.facebook.com/ajax/reqs.php?__a=1';
 		
 		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests';
 		
@@ -1168,7 +1168,7 @@ var FGS = {
 					{
 						var parseStr = '{"abc":"'+url2+'"}';
 						var parseStr = JSON.parse(parseStr);
-						var newStr = 'http://www.facebook.com'+parseStr.abc;
+						var newStr = 'https://www.facebook.com'+parseStr.abc;
 						
 						FGS.prepareLinkForGameStep2(newStr, game, id, dataPost, newWindow);
 					}
@@ -1214,7 +1214,7 @@ var FGS = {
 	
 	emptyUnwantedGifts: function(dataPost)
 	{
-		var url = 'http://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
+		var url = 'https://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
 			
 		dataPost = dataPost.replace(/%5B/g,'[').replace(/%5D/g,']');
 		
@@ -1324,12 +1324,12 @@ var FGS = {
 			var pos5 = data2.indexOf(',', pos4);
 			FGS.userLoc = data2.slice(pos4+1, pos5-1).toString();
 			
-			FGS.userName = FGS.jQuery('#navAccountName', data).text();
+			FGS.userName = FGS.jQuery('#navAccountName', data).text() || FGS.jQuery('.headerTinymanName', data).text();
 
 			FGS.loadSubmenu();
 		}
 		
-		if(data2.indexOf('https://fbcdn-profile-a.akamaihd.ne') != -1)
+		if(data2.indexOf('media="handheld" href="https://www.facebook.com/terms.php"') != -1)
 		{
 			FGS.isHTTPS = true;
 		}
@@ -1345,7 +1345,7 @@ var FGS = {
 	{
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'http://www.facebook.com/terms.php',
+			url: 'https://www.facebook.com/terms.php',
 			dataType: 'text',
 			timeout: 30000,
 			success: function(data2)
@@ -1501,7 +1501,7 @@ var FGS = {
 	{
 		var errorsArr = ['gifterror=notfound', 'gifterror=invalid', 'countrylife/play', 'apps.facebook.com/ravenwoodfair/home', '/cafeworld/?ref=requests', '/cityofwonder/gift/?track=bookmark', '/myshopsgame/?ref=received_gift_failed'];
 		
-		var errorsFullArr = ['http://apps.facebook.com/cafeworld/?ref=requests'];
+		var errorsFullArr = ['http://apps.facebook.com/cafeworld/?ref=requests', 'https://apps.facebook.com/cafeworld/?ref=requests'];
 		
 		
 		var ret = false;
@@ -1726,9 +1726,9 @@ var FGS = {
 	checkRequests: function(apps)
 	{
 		if(typeof(apps) == 'undefined')
-			var urlIK = 'http://www.facebook.com/games';
+			var urlIK = 'https://www.facebook.com/games';
 		else
-			var urlIK = 'http://www.facebook.com/?sk=apps&ap=1';
+			var urlIK = 'https://www.facebook.com/?sk=apps&ap=1';
 	
 		FGS.jQuery.ajax({
 			type: "GET",
@@ -2099,7 +2099,7 @@ var FGS = {
 				var number = FGS.timeoutToNumber();
 			}
 			
-			var feedUrl = 'http://www.facebook.com/ajax/apps/app_stories.php';
+			var feedUrl = 'https://www.facebook.com/ajax/apps/app_stories.php';
 			var feedParams = '__a='+params.scroll+'&is_game=1&app_ids='+collectID+'&max_stories='+number+'&user_action=0&show_hidden=false&ignore_self=false'+paramsStr;
 		}
 		else
@@ -2108,12 +2108,12 @@ var FGS = {
 			{
 				//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
 				//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
-				var feedUrl = 'http://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
 				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+'}';
 			}
 			else
 			{
-				var feedUrl = 'http://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
 				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+',%22last_seen_time%22:'+params.first+',%22oldest%22:'+params.time+'}';
 			}
 		}
@@ -2344,14 +2344,19 @@ var FGS = {
 						var ret = false;
 						$(FGS.options.games[appID].filter).each(function(k,v)
 						{
-								var re = new RegExp(v, "i") ;
-								
-								if($.trim(v) != '' && re.test(bTitle))
-								{
-										FGS.dump('Filtering: '+bTitle);
-										ret = true;
-										return false;
-								}
+							if(typeof v == 'object')
+							{
+								v = v.title;
+							}
+							
+							var re = new RegExp(v, "i") ;
+							
+							if($.trim(v) != '' && re.test(bTitle))
+							{
+								FGS.dump('Filtering: '+bTitle);
+								ret = true;
+								return false;
+							}
 						});
 						if(ret) return;
 						//koniec filtry usera
