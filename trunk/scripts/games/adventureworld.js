@@ -8,7 +8,7 @@ FGS.adventureworld.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/playadventureworld/'+addAntiBot,
+			url: 'https://apps.facebook.com/playadventureworld/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -88,7 +88,7 @@ FGS.adventureworld.Freegifts =
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 					params.domain = params.step1url.match(re)[1].toString();
 					
-					var nextUrl = 'http://'+params.domain+'/';			
+					var nextUrl = 'https://'+params.domain+'/';			
 
 					dataStr = dataStr.replace(/window\.ZYFrameManager/g, '').replace("ZYFrameManager.navigateTo('invite.php", '');
 					
@@ -101,7 +101,7 @@ FGS.adventureworld.Freegifts =
 						
 						var newUrl = dataStr.slice(pos2,pos3);
 						
-						if(newUrl.indexOf('http:') == 0)
+						if(newUrl.indexOf('http:') == 0 || newUrl.indexOf('https:') == 0)
 						{
 							params.step1url = newUrl;
 						}
@@ -178,7 +178,7 @@ FGS.adventureworld.Freegifts =
 		
 		$.ajax({
 			type: "POST",
-			url: 'http://'+params.domain+'/gifts.php?action=chooseRecipient&view=awFriends&activeTab=awFriends&ref=&'+params.zyParam+addAntiBot,
+			url: 'https://'+params.domain+'/gifts.php?action=chooseRecipient&view=awFriends&activeTab=awFriends&ref=&'+params.zyParam+addAntiBot,
 			data: 'giftRecipient=&gift='+params.gift+'&ref=&'+params.zyParam,
 			dataType: 'text',
 			success: function(dataStr)
@@ -238,7 +238,7 @@ FGS.adventureworld.Freegifts =
 					
 					var contentAttr = FGS.encodeHtmlEntities(contentTmp);
 
-					outStr += '<fbGood_request-form invite="'+inviteAttr+'" action="'+actionAttr+'" method="'+methodAttr+'" type="'+typeAttr+'" content="'+contentAttr+'"><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="EXCLUDE_ARRAY_LIST" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="http://fb-0.adventureworld.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form>';
+					outStr += '<fbGood_request-form invite="'+inviteAttr+'" action="'+actionAttr+'" method="'+methodAttr+'" type="'+typeAttr+'" content="'+contentAttr+'"><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="EXCLUDE_ARRAY_LIST" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="https://fb-0.adventureworld.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form>';
 					
 					outStr += '</div>';
 					
@@ -353,7 +353,7 @@ FGS.adventureworld.Freegifts =
 					
 		$.ajax({
 			type: "POST",
-			url: 'http://fb-0.adventure.zynga.com/snapi_proxy.php',
+			url: 'https://fb-0.adventure.zynga.com/snapi_proxy.php',
 			data: postData,
 			dataType: 'text',
 			success: function(dataStr)
@@ -556,7 +556,7 @@ FGS.adventureworld.Requests =
 					
 					var newUrl = dataStr.slice(pos2,pos3);
 					
-					if(newUrl.indexOf('http:') == 0)
+					if(newUrl.indexOf('http:') == 0 || newUrl.indexOf('https:') == 0)
 					{
 					}
 					else
@@ -882,10 +882,12 @@ FGS.adventureworld.Bonuses =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
 				try
 				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					
+					
 					var URL = currentURL;
 					
 					var pos1 = 0;
@@ -904,7 +906,7 @@ FGS.adventureworld.Bonuses =
 					
 					var newUrl = dataStr.slice(pos2,pos3);
 					
-					if(newUrl.indexOf('http:') == 0)
+					if(newUrl.indexOf('http:') == 0 || newUrl.indexOf('https:') == 0 )
 					{
 					}
 					else
@@ -963,18 +965,9 @@ FGS.adventureworld.Bonuses =
 			dataType: 'text',
 			success: function(dataStr)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				
 				try
 				{
-					if($('.rewardFail', dataHTML).length > 0)
-					{ 
-						var error_text = $.trim($('.rewardFail', dataHTML).text());
-						FGS.endWithError('limit', currentType, id, error_text);	
-						return;
-					}
-					
+
 					if(dataStr.indexOf('You can only collect feed rewards from your allies!') != -1)
 					{
 						var error_text = 'You can only collect feed rewards from your allies!';
@@ -986,6 +979,51 @@ FGS.adventureworld.Bonuses =
 					{
 						var error_text = 'The train has already finished its trip';
 						FGS.endWithError('limit', currentType, id, error_text);	
+						return;
+					}
+					
+					
+					if(dataStr.match(/<!DOCTYPE/g).length > 1 && dataStr.indexOf('<div class="rightPanel">') != -1)
+					{
+						var pos0 = dataStr.indexOf('<div class="rightPanel">');
+						
+						var pos1 = dataStr.indexOf('<!DOCTYPE', pos0);
+						
+						var dataStr = dataStr.slice(pos0, pos1)+'</div></div>';
+						
+						dataStr = dataStr.replace(/<!--/g, '').replace(/-->/g, '');						
+					}
+					
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					if($('.rewardFail', dataHTML).length > 0 || $('.giftLimit', dataHTML).length > 0 || dataStr.indexOf('Always accept requests as soon as possible') != -1 || dataStr.indexOf('You are already neighbors with this person') != -1 || $('.main_crewError_cont	', dataHTML).length > 0)
+					{
+						if($('.rewardFail', dataHTML).length > 0)
+						{
+							var error_text = $.trim($('.rewardFail', dataHTML).text());
+						}
+						else if($('.giftLimit', dataHTML).length > 0)
+						{
+							var error_text = $.trim($('.giftLimit', dataHTML).text());
+						}			
+						else if($('.main_crewError_cont	', dataHTML).length > 0)
+						{
+							var error_text = $.trim($('.main_crewError_cont', dataHTML).text());
+						}					
+						else if(dataStr.indexOf('Always accept requests as soon as possible') != -1)
+						{
+							var error_text = $.trim($('.message', dataHTML).text());
+						}
+						else if(dataStr.indexOf('You are already neighbors with this person') != -1)
+						{
+							var error_text = 'You are already neighbors with this person';
+						}
+						else
+						{						
+							var error_text = 'There was problem receiving this gift. You have probably already accepted it';
+						}
+						
+						FGS.endWithError('limit', currentType, id, error_text);
 						return;
 					}
 
