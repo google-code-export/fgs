@@ -58,7 +58,7 @@ FGS.gamesData =
 							bonuses: [ ],		
 							bonusesNewWindow: [ ],
 							requests: [],
-							requestsNewWindow: [],
+							requestsNewWindow: [ 'Come join me in Adventure World'],
 						},
 						buttons:
 						[	

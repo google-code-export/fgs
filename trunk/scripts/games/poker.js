@@ -8,7 +8,7 @@ FGS.poker.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/texas_holdem/'+addAntiBot,
+			url: 'https://apps.facebook.com/texas_holdem/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -28,7 +28,7 @@ FGS.poker.Freegifts =
 					
 					params.postData =
 					{
-						url: 'http://facebook2.poker.zynga.com/poker/inc/ajax/todo_send_chip.php?box=0',
+						url: 'https://facebook2.poker.zynga.com/poker/inc/ajax/todo_send_chip.php?box=0',
 						type:1,
 						require_login:true,
 						fb_mockajax_context: fb_mock,
@@ -91,7 +91,7 @@ FGS.poker.Freegifts =
 
 		$.ajax({
 			type: "POST",
-			url: 'http://apps.facebook.com/fbml/fbjs_ajax_proxy.php?__a=1',
+			url: 'https://apps.facebook.com/fbml/fbjs_ajax_proxy.php?__a=1',
 			dataType: 'text',
 			data: params.postData,
 			success: function(dataStr)
@@ -173,7 +173,7 @@ FGS.poker.Freegifts =
 					});
 					
 					params.promptParams = reqData;
-					params.sendGiftUrl = 'http://apps.facebook.com/texas_holdem/requests/chipgift/chipgift_post.php';
+					params.sendGiftUrl = 'https://apps.facebook.com/texas_holdem/requests/chipgift/chipgift_post.php';
 					params.sendGiftParams = sendGiftParams;
 					
 					FGS.sendGift(params);

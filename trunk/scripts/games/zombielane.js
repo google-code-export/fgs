@@ -176,11 +176,8 @@ FGS.zombielane.Freegifts =
 			{
 				try
 				{
-					var tst = new RegExp(/FB[.]Facebook[.]init\("(.*)".*"(.*)"/g).exec(dataStr);
-					if(tst == null) throw {message: 'no fb.init'}
-					
-					var app_key = tst[1];
-					var channel_url = tst[2];
+					var app_key = '169557846404284';
+					var channel_url = 'http://zlane.digitalchocolate.com/dead/channel.jsp';
 					
 					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
 					if(tst == null) throw {message:'no fbml tag'}

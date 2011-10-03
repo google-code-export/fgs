@@ -169,6 +169,6 @@
 	"AutoLikeItemsRequiringActionWhenClicked": "Auto 'Like' \"Items requiring action\" when clicked",
 	"SendThankYouGiftNotPossible": "Auto send 'Thank you' gift is not possible in this game",
 	"HTTPSmodeMessageDisappear": "This message will disappear after changing described settings and restarting your browser.",
-	"HTTPSmodeNotice": "FGS has detected that you have https mode enabled on Facebook. FGS doesn't operate correctly in this mode (because <strong>lots of game doesn't support it yet</strong>). If it's on:\n- you will not get any bonuses\n- you will get connection error in all games.\n\nTo fix this issue follow instructions from this page and UNCHECK \"Secure browsing\":",
+	"HTTPSmodeNotice": "FGS has detected that you have https mode (aka secure browsing) enabled on Facebook. FGS doesn't operate correctly in this mode (because <strong>lots of game doesn't support it yet</strong>).\n\nTo fix this issue follow instructions from this page and UNCHECK \"Secure browsing\":",
 	"HTTPSmodeDetected": "\"SECURE BROSWING\" DETECTED"
 }

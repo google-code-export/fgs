@@ -242,7 +242,7 @@ FGS.islandparadise.Requests =
 						{
 							info.image = $('#view_gift_accept', dataHTML).find('.item').find('img:first').attr('longdesc');
 							info.title = '';
-							info.text =$('#view_gift_accept', dataHTML).find('.item').text();
+							info.text = $('#view_gift_accept', dataHTML).find('h1:first').text();
 						}
 						else
 						{

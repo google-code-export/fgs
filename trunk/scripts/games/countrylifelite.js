@@ -8,7 +8,7 @@ FGS.countrylifelite.Freegifts =
 		
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/countrylife_lite/'+addAntiBot,
+			url: 'https://apps.facebook.com/countrylife_lite/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{

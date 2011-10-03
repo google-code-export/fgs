@@ -319,10 +319,10 @@ FGS.myshops.Bonuses =
 					}
 					
 					
-					var testStr = $('#content', dataHTML).children('h1').text();
+					var testStr = $('#content2', dataHTML).children('h1').text();
 
-					var params  = $('#content', dataHTML).find('form:first').serialize();
-					var formUrl = $('#content', dataHTML).find('form:first').attr('action');
+					var params  = $('#content2', dataHTML).find('form:first').serialize();
+					var formUrl = $('#content2', dataHTML).find('form:first').attr('action');
 					
 					var pos1   = currentURL.lastIndexOf('/')+1;
 					var domain = currentURL.slice(0, pos1)+formUrl;
