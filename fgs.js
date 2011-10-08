@@ -1697,16 +1697,24 @@ var FGS = {
 		}
 	},	
 	
-	restartBonuses: function()
+	restartBonuses: function(gameID)
 	{
-		for(var id in FGS.options.games)
+		if(typeof gameID == 'undefined')
+			var arr = FGS.options.games;
+		else
+		{
+			var arr = {};
+			arr[gameID] = true;
+		}
+	
+		for(var id in arr)
 		{
 			if(FGS.options.games[id].enabled)
 			{
 				if(typeof(FGS.iBonusTimeout[id]) != 'undefined' && FGS.iBonusTimeout[id] != null)
 				{
-					clearTimeout(FGS.iBonusTimeout[gameID]);
-					delete(FGS.iBonusTimeout[gameID]);
+					clearTimeout(FGS.iBonusTimeout[id]);
+					delete(FGS.iBonusTimeout[id]);
 				}
 				
 				if(typeof(FGS.iBonusTimeout[id]) == 'undefined' || FGS.iBonusTimeout[id] == null)

@@ -2206,7 +2206,7 @@ function processGameCustomBonusSource(el)
 	else
 	{
 		parent.children().show();
-		processGameCustomBonusSourceSelectFriendlist(parent.find('select'));
+		parent.find('select').trigger('change');
 	}	
 }
 
@@ -2217,7 +2217,7 @@ function processGameCustomBonusSourceSelectFriendlist(el)
 	bkP.options.games[$(el).attr('gameID')].customSource = selected;
 	bkP.saveOptions();
 	
-	bkP.restartBonuses();
+	bkP.restartBonuses($(el).attr('gameID'));
 }
 
 function processGameListOnNeighborsSearch(el)
@@ -2719,8 +2719,6 @@ function onMouseDownTest(e)
 				return processGameListOnNeighborsSearch(el);
 			else if(el.hasClass('gameCustomBonusSource'))
 				return processGameCustomBonusSource(el);
-			else if(el.hasClass('gameCustomBonusSourceSelectFriendlist'))
-				return processGameCustomBonusSourceSelectFriendlist(el);
 			else if(el.hasClass('gameUseRandomTimeoutOnBonuses'))
 				return processGameUseRandomTimeoutOnBonuses(el);
 			else if(el.hasClass('deleteComment'))
@@ -2834,6 +2832,13 @@ function onMouseDownTest(e)
 				$('#breakStartupLoadingTime').css('display', 'block');
 			}
 			bkP.saveOptions();
+		});
+		
+		$('.gameCustomBonusSourceSelectFriendlist').live('change', function(e)
+		{
+			var el = $(e.srcElement || e.target);
+			
+			return processGameCustomBonusSourceSelectFriendlist(el);
 		});
 		
 		for(var l in bkP.transObj)
