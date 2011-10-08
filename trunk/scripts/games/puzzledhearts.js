@@ -8,7 +8,7 @@ FGS.puzzledhearts.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'http://apps.facebook.com/phearts/pages/myhearts.php?a=1'+addAntiBot,
+			url: 'https://apps.facebook.com/phearts/pages/myhearts.php?a=1'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -81,7 +81,7 @@ FGS.puzzledhearts.Freegifts =
 			{
 				try
 				{
-					var pos0 = dataStr.indexOf('http://8.17.172.90/ph/pages/myhearts.php');
+					var pos0 = dataStr.indexOf('https://puzzledhearts.com/ph/pages/myhearts.php');
 					var pos1 = dataStr.indexOf('&ts=', pos0);
 					var pos2 = dataStr.indexOf('"', pos1);
 					
@@ -89,7 +89,7 @@ FGS.puzzledhearts.Freegifts =
 				
 				
 					params.step3params = 'to_uid=&step=step2&gift_id='+params.gift+'&uid='+FGS.userID+'&ts='+ts;
-					params.step3url = 'http://8.17.172.90/ph/pages/index.php';
+					params.step3url = 'https://puzzledhearts.com/ph/pages/index.php';
 					
 					FGS.puzzledhearts.Freegifts.Click3(params);
 				}
@@ -160,7 +160,7 @@ FGS.puzzledhearts.Freegifts =
 					fbml = fbml.replace('</fb:request-form>', '<fb:request-form-submit import_external_friends="false"  label="Send to %n" /></fb:request-form>');
 					fbml = fbml.replace('condensed="false"', 'condensed="true"');
 					
-					var channel_url = 'http://8.17.172.90/ph/pages/xd_receiver.htm';
+					var channel_url = 'https://puzzledhearts.com/ph/pages/xd_receiver.htm';
 					
 					var nextParams  =  'api_key='+params.gameID+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);		
 					
@@ -440,13 +440,13 @@ FGS.puzzledhearts.Bonuses =
 					params.feedform_user_message = '';
 					params.publish = 'Publish';
 					params.display = 'iframe';
-					params.channel = 'http://8.17.172.90/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
-					params.redirect_uri = 'http://8.17.172.90/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
-					params.channel_url = 'http://8.17.172.90/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
+					params.channel = 'https://puzzledhearts.com/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
+					params.redirect_uri = 'https://puzzledhearts.com/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
+					params.channel_url = 'https://puzzledhearts.com/ph/ajax/channel.html?result=%22xxRESULTTOKENxx%22';
 					
 					delete(params.method);
 					
-					FGS.getAppAccessToken2('api_key=166309140062981&app_id=166309140062981&channel=http://8.17.172.90/ph/ajax/channel.html', params, FGS.puzzledhearts.Bonuses.FinishPost);
+					FGS.getAppAccessToken2('api_key=166309140062981&app_id=166309140062981&channel=https://puzzledhearts.com/ph/ajax/channel.html', params, FGS.puzzledhearts.Bonuses.FinishPost);
 				});
 			}
 		}

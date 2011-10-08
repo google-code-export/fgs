@@ -89,6 +89,7 @@ var FGS = {
 			games: {},
 			chatSessions: {},
 			language: 0,
+			friendlists: [],
 			
 			thankYouGiftMessage: '',
 			
@@ -106,7 +107,7 @@ var FGS = {
 			breakStartupLoadingTime: 300
 		}
 
-		FGS.defaultGameOptions = { enabled: false,	lastBonusTime: 0, likeBonus: false, likeItemsRequiringAction: false, sendbackGift: false, hideFromFeed: false, hideFromFeedLimitError: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, useRandomTimeoutOnBonuses: false };
+		FGS.defaultGameOptions = { customSource: false, enabled: false,	lastBonusTime: 0, likeBonus: false, likeItemsRequiringAction: false, sendbackGift: false, hideFromFeed: false, hideFromFeedLimitError: false, listOnSearch: false, filter: [], favourites: [], defaultGift: 0, useRandomTimeoutOnBonuses: false };
 
 		for(var idd in FGS.gamesData)
 		{
@@ -1338,6 +1339,7 @@ var FGS = {
 		{
 			FGS.database.open(FGS.userID);
 			FGS.database.createTable();
+			FGS.getGraphAccessToken();
 		}
 	},
 	
@@ -1687,10 +1689,7 @@ var FGS = {
 	{
 		if(FGS.options.games[gameID].enabled)
 		{
-			if(alternative)
-				FGS.iBonusTimeout[gameID] = setTimeout('FGS.checkBonuses2("'+gameID+'");', FGS.options.checkBonusesTimeout*1000);
-			else
-				FGS.iBonusTimeout[gameID] = setTimeout('FGS.checkBonuses("'+gameID+'");', FGS.options.checkBonusesTimeout*1000);
+			FGS.iBonusTimeout[gameID] = setTimeout('FGS.checkBonuses("'+gameID+'");', FGS.options.checkBonusesTimeout*1000);
 		}
 		else
 		{
@@ -1704,6 +1703,12 @@ var FGS = {
 		{
 			if(FGS.options.games[id].enabled)
 			{
+				if(typeof(FGS.iBonusTimeout[id]) != 'undefined' && FGS.iBonusTimeout[id] != null)
+				{
+					clearTimeout(FGS.iBonusTimeout[gameID]);
+					delete(FGS.iBonusTimeout[gameID]);
+				}
+				
 				if(typeof(FGS.iBonusTimeout[id]) == 'undefined' || FGS.iBonusTimeout[id] == null)
 				{
 					FGS.startBonusesForGame(id);
@@ -2039,6 +2044,11 @@ var FGS = {
 		
 		var checkType = checkType || 1;
 		
+		if(FGS.options.games[appID].customSource !== false)
+		{
+			checkType = 2;
+		}
+		
 		if(appID == '176611639027113')
 		{
 			FGS.rewardville.Freegifts.Click({onlyLogin: true});
@@ -2109,12 +2119,29 @@ var FGS = {
 				//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
 				//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
 				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
-				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+'}';
+				if(FGS.options.games[appID].customSource !== false)
+				{
+					var filterType = FGS.options.games[appID].customSource;
+				}
+				else
+				{
+					var filterType = 'appm_'+collectID;
+				}
+				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+'}';
 			}
 			else
 			{
+				
 				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
-				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22appm_'+collectID+'%22,%22scroll_count%22:'+params.scroll+',%22last_seen_time%22:'+params.first+',%22oldest%22:'+params.time+'}';
+				if(FGS.options.games[appID].customSource !== false)
+				{
+					var filterType = FGS.options.games[appID].customSource;
+				}
+				else
+				{
+					var filterType = 'appm_'+collectID;
+				}
+				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+',%22scroll_position%22:'+(params.scroll*30)+',%22oldestMR%22:'+params.time+',%22oldest%22:'+params.time+'}';
 			}
 		}
 		
@@ -2186,16 +2213,7 @@ var FGS = {
 					var finishCollecting = false;
 					
 					var oldestFeed = 0;
-					
-					/*
-					if(data.indexOf('uiBoxLightblue') != -1)
-					{
-						FGS.bonusLoadingProgress[appID].hidden = true;
-						FGS.checkBonuses2(appID);
-						return;
-					}
-					*/
-					
+
 					if($('li.uiStreamStory', htmlData).length == 0)
 					{
 						if(params.scroll == 1 && checkType == 2)
@@ -2217,11 +2235,6 @@ var FGS = {
 						
 						var bonusData = JSON.parse(data);
 						
-						var curBonusAppID = bonusData.source_app_id || bonusData.app_id;
-						
-						if(curBonusAppID != collectID)
-							return true;
-						
 						var bonusTime = bonusData.pub_time || bonusData.content_timestamp;
 						
 						if(typeof(bonusTime) == 'undefined')
@@ -2240,19 +2253,31 @@ var FGS = {
 						var elID = bonusData.target_fbid;
 						var bonusActor = bonusData.actor || bonusData.actrs;
 						
-						
 						if(params.first == 0)
 						{
 							params.first = bonusTime+1;
 						}
 						
 						oldestFeed = bonusTime;
-
+						
+						var d = new Date((bonusTime*1000));
+						
+						if(secs > 86400 || params.scroll == 30)
+						{
+							finishCollecting = true;
+							return false;
+						}
+						
 						if(bonusTime < FGS.options.games[appID].lastBonusTime)
 						{
 							finishCollecting = true;
 							return false;
 						}
+						
+						var curBonusAppID = bonusData.source_app_id || bonusData.app_id;
+						
+						if(curBonusAppID != collectID)
+							return true;
 						
 						var bonusTarget = bonusData.target_profile_id;
 						
@@ -2548,6 +2573,68 @@ var FGS = {
 			var dataStr = dataStr2;
 		}
 		return dataStr;
+	},
+	
+	getGraphAccessToken: function()
+	{
+		FGS.jQuery.ajax({
+			url: 'https://developers.facebook.com/docs/api',
+			method: 'GET',
+			dataType: 'text',
+			success: function(d)
+			{
+				try
+				{
+					var pos1 = d.indexOf('?access_token=')+1;
+					if(pos1 == 0)
+					{
+						FGS.sendView('friendsLoaded', gameID, false);
+						return;
+					}
+					var pos2 = d.indexOf('"', pos1);
+					
+					var access_token = d.slice(pos1,pos2);
+					
+					FGS.getGraphFriendlists(access_token)
+				}
+				catch(e)
+				{
+					setTimeout(FGS.getGraphAccessToken(), 15000);
+				}
+			},
+			error: function()
+			{
+				setTimeout(FGS.getGraphAccessToken(), 15000);
+			}
+		});
+	},
+	
+	getGraphFriendlists: function(token)
+	{
+		FGS.jQuery.ajax({
+			url: 'https://graph.facebook.com/me/friendlists?'+token,
+			method: 'GET',
+			dataType: 'text',
+			success:function(obj)
+			{
+				try
+				{
+					var users = JSON.parse(obj);
+					
+					FGS.options.friendlists = users.data;
+					
+					FGS.saveOptions()
+				}
+				catch(e)
+				{
+					setTimeout(FGS.getGraphAccessToken(), 15000);
+				}
+			},
+			error: function()
+			{
+				setTimeout(FGS.getGraphAccessToken(), 15000);
+			}
+		});
 	},
 	
 	searchForNeighbors:
