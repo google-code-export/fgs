@@ -2080,7 +2080,7 @@ var FGS = {
 		if(appID == '1677463161271')
 			collectID = '167746316127';
 		
-		if(typeof(params) == 'undefined')
+		if(typeof(params) == 'undefined' || (typeof params.lastCheckType != 'undefined' && params.lastCheckType != checkType) )
 		{
 			var params = {};
 			
@@ -2101,6 +2101,8 @@ var FGS = {
 			if(params.time != 0)
 				var paramsStr = '&oldest='+params.time;
 		}
+		
+		params.lastCheckType = checkType;
 		
 		if(checkType == 1)
 		{
