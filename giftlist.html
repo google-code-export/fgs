@@ -1871,6 +1871,24 @@ function addIconToOptionsMenu(gameID)
 		addSpecOpt = '<input type="checkbox" '+(e.useRandomTimeoutOnBonuses ? 'checked="checked"':'')+'  class="gameUseRandomTimeoutOnBonuses" gameID="'+gameID+'" /> <label>'+bkP.getMsg('UseSmallDelayBetweenBonuses')+'</label><br />';
 	}
 	
+	if(e.customSource === undefined || e.customSource === true)
+		e.customSource = false;
+	
+	var FLoptions = '';
+	
+	for(var i=0; i< bkP.options.friendlists.length;i++)
+	{
+		var v = bkP.options.friendlists[i];
+		var addClass = '';
+		
+		if(e.customSource !== false)
+		{
+			if(e.customSource == 'fl_'+v.id)
+				addClass = ' selected="selected"';
+		}
+		FLoptions += '<option value="fl_'+v.id+'"'+addClass+'>'+v.name+'</option>';
+	}
+	
 	var el = $('<div gameName="'+d.name+'" class="optionsGameDiv'+(!e.enabled ? ' hide':'')+'"><img style="float: left" src="icons/menu/48'+d.systemName+'.png" /><span style="float: left;">'
 	+ '<input type="checkbox" '+(e.enabled ? 'checked="checked"':'')+' class="gameEnabledBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('Enable')+' <strong>'+d.name+'</strong></label><br />'
 	+ '<input type="checkbox" '+(gameID == bkP.options.defaultGame ? 'checked="checked"':'')+' class="gameDefaultBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('ShowThisGameBonusesOnFGSStart')+'</label><br />'
@@ -1882,7 +1900,8 @@ function addIconToOptionsMenu(gameID)
 	+ '<input type="checkbox" '+(e.hideFromFeedLimitError ? 'checked="checked"':'')+' class="gameHideFromFeedLimitErrorBox" gameID="'+gameID+'" /> <label>'+bkP.getMsg('HideLimitErrorBonusFromFBFeed')+'</label><br />'
 	+ '<input type="checkbox" '+(e.listOnSearch? 'checked="checked"':'')+'  class="gameListOnNeighborsSearch" gameID="'+gameID+'" /> <label>'+bkP.getMsg('ListMeOnNeighborsSearch')+'</label><br />'
 	+ addSpecOpt
-	+ '</span></div>');
+	+ '<input type="checkbox" '+(e.customSource ? 'checked="checked"':'')+'  class="gameCustomBonusSource" gameID="'+gameID+'" /> <label>Use custom URL source for bonuses</label><br />'
+	+ '<div class="friendlistsBox" style="height: 22px; line-height: 19px;"><div class="' + (e.customSource != false ? '' : 'hide') +  '"><select class="gameCustomBonusSourceSelectFriendlist" gameID="'+gameID+'">'+FLoptions+'</select></div></div>');
 	
 	var el2 = $('<div gameName="'+d.name+'" class="optionsGameDiv width180'+(e.enabled ? ' hide':'')+'"><img style="float: left;width:32px;height:32px;" src="icons/menu/48'+d.systemName+'.png" /><span style="margin-left: 10px;">'
 	+ '<input type="checkbox" '+(e.enabled ? 'checked="checked"':'')+' class="gameEnabledBox" style="float: left;" gameID="'+gameID+'" /> <label style="float: right; width: 125px;">'+bkP.getMsg('Enable')+' <strong>'+d.name+'</strong></label></div>');
@@ -2170,6 +2189,35 @@ function processGameUseRandomTimeoutOnBonuses(el)
 {
 	bkP.options.games[$(el).attr('gameID')].useRandomTimeoutOnBonuses = $(el).is(':checked') ? true : false;
 	bkP.saveOptions();
+}
+
+function processGameCustomBonusSource(el)
+{
+	var parent = $(el).siblings('.friendlistsBox');
+	
+	if(!$(el).is(':checked'))
+	{
+		parent.children().hide();
+		bkP.options.games[$(el).attr('gameID')].customSource = false;
+		bkP.saveOptions();
+		
+		bkP.restartBonuses();
+	}
+	else
+	{
+		parent.children().show();
+		processGameCustomBonusSourceSelectFriendlist(parent.find('select'));
+	}	
+}
+
+function processGameCustomBonusSourceSelectFriendlist(el)
+{
+	var selected = el.find('option:selected').val();
+	
+	bkP.options.games[$(el).attr('gameID')].customSource = selected;
+	bkP.saveOptions();
+	
+	bkP.restartBonuses();
 }
 
 function processGameListOnNeighborsSearch(el)
@@ -2669,6 +2717,10 @@ function onMouseDownTest(e)
 				return processGameHideFromFeedLimitErrorInput(el);
 			else if(el.hasClass('gameListOnNeighborsSearch'))
 				return processGameListOnNeighborsSearch(el);
+			else if(el.hasClass('gameCustomBonusSource'))
+				return processGameCustomBonusSource(el);
+			else if(el.hasClass('gameCustomBonusSourceSelectFriendlist'))
+				return processGameCustomBonusSourceSelectFriendlist(el);
 			else if(el.hasClass('gameUseRandomTimeoutOnBonuses'))
 				return processGameUseRandomTimeoutOnBonuses(el);
 			else if(el.hasClass('deleteComment'))

@@ -5,35 +5,16 @@
 	<script type="text/javascript">
 	var bkP = chrome.extension.getBackgroundPage().FGS;
 
-	function appendDB(gameID, num, name)
-	{
-		bkP.database.db.readTransaction(function(tx)
-		{
-			if(gameID == null)
-			{
-				tx.executeSql("SELECT COUNT(*) as count FROM "+name, [], function(tx2, res2)
-				{
-					$('#totals > tbody').append('<tr><td class="first">'+num+'.</td><td>'+name+'</td><td>'+res2.rows.item(0).count+'</td><td class="last"><a href="#" table="'+name+'" class="emptyDB">Empty</a></td></tr>');
-				}, bkP.database.onSuccess, bkP.database.onError);
-			}
-			else
-			{
-				tx.executeSql("SELECT COUNT(*) as count FROM "+name+ " where gameID = ?", [gameID], function(tx2, res2)
-				{
-					$('#'+gameID+' > tbody').append('<tr><td class="first">'+num+'.</td><td>'+name+'</td><td>'+res2.rows.item(0).count+'</td><td class="last"><a href="#" table="'+name+'" gameID="'+gameID+'" class="emptyDB">Empty</a></td></tr>');
-				}, bkP.database.onSuccess, bkP.database.onError);
-			}
-		});
-	}
-	
-	
 	function listDb()
 	{
 		bkP.database.db.readTransaction(function(tx)
 		{
+			var arr = {};
+
 			tx.executeSql("SELECT * FROM sqlite_master where type = 'table'", [], function(tx, res)
 			{
-				$('body').prepend('<table id="totals" style="margin: 0 auto; margin-top: 15px;" width="75%"><caption>'+bkP.getMsg('DatabaseUsageForAllGames')+'</caption><thead><tr><th scope="col" class="first"></th><th scope="col">'+bkP.getMsg('DatabaseName')+'</th><th scope="col">'+bkP.getMsg('DatabaseCount')+'</th><th scope="col" class="last">'+bkP.getMsg('Actions')+'</th></tr></thead><tbody></tbody></table>');
+				$('body').prepend('<table id="totals" style="margin: 0 auto; margin-top: 15px;" width="75%"><caption>'+bkP.getMsg('DatabaseUsageForAllGames')+'</caption><thead><tr><th scope="col" class="first"></th><th scope="col">'+bkP.getMsg('DatabaseName')+'</th><th scope="col">'+bkP.getMsg('DatabaseCount')+'</th><th scope="col" class="last">'+bkP.getMsg('Actions')+'</th></tr></thead><tbody></tbody></table>');				
+				
 				
 				var cnt = 0;
 				for(var i = 0; i < res.rows.length; i++)
@@ -43,27 +24,82 @@
 					if(!re.test(r.name))
 					{
 						cnt++;
-						appendDB(null, cnt, r.name);
+						arr[r.name] = cnt;
+
 					}					
 				}
-			
-				for(var idd in bkP.options.games)
+				var str = [];
+				
+				var tables = [];
+				
+				for(var name in arr)
 				{
-					$('body').append('<table id="'+idd+'" style="margin: 0 auto; margin-top: 15px;" width="75%"><caption>'+bkP.getMsg('DatabaseUsageForGame')+' '+bkP.gamesData[idd].name+'</caption><thead><tr><th scope="col" class="first"></th><th scope="col">'+bkP.getMsg('DatabaseName')+'</th><th scope="col">'+bkP.getMsg('DatabaseCount')+'</th><th scope="col" class="last">'+bkP.getMsg('Actions')+'</th></tr></thead><tbody></tbody></table>');
-					var cnt = 0;
+					var v = arr[name];					
+					str.push(" SELECT '"+name+"' as name, COUNT(*) as count FROM "+name+" ");
+				}
+				
+				
+				tx.executeSql(str.join(" UNION "), [], function(tx, res)
+				{
 					for(var i = 0; i < res.rows.length; i++)
 					{
-						var re = new RegExp('(^__|sqlite)', "i");
-						var r = res.rows.item(i);
-						if(!re.test(r.name))
-						{
-							cnt++;
-							appendDB(idd, cnt, r.name);
-						}					
+						$('#totals > tbody').append('<tr><td class="first">'+(i+1)+'.</td><td>'+res.rows.item(i).name+'</td><td>'+res.rows.item(i).count+'</td><td class="last"><a href="#" table="'+res.rows.item(i).name+'" class="emptyDB">Empty</a></td></tr>');
 					}
+				}, bkP.database.onSuccess, bkP.database.onError);
+				
+				
+				var data = {};
+				
+				for(var name in arr)
+				{
+					data[name] = {};
+					
+					for(var idd in bkP.options.games)
+					{
+						data[name][idd] = 0;
+					}
+				}
+				
+				for(var name in arr)
+				{
+					tx.executeSql('SELECT "'+name+'" as  name, gameID, COUNT(1) as count FROM '+name+' group by gameID', [], function(tx, res)
+					{
+						for(var i = 0; i < res.rows.length; i++)
+						{
+							data[res.rows.item(i).name][res.rows.item(i).gameID] = res.rows.item(i).count;
+							
+							if(i == (res.rows.length-1))
+							{
+								listDb2(res.rows.item(i).name, data[res.rows.item(i).name]);
+							}							
+						}
+						if(res.rows.length == 0)
+						{
+							listDb2(name, data[name]);
+						}
+						
+					}, bkP.database.onSuccess, bkP.database.onError);
 				}
 			}, bkP.database.onSuccess, bkP.database.onError);
 		});
+	}
+	
+	function listDb2(name, data)
+	{
+		
+		for(var idd in data)
+		{
+			if(typeof bkP.gamesData[idd] == 'undefined')
+				continue;
+			
+			if($('#'+idd).length == 0)	
+				$('body').append('<table id="'+idd+'" style="margin: 0 auto; margin-top: 15px;" width="75%"><caption>'+bkP.getMsg('DatabaseUsageForGame')+' '+bkP.gamesData[idd].name+'</caption><thead><tr><th scope="col" class="first"></th><th scope="col">'+bkP.getMsg('DatabaseName')+'</th><th scope="col">'+bkP.getMsg('DatabaseCount')+'</th><th scope="col" class="last">'+bkP.getMsg('Actions')+'</th></tr></thead><tbody></tbody></table>');
+			
+			
+			var cnt = $('#'+idd).children('tbody').children('tr').length+1;
+			
+			$('#'+idd+' > tbody').append('<tr><td class="first">'+cnt+'.</td><td>'+name+'</td><td>'+data[idd]+'</td><td class="last"><a href="#" table="'+name+'" gameID="'+idd+'" class="emptyDB">Empty</a></td></tr>');
+		}
 	}
 	
 	$(function()
