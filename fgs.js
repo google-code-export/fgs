@@ -2080,7 +2080,7 @@ var FGS = {
 		if(appID == '1677463161271')
 			collectID = '167746316127';
 		
-		if(typeof(params) == 'undefined' || (typeof params.lastCheckType != 'undefined' && params.lastCheckType != checkType) )
+		if( typeof(params) == 'undefined' || (typeof params.lastCheckType != 'undefined' && params.lastCheckType != checkType) )
 		{
 			var params = {};
 			
@@ -2630,8 +2630,19 @@ var FGS = {
 				try
 				{
 					var users = JSON.parse(obj);
+					var arr = [];
 					
-					FGS.options.friendlists = users.data;
+					for(var i =0;i<users.data.length;i++)
+					{
+						var v = users.data[i];
+						
+						if(v.id.match(/_/g) == null)
+						{
+							arr.push(v);
+						}
+					}
+					
+					FGS.options.friendlists = arr;
 					
 					FGS.saveOptions()
 				}
