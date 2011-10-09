@@ -1886,7 +1886,15 @@ function addIconToOptionsMenu(gameID)
 			if(e.customSource == 'fl_'+v.id)
 				addClass = ' selected="selected"';
 		}
-		FLoptions += '<option value="fl_'+v.id+'"'+addClass+'>'+v.name+'</option>';
+		
+		var name = v.name;
+		
+		if(name.length > 40)
+		{
+			name = name.slice(0, 40)+'...';
+		}
+		
+		FLoptions += '<option value="fl_'+v.id+'"'+addClass+'>'+name+'</option>';
 	}
 	
 	var el = $('<div gameName="'+d.name+'" class="optionsGameDiv'+(!e.enabled ? ' hide':'')+'"><img style="float: left" src="icons/menu/48'+d.systemName+'.png" /><span style="float: left;">'
