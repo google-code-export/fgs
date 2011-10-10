@@ -455,6 +455,8 @@ FGS.adventureworld.Requests =
 		var retryThis 	= arguments.callee;		
 		var info = {}
 		
+		currentURL = currentURL.replace('fb-0.adventure.zynga.com/', 'apps.facebook.com/playadventureworld/');
+		
 		$.ajax({
 			type: "GET",
 			url: currentURL,

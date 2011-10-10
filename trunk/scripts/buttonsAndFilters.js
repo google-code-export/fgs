@@ -106,7 +106,7 @@ FGS.gamesData =
 						filter:
 						{	
 							bonuses: ['Play Farmville Now'],
-							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels', 'Complete order', 'Visit Trading Post', 'Feed Their Chickens', 'Get some slop'],
+							bonusesNewWindow: ['Fertilize their crops', 'Help them out','Send Watering Cans','Send Building Parts', 'Send a Bushel', 'Sent Doggie Treats', 'Send Materials', 'Send a Turkey', 'Send puppy kibble', 'Claim your Truffle', 'Send Baby Bottles', 'Lend a Hand', 'Send Parts', 'Send Luck', 'Give item to (.*)', 'Send Shovels', 'Complete order', 'Visit Trading Post', 'Feed Their Chickens', 'Get some slop', 'Send Vehicle Parts', 'Send doggie treats', 'Send puppy kibble', 'Send a Manure Bag', 'Send a Milk Jug', 'Send a Wool Bundle', 'Send an (.*) Basket', 'Send a (.*) Basket', 'Send Feed'],
 							
 							requests: ['Toolbar_Install', 'sendcredits'],
 							requestsNewWindow: [],
@@ -157,7 +157,7 @@ FGS.gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
-							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan', 'Send Satellite Phone', 'Send a set of Documents'],
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan', 'Send Satellite Phone', 'Send a set of Documents', 'Get Golden daily take reward', 'Get daily take reward'],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',

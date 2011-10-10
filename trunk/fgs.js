@@ -1830,7 +1830,7 @@ var FGS = {
 					if(typeof elID == 'undefined')
 						elID = el.children('input[name="id"]').val();
 					
-					if($(this).attr('action') == '/ajax/games/apprequest/apprequest.php')
+					if(typeof el.children('input[name=type]').val() == 'undefined')
 					{
 						var dataPost = 
 							'charset_test='			+el.children('input[name=charset_test]').val() +
