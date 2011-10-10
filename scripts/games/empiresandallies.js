@@ -456,6 +456,8 @@ FGS.empiresandallies.Requests =
 		var retryThis 	= arguments.callee;		
 		var info = {}
 		
+		currentURL = currentURL.replace('fb-0.empire.zynga.com/', 'apps.facebook.com/empiresandallies/');
+		
 		$.ajax({
 			type: "GET",
 			url: currentURL,

@@ -454,6 +454,8 @@ FGS.cityville.Requests =
 		var retryThis 	= arguments.callee;		
 		var info = {}
 		
+		currentURL = currentURL.replace('fb-0.cityville.zynga.com/', 'apps.facebook.com/cityville/');
+		
 		$.ajax({
 			type: "GET",
 			url: currentURL,

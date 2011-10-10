@@ -10,8 +10,8 @@
 <link type="text/css" href="css/demo_page.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table.css" rel="stylesheet" />
 <link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.42" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.42" rel="stylesheet" />
+<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.44" rel="stylesheet" />
+<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.44" rel="stylesheet" />
 
 <script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
@@ -19,12 +19,12 @@
 
 
 <script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.42"></script>
+<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.44"></script>
 <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.42"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.42"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.42"></script>
+<script type="text/javascript" src="scripts/time.js?version=1.1.0.44"></script>
+<script type="text/javascript" src="scripts/notices.js?version=1.1.0.44"></script>
+<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.44"></script>
 
 
 <script type="text/javascript">
@@ -88,7 +88,7 @@ function addDataToScreenLocked(callback, id, data)
 		var el1		= $('div#'+game+'BonusesPendingList');
 		var el2 	= $('div#'+game+'ManualBonusesList');
 		
-		var text = '<strong>'+bkP.getMsg('HiddenFeedNotice')+'</strong><br /><br /><br /><br />';
+		var text = '<strong>There was a problem collecting bonuses. This error could mean three things:<br /><br />- you have no stories for specific game<br />- you have hidden it in your newsfeed<br />- new layout changes on Facebook broke your ability to grab bonuses easily.<br /><br /><span style="color: green;font-size:1.1em;">In version 1.1.0.44 I have introduced a workaround for this problem which worked for all people so far. Read my guide here and follow steps:<br /><a href="https://www.facebook.com/note.php?note_id=250830888297032" style="color: red;font-size:1.2em;">How to use "Custom URL source for bonsues" in FGS v. 1.1.0.44</a></span></strong><br /><br /><br /><br />';
 		
 		if(el1.length > 0)
 		{
