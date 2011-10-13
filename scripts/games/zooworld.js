@@ -613,6 +613,14 @@ FGS.zooworld.Bonuses =
 			{
 				try
 				{
+					try
+					{
+						dataStr = JSON.parse($.trim(dataStr));
+					}
+					catch(e)
+					{
+					}
+				
 					var out = dataStr.return_data.dialogData.subtitle;
 					var body = dataStr.return_data.dialogData.bodyText;
 					var head = dataStr.return_data.dialogData.header;
