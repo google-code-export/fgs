@@ -1320,8 +1320,6 @@ var FGS = {
 			var pos3 = data2.indexOf(',', pos2);
 
 			FGS.userID = data2.slice(pos2, pos3);
-			
-			FGS.userID = data2.slice(pos2, pos3).replace(/\"/g, '');
 
 			var pos4 = data2.indexOf('locale:', pos1)+7;
 			var pos5 = data2.indexOf(',', pos4);
@@ -1331,6 +1329,8 @@ var FGS = {
 
 			FGS.loadSubmenu();
 		}
+		
+		FGS.userID = FGS.userID.replace(/\"/g, '').replace(/\'/g, '');
 		
 		if(data2.indexOf(',www_base:"https') != -1)
 		{
