@@ -1320,6 +1320,8 @@ var FGS = {
 			var pos3 = data2.indexOf(',', pos2);
 
 			FGS.userID = data2.slice(pos2, pos3);
+			
+			FGS.userID = data2.slice(pos2, pos3).replace(/\"/g, '');
 
 			var pos4 = data2.indexOf('locale:', pos1)+7;
 			var pos5 = data2.indexOf(',', pos4);
