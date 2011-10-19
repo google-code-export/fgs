@@ -1781,10 +1781,6 @@ var FGS = {
 					
 					data = tempD.pagelet_requests;	
 				}
-				
-				console.log(FGS.jQuery('form',data));
-				
-				//console.log(FGS.jQuery('form',data));
 
 				var $ = FGS.jQuery;
 				var giftArr = [];
