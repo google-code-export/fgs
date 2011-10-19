@@ -1754,6 +1754,8 @@ var FGS = {
 			{
 				if(typeof(apps) == 'undefined')
 					setTimeout(function() { FGS.checkRequests(true); }, 5000);
+					
+				data = data.replace(/<!-- /g, '').replace(/-->/g, '');
 				
 				if(data.indexOf('"content":{"pagelet_requests":"') != -1)
 				{
@@ -1779,6 +1781,10 @@ var FGS = {
 					
 					data = tempD.pagelet_requests;	
 				}
+				
+				console.log(FGS.jQuery('form',data));
+				
+				//console.log(FGS.jQuery('form',data));
 
 				var $ = FGS.jQuery;
 				var giftArr = [];
@@ -2727,7 +2733,7 @@ var FGS = {
 		Step3: function(gameID, users, page)
 		{
 			FGS.jQuery.ajax({
-				url: 'http://rzadki.eu:81/projects/fgs/jsonp/friends.php?action=get&games='+gameID+'&userID='+FGS.userID+'&page='+page,
+				url: 'http://rzadki.eu/projects/fgs/jsonp/friends.php?action=get&games='+gameID+'&userID='+FGS.userID+'&page='+page,
 				//data: {callback: '?', action: 'get', games: gameID, userID: FGS.userID},
 				method: 'GET',
 				dataType: 'json',
@@ -2744,6 +2750,7 @@ var FGS = {
 					}
 					catch(e)
 					{
+						FGS.dump(e);
 						FGS.sendView('friendsLoaded', gameID, false);
 					}
 				},
