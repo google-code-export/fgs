@@ -2591,6 +2591,12 @@ var FGS = {
 	
 	getGraphAccessToken: function()
 	{
+		if(FGS.optionsLoaded == false)
+		{
+			setTimeout(FGS.getGraphAccessToken, 1000);
+			return false;
+		}
+		
 		FGS.jQuery.ajax({
 			url: 'https://developers.facebook.com/docs/api',
 			method: 'GET',
@@ -2613,12 +2619,12 @@ var FGS = {
 				}
 				catch(e)
 				{
-					setTimeout(FGS.getGraphAccessToken(), 15000);
+					setTimeout(FGS.getGraphAccessToken, 15000);
 				}
 			},
 			error: function()
 			{
-				setTimeout(FGS.getGraphAccessToken(), 15000);
+				setTimeout(FGS.getGraphAccessToken, 15000);
 			}
 		});
 	},
@@ -2648,16 +2654,16 @@ var FGS = {
 					
 					FGS.options.friendlists = arr;
 					
-					FGS.saveOptions()
+					FGS.saveOptions();
 				}
 				catch(e)
 				{
-					setTimeout(FGS.getGraphAccessToken(), 15000);
+					setTimeout(FGS.getGraphAccessToken, 15000);
 				}
 			},
 			error: function()
 			{
-				setTimeout(FGS.getGraphAccessToken(), 15000);
+				setTimeout(FGS.getGraphAccessToken, 15000);
 			}
 		});
 	},
