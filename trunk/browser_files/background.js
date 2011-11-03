@@ -106,15 +106,16 @@ FGS.hideFromFeed = function(bonusID, limit)
 			
 			var postData = FGS.jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
 			
-			FGS.jQuery.ajax({
-				type: "POST",
-				url: 'https://www.facebook.com/ajax/feed/filter_action.php?__a=1',
-				data: postData,
-				dataType: 'text',
-				success: function(data)
+			var obj = {
+				arguments:
 				{
+					'type': 'POST',
+					'url': 'https://www.facebook.com/ajax/feed/filter_action.php?__a=1',
+					'data': postData
 				}
-			});
+			};
+			
+			FGSoperator.postMessage(obj);
 		});
 	});
 };
@@ -144,27 +145,18 @@ FGS.commentBonus = function(bonusID, comment)
 
 			var postData = FGS.jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
 			
-			FGS.jQuery.ajax({
-				type: "POST",
-				url: 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
-				data: postData,
-				dataType: 'text',
-				success: function(data)
+			var obj = {
+				arguments:
 				{
-					var str = data.substring(9);
-					var error = JSON.parse(str).error;
-					
-					if(typeof(error) == 'undefined')
-					{
-						error = 0;
-						FGS.database.commentBonus(bonusID);
-					}
-					else
-						error = 1;
-
-					FGS.sendView('updateComment', bonusID, error);
-				}
-			});
+					'type': 'POST',
+					'url': 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
+					'data': postData
+				},
+				params: [bonusID, 'comment'],
+				callback: 'FGS.commentOrLikeBonus_callback'
+			};
+			
+			FGSoperator.postMessage(obj);
 		});
 	});
 };
@@ -203,27 +195,18 @@ FGS.likeBonus = function (bonusID, autolike)
 			
 			var postData = FGS.jQuery.param(postData).replace(/%5B/g,'[').replace(/%5D/g,']');
 			
-			FGS.jQuery.ajax({
-				type: "POST",
-				url: 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
-				data: postData,
-				dataType: 'text',
-				success: function(data)
+			var obj = {
+				arguments:
 				{
-					var str = data.substring(9);
-					var error = JSON.parse(str).error;
-					
-					if(typeof(error) == 'undefined')
-					{
-						error = 0;
-						FGS.database.likeBonus(bonusID);
-					}
-					else
-						error = 1;
-
-					FGS.sendView('updateLike', bonusID, error);
-				}
-			});
+					'type': 'POST',
+					'url': 'https://www.facebook.com/ajax/ufi/modify.php?__a=1',
+					'data': postData
+				},
+				params: [bonusID, 'like'],
+				callback: 'FGS.commentOrLikeBonus_callback'
+			};
+			
+			FGSoperator.postMessage(obj);
 		});
 	});
 };

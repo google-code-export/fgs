@@ -1241,14 +1241,17 @@ var FGS = {
 		
 		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests&actions[reject]=&lsd=';
 		
-		FGS.jQuery.ajax({
-			type: "POST",
-			url: url,
-			data: dataPost2,
-			dataType: 'text',
-			success: function(data)
-			{}
-		});
+		var obj = {
+			arguments:
+			{
+				'type': 'POST',
+				'url': url,
+				'data': dataPost2
+			},
+			params: []
+		};
+		
+		FGSoperator.postMessage(obj);
 	},
 	
 	stopAll: function(wait)
@@ -2065,16 +2068,9 @@ var FGS = {
 		}
 	},
 	
-	checkBonuses: function(appID, params, checkType, retry)
+	checkBonuses: function(appID, params, retry)
 	{
 		var $ = jQuery = FGS.jQuery;
-		
-		var checkType = checkType || 1;
-		
-		if(FGS.options.games[appID].customSource !== false)
-		{
-			checkType = 2;
-		}
 		
 		if(appID == '176611639027113')
 		{
@@ -2099,7 +2095,7 @@ var FGS = {
 		if(appID == '1677463161271')
 			collectID = '167746316127';
 		
-		if( typeof(params) == 'undefined' || (typeof params.lastCheckType != 'undefined' && params.lastCheckType != checkType) )
+		if( typeof(params) == 'undefined' )
 		{
 			var params = {};
 			
@@ -2110,68 +2106,45 @@ var FGS = {
 			
 			var paramsStr = '';
 			
-			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - '+checkType+' - step 1');
+			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - step 1');
 		}
 		else
 		{
 			var paramsStr = '';
 			
-			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - '+checkType+' - step '+params.scroll+(retry ? ' - retry' : ''));
+			FGS.dump(FGS.getCurrentTime()+'[B] Starting. Checking for bonuses for game '+appID+' - step '+params.scroll+(retry ? ' - retry' : ''));
 			if(params.time != 0)
 				var paramsStr = '&oldest='+params.time;
 		}
 		
-		params.lastCheckType = checkType;
-		
-		if(checkType == 1)
+		if(params.time == 0)
 		{
-			var number = 150;
-		
-			if(FGS.bonusLoadingProgress[appID].loaded == false)
+			//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
+			//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
+			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+			if(FGS.options.games[appID].customSource !== false)
 			{
-				if(FGS.options.breakStartupLoadingOption === 0)
-					if(FGS.options.breakStartupLoadingCount > 500)
-						var number = 300;
+				var filterType = FGS.options.games[appID].customSource;
 			}
 			else
 			{
-				var number = FGS.timeoutToNumber();
+				var filterType = 'appm_'+collectID;
 			}
-			
-			var feedUrl = 'https://www.facebook.com/ajax/apps/app_stories.php';
-			var feedParams = '__a='+params.scroll+'&is_game=1&app_ids='+collectID+'&max_stories='+number+'&user_action=0&show_hidden=false&ignore_self=false'+paramsStr;
+			var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+'}';
 		}
 		else
 		{
-			if(params.time == 0)
+			
+			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+			if(FGS.options.games[appID].customSource !== false)
 			{
-				//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
-				//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
-				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
-				if(FGS.options.games[appID].customSource !== false)
-				{
-					var filterType = FGS.options.games[appID].customSource;
-				}
-				else
-				{
-					var filterType = 'appm_'+collectID;
-				}
-				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+'}';
+				var filterType = FGS.options.games[appID].customSource;
 			}
 			else
 			{
-				
-				var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
-				if(FGS.options.games[appID].customSource !== false)
-				{
-					var filterType = FGS.options.games[appID].customSource;
-				}
-				else
-				{
-					var filterType = 'appm_'+collectID;
-				}
-				var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+',%22scroll_position%22:'+(params.scroll*30)+',%22oldestMR%22:'+params.time+',%22oldest%22:'+params.time+'}';
+				var filterType = 'appm_'+collectID;
 			}
+			var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+',%22scroll_position%22:'+(params.scroll*30)+',%22oldestMR%22:'+params.time+',%22oldest%22:'+params.time+'}';
 		}
 		
 		function finishThat(params)
@@ -2212,30 +2185,8 @@ var FGS = {
 						return true;
 					}
 					
-					if(checkType == 1)
-					{
-						var data = JSON.parse(str).onload.toString();
-
-						var i0 = data.indexOf('"#app_stories"');
-						var pos1 = data.indexOf('HTML("', i0)+6;
-						var pos2 = data.indexOf('"))',pos1);
-						
-						var data = data.slice(pos1,pos2);
-						
-						var tmpData = JSON.parse('{"html": "'+data+'"}');
-						
-						if(tmpData.html == "")
-						{
-							throw {message: 'empty'};
-						}
-					
-						var htmlData = FGS.HTMLParser(tmpData.html);
-					}
-					else
-					{
-						var data = JSON.parse(str).payload;
-						var htmlData = FGS.HTMLParser(data);
-					}
+					var data = JSON.parse(str).payload;
+					var htmlData = FGS.HTMLParser(data);
 					
 					var now = Math.round(new Date().getTime() / 1000);
 
@@ -2245,7 +2196,7 @@ var FGS = {
 
 					if($('li.uiStreamStory', htmlData).length == 0)
 					{
-						if(params.scroll == 1 && checkType == 2)
+						if(params.scroll == 1)
 						{
 							FGS.sendView('hiddenFeed', appID); 
 							throw {message: 'no_feed'}
@@ -2445,7 +2396,7 @@ var FGS = {
 						params.time = oldestFeed;				
 						params.scroll++;
 						
-						FGS.checkBonuses(appID, params, checkType);
+						FGS.checkBonuses(appID, params);
 					}
 				}
 				catch(e)
@@ -2459,22 +2410,11 @@ var FGS = {
 							return;
 						}
 						
-						if(e.message == 'empty')
-						{
-							if(checkType == 1 && params.items.length == 0)
-							{
-								FGS.checkBonuses(appID, undefined, 2);
-								return;
-							}
-						}
-						FGS.checkBonuses(appID, params, checkType, true);
+						FGS.checkBonuses(appID, params, true);
 					}
 					else
 					{
-						if(checkType == 1 && params.items.length == 0)
-							FGS.checkBonuses(appID, undefined, 2);
-						else
-							finishThat(params);
+						finishThat(params);
 					}
 				}
 			},
@@ -2482,14 +2422,11 @@ var FGS = {
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					FGS.checkBonuses(appID, params, checkType, true);
+					FGS.checkBonuses(appID, params, true);
 				}
 				else
 				{
-					if(checkType == 1 && params.items.length == 0)
-						FGS.checkBonuses(appID, undefined, 2);
-					else
-						finishThat(params);
+					finishThat(params);
 				}
 			}
 		});
@@ -2781,16 +2718,50 @@ var FGS = {
 	
 	processOperatorMessage: function(request)
 	{
-		var args = [];
-		for(var i=0; i<request.params.length; i++)
+		if(typeof request.callback != 'undefined')
 		{
-			if(request.params[i] == null)
-				request.params[i] = undefined;
+			var args = [];
+			for(var i=0; i<request.params.length; i++)
+			{
+				if(request.params[i] == null)
+					request.params[i] = undefined;
+				
+				args.push('request.params['+i+']');
+			}
+			args.push('request.response');
 			
-			args.push('request.params['+i+']');
+			eval(request.callback+'('+args.join(',')+')');
 		}
-		args.push('request.response');
-		
-		eval(request.callback+'('+args.join(',')+')');
+	},
+	
+	commentOrLikeBonus_callback: function(bonusID, type, isCallback)
+	{
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var data = obj.data;
+			
+			if(obj.success)
+			{
+				var str = data.substring(9);
+				var error = JSON.parse(str).error;
+				
+				if(typeof(error) == 'undefined')
+				{
+					error = 0;
+					if(type == 'comment')
+						FGS.database.commentBonus(bonusID);
+					else if(type == 'like')
+						FGS.database.likeBonus(bonusID);
+				}
+				else
+					error = 1;
+
+				if(type == 'comment')
+					FGS.sendView('updateComment', bonusID, error);
+				else if(type == 'like')
+					FGS.sendView('updateLike', bonusID, error);
+			}
+		}
 	}
 };
