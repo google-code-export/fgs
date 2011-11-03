@@ -9,6 +9,7 @@
 <script type="text/javascript" src="lang.js?version=1.1.0.49"></script>
 <script type="text/javascript">
 var portsByName = {};
+var FGSoperator = false;
 
 chrome.self.onConnect.addListener(function(port)
 {
@@ -20,6 +21,12 @@ chrome.self.onConnect.addListener(function(port)
 		{
 			FGS.loginStatusChanged(request.loggedIn, request.html);
 		});
+	}
+	else if(port.name == 'FGSoperator')
+	{
+		port.onMessage.addListener(FGS.processOperatorMessage);
+		
+		FGSoperator = port;
 	}
 });
 
@@ -33,10 +40,10 @@ $(function()
 	{
 		FGS.sendView('close');		
 	});
+	FGS.jQuery('body').html('<iframe id="ifm" src="http://www.facebook.com/ajax/ufi/modify.php?x=y" />');
 });
 </script>
 </head>
 <body>
-
 </body>
 </html>
