@@ -637,19 +637,19 @@ var FGS = {
 		});
 	},
 	
-	getFriendsFromGame: function(params, callback, retry)
+	getFriendsFromGame: function(params, callback, retry, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var currentType	= 'request';
 		var info = {}
 		
-		FGS.jQuery.ajax({
-			type: "POST",
-			url: 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&app_id='+params.gameID,
-			data: 'post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&lsd&post_form_id_source=AsyncRequest',
-			dataType: 'text',
-			success: function(dataStr)
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var dataStr = obj.data;
+			
+			if(obj.success)
 			{
 				try
 				{
@@ -772,8 +772,8 @@ var FGS = {
 						}
 					}
 				}
-			},
-			error: function()
+			}
+			else
 			{
 				if(typeof(retry) == 'undefined')
 				{
@@ -791,7 +791,22 @@ var FGS = {
 					}
 				}
 			}
-		});
+		}
+		else
+		{
+			var obj = {
+				arguments:
+				{
+					'type': 'POST',
+					'url': 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&app_id='+params.gameID,
+					'data': 'post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&lsd&post_form_id_source=AsyncRequest'
+				},
+				params: [params, callback, retry],
+				callback: 'FGS.getFriendsFromGame'
+			};
+			
+			FGSoperator.postMessage(obj);
+		}
 	},
 	
 	getAppAccessTokenForSending: function(params, callback, retry)
