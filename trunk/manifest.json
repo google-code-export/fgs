@@ -29,7 +29,7 @@
 		},
 		{
 			"js": ["scripts/jquery-1.5.2.min.js" , "zw2.js"],
-			"matches": [ "http://zoo2-dev.rockyou.com/facebook_apps/zoo2/giftingCenterInIframe.php?*"],
+			"matches": [ "http://www.facebook.com/ajax/ufi/modify.php?x=y", "http://www.facebook.com/ajax/ufi/modify.php?x=y"],
 			"run_at": "document_end",
 			"all_frames": true
 		}

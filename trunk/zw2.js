@@ -1,33 +1,37 @@
-/*
-setTimeout(checkContainer, 100);
+var port = chrome.extension.connect({name: "FGSoperator"});
 
-function checkContainer()
-{
-	if($('#requestScroller').children().length > 1)
-	{
-		$('#requestScroller').children().each(function()
-		{
-			if($(this).find('.fgsLinkGifts').length == 0)
-			{
-				$(this).find('.sectionHeader').append('<span style="position: absolute;right: 15px; top: 12px; display: block; font-family: Arial; color: SteelBlue; text-decoration: none; font-size: 12px; font-weight: bold;"><a class="fgsLinkExpand" style="font-family: Arial; color: fireBrick; text-decoration: none; font-size: 12px; font-weight: bold;" href="javascript:void(0);" onmouseover="this.style.color=\'SteelBlue\'" onclick="javascript:(function(el){ jQuery(el).closest(\'[id^=\\\'sectionContainer_\\\']').find(\'.textCell\').click(); })(this)" onmouseout="this.style.color=\'fireBrick\'">Expand all</a> - <a class="fgsLinkGifts" style="font-family: Arial; color: fireBrick; text-decoration: none; font-size: 12px; font-weight: bold;" href="javascript:void(0);" onmouseover="this.style.color=\'SteelBlue\'" onclick="javascript:(function(el){ jQuery(el).parent().parent().parent().find(\'[id^=\\\'acceptButton_\\\']:first\').each(function() { console.log(\'a\'); })(this)" onmouseout="this.style.color=\'fireBrick\'">Collect all</a> (Powered with <img style="width: 14px; height: 14px" src="'+chrome.extension.getURL('icons/icon16.png')+'" /> )</span>');
-				$(this).find('.fgsLinkGifts').click(processClick);
-			}
-		});
-		setTimeout(checkContainer, 100);
-	}
-	else
-	{
-		setTimeout(checkContainer, 100);
-	}
-}
-
-function processClick(el)
-{
+port.onMessage.addListener(function(obj) {
 	
-	$(this).parent().parent().parent().find('[id^="acceptButton_"]:first').each(function()
+	if(typeof obj.arguments.url != 'undefined')
 	{
-		//var e = $(this).data("events");
-		//console.log(e);
-	});
-}
-*/
+		$.ajax({
+			type: obj.arguments.type,
+			url: obj.arguments.url,
+			data: obj.arguments.data,
+			dataType: 'text',
+			success: function(d) {
+				obj.response = {
+					success: true,
+					data: d
+				};
+				port.postMessage(obj);
+			},
+			error: function() {
+				obj.response = {
+					success: false,
+					data: ''
+				};
+				port.postMessage(obj);
+			}
+		});		
+	}
+	
+	
+	return;
+	/*
+	
+
+	
+	*/
+	
+});

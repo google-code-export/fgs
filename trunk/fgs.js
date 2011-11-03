@@ -1130,12 +1130,13 @@ var FGS = {
 		});
 	},
 	
-	prepareLinkForGame: function(game, id, dataPost, newWindow, retry)
+	prepareLinkForGame: function(game, id, dataPost, newWindow, retry, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var currentType	= 'request';
 		var info = {}
+		
 		
 		if(FGS.Gup('secondLink', dataPost) == 1)
 			var url = 'https://www.facebook.com/ajax/games/apprequest/apprequest.php?__a=1'
@@ -1144,13 +1145,12 @@ var FGS = {
 		
 		var dataPost2 = dataPost + '&post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&nctr[_mod]=pagelet_requests';
 		
-		
-		FGS.jQuery.ajax({
-			type: "POST",
-			url: url,
-			data: dataPost2,
-			dataType: 'text',
-			success: function(data)
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var data = obj.data;
+			
+			if(obj.success)
 			{
 				try
 				{
@@ -1198,8 +1198,8 @@ var FGS = {
 						FGS.endWithError('receiving', currentType, id);
 					}
 				}
-			},
-			error: function()
+			}
+			else
 			{
 				if(typeof(retry) == 'undefined')
 				{
@@ -1210,7 +1210,22 @@ var FGS = {
 					FGS.endWithError('connection', currentType, id);
 				}
 			}
-		});
+		}
+		else
+		{
+			var obj = {
+				arguments:
+				{
+					'type': 'POST',
+					'url': url,
+					'data': dataPost2
+				},
+				params: [game, id, dataPost, newWindow, retry],
+				callback: 'FGS.prepareLinkForGame'
+			};
+			
+			FGSoperator.postMessage(obj);
+		}
 	},
 	
 	emptyUnwantedGifts: function(dataPost)
@@ -2762,5 +2777,20 @@ var FGS = {
 				}
 			});
 		},
+	},
+	
+	processOperatorMessage: function(request)
+	{
+		var args = [];
+		for(var i=0; i<request.params.length; i++)
+		{
+			if(request.params[i] == null)
+				request.params[i] = undefined;
+			
+			args.push('request.params['+i+']');
+		}
+		args.push('request.response');
+		
+		eval(request.callback+'('+args.join(',')+')');
 	}
 };
