@@ -25,12 +25,21 @@ chrome.self.onConnect.addListener(function(port)
 	else if(port.name == 'FGSoperator')
 	{
 		port.onMessage.addListener(FGS.processOperatorMessage);
+		port.onDisconnect.addListener(function() { FGSoperator = false; });
 		
 		FGSoperator = port;
 	}
 });
 
 var FGSdebugMode = false;
+
+function checkFGSoperator() {
+	if( FGSoperator == false )
+	{
+		FGS.jQuery('#ifm').attr({"src": "https://www.facebook.com/ajax/ufi/modify.php?x=y"});		
+	}
+	setTimeout(checkFGSoperator, 1000);
+}
 
 $(function()
 {
@@ -40,10 +49,12 @@ $(function()
 	{
 		FGS.sendView('close');		
 	});
-	FGS.jQuery('body').html('<iframe id="ifm" src="https://www.facebook.com/ajax/ufi/modify.php?x=y" />');
+	
+	setTimeout(checkFGSoperator, 1000);
 });
 </script>
 </head>
 <body>
+	<iframe id="ifm"></iframe>
 </body>
 </html>

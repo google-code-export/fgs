@@ -25,13 +25,4 @@ port.onMessage.addListener(function(obj) {
 			}
 		});		
 	}
-	
-	
-	return;
-	/*
-	
-
-	
-	*/
-	
 });
