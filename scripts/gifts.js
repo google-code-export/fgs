@@ -1450,20 +1450,20 @@ FGS.getFBML = function(params, retry)
 }
 
 
-FGS.sendGift = function(params, retry)
+FGS.sendGift = function(params, retry, isCallback)
 {
 	var $ = FGS.jQuery;
 	
 	params.promptParams.lazy = 1;
 	params.promptParams.stale_ok = 1;
 	
-	$.ajax({
-		type: "POST",
-		url: 'https://apps.facebook.com/fbml/ajax/prompt_send.php?__a=1',
-		cache: false,
-		dataType: 'text',
-		data: params.promptParams,
-		success: function(data)
+	
+	if(typeof isCallback != 'undefined')
+	{
+		var obj = isCallback;
+		var data = obj.data;
+		
+		if(obj.success)
 		{
 			var str = data.substring(9);
 			
@@ -1595,8 +1595,8 @@ FGS.sendGift = function(params, retry)
 					}
 				}
 			});
-		},
-		error: function()
+		}
+		else
 		{
 			if(typeof(retry) == 'undefined')
 			{
@@ -1607,5 +1607,20 @@ FGS.sendGift = function(params, retry)
 				FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
 			}
 		}
-	});
+	}
+	else
+	{
+		var obj = {
+			arguments:
+			{
+				'type': 'POST',
+				'url': 'https://www.facebook.com/fbml/ajax/prompt_send.php?__a=1',
+				'data': params.promptParams
+			},
+			params: [params, retry],
+			callback: 'FGS.sendGift'
+		};
+		
+		FGSoperator.postMessage(obj);
+	}
 }

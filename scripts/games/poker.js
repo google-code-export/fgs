@@ -83,18 +83,18 @@ FGS.poker.Freegifts =
 			}
 		});
 	},
-	Click2: function(params, retry)
+	
+	Click2: function(params, retry, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 
-
-		$.ajax({
-			type: "POST",
-			url: 'https://apps.facebook.com/fbml/fbjs_ajax_proxy.php?__a=1',
-			dataType: 'text',
-			data: params.postData,
-			success: function(dataStr)
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var dataStr = obj.data;
+			
+			if(obj.success)
 			{
 				try
 				{
@@ -198,8 +198,8 @@ FGS.poker.Freegifts =
 						}
 					}
 				}
-			},
-			error: function()
+			}
+			else
 			{
 				if(typeof(retry) == 'undefined')
 				{
@@ -217,8 +217,23 @@ FGS.poker.Freegifts =
 					}
 				}
 			}
-		});
-	},
+		}
+		else
+		{
+			var obj = {
+				arguments:
+				{
+					'type': 'POST',
+					'url': 'https://www.facebook.com/fbml/fbjs_ajax_proxy.php?__a=1', //apps
+					'data': params.postData
+				},
+				params: [params, retry],
+				callback: 'FGS.poker.Freegifts.Click2'
+			};
+			
+			FGSoperator.postMessage(obj);
+		}
+	}
 };
 
 
