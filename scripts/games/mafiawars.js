@@ -844,8 +844,17 @@ FGS.mafiawars.Bonuses =
 						{ search: 'You are too late to help', error: 'You are too late to help.' },
 						{ search: 'your friend has already completed the mission', error: 'Thanks, but your friend has already completed the mission.' },
 						{ search: 'have been claimed. Look out for more', error: 'You are too late. All of these items have been claimed. Look out for more.' },
-						
-					
+						{ search: 've already helped your friend', error: 'Sorry, you\'ve already helped your friend with this request' },
+						{ search: 'Sorry, the Crew queue is full!', error: 'Sorry, the Crew queue is full!' },
+						{ search: 'users already assisted', error: 'Sorry maximum users already assisted this person.' },
+						{ search: 'You have already received your free bonus reward', error: 'You have already received your free bonus reward' },
+						{ search: 'Sorry, the time limit to assist', error: 'Sorry, the time limit to assist this person has ended' },
+						{ search: 'You have already collected the maximum of', error: 'You have already collected the maximum of bonus rewards today.'},
+						{ search: 'All of the available bonus rewards have already been claimed', error: 'All of the available bonus rewards have already been claimed' },
+						{ search: 'You are already in the Crew queue!', error: 'You are already in the Crew queue!' },
+						{ search: ' cannot receive any more ', error: 'This person can\'t receive any more of this reward from you' },
+						{ search: 'This boost is no longer available', error: 'This boost is no longer available' },
+						{ search: "You've already helped out on this job request", error: "You've already helped out on this job request" }
 					];
 					
 					
@@ -1001,9 +1010,50 @@ FGS.mafiawars.Bonuses =
 						info.image = $('td.message_body > div:nth-child(1)', dataHTML).find('img:first').attr('longdesc');
 						info.title = dataStr.slice(pos1+16,pos2);
 					}
+					else if($('td.message_body', dataHTML).length > 0)
+					{
+						var el = $('td.message_body', dataHTML);
+						
+						var str = el.text();
+						
+						console.log(str);
+
+						var regArr = [
+							'You received an?\\s(.*)\\sfor helping',
+							'You received .* your friend:(.*)',
+							'To celebrate .* you received .*:(.*)',
+							'You have sent\\s(.*)',
+							'You have been added to the (Crew Queue)',
+							'You are too late to help on this job, but .* thanks you for your offer with (.*)',
+							'You were awarded (.*)'
+						];
+						
+						var found = false;
+					
+						$(regArr).each(function(k,v)
+						{
+							var patt = new RegExp(v, 'gmi');
+							
+							var tst = patt.exec(str);
+							
+							if(tst != null)
+							{
+								info.image = 'gfx/90px-check.png';
+								info.text  = str;
+								info.title = tst[1];
+								found = true;
+								return false;
+							}
+						});
+						
+						if(found == false)
+						{
+							throw {message: 'no match'}
+						}
+					}
 					else
 					{
-						throw {message: dataStr}
+						throw {message: 'no match all'}
 					}
 					
 					info.time  = Math.round(new Date().getTime() / 1000);

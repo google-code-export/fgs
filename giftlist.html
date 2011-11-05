@@ -233,7 +233,7 @@ function addDataToScreenLocked(callback, id, data)
 		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+v.gift+'.png"><div style="font-size: 11px;">'+v.friend+thankText+'</div></div>'
 	}
 	
-	function checkIfBonusIsManual(gameID, typeText)
+	function checkIfBonusIsManual(gameID, typeText, text)
 	{
 		var ret = false;
 		$(bkP.gamesData[gameID].filter.bonusesNewWindow).each(function(k,v)
@@ -242,6 +242,10 @@ function addDataToScreenLocked(callback, id, data)
 			
 			if(re.test(typeText))
 			{
+				if(gameID == '10979261223' && text.indexOf('needs help in') != -1) // oddzielenie war od normalnych
+					return true;
+					
+				
 				ret = true;
 				return false;
 			}
@@ -393,7 +397,7 @@ function addDataToScreenLocked(callback, id, data)
 			
 			var v = {	id: data[0],	title: data[2],	text: data[3],	image: data[4],	url: data[5],	time: data[6]	}
 			
-			if(checkIfBonusIsManual(gameID, v.title))
+			if(checkIfBonusIsManual(gameID, v.title, v.text))
 			{
 				htmlManual += getNewManualBonusRow(gameID, v);
 			}

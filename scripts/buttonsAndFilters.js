@@ -157,7 +157,7 @@ FGS.gamesData =
 						filter:		
 						{	
 							bonuses: ['Play Mafia Wars'],		
-							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan', 'Send Satellite Phone', 'Send a set of Documents', 'Get Golden daily take reward', 'Get daily take reward'],
+							bonusesNewWindow: ['^Help','Play Slots', 'Send Mystery Bag', 'Send Satchel of Lira', 'Be all you can be', 'Get uniforms', 'Get a uniform', 'Send a uniform', 'Send Army uniform', 'Go sailing', 'Check your Respect Meter', 'Click image to win', 'Goooooooal', 'Send Mystery Shipment', 'Enter now', 'Claim Halloween Reward', 'Send Anvil', 'Join Operation', 'Get the bounty', 'Send Ornaments', 'Send a present', 'Send LE parts', 'Buy before time runs out.', 'Send LE part', 'Send some lovin', 'Überprüfe deine Respektan', 'Send Satellite Phone', 'Send a set of Documents', 'Get Golden daily take reward', 'Get daily take reward', 'Send Brownie', 'Send Christmas Cupcakes' ],
 							requests: [],
 							requestsNewWindow: [
 								'Join me on a crime spree and find out what we loot',
@@ -1275,6 +1275,7 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
+							'RequestsPending',
 							'ManualBonuses',
 							'BonusesHistory',
 							'FailedBonuses',

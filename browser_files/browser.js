@@ -156,7 +156,7 @@
 					}
 					
 					
-					if(checkIfBonusIsManual(gameID, v.title))
+					if(checkIfBonusIsManual(gameID, v.title, v.text))
 					{
 						htmlsManual[gameID] += getNewManualBonusRow(gameID, v);
 					}

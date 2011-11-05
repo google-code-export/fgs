@@ -168,8 +168,6 @@ FGS.crimecity.Freegifts =
 					
 					var tst = new RegExp(/var filterIds = \'(.*)\'\;/).exec(dataStr);
 					
-					console.log(tst);
-					
 					if(tst != null)
 						reqData.to = tst[1];
 					

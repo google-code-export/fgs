@@ -25,6 +25,13 @@ var FGSoperator = {
 		}
 		else
 		{
+			for(var i =0; i<data.params.length;i++)
+			{
+				if(typeof data.params[i] == 'function')
+				{
+					data.params[i] = data.params[i].toString()
+				}
+			}
 			this.port.postMessage(data);
 		}
 	}

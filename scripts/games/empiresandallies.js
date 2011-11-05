@@ -278,7 +278,7 @@ FGS.empiresandallies.Freegifts =
 						params:	'[['+str+'],"1"]',
 						cmd_id:	cmd_id,
 						app_id:	'81',
-						authHash: FGS.Gup('zyAuthHash', params.zyParam),
+						authHash: FGS.Gup('zyAuthHash', params.zyParam) || FGS.Gup('snapi_auth', params.zyParam),
 						zid:	zy_user,
 						snid:	1,
 					}
@@ -354,7 +354,7 @@ FGS.empiresandallies.Freegifts =
 					
 		$.ajax({
 			type: "POST",
-			url: 'http://fb-client-0.empire.zynga.com/snapi_proxy.php',
+			url: 'http://fb-client-zc.empire.zynga.com/snapi_proxy.php',
 			data: postData,
 			dataType: 'text',
 			success: function(dataStr)

@@ -105,19 +105,79 @@ FGS.zombielane.Freegifts =
 					var pos1b = dataStr.indexOf('"', pos1+1);
 					var sig = dataStr.slice(pos1+1, pos1b);
 					
-					// unique tracking id
-					var date = new Date();
-					var time = "" + date.getTime();
-					var utid = time.substring(time.length-5, time.length);
-					for(var i = 0; i < 11; i++) {
-						utid +=  Math.ceil(9*Math.random());
-					}
+					params.click3param = 'gid='+params.gift+'&uid='+uid+'&sender='+uid+'&sig='+sig+'&ref=&product_detail=Default&src=vir_sendgift_'+params.gift;
+					params.click2param = 'uid='+uid+'&sig='+sig;
 
-					params.utid = utid;					
+					FGS.zombielane.Freegifts.Click2a(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+
+	
+	Click2a: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+
+		$.ajax({
+			type: "GET",
+			url: 'http://'+params.domain+'/dead/gifts',
+			data: params.click2param,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var pos1 = dataStr.indexOf("commonApi.launchGiftPage('")+26;
+					pos1 = dataStr.indexOf("'", pos1)+1;
+					pos1 = dataStr.indexOf("'", pos1)+1;
+					var pos2 = dataStr.indexOf("'", pos1);
 					
-					params.click3param = 'gid='+params.gift+'&utid='+utid+'&uid='+uid+'&sender='+uid+'&sig='+sig+'&ref=&product_detail=Default&src=vir_sendgift_'+params.gift;
+					var utid = dataStr.slice(pos1, pos2);
+					params.utid = utid;	
+					params.click3param += '&utid='+utid;
 					
-					FGS.zombielane.Freegifts.Click3(params);
+					FGS.zombielane.Freegifts.Click3(params);					
 				}
 				catch(err)
 				{
@@ -161,6 +221,7 @@ FGS.zombielane.Freegifts =
 		});
 	},
 	
+	
 	Click3: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -179,19 +240,31 @@ FGS.zombielane.Freegifts =
 					var app_key = '169557846404284';
 					var channel_url = 'http://zlane.digitalchocolate.com/dead/channel.jsp';
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					dataStr = dataStr.replace(tst[1], '');
+					var reqData = {};
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					var pos0 = dataStr.indexOf('openSendRequestDialog(');
+					if(pos0 == -1) throw {}
+					pos0+=22;
 					
-					params.nextParams = paramsStr;
+					var pos1 = dataStr.indexOf('},', pos0);
 					
-					FGS.getFBML(params);
+					eval("var reqData = " + dataStr.slice(pos0, pos1+1));
+					
+					
+
+					var pos2a = dataStr.indexOf('"', pos1)+1;
+					var pos2b = dataStr.indexOf('"', pos2a);
+					
+					var pos3a = dataStr.indexOf('"', pos2b+1)+1;
+					var pos3b = dataStr.indexOf('"', pos3a+1);
+					
+					reqData.data = reqData.type+','+dataStr.slice(pos2a,pos2b)+','+dataStr.slice(pos3a,pos3b);
+					
+					params.reqData = reqData;
+					
+					FGS.zombielane.Freegifts.ClickRequest(params);
+					
 				}
 				catch(err)
 				{
@@ -233,8 +306,46 @@ FGS.zombielane.Freegifts =
 				}
 			}
 		});
-	}
+	},
 	
+	ClickRequest: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+		
+		params.channel = 'http://zlane.digitalchocolate.com/dead/channel.jsp';
+		
+		FGS.getAppAccessTokenForSending(params, function(params, d){
+		
+			/*
+			
+<script type="text/javascript">
+parent.postMessage("cb=f1&origin=http\u00253A\u00252F\u00252Fzlane.digitalchocolate.com\u00252Fdead\u00252Fchannel.jsp\u00252Ff2cc&relation=parent&transport=postmessage&frame=f1&result=\u00257B\u002522request\u002522\u00253A131481013626176\u00252C\u002522to\u002522\u00253A[100000854367347\u00252C100001223903960]\u00257D", "http:\/\/zlane.digitalchocolate.com\/dead\/channel.jsp\/f2cc");
+</script>
+
+*/
+			
+			
+			var pos0 = d.indexOf('&result=')+8;
+			var pos1 = d.indexOf('"', pos0);
+			
+			var str = d.slice(pos0, pos1);
+			console.log(str);
+			
+			var arr = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc));
+			
+			
+			var str = arr.to.join(',');
+			$.get('https://zlane.digitalchocolate.com/dead/GiftSentCallback?gid='+params.gift+'&sender='+FGS.userID+'&request='+arr.request+'&ids%5B%5D='+str+'&src=vir_sendgift_'+params.gift+'&utid='+params.utid+'&_='+new Date().getTime());
+		
+		//MysteryGift&sender=100001178615702&request=255165131182409&ids%5B%5D=100000485017010,100000225088753&src=vir_sendgift_MysteryGift&utid=5704453872730460&_=1320435183044
+		//https://zlane.digitalchocolate.com/dead/GiftSentCallback?gid=EnergyCola&sender=100001178615702&request=160271497402562&ids%5B%5D=100001301082495&src=vir_sendgift_EnergyCola&utid=5704332722840356&_=1320434987834
+		
+		//https://zlane.digitalchocolate.com/dead/GiftSentCallback?gid=Shotgun&request=213976455338056&ids[]=100000854367347,100001223903960&src=vir_sendgift_Shotgun&utid=7120836659399149
+		
+		});
+	},
 };
 
 
