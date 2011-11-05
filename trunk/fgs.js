@@ -681,6 +681,12 @@ var FGS = {
 								if($.inArray(v, params.excludeUsers) != -1)
 									return true;
 							}
+							if(typeof params.reqData.exclude_ids != 'undefined')
+							{
+								if($.inArray(v, params.reqData.exclude_ids.split(',')) != -1)
+									return true;
+							}
+							
 							finalArr.push(x);
 						}
 					});
@@ -749,6 +755,12 @@ var FGS = {
 							
 							FGS.sendView('freegiftSuccess', sendHistory, (typeof(params.thankYou) != 'undefined' ? params.bonusID : ''));
 						}
+						
+						if(typeof callback == 'string')
+						{
+							eval('var callback = '+callback);
+						}
+						
 						callback(params, dataStr2);
 					});					
 				}
