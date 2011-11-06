@@ -387,9 +387,10 @@ FGS.database.addBonus = function(data2)
 					{
 						var tmpObj = JSON.parse(data[8]);
 						
-						var userID = tmpObj.actrs;
-						var gameID = tmpObj.app_id;						
-						var time = tmpObj.pub_time;
+						var userID =  tmpObj.actor || tmpObj.actrs;
+						var gameID = tmpObj.source_app_id || tmpObj.app_id;					
+						var time = tmpObj.pub_time|| tmpObj.content_timestamp;
+						
 						
 						if(typeof(updStatObj[userID+'_'+gameID]) == 'undefined')
 						{
