@@ -168,7 +168,7 @@ function parseChatData(data, empty)
 	$(data.dataPublic).each(function(k,v)
 	{
 		populateChat(v, '#chatUsers');
-	});	
+	});
 	$('.shoutbox', '#chatUsers').scrollTop(10000);
 	
 	$('.users', '#chatUsers').html('');
