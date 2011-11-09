@@ -1457,13 +1457,17 @@ var FGS = {
 				var t1 = dataStr.indexOf("'", t0)
 				var redUrl = dataStr.slice(t0, t1);
 				
-				redUrl = redUrl.replace(/\\x/g, '\u00');
+				redUrl = redUrl.replace(/\\\\x26/g,'&').replace(/\\x26/g,'&').replace(/&amp;/g,'&');
+				
+				return redUrl;
+				/*
 				
 				var parseStr = '{"abc":"'+redUrl+'"}';
 				var parseStr = JSON.parse(parseStr);
 				var redirectUrl = parseStr.abc.toString();
 				
 				return redirectUrl;
+				*/
 			}
 			return false;			
 		}
