@@ -638,6 +638,12 @@ FGS.preStartup = function()
 	
 	FGS.jQuery.ajaxSetup({
 		timeout: 120000,
+		beforeSend: function(a, b) {
+			if(b.url.indexOf('gifts.php&') != -1)
+			{
+				b.url = b.url.replace('gifts.php&', 'gifts.php?');
+			}
+		}
 	});
 	
 	FGS.loadTranslations();
