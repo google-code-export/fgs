@@ -1456,7 +1456,8 @@ var FGS = {
 				t0 += 7;
 				var t1 = dataStr.indexOf("'", t0)
 				var redUrl = dataStr.slice(t0, t1);
-				redUrl = redUrl.replace(/\\x/g, '\\u00');
+				
+				redUrl = redUrl.replace(/\\x/g, '\u00');
 				
 				var parseStr = '{"abc":"'+redUrl+'"}';
 				var parseStr = JSON.parse(parseStr);
