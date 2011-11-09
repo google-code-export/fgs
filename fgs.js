@@ -2474,6 +2474,8 @@ var FGS = {
 	
 	processPageletOnFacebook: function(dataStr)
 	{
+		var dataStrOld = dataStr;
+		
 		var pos0 = dataStr.indexOf('"content":{"pagelet');
 		if(pos0 != -1)
 		{
@@ -2565,6 +2567,14 @@ var FGS = {
 			
 			var dataStr = dataStr2;
 		}
+		
+		if(dataStr.length < 20)
+		{
+			dataStr = dataStrOld;
+			dataStr = dataStr.replace(/<!-- /g, '').replace(/-->/g, '');
+		}
+		
+		
 		return dataStr;
 	},
 	
