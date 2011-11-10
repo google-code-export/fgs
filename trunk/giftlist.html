@@ -6,28 +6,59 @@
 <title>Friendly Gaming Simplifier</title>
 
 <link type="text/css" href="css/redmond/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
-<link type="text/css" href="css/share.css" rel="stylesheet" />
-<link type="text/css" href="css/demo_page.css" rel="stylesheet" />
-<link type="text/css" href="css/demo_table.css" rel="stylesheet" />
-<link type="text/css" href="css/demo_table_jui.css" rel="stylesheet" />
-<link type="text/css" href="css/jquery.contextMenu.css?version=1.1.0.51" rel="stylesheet" />
-<link type="text/css" href="css/jquery.tooltip.css?version=1.1.0.51" rel="stylesheet" />
-
 <script type="text/javascript" src="scripts/jquery-1.5.2.min.js"></script>
-<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.tooltip.min.js"></script>
-
-
-<script type="text/javascript" src="scripts/jquery.utils.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextMenu.js?version=1.1.0.51"></script>
-<script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
-
-<script type="text/javascript" src="scripts/time.js?version=1.1.0.51"></script>
-<script type="text/javascript" src="scripts/notices.js?version=1.1.0.51"></script>
-<script type="text/javascript" src="browser_files/browser.js?version=1.1.0.51"></script>
 
 
 <script type="text/javascript">
+var cssArr = [
+	"css/share.css",
+	"css/demo_page.css",
+	"css/demo_table.css",
+	"css/demo_table_jui.css",
+	"css/jquery.contextMenu.css",
+	"css/jquery.tooltip.css"
+];
+
+for(var i=0;i<cssArr.length;i++)
+{
+	var path = cssArr[i]+'?_='+new Date().getTime();
+	
+	var fileref=document.createElement("link");
+	fileref.setAttribute("rel", "stylesheet");
+	fileref.setAttribute("type", "text/css");
+	fileref.setAttribute("href", path);
+	if (typeof fileref!="undefined")
+		document.getElementsByTagName("head")[0].appendChild(fileref);
+}
+
+var scriptsArr = [
+	"scripts/jquery-ui.min.js",
+	"scripts/jquery.tooltip.min.js",
+	"scripts/jquery.utils.js",
+	"scripts/jquery.contextMenu.js",
+	"scripts/jquery.dataTables.min.js",
+	"scripts/time.js",
+	"scripts/notices.js",
+	"browser_files/browser.js",
+]
+
+for(var i=0;i<scriptsArr.length;i++)
+{
+	var path = scriptsArr[i];
+	
+	$.ajax({
+		async: false,
+		cache: false,
+		url: chrome.extension.getURL(path),
+		type: "GET",
+		success: function(){},
+		dataType: 'script'
+	});
+}
+
+
+
+
 
 $.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
 {
