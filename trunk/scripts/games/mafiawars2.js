@@ -165,7 +165,7 @@ FGS.mafiawars2.MessageCenter =
 						
 						if(typeof item.data[0].image == 'undefined' || item.data[0].image == '')
 						{
-							if(uid == 0)
+							if(uid != 0)
 							{
 								var type = 'https://graph.facebook.com/'+uid+'/picture';
 							}
