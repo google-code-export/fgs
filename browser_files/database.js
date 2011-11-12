@@ -449,13 +449,11 @@ FGS.database.addRequest = function(data2)
 				{
 					try
 					{
-						while(newItem.length > 0)
+						if(newItem.length > 0)
 						{
-							var tmpArr = newItem.slice(0,3);
-							
-							var userID = tmpArr[0];
-							var gameID = tmpArr[1];						
-							var time   = tmpArr[2];
+							var userID = newItem[0];
+							var gameID = newItem[1];						
+							var time   = newItem[2];
 							
 							if(typeof(updStatObj[userID+'_'+gameID]) == 'undefined')
 							{
@@ -467,8 +465,6 @@ FGS.database.addRequest = function(data2)
 								if(time > updStatObj[userID+'_'+gameID].time)
 									updStatObj[userID+'_'+gameID].time = time;
 							}
-							
-							newItem = newItem.slice(3);						
 						}
 					}
 					catch(e)
