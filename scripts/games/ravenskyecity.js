@@ -111,15 +111,16 @@ FGS.ravenskyecity.MessageCenter =
 					var giftArr = [];
 					
 					var dataStr = FGS.processPageletOnFacebook(obj.html);
-					var dataHTML = FGS.HTMLParser(dataStr);
+					dataStr = dataStr.replace(/\sitem_name=\"/g, ' hreflang="').replace(/\sitem_ident=\"/g, ' coords="').replace(/\sto=\"/g, ' target="').replace(/\sids=\"/g, ' datetime="').replace(/\sto=\"/g, ' target="');
+					var dataHTML = FGS.HTMLParser(dataStr);					
 					
 					$('.message', dataHTML).each(function(k,v)
 					{
-						var data = {};			
+						var data = {};
 
-						if($(this).find('a.btn[item_name]').length > 0 && $(this).siblings('h3').attr('id') != 'title_neighbor')
+						if($(this).find('a.btn[hreflang]').length > 0 && $(this).siblings('h3').attr('id') != 'title_neighbor')
 						{
-							var bTitle = $(this).find('a.btn[item_name]').attr('item_name');
+							var bTitle = $(this).find('a.btn[hreflang]').attr('hreflang');
 						}
 						else
 						{
@@ -133,7 +134,7 @@ FGS.ravenskyecity.MessageCenter =
 						data.success = $(this).find('.description.reply:first').text().replace(/\s[0-9]+\s/g, ' 1 ');
 						data.thankYou = {};
 						
-						var id = $(this).find('.btn[ids]').attr('ids');
+						var id = $(this).find('.btn[datetime]').attr('datetime');
 						
 						if($(this).find('.icon').length > 0)
 						{
@@ -153,14 +154,14 @@ FGS.ravenskyecity.MessageCenter =
 							
 							var stats = [];
 							
-							if(el.find('a.btn[to]').length > 0)
+							if(el.find('a.btn[target]').length > 0)
 							{
-								var ids = el.find('a.btn[to]').attr('to').split(',');
+								var ids = el.find('a.btn[target]').attr('target').split(',');
 								
 								if(typeof ids[k] != 'undefined')
 								{
 									data.thankYou = {
-										gift: el.find('a.btn[to]').attr('item_ident'),
+										gift: el.find('a.btn[coords]').attr('coords'),
 										destInt: ids[k]
 									}
 									stats.push(ids[k]);
