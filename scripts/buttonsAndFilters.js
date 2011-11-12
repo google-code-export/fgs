@@ -75,6 +75,58 @@ FGS.gamesData =
 							'GameOptionsTab'
 						]
 					},
+	121581087940710: 	{ 	
+						name: 'Mafia Wars 2',	systemName: 'mafiawars2', link: 'https://apps.facebook.com/mafiawars-two/', 
+						hasSendback: true,
+						useMessageCenter: true,
+						filter:		
+						{	
+							bonuses: [ ],		
+							bonusesNewWindow: [ ],
+							requests: [],
+							requestsNewWindow: [],
+						},
+						buttons:
+						[	
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						]
+					},
+	203160796361073:	{ 	
+						name: 'Ravenskye City',	systemName: 'ravenskyecity', link: 'https://apps.facebook.com/ravenskyecity/', 
+						hasSendback: true,
+						useMessageCenter: true,
+						filter:		
+						{	
+							bonuses: [ ],		
+							bonusesNewWindow: [ ],
+							requests: [],
+							requestsNewWindow: [],
+						},
+						buttons:
+						[	
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						]
+					},
 	176611639027113: 	{ 	
 						name: 'RewardVille',	systemName: 'rewardville', link: 'https://apps.facebook.com/zyngarv/',
 						hasSendback: true,

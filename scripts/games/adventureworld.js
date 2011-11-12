@@ -632,7 +632,7 @@ FGS.adventureworld.Requests =
 						return;
 					}
 				
-					if(dataStr.match(/<!DOCTYPE/g).length > 1 && dataStr.indexOf('<div class="rightPanel">') != -1)
+					if(dataStr.match(/<!DOCTYPE/g) != null && dataStr.indexOf('<div class="rightPanel">') != -1)
 					{
 						var pos0 = dataStr.indexOf('<div class="rightPanel">');
 						
@@ -985,7 +985,7 @@ FGS.adventureworld.Bonuses =
 					}
 					
 					
-					if(dataStr.match(/<!DOCTYPE/g).length > 1 && dataStr.indexOf('<div class="rightPanel">') != -1)
+					if(dataStr.match(/<!DOCTYPE/g) != null && dataStr.indexOf('<div class="rightPanel">') != -1)
 					{
 						var pos0 = dataStr.indexOf('<div class="rightPanel">');
 						

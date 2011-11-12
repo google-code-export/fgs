@@ -332,7 +332,18 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var cleanText = replaceSpanInText(v.text);
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+cleanText+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="requestItem showContextRequests updateTimeAgo processRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
+		var postData = v.post;
+		
+		var addClass = '';
+		
+		if(postData.indexOf('{"') == 0)
+		{
+			postData = escape(postData);
+			addClass = ' isMessageCenterGift';
+		}
+
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+cleanText+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+postData+'" class="requestItem showContextRequests updateTimeAgo processRequestClick'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img NOsrc="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function getNewManualBonusRow(gameID, v)
@@ -358,7 +369,17 @@ function addDataToScreenLocked(callback, id, data)
 			var url = 'http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+v.image+'.png';
 		}
 		
-		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+v.post+'" class="manualItem updateTimeAgo manualRequest processManualRequestClick"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
+		var postData = v.post;
+		
+		var addClass = '';
+		
+		if(postData.indexOf('{"') == 0)
+		{
+			postData = escape(postData);
+			addClass = ' isMessageCenterGift';
+		}
+		
+		return '<div id="'+v.id+'" gameID="'+gameID+'" search-title="'+title+'" title="'+title+'" origTitle="'+v.title+'" time="'+v.time+'" postdata="'+postData+'" class="manualItem updateTimeAgo manualRequest processManualRequestClick'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError"></span><img src="'+url+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description hide">'+v.text+'</span></div>';
 	}
 	
 	function processImageError(e)
@@ -390,6 +411,13 @@ function addDataToScreenLocked(callback, id, data)
 	
 	function processManualRequestClick(el)
 	{
+	
+		if(el.hasClass('isMessageCenterGift'))
+		{
+			alert('This is a message center gift. It doesn\'t support receiving in new tab.');
+			return;
+		}
+		
 		var gameID = el.attr('gameID');
 		bkP.database.deleteItem('requests', gameID, el.attr('id'), 0);
 		bkP.database.deleteItem('requests', gameID, el.attr('id'), 1);
@@ -523,6 +551,12 @@ function addDataToScreenLocked(callback, id, data)
 					type: 'request',
 					title: el.attr('search-title')
 				}
+		if(el.hasClass('isMessageCenterGift'))
+		{
+			obj.type = 'request_MC';
+			obj.data = JSON.parse(unescape(obj.post));
+			obj.gameID = gameID;
+		}
 		
 		bkP.xhrQueue.push(obj);
 		updateQueueCount();
@@ -929,7 +963,20 @@ function addDataToScreenLocked(callback, id, data)
 								if($(this).hasClass('manualRequest'))
 								{
 									var postData = $(this).attr('postData');
-									bkP.emptyUnwantedGifts(postData);
+									
+									if($(this).hasClass('isMessageCenterGift'))
+									{
+										var obj = {}
+										obj.data = JSON.parse(unescape(postData));
+										obj.gameID = gameID;
+										obj.deleteItem = true;
+										
+										bkP[game].MessageCenter.Receive(obj);
+									}
+									else
+									{
+										bkP.emptyUnwantedGifts(postData);
+									}
 									
 									delReqArr.push(elID);
 								}
@@ -1005,7 +1052,20 @@ function addDataToScreenLocked(callback, id, data)
 						if($(this).hasClass('manualRequest'))
 						{
 							var postData = $(this).attr('postData');
-							bkP.emptyUnwantedGifts(postData);
+							
+							if($(this).hasClass('isMessageCenterGift'))
+							{
+								var obj = {}
+								obj.data = JSON.parse(unescape(postData));
+								obj.gameID = gameID;
+								obj.deleteItem = true;
+								
+								bkP[game].MessageCenter.Receive(obj);
+							}
+							else
+							{
+								bkP.emptyUnwantedGifts(postData);
+							}
 							
 							delReqArr.push(elID);
 						}
@@ -1145,7 +1205,19 @@ function addDataToScreenLocked(callback, id, data)
 						delArr.push(el.attr('id'));
 						try
 						{
-							bkP.emptyUnwantedGifts(postData);
+							if(el.hasClass('isMessageCenterGift'))
+							{
+								var obj = {}
+								obj.data = JSON.parse(unescape(postData));
+								obj.gameID = gameID;
+								obj.deleteItem = true;
+								
+								bkP[game].MessageCenter.Receive(obj);
+							}
+							else
+							{
+								bkP.emptyUnwantedGifts(postData);
+							}
 						} catch(e) {}
 						el.remove();
 					});
@@ -1669,7 +1741,17 @@ function addDataToScreenLocked(callback, id, data)
 		
 		var cleanText = replaceSpanInText(v.text);
 		
-		return '<div id="'+v.id+'" error="'+v.error+'" gameID="'+v.gameID+'" title="'+cleanText+'" time="'+v.time+'" postData="'+v.post+'" class="withDesc requestItem disabled updateTimeAgo'+addClass+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
+		var postData = v.post;
+		
+		var addClass2 = '';
+		
+		if(postData.indexOf('{"') == 0)
+		{
+			postData = escape(postData);
+			addClass2 = ' isMessageCenterGift';
+		}
+		
+		return '<div id="'+v.id+'" error="'+v.error+'" gameID="'+v.gameID+'" title="'+cleanText+'" time="'+v.time+'" postData="'+postData+'" class="withDesc requestItem disabled updateTimeAgo'+addClass + addClass2+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><span class="bonusError">'+err+'</span><img src="'+v.image+'" onError="processImageError(this)"><span class="title">'+v.title+'</span><span class="description">'+v.text+'</span></div>';
 	}
 	
 	function friendsLoaded(gameID, status)
@@ -3073,8 +3155,22 @@ function onMouseDownTest(e)
 					el.remove();
 					bkP.database.deleteItem('requests', el.attr('gameID'), el.attr('id'), 0);
 					updateCount(el.attr('gameID'));
+					
+					var game = bkP.gamesData[el.attr('gameID')].systemName;
 
-					bkP.emptyUnwantedGifts(postData);
+					if(el.hasClass('isMessageCenterGift'))
+					{
+						var obj = {}
+						obj.data = JSON.parse(unescape(postData));
+						obj.gameID = el.attr('gameID');
+						obj.deleteItem = true;
+						
+						bkP[game].MessageCenter.Receive(obj);
+					}
+					else
+					{
+						bkP.emptyUnwantedGifts(postData);
+					}
 				}
 				else if(action == 'deleteSimilar')
 				{
@@ -3091,8 +3187,23 @@ function onMouseDownTest(e)
 								el.parent().find('div[search-title="'+el.attr('search-title')+'"]').not('.inProgress').each(function()
 								{
 									var postData = $(this).attr('postData');
+									
+									if($(this).hasClass('isMessageCenterGift'))
+									{
+										var game = bkP.gamesData[el.attr('gameID')].systemName;
+										
+										var obj = {}
+										obj.data = JSON.parse(unescape(postData));
+										obj.gameID = el.attr('gameID');
+										obj.deleteItem = true;
+										
+										bkP[game].MessageCenter.Receive(obj);
+									}
+									else
+									{
+										bkP.emptyUnwantedGifts(postData);
+									}
 									$(this).remove();
-									bkP.emptyUnwantedGifts(postData);
 								});
 								
 								bkP.database.deleteItemByTitle('requests', el.attr('gameID'), el.attr('origTitle'), 0);
@@ -3109,7 +3220,12 @@ function onMouseDownTest(e)
 				}
 				else if(action == 'debug')
 				{
-					bkP.prepareLinkForGame('', el.attr('id'), el.attr('postData'), true);
+					if(el.hasClass('isMessageCenterGift'))
+					{
+						alert('This is a message center gift. It doesn\'t support debug');
+					}
+					else
+						bkP.prepareLinkForGame('', el.attr('id'), el.attr('postData'), true);
 					//el.remove();
 				}
 			});
@@ -3500,10 +3616,26 @@ function onMouseDownTest(e)
 				tempData.destInt = bkP.Gup('params\\\[from_id\\\]', postData);
 			}
 			
+			if(tempData.destInt.indexOf(',') != -1)
+			{
+				var sendArr = [];
+				var ids = tempData.destInt.split(',');
+				
+				for(var i=0; i<ids.length;i++)
+				{
+					sendArr.push(ids[i]);
+				}
+			}
+			else
+			{
+				var sendArr = [tempData.destInt];
+			}
+			
+			
 			var params = {
 				gift: tempData.gift,
 				gameID:	gameID,
-				sendTo: [tempData.destInt],
+				sendTo: sendArr,
 				sendToName: tempData.destName,
 				thankYou: true,
 				bonusID: bonusID,	
