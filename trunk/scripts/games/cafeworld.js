@@ -145,7 +145,8 @@ FGS.cafeworld.Requests =
 					
 					if(dataStr.indexOf('/me/apprequests') != -1)
 					{
-						FGS.getAppAccessToken(currentType, id, currentURL, 'api_key=101539264719&app_id=101539264719&channel=http://fb-0.cafe.zynga.com/current//channel/custom_channel.html', FGS.cafeworld.Requests.ParseAppRequests, {});
+						var url = 'https://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php?fb_request_id='+id+'&to='+FGS.userID;
+						FGS.cafeworld.Requests.ClickNew(currentType, id, url, {});
 						return;
 					}
 
@@ -299,62 +300,6 @@ FGS.cafeworld.Requests =
 		});
 	},
 	
-	ParseAppRequests: function(currentType, id, currentURL, params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
-		var info = {}
-	
-		try
-		{
-			var access_token = params[0].access_token;
-			var data = params[1];
-			
-			var response = JSON.parse(data);
-			var tmpData;
-			
-			for(var i=0; i<response.data.length; i++)
-			{
-				if(response.data[i].id == id)
-				{
-					tmpData = response.data[i];
-					break;
-				}
-			}
-			
-			if (!tmpData) {
-				throw {message: 'old gift'} // not found
-				return;
-			}
-
-            var tmp = tmpData.data.split('|||');
-            var uPar = '?sk=' + tmp[0] + '&rid=' + tmp[2];
-			uPar += '&from=' + tmpData.from.id;
-            uPar += '&skip_tracking=1';
-            uPar += '&fb_request_id=' + tmpData.id;
-			
-			var url = 'http://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php' + uPar;
-			var params2 = {access_token: '?access_token='+access_token}
-			
-			
-			
-			FGS.cafeworld.Requests.ClickNew(currentType, id, url, params2);
-		}
-		catch(err)
-		{
-			FGS.dump(err);
-			FGS.dump(err.message);
-			if(typeof(retry) == 'undefined')
-			{
-				retryThis(currentType, id, currentURL, params, true);
-			}
-			else
-			{
-				FGS.endWithError('receiving', currentType, id);
-			}
-		}
-	},
-	
 	ClickNew: function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -379,7 +324,7 @@ FGS.cafeworld.Requests =
 						return;
 					}
 					
-					var el = $('#gift_items', dataHTML);
+					var el = $('#cell_wrapper', dataHTML);
 					
 					if(el.length > 0)
 					{
@@ -392,6 +337,10 @@ FGS.cafeworld.Requests =
 							var gift = titleX.slice(0,pos1)+' from';
 							var from = titleX.slice(pos1+6);
 						}
+						else {
+							var gift = '';
+							var from = '';
+						}
 					
 						info.image = el.children('p:first').children('img').attr('longdesc');
 						info.title = gift;
@@ -399,7 +348,7 @@ FGS.cafeworld.Requests =
 						info.time = Math.round(new Date().getTime() / 1000);
 						
 						FGS.endWithSuccess(currentType, id, info);
-						FGS.deleteNewRequests(id, params.access_token);		
+						//FGS.deleteNewRequests(id, params.access_token);		
 						return;
 					}
 					else
