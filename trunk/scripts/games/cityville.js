@@ -188,195 +188,197 @@ FGS.cityville.Freegifts =
 				{
 					var pos1,pos2;
 					
-					if(dataStr.indexOf('snml:') == -1)
+					
+					var pos1 = dataStr.indexOf('mfs.setDataSet( [');
+					
+					if(pos1 == -1) throw {message: 'no people'}
+					pos1+=16;
+					
+					var pos2 = dataStr.indexOf(');', pos1);
+					
+					var sets = JSON.parse(dataStr.slice(pos1, pos2));
+					
+					var key = 0;
+					
+					if(typeof sets[1] != 'undefined')
+						key = 1;
+					
+					var finalArr = [];
+					
+					var friends = [];
+					
+					var zySendArr = [];
+					
+					var request_ids = [];
+					
+					for(var i=0;i<sets[key].items.length;i++)
 					{
-						retry = true;
-						throw {message: 'invalid gift'}
-					}
-					
-					var data = dataStr.replace(/snml:/g, 'fb_');
-					
-					var outStr = '';
-					
-					var pos1 = data.indexOf('<fb_serverSnml');
-					
-					var s1 = data.indexOf('<style', pos1);
-					var s2 = data.indexOf('/style', s1);
-					
-					outStr += data.slice(s1, s2+7);
-					
-					var s1 = data.indexOf('<div', pos1);
-					var s2 = data.indexOf('/div', s1);
-					
-					outStr += data.slice(s1, s2+5);
-					
-					var s1 	= data.indexOf('<fb_multi-friend-selector', pos1);
-					var s11 = data.indexOf('exclude_ids="', s1);
-					s11+=13;
-					var s12 = data.indexOf('"', s11);
-
-					var exclude = data.slice(s11, s12);
-					
-					var f1 = data.indexOf('<fb_request-form', pos1);
-					
-					var pos1 = data.indexOf('invite="', f1);
-					var a1 = data.indexOf('action="', f1);
-					var m1 = data.indexOf('method="', f1);
-					var t1 = data.indexOf('type="', f1);
-					
-					outStr += '<div class="mfs">';
-					
-					var inviteAttr 	= data.slice(pos1+8, data.indexOf('"', pos1+8));
-					var actionAttr	= data.slice(a1+8, data.indexOf('"', a1+8));
-					var methodAttr 	= data.slice(m1+8, data.indexOf('"', m1+8));
-					var typeAttr	= data.slice(t1+6, data.indexOf('"', t1+6));
-					
-					var c1 = data.indexOf('<fb_content', f1);
-					var c11 = data.indexOf('>', c1);
-					var c12 = data.indexOf('/fb_content>',c11);
-					
-					var contentTmp = data.slice(c11+1, c12-1).replace(/\"/g, "'");
-					
-					var contentAttr = FGS.encodeHtmlEntities(contentTmp);
-
-					outStr += '<fbGood_request-form invite="'+inviteAttr+'" action="'+actionAttr+'" method="'+methodAttr+'" type="'+typeAttr+'" content="'+contentAttr+'"><div><fb:multi-friend-selector cols="5" condensed="true" max="30" unselected_rows="6" selected_rows="5" email_invite="false" rows="5" exclude_ids="EXCLUDE_ARRAY_LIST" actiontext="Select a gift" import_external_friends="false"></fb:multi-friend-selector><fb:request-form-submit import_external_friends="false"></fb:request-form-submit><a style="display: none" href="http://fb-0.FGS.cityville.zynga.com/flash.php?skip=1">Skip</a></div></fbGood_request-form>';
-					
-					outStr += '</div>';
-					
-					var cmd_id = new Date().getTime();
-					
-					var pos1 = data.indexOf('SNAPI.init(');
-					var pos2 = data.indexOf('{', pos1);
-					var pos3 = data.indexOf('}},', pos2)+2;
-					
-					var session = data.slice(pos2,pos3);
-					
-					var exArr = exclude.split(',');
-					
-					var str = '';
-					$(exArr).each(function(k,v)
-					{
-						str += '"'+v+'"'
+						var p = sets[key].items[i];
 						
-						if(k+1 < exArr.length)
-							str+= ',';
-					});
-					
-					var pos1 = data.indexOf('"zy_user":"')+11;
-					var pos2 = data.indexOf('"', pos1);
-					var zy_user = data.slice(pos1,pos2);	
-					
-					
-					if(typeof(params.thankYou) != 'undefined')
-					{
-						str = params.sendTo[0];
+						var x = {};
+						
+						var id = p.pic.replace(/[^0-9]/g, '');
+						
+						x[id] = {'name': p.value};
+						
+						friends.push(id);
+						
+						if(typeof(params.sendTo) != 'undefined' && $.inArray(id, params.sendTo) > -1)
+						{
+							zySendArr.push(p.key);
+							request_ids.push(id);
+						}
+						
+						finalArr.push(x);
 					}
 					
-					var postData = 
-					{
-						method: 'getSNUIDs',
-						params:	'[['+str+'],"1"]',
-						cmd_id:	cmd_id,
-						app_id:	'75',
+					var s0 = dataStr.indexOf('mfs.wire(');
+					
+					var s1 = dataStr.indexOf("body  :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var body = dataStr.slice(s1a, s1b);
+					
+					var s1 = dataStr.indexOf("title :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var title = dataStr.slice(s1a, s1b);
+					
+					var s1 = dataStr.indexOf("image :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var image = dataStr.slice(s1a, s1b);
+					
+					var s1a = dataStr.indexOf("senderId=", s0)+9;
+					var s1b = dataStr.indexOf('&', s1a);
+					
+					var sender = dataStr.slice(s1a, s1b);
+					
+					var s1 = dataStr.indexOf("eventTypeId :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var event = dataStr.slice(s1a, s1b);
+
+					var s1 = dataStr.indexOf("signature :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var signature = dataStr.slice(s1a, s1b);
+					
+					var s1 = dataStr.indexOf(" sendkey :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var sendkey = dataStr.slice(s1a, s1b);
+										
+					var s1 = dataStr.indexOf("button_href :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var button_href = dataStr.slice(s1a, s1b);
+					
+					
+					var s1 = dataStr.indexOf("button_post :", s0);
+					var s1a = dataStr.indexOf('"', s1)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var button_post = dataStr.slice(s1a, s1b);
+					
+					/*
+							
+						{
+							"gameId":"291549705119",
+							"toZid":["20231959805"],
+							"type":"gift",
+							"data":
+							{
+								"data":
+								{
+									"item":"energy_3",
+									"reverse":"",
+									"ts":1321120709,
+									"signature":"d81902111e69cce4f9c76a3a8ddeb3fa",
+									"sendkey":"4f3c292f97e2a53792cb7b0f9a7b807a$$ccF(NVS.65kBT_WULNW8T_c!1PEZcy,IXpX6!)U.5eqN4bMmS-18SazCb,3NojjAMxsBIOaM1.ny53fMA0L"
+								},
+								"image":"https://zynga1-a.akamaihd.net/city/hashed/cf8f7acd2dea77fe2a06a59a39fd2c7a.png",
+								"body":"Here is +3 Energy to help you out!",
+								"button_href":"http://apps.facebook.com/cityville/giftAccept.php?gift=energy_3&senderId=31116193347&timestamp=1321120709&signature=d81902111e69cce4f9c76a3a8ddeb3fa&sendkey=4f3c292f97e2a53792cb7b0f9a7b807a%24%24ccF%28NVS.65kBT_WULNW8T_c%211PEZcy%2CIXpX6%21%29U.5eqN4bMmS-18SazCb%2C3NojjAMxsBIOaM1.ny53fMA0L",
+								"button_post":"http://apps.facebook.com/cityville/giftAccept.php?gift=energy_3&senderId=31116193347&timestamp=1321120709&signature=d81902111e69cce4f9c76a3a8ddeb3fa&sendkey=4f3c292f97e2a53792cb7b0f9a7b807a%24%24ccF%28NVS.65kBT_WULNW8T_c%211PEZcy%2CIXpX6%21%29U.5eqN4bMmS-18SazCb%2C3NojjAMxsBIOaM1.ny53fMA0L",
+								"button_text":"Accept Gift",
+								"title":"Accept Gift",
+								"button_text_short":"button_text_short",
+								"key":"d81902111e69cce4f9c76a3a8ddeb3fa",
+								"senderID":"31116193347",
+								"request_ids":
+									{
+										"request":256058961109596,
+										"to":[100000221046960]
+									}
+							},
+							"eventTypeId":"13002"
+						}
+					
+					*/
+					
+					params.snapi = {
+						js: 1,
+						method: 'request.send',
+						params: {
+							gameId: 291549705119,
+							toZid: zySendArr,
+							type: 'gift',
+							data: {
+								data: {
+									item: params.gift,
+									reverse: "",
+									ts: Math.round(new Date().getTime() / 1000),
+									signature: signature,
+									sendkey: sendkey
+								},
+								button_post: button_post,
+								button_href: button_href,
+								button_text: title,
+								button_text_short: 'button_text_short',
+								title: title,
+								body: body,
+								key: signature,
+								senderID: sender,
+								image: image,
+								request_ids: {}
+							},
+							eventTypeId: event
+						},
+						cmd_id: new Date().getTime(),
+						app_id: 75,
+						snid: 1,
 						authHash: FGS.Gup('zyAuthHash', params.zyParam),
-						zid:	zy_user,
-						snid:	1,
-					}
+						zid: sender,
+					};
+
+					params.request_ids = request_ids;
 					
-					params.altHash = session;
-					params.postData = postData;
-					params.excludeCity = exclude;
+					params.items = finalArr;
 					
-					params.outStr = outStr;
-					
-					if(exclude == '')
-						FGS.cityville.Freegifts.Finish(params);
-					else					
-						FGS.cityville.Freegifts.Click4(params);
-					
-				}
-				catch(err)
-				{
-					FGS.dump(err);
-					FGS.dump(err.message);
-					if(typeof(retry) == 'undefined')
-					{
-						retryThis(params, true);
-					}
-					else
-					{
-						if(typeof(params.sendTo) == 'undefined')
-						{
-							FGS.sendView('updateNeighbors', false, params.gameID);
-						}
-						else
-						{
-							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-						}
-					}
-				}
-			},
-			error: function()
-			{
-				if(typeof(retry) == 'undefined')
-				{
-					retryThis(params, true);
-				}
-				else
-				{
 					if(typeof(params.sendTo) == 'undefined')
 					{
-						FGS.sendView('updateNeighbors', false, params.gameID);
-					}
-					else
-					{
-						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
-					}
-				}
-			}
-		});
-	},
-
-	Click4: function(params, retry)
-	{
-		var $ = FGS.jQuery;
-		var retryThis 	= arguments.callee;
-		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
-		
-		
-		var postData = params.postData;
-		if(typeof(retry) != 'undefined')
-		{
-			postData.authHash = params.altHash;
-		}
-					
-		$.ajax({
-			type: "POST",
-			url: 'http://fb-client-0.cityville.zynga.com/snapi_proxy.php',
-			data: postData,
-			dataType: 'text',
-			success: function(dataStr)
-			{
-				try
-				{
-					dataStr = dataStr.replace('&nbsp;&nbsp;', '');
-					var info = JSON.parse(dataStr);
-					
-					var str = '';
-					
-					for(var uid in info.body)
-					{
-						var t = info.body[uid];
-						str+= t+',';					
-					}
-					params.excludeCity = str.slice(0, -1);
-					
-					if(typeof(params.thankYou) != 'undefined')
-					{
-						params.sendTo[0] = info.body[params.sendTo[0]];
+						FGS.sendView('updateNeighbors', finalArr, params.gameID);
+						return;
 					}
 					
-					FGS.cityville.Freegifts.Finish(params);					
+					var reqData = {};
+					
+					reqData.filters = JSON.stringify( [{name: 'Cityville Friends', user_ids: friends}] );
+					reqData.title = title;
+					reqData.message = body;
+					
+					params.reqData = reqData;
+					params.channel = 'http://fb-client-0.cityville.zynga.com/';
+					
+					FGS.getAppAccessTokenForSending(params, FGS.cityville.Freegifts.Click_Snapi);
 				}
 				catch(err)
 				{
@@ -420,29 +422,104 @@ FGS.cityville.Freegifts =
 		});
 	},
 	
-	Finish: function(params, retry)
+	Click_Snapi: function(params, d, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
-							
-		var outStr = params.outStr;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
 		
-		outStr = outStr.replace('EXCLUDE_ARRAY_LIST', params.excludeCity);
+		var pos0 = d.indexOf('&result=')+8;
+		var pos1 = d.indexOf('"', pos0);
 		
-		var str = outStr;
+		var str = d.slice(pos0, pos1);
+		var data = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc));
 		
-		str = str.replace(/fbgood_/gi, 'fb:');
-		str = str.replace(/fb_req-choice/gi, 'fb:req-choice');
-		str = str.replace('/fb:req-choice', '/fb:request');
-		str = str.replace('/fb:req-choice', '/fb:req');
+		params.snapi.params.data.request_ids = data;
 		
-		var fbml = '<fb:fbml>'+str+'</fb:fbml>';
-		var nextParams = 'api_key=291549705119&locale=en_US&sdk=joey&fbml='+encodeURIComponent(fbml);
+		params.request_data = params.snapi.params.data.data;
 		
-		params.nextParams = nextParams;
-
-		FGS.getFBML(params);
-	}
+		params.snapi.params = JSON.stringify(params.snapi.params);
+		
+		$.ajax({
+			type: "POST",
+			url: 'https://fb-client-0.cityville.zynga.com/snapi_proxy.php',
+			data: params.snapi,
+			dataType: 'json',
+			success: function(obj)
+			{
+				try
+				{
+					
+				/*
+								data: {
+									item: params.gift,
+									reverse: "",
+									ts: Math.round(new Date().getTime() / 1000),
+									signature: signature,
+									sendkey: sendkey
+								},
+					
+				*/
+					var arr = [];
+					for(var i in obj.body)
+					{
+						arr.push(i);
+					}
+				
+					var postData = {
+						gift: params.gift,
+						ts: params.request_data.ts,
+						outgoingSendkey: params.request_data.signature,
+						error: 'none',
+						recipients: arr.join(',')
+					}
+					
+					var postUrl = 'https://fb-client-0.cityville.zynga.com/gifts.php?&action=sentZMFS&'+params.zyParam;
+					
+					$.post(postUrl, postData);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, d, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, d, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
 };
 
 
