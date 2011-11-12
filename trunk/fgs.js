@@ -1710,6 +1710,14 @@ var FGS = {
 					FGS.xhrQueue = FGS.xhrQueue.slice(1);
 					FGS.xhrWorking++;
 				}
+				else if(FGS.xhrQueue[0].type == 'request_MC')
+				{
+					FGS.xhrQueue[0].info = {type: 'request', id: FGS.xhrQueue[0].id};
+					
+					FGS[FGS.xhrQueue[0].game].MessageCenter.Receive(FGS.xhrQueue[0]);
+					FGS.xhrQueue = FGS.xhrQueue.slice(1);
+					FGS.xhrWorking++;
+				}
 				else if(FGS.xhrQueue[0].type == 'bonus')
 				{
 					FGS[FGS.xhrQueue[0].game].Bonuses.Click("bonus", FGS.xhrQueue[0].id, FGS.xhrQueue[0].url);
@@ -1794,6 +1802,16 @@ var FGS = {
 			var urlIK = 'https://www.facebook.com/games';
 		else
 			var urlIK = 'https://www.facebook.com/?sk=apps&ap=1';
+		
+		
+		for(var id in FGS.gamesData)
+		{
+			if(typeof FGS.options.games[id] != 'undefined' && FGS.options.games[id].enabled == true && typeof FGS.gamesData[id].useMessageCenter != 'undefined')
+			{
+				var name = FGS.gamesData[id].systemName;
+				FGS[name].MessageCenter.Start({gameID: id});
+			}
+		}
 	
 		FGS.jQuery.ajax({
 			type: "GET",
@@ -1876,6 +1894,11 @@ var FGS = {
 					{
 						if(APPID != '167746316127' || (APPID == '167746316127' && !FGS.options.games['1677463161271'].enabled))
 							return;
+					}
+					
+					if(typeof FGS.gamesData[APPID].useMessageCenter != 'undefined')
+					{
+						return;
 					}
 
 					var el = $(this);

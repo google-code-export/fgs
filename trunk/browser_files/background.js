@@ -112,7 +112,8 @@ FGS.hideFromFeed = function(bonusID, limit)
 					'type': 'POST',
 					'url': 'https://www.facebook.com/ajax/feed/filter_action.php?__a=1',
 					'data': postData
-				}
+				},
+				params: []
 			};
 			
 			FGSoperator.postMessage(obj);
