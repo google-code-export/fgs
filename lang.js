@@ -11,9 +11,9 @@ FGS.getMsg = function(m, params)
 		
 		if(typeof FGS.options.language == 'undefined' || FGS.options.language == 0)
 		{
-			if(FGS.userLoc != null)
-				lang = FGS.userLoc;
-			else
+			//if(FGS.userLoc != null)
+			//	lang = FGS.userLoc;
+			//else
 				lang = 'en_US';
 		}
 		else
