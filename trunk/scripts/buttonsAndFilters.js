@@ -108,18 +108,18 @@ FGS.gamesData =
 						filter:		
 						{	
 							bonuses: [ ],		
-							bonusesNewWindow: [ ],
+							bonusesNewWindow: ['(.*)'],
 							requests: [],
 							requestsNewWindow: [],
 						},
 						buttons:
 						[	
-							'BonusesPending',
+							//'BonusesPending',
 							'RequestsPending',
 							'ManualBonuses',
-							'BonusesHistory',
+							//'BonusesHistory',
 							'RequestsHistory',
-							'FailedBonuses',
+							//'FailedBonuses',
 							'FailedGifts',
 							'SendFreeGifts',
 							'SendFreeGiftsHistory',
