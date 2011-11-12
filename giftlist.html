@@ -260,8 +260,21 @@ function addDataToScreenLocked(callback, id, data)
 		else
 		{
 			var thankText = '';
-		}		
-		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+v.gift+'.png"><div style="font-size: 11px;">'+v.friend+thankText+'</div></div>'
+		}	
+		
+		var giftImg = 'http://fgs.googlecode.com/svn/branches/reqs/'+game+'/'+v.gift+'.png';
+		try
+		{
+			if(typeof bkP.giftsArray[gameID][v.gift].image != 'undefined')
+			{
+				giftImg = bkP.giftsArray[gameID][v.gift].image;
+			}
+		}
+		catch (e) {	console.log(e); }
+		
+		
+		
+		return  '<div class="freegiftHistory updateTimeAgo" title="'+v.friend+'" alt="'+v.friend+'" time="'+v.time+'"><span class="timeAgo">'+format_time_ago(v.time)+'</span><br /><img  style="width: 32px; height: 32px;margin:2px auto;" src="'+giftImg+'"><div style="font-size: 11px;">'+v.friend+thankText+'</div></div>'
 	}
 	
 	function checkIfBonusIsManual(gameID, typeText, text)
