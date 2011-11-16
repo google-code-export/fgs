@@ -47,6 +47,8 @@ for(var i=0;i<scriptsArr.length;i++)
 	
 	var xhrObj = new XMLHttpRequest();
 	xhrObj.open('GET', path, false);
+	xhrObj.setRequestHeader("Content-Type", "text/plain");
+	xhrObj.overrideMimeType('text/plain; charset=UTF-8');
 	xhrObj.send('');
 	
 	var se = document.createElement('script');
