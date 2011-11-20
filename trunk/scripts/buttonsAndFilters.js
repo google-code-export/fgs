@@ -101,6 +101,32 @@ FGS.gamesData =
 							'GameOptionsTab'
 						]
 					},
+	107040076067341: 	{ 	
+						name: 'Castleville',	systemName: 'castleville', link: 'https://apps.facebook.com/playcastleville/', 
+						hasSendback: true,
+						useMessageCenter: true,
+						filter:		
+						{	
+							bonuses: [ ],		
+							bonusesNewWindow: [ ],
+							requests: [],
+							requestsNewWindow: [],
+						},
+						buttons:
+						[	
+							'BonusesPending',
+							'RequestsPending',
+							'ManualBonuses',
+							'BonusesHistory',
+							'RequestsHistory',
+							'FailedBonuses',
+							'FailedGifts',
+							'SendFreeGifts',
+							'SendFreeGiftsHistory',
+							'NeighborsSearch',
+							'GameOptionsTab'
+						]
+					},
 	203160796361073:	{ 	
 						name: 'Ravenskye City',	systemName: 'ravenskyecity', link: 'https://apps.facebook.com/ravenskyecity/', 
 						hasSendback: true,
@@ -333,7 +359,7 @@ FGS.gamesData =
 						filter:		
 						{
 							bonuses: [],
-							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help\\s((?!friend).)*$', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost', 'Cick to Vote'],
+							bonusesNewWindow: ['Get Energy Refill', 'Get a spice crate', 'Send the missing parts', 'Get Lotto Ticket', '^Visit', '^Help\\s((?!friend).)*$', 'Send Energy', 'Send Fairy Dust', 'Send Utensils', 'Send Wildflower Essence', 'Send Vials of Dewdrops', 'Send Mountain-Fresh Air', '^Send Spice to', 'Free Spice', 'Send Special Delivery', 'Get a Mastery Boost', 'Cick to Vote', 'CLICK TO VOTE'],
 							requests: [],
 							requestsNewWindow: ['(.*)needs some help with a catering order(.*)']
 						},

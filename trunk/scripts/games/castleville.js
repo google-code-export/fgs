@@ -1,4 +1,4 @@
-FGS.mafiawars2.MessageCenter = 
+FGS.castleville.MessageCenter = 
 {
 	Start: function(params, retry) {
 		var $ = FGS.jQuery;
@@ -6,7 +6,7 @@ FGS.mafiawars2.MessageCenter =
 
 		$.ajax({
 			type: "GET",
-			url: 'https://apps.facebook.com/mafiawars-two/',
+			url: 'https://apps.facebook.com/playcastleville/',
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -23,7 +23,7 @@ FGS.mafiawars2.MessageCenter =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.mafiawars2.MessageCenter.Click2(params);
+					FGS.castleville.MessageCenter.Click2(params);
 				}
 				catch(err)
 				{
@@ -63,8 +63,6 @@ FGS.mafiawars2.MessageCenter =
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 					params.domain = params.step1url.match(re)[1].toString();
 					
-					var nextUrl = 'https://'+params.domain+'/';
-					
 					var pos1 = dataStr.indexOf('var g_friendData = [');
 					if(pos1 == -1) throw {message: 'No friends data'}
 					pos1+=19;
@@ -85,8 +83,6 @@ FGS.mafiawars2.MessageCenter =
 					
 					params.zyFriends = zids;
 					
-					var nextUrl = 'https://'+params.domain+'/';
-					
 					var pos1 = dataStr.indexOf('new ZY(');
 					if(pos1 == -1) throw {message: 'No new ZY'}
 					pos1+=7;
@@ -100,10 +96,10 @@ FGS.mafiawars2.MessageCenter =
 					params.domain = params.step1url.match(re)[1].toString();
 					params.zyParam = FGS.jQuery.param(zyParam);
 					
-					params.step1url = 'http://'+params.domain+'/evt_data.php';
+					params.step1url = 'http://'+params.domain+'/zsc/evt_data.php';
 					params.step1params = params.zyParam;
 					
-					FGS.mafiawars2.MessageCenter.Click3(params);
+					FGS.castleville.MessageCenter.Click3(params);
 				}
 				catch(err)
 				{
@@ -151,7 +147,7 @@ FGS.mafiawars2.MessageCenter =
 						if(typeof uid == 'undefined')
 							uid = 0;
 							
-						if(item.metadata.subtype == '_subtype')
+						if(item.metadata.subtype == '_subtype' || item.metadata.subtype == '')
 						{
 							var bTitle = item.metadata.type_text;
 						}
@@ -228,7 +224,7 @@ FGS.mafiawars2.MessageCenter =
 		
 		$.ajax({
 			type: "GET",
-			url: 'https://apps.facebook.com/mafiawars-two/',
+			url: 'https://apps.facebook.com/playcastleville/',
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -245,7 +241,7 @@ FGS.mafiawars2.MessageCenter =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.mafiawars2.MessageCenter.Receive2(params);
+					FGS.castleville.MessageCenter.Receive2(params);
 				}
 				catch(err)
 				{
@@ -326,11 +322,11 @@ FGS.mafiawars2.MessageCenter =
 					params.zyParam = FGS.jQuery.param(zyParam);
 					
 					if(typeof params.deleteItem != 'undefined')
-						params.receive_url = 'http://'+params.domain+'/'+params.data.data[0].ignore_post+'&'+params.zyParam+'&eventIds[]='+params.data.item_id+'&all=all&zy_ctoken=null';
+						params.receive_url = params.data.data[0].ignore_post+'&'+params.zyParam+'&eventIds[]='+params.data.item_id+'&all=all&zy_ctoken=null';
 					else
-						params.receive_url = 'http://'+params.domain+'/'+params.data.data[0].button_post+'&'+params.zyParam+'&eventIds[]='+params.data.item_id+'&all=all&zy_ctoken=null';
+						params.receive_url = params.data.data[0].button_post+'&'+params.zyParam+'&eventIds[]='+params.data.item_id+'&all=all&zy_ctoken=null';
 					
-					FGS.mafiawars2.MessageCenter.Receive3(params);
+					FGS.castleville.MessageCenter.Receive3(params);
 				}
 				catch(err)
 				{
@@ -436,7 +432,7 @@ FGS.mafiawars2.MessageCenter =
 	}
 };
 
-FGS.mafiawars2.Freegifts = 
+FGS.castleville.Freegifts = 
 {
 	Click: function(params, retry)
 	{
@@ -446,7 +442,7 @@ FGS.mafiawars2.Freegifts =
 
 		$.ajax({
 			type: "GET",
-			url: 'https://apps.facebook.com/mafiawars-two/'+addAntiBot,
+			url: 'https://apps.facebook.com/playcastleville/'+addAntiBot,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -463,7 +459,7 @@ FGS.mafiawars2.Freegifts =
 					params.step1url = url;
 					params.step1params = params2;
 					
-					FGS.mafiawars2.Freegifts.Click2(params);
+					FGS.castleville.Freegifts.Click2(params);
 				}
 				catch(err)
 				{
@@ -541,7 +537,7 @@ FGS.mafiawars2.Freegifts =
 					params.domain = params.step1url.match(re)[1].toString();
 					params.zyParam = FGS.jQuery.param(zyParam);
 					
-					FGS.mafiawars2.Freegifts.Click3(params);
+					FGS.castleville.Freegifts.Click3(params);
 				}
 				catch(err)
 				{
@@ -593,7 +589,7 @@ FGS.mafiawars2.Freegifts =
 		
 		$.ajax({
 			type: "POST",
-			//https:fb-client-0.mw2.zynga.com/request.php?&name=gift&giftId=2747398&zySnid=1&zyAuthHash=4db379ce3671832c098c0f5f9e043c17&zySig=54f9ae49e4223476d4e78f470332b785
+			//https:fb-client-0.castle.zynga.com/request.php?&name=gift&giftId=2747398&zySnid=1&zyAuthHash=4db379ce3671832c098c0f5f9e043c17&zySig=54f9ae49e4223476d4e78f470332b785
 			url: 'https://'+params.domain+'/request.php?&name=gift&giftId='+params.gift+'&'+params.zyParam+addAntiBot,
 			data: 'giftRecipient=&gift='+params.gift+'&ref=&'+params.zyParam,
 			dataType: 'text',
@@ -762,9 +758,9 @@ zid	31116193347
 					reqData.message = body;
 					
 					params.reqData = reqData;
-					params.channel = 'http://fb-client-0.mw2.zynga.com/';
+					params.channel = 'http://fb-client-0.castle.zynga.com/';
 					
-					FGS.getAppAccessTokenForSending(params, FGS.mafiawars2.Freegifts.Click_Snapi);
+					FGS.getAppAccessTokenForSending(params, FGS.castleville.Freegifts.Click_Snapi);
 				}
 				catch(err)
 				{
@@ -828,7 +824,7 @@ zid	31116193347
 		
 		$.ajax({
 			type: "POST",
-			url: 'https://fb-client-0.mw2.zynga.com/snapi_proxy.php',
+			url: 'https://fb-client-0.castle.zynga.com/snapi_proxy.php',
 			data: params.snapi,
 			dataType: 'json',
 			success: function(obj)
@@ -906,7 +902,7 @@ requestData[request_ids][to][]	685094506
 	
 };
 
-FGS.mafiawars2.Bonuses = 
+FGS.castleville.Bonuses = 
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
@@ -950,7 +946,7 @@ FGS.mafiawars2.Bonuses =
 					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
 					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
 					
-					FGS.mafiawars2.Bonuses.Click2(currentType, id, url, params);
+					FGS.castleville.Bonuses.Click2(currentType, id, url, params);
 				} 
 				catch(err)
 				{
@@ -995,6 +991,90 @@ FGS.mafiawars2.Bonuses =
 			{
 				try
 				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+
+					
+					
+					var URL = currentURL;
+					
+					var pos1 = 0;
+					var pos2 = URL.lastIndexOf('/')+1;
+					
+					var nextUrl = URL.slice(pos1,pos2);
+					
+					dataStr = dataStr.replace(/window\.ZYFrameManager/g, '').replace("ZYFrameManager.navigateTo('invite.php", '');
+
+					var pos1 = dataStr.indexOf("ZYFrameManager.navigateTo('");
+					
+					if(pos1 == -1) throw {message: 'no zyframe manager'}
+					
+					var pos2 = dataStr.indexOf("'", pos1)+1;
+					var pos3 = dataStr.indexOf("'", pos2);
+					
+					var newUrl = dataStr.slice(pos2,pos3);
+					
+					if(newUrl.indexOf('http:') == 0 || newUrl.indexOf('https:') == 0 )
+					{
+					}
+					else
+					{
+						if(newUrl == 'gifts.php')
+						{
+							FGS.endWithError('not found', currentType, id);
+							return;
+						}
+						else
+						{
+							newUrl = nextUrl+newUrl.replace(nextUrl, '')+'&overlayed=true&'+new Date().getTime()+'#overlay';
+						}
+					}
+					
+					
+					FGS.castleville.Bonuses.Click3(currentType, id, newUrl);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+
+	Click3:	function(currentType, id, currentURL, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "GET",
+			url: currentURL,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+
 					if(dataStr.indexOf('You can only collect feed rewards from your allies!') != -1)
 					{
 						var error_text = 'You can only collect feed rewards from your allies!';
@@ -1062,9 +1142,9 @@ FGS.mafiawars2.Bonuses =
 						return;
 					}
 
-					info.text = $.trim($('.landingInner2', dataHTML).find('h3:first').text());
-					info.title = $.trim($(".receivedItem",dataHTML).text());
-					info.image = $(".receivedItem",dataHTML).children().attr("longdesc");
+					info.text = $.trim($('.giftFrom_name', dataHTML).children().text());
+					info.title = $.trim($(".giftConfirm_name",dataHTML).text());
+					info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
 					info.time = Math.round(new Date().getTime() / 1000);
 
 
@@ -1076,7 +1156,7 @@ FGS.mafiawars2.Bonuses =
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, params, true);
+						retryThis(currentType, id, currentURL, true);
 					}
 					else
 					{
@@ -1088,7 +1168,7 @@ FGS.mafiawars2.Bonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, params, true);
+					retryThis(currentType, id, currentURL, true);
 				}
 				else
 				{
@@ -1096,5 +1176,5 @@ FGS.mafiawars2.Bonuses =
 				}
 			}
 		});
-	}
+	},
 };

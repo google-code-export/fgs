@@ -28,6 +28,7 @@ FGS.mafiawars.Freegifts =
 					
 					params.click2url = src;	
 					params.click2param = paramsTmp;
+					
 					FGS.mafiawars.Freegifts.Click2(params);
 				}
 				catch(err)
@@ -131,6 +132,9 @@ FGS.mafiawars.Freegifts =
 					var pos2 = tmpUrl.indexOf('&', pos1+1);
 					var tmpCb = tmpUrl.slice(pos1, pos2);
 					
+					params.cb = tmpCb;
+					params.tmp = tmpTmp;
+					
 					
 					params.sf_xw_user_id = $('input[name="sf_xw_user_id"]', dataHTML).val();
 					params.sf_xw_sig = $('input[name="sf_xw_sig"]', dataHTML).val();
@@ -197,21 +201,88 @@ FGS.mafiawars.Freegifts =
 			{
 				try
 				{
-					var app_key = '10979261223';
+					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+					params.domain = params.click3url.match(re)[1].toString();
 					
-					var pos1 = dataStr.indexOf('id="request_form_interstitial_exclude_type_2"');
+					var pos1 = dataStr.indexOf('MW.Request.setTabFriendLists({');
+					if(pos1 == -1) throw {message: 'No friends data'}
+					pos1+=29;
 					
-					dataStr = dataStr.slice(pos1);
+					var pos2 = dataStr.indexOf('});', pos1)+1;
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
+					var friends = JSON.parse(dataStr.slice(pos1,pos2));
 					
-					var paramsStr = 'app_key='+app_key+'&fbml='+encodeURIComponent(fbml);
-
-					params.nextParams = paramsStr;
+					var zids;
 					
-					FGS.getFBML(params);
+					if(typeof friends["2"] != 'undefined')
+						zids = friends['2'];
+					else
+						zids = friends["3"];
+					
+					params.zyFriends = zids;
+					
+					
+					
+					var pos1 = dataStr.indexOf('MW.Request.setFriendNames({');
+					if(pos1 == -1) throw {message: 'No friends data'}
+					pos1+=26;
+					
+					var pos2 = dataStr.indexOf('});', pos1)+1;
+					
+					var frName = JSON.parse(dataStr.slice(pos1,pos2));
+					
+					var finalArr = [];
+					
+					$(zids).each(function(k,v) {
+						var x = {};
+						
+						if(typeof frName[v] == 'undefined')
+							return;
+							
+						
+						x[v] = {'name': frName[v]};
+						finalArr.push(x);
+					});
+					
+					
+					params.items = finalArr;
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', finalArr, params.gameID);
+						return;
+					}
+					
+					var title = 'Freegifts';
+					
+					var s1 = dataStr.indexOf("MW.Request.setMsg(");
+					var s1a = dataStr.indexOf("'", s1)+1;
+					var s1b = dataStr.indexOf("'", s1a);
+					
+					var body = dataStr.slice(s1a, s1b);
+					
+					
+					var s1 = dataStr.indexOf("MW.Request.setData(");
+					var s1a = dataStr.indexOf("'", s1)+1;
+					var s1b = dataStr.indexOf("}')", s1a)+1;
+					
+					
+					
+					params.requestPostData = dataStr.slice(s1a, s1b);		
+					
+					var reqData = {};
+					
+					reqData.filters = JSON.stringify( [{name: 'MW Friends', user_ids: zids}] );
+					reqData.title = title;
+					reqData.message = body;
+					
+					params.reqData = reqData;
+					params.channel = 'http://facebook.mafiawars.zynga.com/';
+					
+					
+					//params.afterSend = 
+					
+					FGS.getAppAccessTokenForSending(params, FGS.mafiawars.Freegifts.ClickRequest);				
 				}
 				catch(err)
 				{
@@ -253,6 +324,25 @@ FGS.mafiawars.Freegifts =
 				}
 			}
 		});
+	},
+	
+	ClickRequest: function(params, d)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+		
+		var pos0 = d.indexOf('&result=')+8;
+		var pos1 = d.indexOf('"', pos0);
+		
+		var str = d.slice(pos0, pos1);
+		var data = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc));
+		
+		//https://facebook.mafiawars.zynga.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=postSend&xw_city=&tmp=ac5f9618d25f08fba5709c96176cbeed&cb=9a29fff00ff111e18952cfbc859b26c9&xw_person=&rid=312859905392005&to=1699074906&xw_client_id=8
+		console.log(data);
+		
+		var str = data.to.join(',');
+		$.post('https://facebook.mafiawars.zynga.com/mwfb/remote/html_server.php?xw_controller=requests&xw_action=postSend&xw_city='+params.tmp+''+params.cb+'&xw_person=&rid='+data.request+'&to='+str+'&data='+params.requestPostData, 'ajax=1&liteload=1&sf_xw_user_id='+params.sf_xw_user_id+'&sf_xw_sig='+params.sf_xw_sig);
 	}
 };
 
