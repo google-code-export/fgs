@@ -2297,7 +2297,7 @@ var FGS = {
 						
 						var d = new Date((bonusTime*1000));
 						
-						if(secs > 86400 || params.scroll == 30)
+						if(secs > 86400 || params.scroll == 60)
 						{
 							finishCollecting = true;
 							return false;

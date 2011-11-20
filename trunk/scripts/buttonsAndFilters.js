@@ -1353,7 +1353,7 @@ FGS.gamesData =
 						},
 						buttons: [
 							'BonusesPending',
-							'RequestsPending',
+							//'RequestsPending',
 							'ManualBonuses',
 							'BonusesHistory',
 							'FailedBonuses',
