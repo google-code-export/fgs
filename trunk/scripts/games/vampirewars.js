@@ -79,7 +79,7 @@ FGS.vampirewars.Freegifts =
 			{
 				try
 				{
-					var pos1 = dataStr.indexOf('top.location.href = "');
+					var pos1 = dataStr.indexOf('window.top.location="');
 					if(pos1 != -1)
 					{
 						var pos2 = dataStr.indexOf('"', pos1+28);
@@ -257,7 +257,7 @@ FGS.vampirewars.Requests =
 				
 				try
 				{
-					var pos1 = dataStr.indexOf('top.location.href = "');
+					var pos1 = dataStr.indexOf('window.top.location="');
 					if(pos1 != -1)
 					{
 						var pos2 = dataStr.indexOf('"', pos1+28);
