@@ -1336,43 +1336,67 @@ var FGS = {
 		}
 		
 		var pos1 = data2.indexOf('Env={')+4;
-		var pos2 = data2.indexOf('user:', pos1)+5;
 		
-		var posPF = data2.indexOf('post_form_id:', pos2);
-		if(posPF != -1)
+		if(pos1 == 3)
 		{
-			posPF+=13;
-			var posPF2 = data2.indexOf(',', posPF);
-			var t = data2.slice(posPF, posPF2);
-			t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+			var pos1 = data2.indexOf('({"user"')+1;
+			var pos2 = data2.indexOf('});')+1;
 			
-			FGS.post_form_id = t;
-		}
-		
-		var posDT = data2.indexOf('fb_dtsg:', pos2);
-		if(posDT != -1)
-		{
-			posDT+=8;
-			var posDT2 = data2.indexOf(',', posDT);
-			var t = data2.slice(posDT, posDT2);
-			t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+			var a = JSON.parse(data2.slice(pos1, pos2));
 			
-			FGS.fb_dtsg = t;
-		}
-			
-		if(FGS.userID == null || FGS.userName == null)
-		{
-			var pos3 = data2.indexOf(',', pos2);
-
-			FGS.userID = data2.slice(pos2, pos3);
-
-			var pos4 = data2.indexOf('locale:', pos1)+7;
-			var pos5 = data2.indexOf(',', pos4);
-			FGS.userLoc = data2.slice(pos4+1, pos5-1).toString();
+			if(typeof a.post_form_id != 'undefined')
+				FGS.post_form_id = a.post_form_id;
+				
+			if(typeof a.fb_dtsg != 'undefined')
+				FGS.fb_dtsg = a.fb_dtsg;
+				
+			if(typeof a.user != 'undefined')
+				FGS.userID = a.user;
+				
+			if(typeof a.locale != 'undefined')
+				FGS.userLoc = a.locale;
 			
 			FGS.userName = FGS.jQuery('#navAccountName', data).text() || FGS.jQuery('.headerTinymanName', data).text();
+		}
+		else
+		{
+			
+			var pos2 = data2.indexOf('user:', pos1)+5;
+			
+			var posPF = data2.indexOf('post_form_id:', pos2);
+			if(posPF != -1)
+			{
+				posPF+=13;
+				var posPF2 = data2.indexOf(',', posPF);
+				var t = data2.slice(posPF, posPF2);
+				t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+				
+				FGS.post_form_id = t;
+			}
+			
+			var posDT = data2.indexOf('fb_dtsg:', pos2);
+			if(posDT != -1)
+			{
+				posDT+=8;
+				var posDT2 = data2.indexOf(',', posDT);
+				var t = data2.slice(posDT, posDT2);
+				t = FGS.jQuery.trim(t.replace(/\"/g, ''));
+				
+				FGS.fb_dtsg = t;
+			}
+			
+			if(FGS.userID == null || FGS.userName == null)
+			{
+				var pos3 = data2.indexOf(',', pos2);
 
-			FGS.loadSubmenu();
+				FGS.userID = data2.slice(pos2, pos3);
+
+				var pos4 = data2.indexOf('locale:', pos1)+7;
+				var pos5 = data2.indexOf(',', pos4);
+				FGS.userLoc = data2.slice(pos4+1, pos5-1).toString();
+				
+				FGS.userName = FGS.jQuery('#navAccountName', data).text() || FGS.jQuery('.headerTinymanName', data).text();
+			}
 		}
 		
 		FGS.userID = FGS.userID.replace(/\"/g, '').replace(/\'/g, '');
@@ -1384,6 +1408,7 @@ var FGS = {
 		
 		if(FGS.databaseAlreadyOpen == false)
 		{
+			FGS.loadSubmenu();
 			FGS.database.open(FGS.userID);
 			FGS.database.createTable();
 			FGS.getGraphAccessToken();
@@ -2632,7 +2657,34 @@ var FGS = {
 					
 					var access_token = d.slice(pos1,pos2);
 					
+					FGS.getUserName(access_token);
 					FGS.getGraphFriendlists(access_token)
+				}
+				catch(e)
+				{
+					setTimeout(FGS.getGraphAccessToken, 15000);
+				}
+			},
+			error: function()
+			{
+				setTimeout(FGS.getGraphAccessToken, 15000);
+			}
+		});
+	},
+	
+	getUserName: function(token)
+	{
+		FGS.jQuery.ajax({
+			url: 'https://graph.facebook.com/me?fields=name&'+token,
+			method: 'GET',
+			dataType: 'text',
+			success:function(obj)
+			{
+				try
+				{
+					var data = JSON.parse(obj);
+					
+					FGS.userName = data.name;
 				}
 				catch(e)
 				{
