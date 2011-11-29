@@ -1326,7 +1326,7 @@ var FGS = {
 	
 	parseStartupData: function(data2)
 	{
-		var data = FGS.HTMLParser(data2);		
+		var data = FGS.HTMLParser(data2);	
 		
 		if(FGS.jQuery("#login_form", data).length > 0)
 		{
@@ -1340,7 +1340,8 @@ var FGS = {
 		if(pos1 == 3)
 		{
 			var pos1 = data2.indexOf('({"user"')+1;
-			var pos2 = data2.indexOf('});')+1;
+			
+			var pos2 = data2.indexOf('});', pos1)+1;
 			
 			var a = JSON.parse(data2.slice(pos1, pos2));
 			
