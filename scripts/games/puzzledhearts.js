@@ -285,25 +285,23 @@ FGS.puzzledhearts.Bonuses =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, params, retry)
+	Click2:	function(currentType, id, currentURL, params, retry, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
-		$.ajax({
-			type: "POST",
-			url: currentURL,
-			data: params,
-			dataType: 'text',
-			success: function(dataStr)
+		
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var dataStr = obj.data;
+			
+			if(obj.success)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				
 				try
 				{
-					
+					var dataHTML = FGS.HTMLParser(dataStr);
 					
 					if(dataStr.indexOf('You have already received this mystery gift') != -1)
 					{
@@ -381,8 +379,8 @@ FGS.puzzledhearts.Bonuses =
 						FGS.endWithError('receiving', currentType, id);
 					}
 				}
-			},
-			error: function()
+			}
+			else
 			{
 				if(typeof(retry) == 'undefined')
 				{
@@ -393,7 +391,22 @@ FGS.puzzledhearts.Bonuses =
 					FGS.endWithError('connection', currentType, id);
 				}
 			}
-		});
+		}
+		else
+		{
+			var obj = {
+				arguments:
+				{
+					'type': 'POST',
+					'url': currentURL,
+					'data': params
+				},
+				params: [currentType, id, currentURL, params, retry],
+				callback: 'FGS.puzzledhearts.Bonuses.Click2'
+			};
+			
+			FGSoperator.postMessage(obj);
+		}
 	},
 	
 	TryToPost: function(dataStr)
