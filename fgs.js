@@ -2202,7 +2202,7 @@ var FGS = {
 		{
 			//var feedUrl = 'http://www.facebook.com/ajax/home/generic.php';
 			//var feedParams = '__a=8&sk=app_'+collectID+'&key=app_'+collectID+'&show_hidden=false&ignore_self=false&ajaxpipe=1';
-			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/MoreStoriesPagelet';
 			if(FGS.options.games[appID].customSource !== false)
 			{
 				var filterType = FGS.options.games[appID].customSource;
@@ -2216,7 +2216,7 @@ var FGS = {
 		else
 		{
 			
-			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/pagelet/home/morestories.php';
+			var feedUrl = 'https://www.facebook.com/ajax/pagelet/generic.php/MoreStoriesPagelet';
 			if(FGS.options.games[appID].customSource !== false)
 			{
 				var filterType = FGS.options.games[appID].customSource;
