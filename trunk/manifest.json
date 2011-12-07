@@ -32,6 +32,12 @@
 			"matches": [ "http://www.facebook.com/ajax/ufi/modify.php?x=y", "https://www.facebook.com/ajax/ufi/modify.php?x=y"],
 			"run_at": "document_end",
 			"all_frames": true
+		},
+		{
+			"js": ["scripts/jquery-1.5.2.min.js" , "zw2.js"],
+			"matches": [ "http://adf.ly/*" ],
+			"run_at": "document_end",
+			"all_frames": true
 		}
 	],
 	"homepage_url": "http://fgs.rzadki.eu",
