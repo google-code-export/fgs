@@ -1489,135 +1489,263 @@ FGS.giftsArray =
 			"name": "WHETSTONE"
 		}
 	},
-	"120563477996213": {
-		"202": {
-			"name": "Round Bush"
+	"120563477996213": 
+	{
+		"OneEnergy": {
+			"name": "One Energy",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/instant/OneEnergy.png"
 		},
-		"204": {
-			"name": "White Picket Fence"
+		"Crystal": {
+			"name": "Crystal",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Crystal.png"
 		},
-		"209": {
-			"name": "Giant Pumpkins - lvl 4"
+		"Vitalin": {
+			"name": "Vitalin",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Vitalin.png"
 		},
-		"212": {
-			"name": "Aspen Tree - lvl 6"
+		"Xmas11_SantaHat": {
+			"name": "Santa Hat",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Xmas11_SantaHat.png"
 		},
-		"214": {
-			"name": "Tall Grass - lvl 2"
+		"Xmas11_SugarCookie": {
+			"name": "Sugar Cookie",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Xmas11_SugarCookie.png"
 		},
-		"219": {
-			"name": "Wooden Picnic Table - lvl 3"
+		"Xmas11_Lights": {
+			"name": "String of Lights",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Xmas11_Lights.png"
 		},
-		"223": {
-			"name": "Roses - lvl 2"
+		"Xmas11_FruitCake": {
+			"name": "Christmas Fruitcake",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Xmas11_FruitCake.png"
 		},
-		"230": {
-			"name": "Barrel Cacti - lvl 5"
+		"Vampires11_Bat": {
+			"name": "Bat",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Vampires11_Bat.png"
 		},
-		"232": {
-			"name": "Skeleton - lvl 7"
+		"Vampires11_Tomato": {
+			"name": "Tomato",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Vampires11_Tomato.png"
 		},
-		"234": {
-			"name": "Bongo Drums - lvl 12"
+		"Vampires11_Garlic": {
+			"name": "Garlic",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Vampires11_Garlic.png"
 		},
-		"237": {
-			"name": "Dark Stone Path - lvl 9"
+		"Vampires11_SilverChain": {
+			"name": "Silver Chain",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Vampires11_SilverChain.png"
 		},
-		"247": {
-			"name": "Square Hedge - lvl 8"
+		"Magic11_MagicMedallion": {
+			"name": "Magic Medallion",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Magic11_MagicMedallion.png"
 		},
-		"251": {
-			"name": "Marble Path - lvl 10"
+		"Magic11_GenieLamp": {
+			"name": "Genie Lamp",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Magic11_GenieLamp.png"
 		},
-		"279": {
-			"name": "Ladybug"
+		"Magic11_WitchesBroom": {
+			"name": "Witches Broom",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Magic11_WitchesBroom.png"
 		},
-		"280": {
-			"name": "Tree Sap"
+		"Magic11_MagiciansHat": {
+			"name": "Magicians Hat",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Magic11_MagiciansHat.png"
 		},
-		"281": {
-			"name": "Vitalin"
+		"Thanksgiving2010_AutumnLeaf": {
+			"name": "Autumn Leaf",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Thanksgiving2010_AutumnLeaf.png"
 		},
-		"319": {
-			"name": "Clean Grass"
+		"Thanksgiving11_PecanPie": {
+			"name": "Pecan Pie",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Thanksgiving11_PecanPie.png"
 		},
-		"329": {
-			"name": "One Energy"
+		"Thanksgiving11_ChrysanthemiumFlower": {
+			"name": "Chrysanthemum",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Thanksgiving11_ChrysanthemiumFlower.png"
 		},
-		"330": {
-			"name": "Balloons"
+		"Thanksgiving11_AcornSquash": {
+			"name": "Acorn Squash",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Thanksgiving11_AcornSquash.png"
 		},
-		"364": {
-			"name": "Petal Path - lvl 5"
+		"Opera11_OperaGlasses": {
+			"name": "Opera Glasses",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Opera11_OperaGlasses.png"
 		},
-		"375": {
-			"name": "Wedding Gift"
+		"Opera11_RoseBud": {
+			"name": "Rosebud",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Opera11_RoseBud.png"
 		},
-		"377": {
-			"name": "Wedding Bell"
+		"Opera11_MagicFlute": {
+			"name": "Magic Flute",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Opera11_MagicFlute.png"
 		},
-		"441": {
-			"name": "Small Green Tent - lvl 4"
+		"IntroSkye11_LevEssence": {
+			"name": "Levonium Essence",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/IntroSkye11_LevEssence.png"
 		},
-		"526": {
-			"name": "Vinca Vine - lvl 13"
+		"IntroSkye11_ArtifactCrate": {
+			"name": "Artifact Crate",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/IntroSkye11_ArtifactCrate.png"
 		},
-		"530": {
-			"name": "Picnic Umbrella - lvl 14"
+		"RiseMoletron11_Molunculi": {
+			"name": "Molunculus",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/RiseMoletron11_Molunculi.png"
 		},
-		"602": {
-			"name": "Cat Print Tile - lvl 19"
+		"RiseMoletron11_MoleSwarm": {
+			"name": "Mole-Cule Swarm",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/RiseMoletron11_MoleSwarm.png"
 		},
-		"608": {
-			"name": "Catnip"
+		"Zodiac11_StarDust": {
+			"name": "Star Dust",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Zodiac11_StarDust.png"
 		},
-		"627": {
-			"name": "Danger Sign - lvl 11"
+		"Zodiac11_EndymialTablet": {
+			"name": "Endymial Tablet",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Zodiac11_EndymialTablet.png"
 		},
-		"655": {
-			"name": "Heart"
+		"Arborea11_Sapling": {
+			"name": "Sapling",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Arborea11_Sapling.png"
 		},
-		"710": {
-			"name": "Daffodil - lvl 8"
+		"Fairy11_FairyWand": {
+			"name": "Fairy Wand",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Fairy11_FairyWand.png"
 		},
-		"712": {
-			"name": "RSVP"
+		"Fairy11_Garland": {
+			"name": "Garland",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Fairy11_Garland.png"
 		},
-		"759": {
-			"name": "Gear"
+		"V1Pack2010_Ticket": {
+			"name": "Ticket",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/V1Pack2010_Ticket.png"
 		},
-		"791": {
-			"name": "Easter Egg"
+		"Medieval2010_Acorn": {
+			"name": "Acorn",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Medieval2010_Acorn.png"
 		},
-		"822": {
-			"name": "Empty Minecart - lvl 9"
+		"Residents2011_Heart": {
+			"name": "Heart",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Residents2011_Heart.png"
 		},
-		"823": {
-			"name": "Minecart Track - lvl 10"
+		"PP_GlassSlipper": {
+			"name": "Glass Slipper",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/PP_GlassSlipper.png"
 		},
-		"837": {
-			"name": "Medium Crate - lvl 12"
+		"DrCat2011_Catnip": {
+			"name": "Catnip",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/DrCat2011_Catnip.png"
 		},
-		"850": {
-			"name": "Wooden Chair - lvl 16"
+		"EmmetPlayers_SheetMusic": {
+			"name": "Sheet Music",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/EmmetPlayers_SheetMusic.png"
 		},
-		"875": {
-			"name": "Brick - lvl 10"
+		"Wedding_Gifts": {
+			"name": "Wedding Gift",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Wedding_Gifts.png"
 		},
-		"876": {
-			"name": "Gold - lvl 10"
+		"Wedding_RingPillow": {
+			"name": "Wedding Ring",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Wedding_RingPillow.png"
 		},
-		"877": {
-			"name": "Platinum - lvl 10"
+		"GardenParty_Petunia": {
+			"name": "Petunia",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/GardenParty_Petunia.png"
 		},
-		"878": {
-			"name": "Emerald - lvl 10"
+		"GardenParty_Ribbon": {
+			"name": "Ribbon",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/GardenParty_Ribbon.png"
 		},
-		"880": {
-			"name": "Diamond - lvl 10"
+		"JeffreyWorkshop_Spring": {
+			"name": "Spring",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/JeffreyWorkshop_Spring.png"
 		},
-		"923": {
-			"name": "Wisteria"
+		"JeffreyWorkshop_Cog": {
+			"name": "Cog",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/JeffreyWorkshop_Cog.png"
+		},
+		"Otter2011_ShinyShell": {
+			"name": "Shiny Shell",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Otter2011_ShinyShell.png"
+		},
+		"Thanksgiving2010_Cornucopia": {
+			"name": "Cornucopia",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Thanksgiving2010_Cornucopia.png"
+		},
+		"Winter2010_Snowflake": {
+			"name": "Snowflake",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Winter2010_Snowflake.png"
+		},
+		"Oktoberfest2011_Accordion": {
+			"name": "Accordion",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Oktoberfest2011_Accordion.png"
+		},
+		"Oktoberfest2011_Schnitzel": {
+			"name": "Schnitzel",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Oktoberfest2011_Schnitzel.png"
+		},
+		"Oktoberfest2011_Sennerhut": {
+			"name": "Sennerhut",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/Oktoberfest2011_Sennerhut.png"
+		},
+		"School11_ColoredChalk": {
+			"name": "Set of Colored Chalk",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/School11_ColoredChalk.png"
+		},
+		"School11_PencilBox": {
+			"name": "Pencil Box",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/materials/School11_PencilBox.png"
+		},
+		"ManicuredGrassA": {
+			"name": "Clean Grass",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/ManicuredGrassA.png"
+		},
+		"WhitePicketFence": {
+			"name": "White Picket Fence",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/WhitePicketFence.png"
+		},
+		"BalloonDeco": {
+			"name": "Balloons",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/BalloonDeco.png"
+		},
+		"TallGrass": {
+			"name": "Tall Grass",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/TallGrass.png"
+		},
+		"RoundBush": {
+			"name": "Round Bush",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/RoundBush.png"
+		},
+		"Roses": {
+			"name": "Roses",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/Roses.png"
+		},
+		"WoodenPicnicTable": {
+			"name": "Wooden Picnic Table",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/WoodenPicnicTable.png"
+		},
+		"GiantPumpkins": {
+			"name": "Giant Pumpkins",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/GiantPumpkins.png"
+		},
+		"V1Pack2010_SmallTentGreen": {
+			"name": "Small Green Tent",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/V1Pack2010_SmallTentGreen.png"
+		},
+		"BarrelCacti": {
+			"name": "Barrel Cacti",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/BarrelCacti.png"
+		},
+		"Wedding_BridalPath": {
+			"name": "Petal Path",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/Wedding_BridalPath.png"
+		},
+		"AspenTree": {
+			"name": "Aspen Tree",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/AspenTree.png"
+		},
+		"Skeleton": {
+			"name": "Skeleton",
+			"image": "https://gp1.wac.edgecastcdn.net/801EC0/www.ravenwoodfair.com/img/thumbs/large/decorations/Skeleton.png"
 		}
 	},
 	"151044809337": {

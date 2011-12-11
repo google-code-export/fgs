@@ -113,7 +113,7 @@ FGS.empiresandallies.Freegifts =
 						return;
 					}
 					
-					var pos1 = dataStr.indexOf('window) window.top.location = "');
+					var pos1 = dataStr.indexOf('window.top.location = "');
 					if(pos1 == -1) throw {message: 'No new ZY'}
 					var pos1 = dataStr.indexOf('?', pos1);
 					pos1+=1;

@@ -88,20 +88,25 @@ FGS.zooworld2.Freegifts =
 			{
 				try
 				{
-					var app_key = params.gameID.slice(0,-1);
-					//var channel = 'http://zoo2-dev.rockyou.com/channel.html';
+					var x = $.unparam(params.click2param);
 					
-					var channel_url = './channel.html';
+					var name = FGS.userName
+					
+					var obj =
+					{
+						method: 'mg.gift.getGiftData',
+						giftId: params.gift,
+						signed_request: x.signed_request,
+						userid: FGS.userID,
+						appid: 86,
+						username: FGS.userName,
+						giftType: 'sendGift'
+					};
+				
+					params.click3param = obj;
 
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/mg).exec(dataStr);					
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
+					FGS.zooworld2.Freegifts.Click3(params);
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
-
-					params.nextParams = paramsStr;
-					
-					FGS.getFBML(params);
 				}
 				catch(err)
 				{
@@ -143,7 +148,130 @@ FGS.zooworld2.Freegifts =
 				}
 			}
 		});
-	}
+	},
+	Click3: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+
+		$.ajax({
+			type: "POST",
+			url: "http://zoo2-dev.rockyou.com/services/rest/",
+			dataType: 'text',
+			data: params.click3param,
+			success: function(dataStr)
+			{
+				try
+				{
+					var obj = JSON.parse(dataStr);
+					
+					params.reqData = {
+						message: obj.data.giftText,
+						frictionless: false,
+						data: JSON.stringify({
+							giftId : obj.data.giftId,
+							giftKey : obj.data.giftKey,
+							giftSentMsg : obj.data.giftSentMsg,  
+							trackingTag: "fb-zoo2-invite2-giftPage-dashboard-click"
+						})
+					}
+					
+					if(typeof obj.data.exclude != 'undefined' && obj.data.exclude != '')
+					{
+						params.excludeUsers = obj.data.exclude.split(',');
+					}
+					
+					FGS.zooworld2.Freegifts.ClickRequest(params);
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(params, true);
+					}
+					else
+					{
+						if(typeof(params.sendTo) == 'undefined')
+						{
+							FGS.sendView('updateNeighbors', false, params.gameID);
+						}
+						else
+						{
+							FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+						}
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(params, true);
+				}
+				else
+				{
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', false, params.gameID);
+					}
+					else
+					{
+						FGS.sendView('errorWithSend', params.gameID, (typeof(params.thankYou) != 'undefined' ? params.bonusID : '') );
+					}
+				}
+			}
+		});
+	},
+	
+	ClickRequest: function(params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+		
+		params.channel = 'https://zoo2-dev.rockyou.com';
+		
+		FGS.getAppAccessTokenForSending(params, function(params, d){
+		
+			var pos0 = d.indexOf('&result=')+8;
+			var pos1 = d.indexOf('"', pos0);
+			
+			var str = d.slice(pos0, pos1);
+			
+			var arr = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc));
+			
+			var arr2 = [];
+			
+			for(var i=0; i < arr.request_ids.length; i++)
+			{
+				arr2.push({request_id: arr.request_ids[i], friend_id: params.sendTo[i]});
+			}
+			
+			var obj = {
+				method: 'mg.gift.sendGifts',
+				signed_request: params.click3param.signed_request,
+				userid: FGS.userID,
+				appid: 86,
+				requests: JSON.stringify(arr2),
+				giftid: params.gift
+			}
+			
+			/*
+			
+			signed_request	m2vNIXtySHuN8fmS0wjLOLt40dL7B9X7xjC2lw5_jjM.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImV4cGlyZXMiOjAsImlzc3VlZF9hdCI6MTMyMzYwNzI0OSwib2F1dGhfdG9rZW4iOiJBQUFBQUp3NTFwMThCQU1GNTZvNU1XV1RFa1pCaDlVbEUzRkR1dWZRZzBTNGxpYmVESG54V2RXT0dsWEkwZUJTSFlMMXZBZ1pDYXhaQ2RiYndBakc1T2M3QjFaQVczNEJhalpDSFpCNWxlOExnWkRaRCIsInVzZXIiOnsiY291bnRyeSI6InBsIiwibG9jYWxlIjoiZW5fVVMiLCJhZ2UiOnsibWluIjoxOCwibWF4IjoyMH19LCJ1c2VyX2lkIjoiMTAwMDAxNDk5NzEzOTQyIn0
+			userid	100001499713942
+			appid	86
+			requests	[{"request_id":"2858637868909","friend_id":"1348518822"},{"request_id":"260047217382360","friend_id":"100001312504636"}]
+			giftid	297
+			*/
+			
+			//
+			$.post('https://zoo2-dev.rockyou.com/services/rest/', obj);		
+		});
+	},
 };
 
 FGS.zooworld2.Requests = 

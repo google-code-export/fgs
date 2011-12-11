@@ -77,7 +77,12 @@ chrome.self.onConnect.addListener(function(port)
 	{
 		port.onMessage.addListener(function(request)
 		{
-			FGS.loginStatusChanged(request.loggedIn, request.html);
+			if(typeof request.loggedIn != 'undefined')
+				FGS.loginStatusChanged(request.loggedIn, request.html);
+			else if(typeof request.arguments != 'undefined')
+			{
+				FGS.processOperatorMessage(request);
+			}
 		});
 	}
 	else if(port.name == 'FGSoperator')

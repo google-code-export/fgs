@@ -146,7 +146,11 @@ FGS.cafeworld.Requests =
 					if(dataStr.indexOf('/me/apprequests') != -1)
 					{
 						var url = 'https://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php?fb_request_id='+id+'&to='+FGS.userID;
-						FGS.cafeworld.Requests.ClickNew(currentType, id, url, {});
+						
+						
+						FGS.getAppAccessToken(currentType, id, currentURL, 'api_key=101539264719&app_id=101539264719&channel=http://fb-0.cafe.zynga.com/current//channel/custom_channel.html', FGS.cafeworld.Requests.ParseAppRequests, {});
+						
+						//FGS.cafeworld.Requests.ClickNew(currentType, id, url, {});
 						return;
 					}
 
@@ -300,6 +304,77 @@ FGS.cafeworld.Requests =
 		});
 	},
 	
+	ParseAppRequests: function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		var signed = '';
+		if(currentURL.length == 2)
+		{
+			var signed = currentURL[1];
+		}
+	
+		try
+		{
+			var access_token = params[0].access_token;
+			var data = params[1];
+			
+			var response = JSON.parse(data);
+			var tmpData;
+			
+			for(var i=0; i<response.data.length; i++)
+			{
+				var requestId = response.data[i].id.split("_");
+				if (requestId[0] == id) {
+					tmpData = response.data[i];
+					break;
+				}
+			}
+			
+			if (!tmpData) {
+				throw {message: 'old gift'} // not found
+				return;
+			}
+			
+			var requestData = eval("("+tmpData.data+")"); 
+			
+			if (requestData.type == "a2u")
+			{
+				var requestId = tmpData.id.split("_");
+				var urlParameters = '?fb_request_id=' + requestId[0];
+				urlParameters += '&to=' + tmpData.to.id;
+				var url = 'https://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php' + urlParameters;
+			}
+			else
+			{
+				var tmp = tmpData.data.split('|||');
+				var uPar = '?sk=' + tmp[0] + '&rid=' + tmp[2];
+				uPar += '&from=' + tmpData.from.id;
+				uPar += '&skip_tracking=1';
+				uPar += '&fb_request_id=' + tmpData.id;
+				
+				var url = 'https://fb-0.cafe.zynga.com/current/fb//request_v2_landing_page.php' + uPar;	
+			}
+			
+			FGS.cafeworld.Requests.ClickNew(currentType, id, url, signed);
+		}
+		catch(err)
+		{
+			FGS.dump(err);
+			FGS.dump(err.message);
+			if(typeof(retry) == 'undefined')
+			{
+				retryThis(currentType, id, currentURL, params, true);
+			}
+			else
+			{
+				FGS.endWithError('receiving', currentType, id);
+			}
+		}
+	},
+	
 	ClickNew: function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -307,8 +382,9 @@ FGS.cafeworld.Requests =
 		var info = {}
 		
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: currentURL,
+			data: params,
 			dataType: 'text',
 			success: function(dataStr)
 			{

@@ -90,6 +90,7 @@ FGS.zombielane.Freegifts =
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 					params.domain = params.click2url.match(re)[1].toString();
 					
+					
 					var pos0 = dataStr.indexOf('var flashVars');
 					if(pos0 == -1) throw {message: 'no flashvars'}
 
@@ -97,16 +98,27 @@ FGS.zombielane.Freegifts =
 					if(pos1 == -1) throw {message: 'no flashvars_uid'}
 					var pos1 = pos1+5;
 					var pos1b = dataStr.indexOf(',', pos1+1);
-					var uid = dataStr.slice(pos1, pos1b);
+					var uid = dataStr.slice(pos1, pos1b).replace('"', '').replace('"', '');
 					
-					var pos1 = dataStr.indexOf('crm_sig', pos0);
+					var pos1 = dataStr.indexOf('href="gifts?');
+					if(pos1 == -1) throw {message: 'no flashvars_crm'}
+					var pos1b = dataStr.indexOf('"', pos1+12);
+					
+					params.click2param = dataStr.slice(pos1+12, pos1b);
+					
+					
+					
+
+					
+					var pos1 = dataStr.indexOf('sessionKey');
 					if(pos1 == -1) throw {message: 'no flashvars_crm'}
 					var pos1 = dataStr.indexOf('"', pos1);
 					var pos1b = dataStr.indexOf('"', pos1+1);
 					var sig = dataStr.slice(pos1+1, pos1b);
 					
-					params.click3param = 'gid='+params.gift+'&uid='+uid+'&sender='+uid+'&sig='+sig+'&ref=&product_detail=Default&src=vir_sendgift_'+params.gift;
-					params.click2param = 'uid='+uid+'&sig='+sig;
+					
+					
+					params.click3param = 'gid='+params.gift+'&uid='+uid+'&sender='+uid+'&sig='+sig+'&ref=&product_detail=Default&platform=2&src=vir_sendgift_'+params.gift;
 
 					FGS.zombielane.Freegifts.Click2a(params);
 				}
@@ -337,7 +349,7 @@ parent.postMessage("cb=f1&origin=http\u00253A\u00252F\u00252Fzlane.digitalchocol
 			
 			
 			var str = arr.to.join(',');
-			$.get('https://zlane.digitalchocolate.com/dead/GiftSentCallback?gid='+params.gift+'&sender='+FGS.userID+'&request='+arr.request+'&ids%5B%5D='+str+'&src=vir_sendgift_'+params.gift+'&utid='+params.utid+'&_='+new Date().getTime());
+			$.get('https://zlane.digitalchocolate.com/dead/GiftSentCallback?platform=2&gid='+params.gift+'&sender='+FGS.userID+'&request='+arr.request+'&ids%5B%5D='+str+'&src=vir_sendgift_'+params.gift+'&utid='+params.utid+'&_='+new Date().getTime());
 		
 		//MysteryGift&sender=100001178615702&request=255165131182409&ids%5B%5D=100000485017010,100000225088753&src=vir_sendgift_MysteryGift&utid=5704453872730460&_=1320435183044
 		//https://zlane.digitalchocolate.com/dead/GiftSentCallback?gid=EnergyCola&sender=100001178615702&request=160271497402562&ids%5B%5D=100001301082495&src=vir_sendgift_EnergyCola&utid=5704332722840356&_=1320434987834
