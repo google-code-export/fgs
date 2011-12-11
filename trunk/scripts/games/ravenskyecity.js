@@ -136,6 +136,9 @@ FGS.ravenskyecity.MessageCenter =
 						
 						var id = $(this).find('.btn[datetime]').attr('datetime');
 						
+						if(typeof id == 'undefined')
+							return true;
+						
 						if($(this).find('.icon').length > 0)
 						{
 							var type = $(this).find('.icon:last').children('img').attr('longdesc');

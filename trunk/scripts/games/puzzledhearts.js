@@ -66,6 +66,7 @@ FGS.puzzledhearts.Freegifts =
 			}
 		});
 	},
+	
 	Click2: function(params, retry)
 	{
 		var $ = FGS.jQuery;
@@ -211,8 +212,17 @@ FGS.puzzledhearts.Freegifts =
 };
 
 FGS.puzzledhearts.Bonuses = 
-{	
+{
 	Click: function(currentType, id, currentURL, retry)
+	{
+		FGS.findGameTab(
+				'apps.facebook.com/phearts/pages/myhearts.php', 
+				FGS.puzzledhearts.Bonuses.Click1, 
+				[currentType, id, currentURL, retry]
+		);
+	},
+	
+	Click1: function(currentType, id, currentURL, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
@@ -255,7 +265,11 @@ FGS.puzzledhearts.Bonuses =
 						var url = paramTmp;
 					}
 					
-					FGS.puzzledhearts.Bonuses.Click2(currentType, id, url, params);
+					FGS.findGameTab(
+							'apps.facebook.com/phearts/pages/myhearts.php', 
+							FGS.puzzledhearts.Bonuses.Click2, 
+							[currentType, id, url, params, retry]
+					);
 				} 
 				catch(err)
 				{
@@ -285,12 +299,11 @@ FGS.puzzledhearts.Bonuses =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, params, retry, isCallback)
+	Click2:	function(currentType, id, currentURL, params, retry, tab, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
-		
 		
 		if(typeof isCallback != 'undefined')
 		{
@@ -361,6 +374,39 @@ FGS.puzzledhearts.Bonuses =
 						//var error_text = $.trim($('.streamRewardAllRewardsClaimed', dataHTML).text());
 						//FGS.endWithError('limit', currentType, id, error_text);
 					}
+					else if(dataStr.indexOf('You have received a mystery gift from') != -1)
+					{
+						var pos0 = dataStr.indexOf('You have received a mystery gift from');
+						var pos1 = dataStr.indexOf('<', pos0);
+						var text = dataStr.slice(pos0, pos1);
+						var title = 'Mystery gift';
+						
+						info.image = 'gfx/90px-check.png';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						var pos0 = dataStr.indexOf('function open_box');
+						
+						if(pos0 != -1)
+						{
+							pos0 = dataStr.indexOf('var url = "', pos0);
+							var pos1 = dataStr.indexOf('"', pos0+11);
+							var url = dataStr.slice(pos0+11, pos1)+'&t='+(new Date().getTime());
+							
+							var obj = {
+								arguments:
+								{
+									'type': 'GET',
+									'url': url,
+									'data': ''
+								},
+								params: [],
+								callback: function() {}
+							};
+							chrome.tabs.sendRequest(tab, obj);
+						}
+						
+						FGS.endWithSuccess(currentType, id, info);						
+					}
 					else
 					{
 						throw {message: 'error'}
@@ -368,11 +414,12 @@ FGS.puzzledhearts.Bonuses =
 				}
 				catch(err)
 				{
+					console.log(err);
 					FGS.dump(err);
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, params, true);
+						retryThis(currentType, id, currentURL, params, true, tab);
 					}
 					else
 					{
@@ -384,7 +431,7 @@ FGS.puzzledhearts.Bonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, params, true);
+					retryThis(currentType, id, currentURL, params, true, tab);
 				}
 				else
 				{
@@ -401,11 +448,13 @@ FGS.puzzledhearts.Bonuses =
 					'url': currentURL,
 					'data': params
 				},
-				params: [currentType, id, currentURL, params, retry],
+				params: [currentType, id, currentURL, params, retry, tab],
 				callback: 'FGS.puzzledhearts.Bonuses.Click2'
 			};
 			
-			FGSoperator.postMessage(obj);
+			chrome.tabs.sendRequest(tab, obj);
+			
+			//FGSoperator.postMessage(obj);
 		}
 	},
 	
@@ -631,6 +680,30 @@ FGS.puzzledhearts.Requests =
 						
 						//var error_text = $.trim($('.streamRewardAllRewardsClaimed', dataHTML).text());
 						//FGS.endWithError('limit', currentType, id, error_text);
+					}
+					else if(dataStr.indexOf('You have received a mystery gift from') != -1)
+					{
+						var pos0 = dataStr.indexOf('You have received a mystery gift from');
+						var pos1 = dataStr.indexOf('<', pos0);
+						var text = dataStr.slice(pos0, pos1);
+						var title = 'Mystery gift';
+						
+						info.image = 'gfx/90px-check.png';
+						info.time = Math.round(new Date().getTime() / 1000);
+						
+						var pos0 = dataStr.indexOf('function open_box');
+						
+						if(pos0 != -1)
+						{
+							pos0 = dataStr.indexOf('var url = "', pos0);
+							var pos1 = dataStr.indexOf('"', pos0+11);
+							var url = dataStr.slice(pos0, pos1)+'&t='+(new Date().getTime());
+							
+							
+							
+						}
+						
+						FGS.endWithSuccess(currentType, id, info);						
 					}
 					else
 					{

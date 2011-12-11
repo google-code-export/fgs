@@ -755,6 +755,41 @@ FGS.openRecovery = function()
 	});
 };
 
+FGS.findGameTab = function(url, callback, params) {
+
+	var found = false;
+	
+	var args = [];
+	for(var i=0; i<params.length; i++)
+	{
+		if(params[i] == null)
+			params[i] = undefined;
+		
+		args.push('params['+i+']');
+	}
+	
+	//console.log(args);
+	
+	chrome.tabs.getAllInWindow(null, function(tabs) {
+		for (var i in tabs) { // check if Options page is open already
+			var tab = tabs[i];
+			if (tab.url.indexOf(url) != -1) {
+				found = true;
+				args.push('tab.id');
+				
+				eval('callback('+args.join(',')+')');		
+				break;
+			}
+		}
+		
+		if(!found)
+		{
+			FGS.endWithError('other', 'bonus', params[1], 'Read notice above bonuses.');
+			return;
+		}
+	});
+};
+
 FGS.dump = function(msg)
 {
 	if(FGSdebugMode)

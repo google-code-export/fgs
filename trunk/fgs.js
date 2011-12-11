@@ -279,7 +279,11 @@ var FGS = {
 		
 		var channel = 'https://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
 		
-		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
+		var useGameID = params.gameID;
+		if(useGameID == '1677463161271')
+			useGameID = '167746316127';
+		
+		params.getToken = 'api_key='+useGameID+'&app_id='+useGameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
 		
 		FGS.jQuery.ajax({
 			type: "GET",
@@ -564,9 +568,13 @@ var FGS = {
 		var currentType	= 'request';
 		var info = {}
 		
+		var useGameID = params.gameID;
+		if(useGameID == '1677463161271')
+			useGameID = '167746316127';
+		
 		FGS.jQuery.ajax({
 			type: "GET",
-			url: 'https://www.facebook.com/ajax/typeahead/apprequest/first_degree.php?__a=1&viewer='+FGS.userID+'&app_id='+params.gameID+'&token=v6',
+			url: 'https://www.facebook.com/ajax/typeahead/apprequest/first_degree.php?__a=1&viewer='+FGS.userID+'&app_id='+useGameID+'&token=v6',
 			data: params.requestPost,
 			dataType: 'text',
 			success: function(dataStr)
@@ -806,11 +814,15 @@ var FGS = {
 		}
 		else
 		{
+			var useGameID = params.gameID;
+			if(useGameID == '1677463161271')
+				useGameID = '167746316127';
+			
 			var obj = {
 				arguments:
 				{
 					'type': 'POST',
-					'url': 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&app_id='+params.gameID,
+					'url': 'https://www.facebook.com/ajax/chooser/list/friends/app_user/?__a=1&app_id='+useGameID,
 					'data': 'post_form_id='+FGS.post_form_id+'&fb_dtsg='+FGS.fb_dtsg+'&lsd&post_form_id_source=AsyncRequest'
 				},
 				params: [params, callback, retry],
@@ -829,7 +841,11 @@ var FGS = {
 		
 		var channel = 'https://static.ak.fbcdn.net/connect/xd_proxy.php?version=3#cb=f1&origin='+encodeURIComponent(params.channel)+'%2Ff2cc&relation=parent&transport=postmessage&frame=f1&result=%22xxRESULTTOKENxx%22';
 		
-		params.getToken = 'api_key='+params.gameID+'&app_id='+params.gameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
+		var useGameID = params.gameID;
+		if(useGameID == '1677463161271')
+			useGameID = '167746316127';
+		
+		params.getToken = 'api_key='+useGameID+'&app_id='+useGameID+'&channel='+encodeURIComponent(channel)+'&channel_url='+encodeURIComponent(channel)+'&redirect_uri='+encodeURIComponent(channel);
 		
 		FGS.jQuery.ajax({
 			type: "GET",

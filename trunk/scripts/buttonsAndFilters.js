@@ -53,6 +53,7 @@ FGS.gamesData =
 	130479640376964: 	{ 	
 						name: 'Adventure World',	systemName: 'adventureworld', link: 'https://apps.facebook.com/playadventureworld/', 
 						hasSendback: true,
+						useMessageCenter: true,
 						filter:		
 						{	
 							bonuses: [ ],		
@@ -103,7 +104,7 @@ FGS.gamesData =
 					},
 	107040076067341: 	{ 	
 						name: 'Castleville',	systemName: 'castleville', link: 'https://apps.facebook.com/playcastleville/', 
-						hasSendback: true,
+						//hasSendback: true,
 						useMessageCenter: true,
 						filter:		
 						{	
@@ -121,8 +122,8 @@ FGS.gamesData =
 							'RequestsHistory',
 							'FailedBonuses',
 							'FailedGifts',
-							'SendFreeGifts',
-							'SendFreeGiftsHistory',
+							//'SendFreeGifts',
+							//'SendFreeGiftsHistory',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						]
@@ -448,6 +449,7 @@ FGS.gamesData =
 	120563477996213: 	{ 
 						name: 'Ravenwood Fair',		systemName: 'ravenwood', link: 'https://apps.facebook.com/ravenwoodfair/',
 						hasSendback: true,
+						useMessageCenter: true,
 						filter:		
 						{
 							bonuses: [],
@@ -882,6 +884,7 @@ FGS.gamesData =
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
+						bonusNotice: "Before you start collecting in this game, you must open one tab with Puzzled Hearts game. Use <a target=\"_blank\" href=\"https://apps.facebook.com/phearts/pages/myhearts.php\">this link</a> and keep the tab open while collecting.",
 					},
 	216230855057280: { 	
 						name: 'Charmed Gems',	systemName: 'charmedgems', link: 'https://apps.facebook.com/charmedgems/',						
@@ -905,7 +908,9 @@ FGS.gamesData =
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
+						bonusNotice: "Before you start collecting in this game, you must open one tab with Charmed Gems game. Use <a target=\"_blank\" href=\"https://apps.facebook.com/charmedgems/pages/mygems.php\">this link</a> and keep the tab open while collecting.",
 					},
+					
 	167746316127: 	{ 	
 						name: 'Zoo World',		systemName: 'zooworld', link: 'https://apps.facebook.com/playzoo/zoo/home.php',
 						hasSendback: true,
@@ -1143,16 +1148,16 @@ FGS.gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['(.*)'],
 							requests: [],
-							requestsNewWindow: []
+							requestsNewWindow: ['(.*)']
 						},
 						buttons: [
 							//'BonusesPending',
-							'RequestsPending',
+							//'RequestsPending',
 							'ManualBonuses',
 							//'BonusesHistory',
-							'RequestsHistory',
+							//'RequestsHistory',
 							//'FailedBonuses',
-							'FailedGifts',
+							//'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],
@@ -1164,16 +1169,16 @@ FGS.gamesData =
 							bonuses: [],
 							bonusesNewWindow: ['(.*)'],
 							requests: [],
-							requestsNewWindow: []
+							requestsNewWindow: ['(.*)']
 						},
 						buttons: [
 							//'BonusesPending',
-							'RequestsPending',
+							//'RequestsPending',
 							'ManualBonuses',
 							//'BonusesHistory',
-							'RequestsHistory',
+							//'RequestsHistory',
 							//'FailedBonuses',
-							'FailedGifts',
+							//'FailedGifts',
 							'NeighborsSearch',
 							'GameOptionsTab'
 						],

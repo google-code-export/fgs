@@ -288,6 +288,15 @@ FGS.charmedgems.Bonuses =
 {	
 	Click: function(currentType, id, currentURL, retry)
 	{
+		FGS.findGameTab(
+				'apps.facebook.com/charmedgems/pages/mygems.php', 
+				FGS.charmedgems.Bonuses.Click1, 
+				[currentType, id, currentURL, retry]
+		);
+	},
+	
+	Click1: function(currentType, id, currentURL, retry)
+	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
@@ -329,7 +338,11 @@ FGS.charmedgems.Bonuses =
 						var url = paramTmp;
 					}
 					
-					FGS.charmedgems.Bonuses.Click2(currentType, id, url, params);
+					FGS.findGameTab(
+							'apps.facebook.com/charmedgems/pages/mygems.php', 
+							FGS.charmedgems.Bonuses.Click2, 
+							[currentType, id, url, params, retry]
+					);
 				} 
 				catch(err)
 				{
@@ -359,25 +372,23 @@ FGS.charmedgems.Bonuses =
 		});
 	},
 	
-	Click2:	function(currentType, id, currentURL, params, retry)
+	Click2:	function(currentType, id, currentURL, params, retry, tab, isCallback)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
 		
-		$.ajax({
-			type: "POST",
-			url: currentURL,
-			data: params,
-			dataType: 'text',
-			success: function(dataStr)
+		if(typeof isCallback != 'undefined')
+		{
+			var obj = isCallback;
+			var dataStr = obj.data;
+			
+			if(obj.success)
 			{
-				var dataHTML = FGS.HTMLParser(dataStr);
-				
-				
 				try
 				{
-					
+
+					var dataHTML = FGS.HTMLParser(dataStr);
 					
 					if(dataStr.indexOf('You have already received this mystery gift') != -1)
 					{
@@ -455,19 +466,37 @@ FGS.charmedgems.Bonuses =
 						FGS.endWithError('receiving', currentType, id);
 					}
 				}
-			},
-			error: function()
+			}
+			else
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, params, true);
+					retryThis(currentType, id, currentURL, params, true, tab);
 				}
 				else
 				{
 					FGS.endWithError('connection', currentType, id);
 				}
 			}
-		});
+
+		}
+		else
+		{
+			var obj = {
+				arguments:
+				{
+					'type': 'POST',
+					'url': currentURL,
+					'data': params
+				},
+				params: [currentType, id, currentURL, params, retry, tab],
+				callback: 'FGS.charmedgems.Bonuses.Click2'
+			};
+			
+			chrome.tabs.sendRequest(tab, obj);
+			
+			//FGSoperator.postMessage(obj);
+		}
 	},
 	
 	TryToPost: function(dataStr)
