@@ -790,6 +790,11 @@ FGS.findGameTab = function(url, callback, params) {
 	});
 };
 
+FGS.sendRequestToTab = function(tab, obj)
+{
+	chrome.tabs.sendRequest(tab, obj);
+};
+
 FGS.dump = function(msg)
 {
 	if(FGSdebugMode)

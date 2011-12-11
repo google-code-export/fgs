@@ -397,12 +397,14 @@ FGS.puzzledhearts.Bonuses =
 								{
 									'type': 'GET',
 									'url': url,
-									'data': ''
+									'data': '',
+									'referer': 'https://apps.facebook.com/phearts/pages/myhearts.php'
 								},
 								params: [],
 								callback: function() {}
 							};
-							chrome.tabs.sendRequest(tab, obj);
+							
+							FGS.sendRequestToTab(tab, obj);
 						}
 						
 						FGS.endWithSuccess(currentType, id, info);						
@@ -446,13 +448,14 @@ FGS.puzzledhearts.Bonuses =
 				{
 					'type': 'POST',
 					'url': currentURL,
-					'data': params
+					'data': params,
+					'referer': 'https://apps.facebook.com/phearts/pages/myhearts.php'
 				},
 				params: [currentType, id, currentURL, params, retry, tab],
 				callback: 'FGS.puzzledhearts.Bonuses.Click2'
 			};
 			
-			chrome.tabs.sendRequest(tab, obj);
+			FGS.sendRequestToTab(tab, obj);
 			
 			//FGSoperator.postMessage(obj);
 		}
