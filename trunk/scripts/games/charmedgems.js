@@ -478,7 +478,6 @@ FGS.charmedgems.Bonuses =
 					FGS.endWithError('connection', currentType, id);
 				}
 			}
-
 		}
 		else
 		{
@@ -487,13 +486,14 @@ FGS.charmedgems.Bonuses =
 				{
 					'type': 'POST',
 					'url': currentURL,
-					'data': params
+					'data': params,
+					'referer': 'https://apps.facebook.com/charmedgems/pages/mygems.php'
 				},
 				params: [currentType, id, currentURL, params, retry, tab],
 				callback: 'FGS.charmedgems.Bonuses.Click2'
 			};
 			
-			chrome.tabs.sendRequest(tab, obj);
+			FGS.sendRequestToTab(tab, obj);
 			
 			//FGSoperator.postMessage(obj);
 		}
