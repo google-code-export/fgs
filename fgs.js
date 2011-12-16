@@ -2312,8 +2312,6 @@ var FGS = {
 						
 						var bonusData = JSON.parse(data);
 						
-						console.log(bonusData, el.find('.uiAttachmentTitle').text());
-						
 						var bonusTime = bonusData.pub_time || bonusData.content_timestamp;
 						
 						if(typeof(bonusTime) == 'undefined')
