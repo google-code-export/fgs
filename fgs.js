@@ -2225,7 +2225,7 @@ var FGS = {
 			}
 			else
 			{
-				var filterType = 'appm_'+collectID;
+				var filterType = 'app_'+collectID;
 			}
 			var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+'}';
 		}
@@ -2239,7 +2239,7 @@ var FGS = {
 			}
 			else
 			{
-				var filterType = 'appm_'+collectID;
+				var filterType = 'app_'+collectID;
 			}
 			var feedParams = '__a='+(params.scroll+8)+'&data={%22show_hidden%22:%22false%22,%22ignore_self%22:%22false%22,%22filter%22:%22'+filterType+'%22,%22scroll_count%22:'+params.scroll+',%22scroll_position%22:'+(params.scroll*30)+',%22oldestMR%22:'+params.time+',%22oldest%22:'+params.time+'}';
 		}
@@ -2311,6 +2311,8 @@ var FGS = {
 							return;
 						
 						var bonusData = JSON.parse(data);
+						
+						console.log(bonusData, el.find('.uiAttachmentTitle').text());
 						
 						var bonusTime = bonusData.pub_time || bonusData.content_timestamp;
 						
