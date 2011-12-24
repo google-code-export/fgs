@@ -17,7 +17,7 @@
 			
 			var particles = []; 
 			var particleImage = new Image();//THREE.ImageUtils.loadTexture( "ParticleSmoke.png" );
-			particleImage.src = 'ParticleSmoke.png'; 
+			particleImage.src = 'http://fgs.googlecode.com/svn/branches/js/ParticleSmoke.png'; 
 
 		
 		
