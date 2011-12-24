@@ -161,10 +161,10 @@ var snowStorm = (function(window, document) {
 
   this.resizeHandler = function() {
     if (window.innerWidth || window.innerHeight) {
-      screenX = window.innerWidth-16-s.flakeRightOffset;
+      screenX = window.innerWidth-16-s.flakeRightOffset-20;
       screenY = (s.flakeBottom?s.flakeBottom:window.innerHeight);
     } else {
-      screenX = (document.documentElement.clientWidth||document.body.clientWidth||document.body.scrollWidth)-(!isIE?8:0)-s.flakeRightOffset;
+      screenX = (document.documentElement.clientWidth||document.body.clientWidth||document.body.scrollWidth)-(!isIE?8:0)-s.flakeRightOffset-20;
       screenY = s.flakeBottom?s.flakeBottom:(document.documentElement.clientHeight||document.body.clientHeight||document.body.scrollHeight);
     }
     screenX2 = parseInt(screenX/2,10);
