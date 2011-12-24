@@ -18,7 +18,7 @@
 		// Start Animation only if browser support <canvas>
 		if (document.createElement('canvas').getContext) {
 			console.log('create');
-			Snow();
+			setTimeout(Snow, 3000);
 			/*
 			if (document.readyState === 'complete')
 				Snow();
