@@ -1,6 +1,6 @@
 $('body').append('<div id="span0" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span1" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span2" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span3" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span4" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span5" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span6" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/zuegel.gif"></div><div id="span7" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/santaclaus.gif"></div><div id="span8" style="position:absolute;visibility:hidden;"></div>');
 
-$('body').css('overflow-x', "none");
+$('body').css('overflow-x', "hidden");
 
 // CREDITS:
 // Christmas Cursor Trailer 2
