@@ -17,10 +17,14 @@
 		console.log('start');
 		// Start Animation only if browser support <canvas>
 		if (document.createElement('canvas').getContext) {
+			console.log('create');
+			setTimeout('Snow();', 3000);
+			/*
 			if (document.readyState === 'complete')
 				Snow();
 			else
 				window.addEventListener('DOMContentLoaded', Snow, false);
+			*/
 		}
 
 		var deg = Math.PI / 180;         // For converting degrees to radians
