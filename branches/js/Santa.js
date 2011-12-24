@@ -18,6 +18,8 @@ $('body').prepend('<h1 class="wishes" style="color: red;text-align: center;font-
 
 function stopAnim() {
 	$(".wishes").remove();
+	bkP.options.hideSnow2011 = true;
+	bkP.saveOptions();
 	snowStorm.stop();
 }
 
