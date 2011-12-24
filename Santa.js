@@ -121,4 +121,4 @@ if (document.layers){
 	document.captureEvents(Event.MOUSEMOVE);
 }
 document.onmousemove=handlerMM;
-setTimeout(initiatetracker, 3000);
+setTimeout(initiatetracker, 100);
