@@ -1,8 +1,8 @@
-$('body').append('<div id="span0" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span1" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span2" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span3" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span4" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span5" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div id="span6" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/zuegel.gif"></div><div id="span7" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/santaclaus.gif"></div><div id="span8" style="position:absolute;visibility:hidden;"></div>');
+$('body').append('<div class="wishes" id="span0" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span1" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span2" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span3" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span4" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span5" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/elch.gif"></div><div class="wishes" id="span6" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/zuegel.gif"></div><div class="wishes" id="span7" style="position:absolute;visibility:hidden;"><img src="http://fgs.googlecode.com/svn/branches/js/santaclaus.gif"></div><div class="wishes" id="span8" style="position:absolute;visibility:hidden;"></div>');
 
 $('body').css('overflow-x', "hidden");
 
-$('body').prepend('<h3 style="color: red">Hello my Dear FGS users!</h3><div>In the peaceful joys of Christmas, in the stars that shine above, In the wonder of the season, may you find hope and promise that will fill this Christmas season with very special happiness for you! Merry Christmas and a Happy New Year!<br /><br />-- flies<br />PS. You can disable animations <a href="javascript:stopAnim();">HERE</a></div>');
+$('body').prepend('<h1 class="wishes" style="color: red;text-align: center;font-size: 3em;">Hello my Dear FGS users!</h1><div class="wishes" style="font-size: 1.5em;">In the peaceful joys of Christmas, in the stars that shine above, In the wonder of the season, may you find hope and promise that will fill this Christmas season with very special happiness for you! Merry Christmas and a Happy New Year! --flies (PS. You can disable animations <a href="javascript:stopAnim();">HERE</a>)</div>');
 
 // CREDITS:
 // Christmas Cursor Trailer 2
@@ -15,6 +15,11 @@ $('body').prepend('<h3 style="color: red">Hello my Dear FGS users!</h3><div>In t
 // If you add this script to a script-library or script-archive 
 // you have to add a link to http://www.fabulant.com on the webpage 
 // where this script will be running.
+
+function stopAnim() {
+	$(".wishes").remove();
+	snowStorm.removeEvent();
+}
 
 var step=8 
 var stepbasic=8
