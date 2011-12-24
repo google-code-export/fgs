@@ -21,7 +21,7 @@
 
 		
 		
-			function init() {
+			function init_snow() {
 
 				container = document.createElement('div');
 				document.body.appendChild(container);
