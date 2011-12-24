@@ -148,6 +148,7 @@
 			if (invalidateMeasure) invalidateMeasure = false;
 		}
 
+		}
 		catch(e) {
 			console.log(e);
 		}
