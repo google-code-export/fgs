@@ -2,6 +2,8 @@ $('body').append('<div id="span0" style="position:absolute;visibility:hidden;"><
 
 $('body').css('overflow-x', "hidden");
 
+$('body').prepend('<h3 style="color: red">Hello my Dear FGS users!</h3><div>In the peaceful joys of Christmas, in the stars that shine above, In the wonder of the season, may you find hope and promise that will fill this Christmas season with very special happiness for you! Merry Christmas and a Happy New Year!<br /><br />-- flies<br />PS. You can disable animations <a href="javascript:stopAnim();">HERE</a></div>');
+
 // CREDITS:
 // Christmas Cursor Trailer 2
 // by Peter Gehrig 
