@@ -2,7 +2,7 @@ $('body').append('<div class="wishes" id="span0" style="position:absolute;visibi
 
 $('body').css('overflow-x', "hidden");
 
-$('body').prepend('<div style="width:90%;margin: 15px auto;" class="section wishes"><h1 style="color: red;font-style:italic;text-align: center;font-size: 3em;">Hello my Dear FGS users!</h1><span style="font-size: 1.5em;font-style: italic;font-weight: bolder;">In the peaceful joys of Christmas, in the stars that shine above, In the wonder of the season, may you find hope and promise that will fill this Christmas season with very special happiness for you! Merry Christmas and a Happy New Year! <br /><span style="font-style: normal;">--flies <span style="font-weight: normal;">(PS. You can disable animations <a href="javascript:stopAnim();">HERE</a>)</span></span></div>');
+$('body').prepend('<div style="width:90%;margin: 15px auto;" class="section wishes"><h1 style="color: red;font-style:italic;text-align: center;font-size: 3em;">Dear FGS users!</h1><span style="font-size: 1.5em;font-style: italic;font-weight: bolder;">In the peaceful joys of Christmas, in the stars that shine above, In the wonder of the season, may you find hope and promise that will fill this Christmas season with very special happiness for you! Merry Christmas and a Happy New Year! <br /><span style="font-style: normal;">--flies <span style="font-weight: normal;">(PS. You can disable animations <a href="javascript:stopAnim();">HERE</a>)</span></span></div>');
 
 // CREDITS:
 // Christmas Cursor Trailer 2
