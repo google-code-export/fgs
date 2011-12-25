@@ -165,18 +165,114 @@ FGS.pioneertrail.Freegifts =
 			{
 				try
 				{
-					var app_key = '266989143414';
-					var channel_url = 'http://zc-prod-pt.frontier.zynga.com/channel.html';
+					var pos1 = dataStr.indexOf('mfs.setDataSet([');
 					
-					var tst = new RegExp(/(<fb:fbml[^>]*?[\s\S]*?<\/fb:fbml>)/m).exec(dataStr);
-					if(tst == null) throw {message:'no fbml tag'}
-					var fbml = tst[1];
+					if(pos1 == -1) throw {message: 'no people'}
+					pos1+=15;
 					
-					var paramsStr = 'app_key='+app_key+'&channel_url='+encodeURIComponent(channel_url)+'&fbml='+encodeURIComponent(fbml);
+					var pos2 = dataStr.indexOf(']);', pos1)+1;
 					
-					params.nextParams = paramsStr;
+					var sets = JSON.parse(dataStr.slice(pos1, pos2));
 					
-					FGS.getFBML(params);
+					var key = 0;
+					
+					if(typeof sets[1] != 'undefined')
+						key = 1;
+					
+					var finalArr = [];
+					
+					var friends = [];
+					
+					var zySendArr = [];
+					
+					var request_ids = [];
+					
+					for(var i=0;i<sets[key].items.length;i++)
+					{
+						var p = sets[key].items[i];
+						
+						var x = {};
+						
+						x[p.key] = {'name': p.value};
+						
+						finalArr.push(x);
+						
+						friends.push(p.key);						
+					}
+					
+					
+					var s0 = dataStr.indexOf('ZRequests2.sendRequests(result.data');
+					var s1a = dataStr.indexOf('"', s0)+1;
+					var s1b = dataStr.indexOf('"', s1a);
+					
+					var message = dataStr.slice(s1a, s1b);
+					
+					var s0 = dataStr.indexOf('this.sendToServer');
+					var s1 = dataStr.indexOf('url:', s0);
+					var s1a = dataStr.indexOf("'", s1)+1;
+					var s1b = dataStr.indexOf("'", s1a);
+					
+					params.finishRequestUrl = dataStr.slice(s1a, s1b);
+					
+					var s0 = dataStr.indexOf('var requestData');
+					var s1a = dataStr.indexOf("{", s0);
+					var s1b = dataStr.indexOf("};", s1a)+1;
+					
+					params.requestDataPost = JSON.parse(dataStr.slice(s1a, s1b));
+					
+					params.requestDataPost.view = 'Pioneer Trail Friends';
+					params.requestDataPost.ref = 'tab';
+					params.requestDataPost.type = 'freegift';
+					
+					params.items = finalArr;
+					
+					if(typeof(params.sendTo) == 'undefined')
+					{
+						FGS.sendView('updateNeighbors', finalArr, params.gameID);
+						return;
+					}
+					
+					var reqData = {};
+					
+					reqData.filters = JSON.stringify( [{name: 'PT Friends', user_ids: friends}] );
+					reqData.message = message;
+					
+					params.reqData = reqData;
+					params.channel = 'http://zc-prod-pt-fb.frontier.zynga.com/';
+					
+					FGS.getAppAccessTokenForSending(params, function(params, d) {
+						var pos0 = d.indexOf('&result=')+8;
+						var pos1 = d.indexOf('"', pos0);
+						
+						var str = d.slice(pos0, pos1);
+						var response = JSON.parse(decodeURIComponent(JSON.parse('{"abc": "'+str+'"}').abc));
+					
+					console.log(response);
+
+						if (response && response.request_ids) {
+							var requestIds = response.request_ids;
+						} else if (response && response.request && response.to) {
+							var requestIds = response.request;
+						}
+						else {
+							return false;
+						}
+						
+						var postData = '1=1';
+						for (var i = 0; i < params.sendTo.length; i ++) {
+							var pInt = parseInt(params.sendTo[i]);
+							if(!isNaN(pInt)) {
+							postData += '&ids[]=' + params.sendTo[i];
+						}
+						}
+
+						postData += '&request_ids=' + requestIds;
+						for (prop in params.requestDataPost) {
+							postData += '&' + prop + '=' + params.requestDataPost[prop];
+						}
+						
+						$.post(params.finishRequestUrl, postData);
+					});
 				}
 				catch(err)
 				{
