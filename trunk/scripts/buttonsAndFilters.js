@@ -333,6 +333,7 @@ FGS.gamesData =
 	234860566661: 	{ 	
 						name: 'Treasure Isle',		systemName: 'treasure', link: 'https://apps.facebook.com/treasureisle/',
 						hasSendback: true,
+						useMessageCenter: true,
 						filter:		
 						{	
 							bonuses: ['Play Treasure Isle'],	

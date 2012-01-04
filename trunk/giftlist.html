@@ -3639,7 +3639,7 @@ function onMouseDownTest(e)
 				tempData.destInt = bkP.Gup('params\\\[from_id\\\]', postData);
 			}
 			
-			if(tempData.destInt.indexOf(',') != -1)
+			if(tempData.destInt.toString().indexOf(',') != -1)
 			{
 				var sendArr = [];
 				var ids = tempData.destInt.split(',');
