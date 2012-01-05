@@ -259,168 +259,24 @@ FGS.farmville.Requests =
 				
 				try
 				{
-					var redirectUrl2 = FGS.checkForGoURI(dataStr);
-					if(redirectUrl2 != false)
+					if($('.padding_content', dataHTML).length > 0)
 					{
-						if(FGS.checkForNotFound(redirectUrl2) === true)
-						{
-							FGS.endWithError('not found', currentType, id);
-							return;
-						}
-						else 
-						{
-							retryThis(currentType, id, redirectUrl2, true);
-							return;
-						}
-					}
-					
-					var limitArr = [
-						{ search: 'seem to send that gift to your friend right now', error: 'Sorry, farmer. We can\'t seem to send that gift to your friend right now.' },
-						{ search: 'duckling has already been helped.', error: 'Sorry, farmer. Looks like duckling has already been helped.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
-						{ search: 'has received all the tickets they', error: 'This person has received all the tickets they need.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },				
-					];
-					
-					
-					var isLimit = false;
-					
-					$(limitArr).each(function(k,v)
-					{
-						if(dataStr.indexOf(v.search) != -1)
-						{
-							FGS.endWithError('limit', currentType, id, v.error);
-							isLimit = true;
-							return false;
-						}
-					});
-					
-					if(isLimit) return;
-				//Sorry, farmer. We can't seem to send that gift to your friend right now.
-				// <h3>Thanks for helping Matan survey their land!<br /><br />Matan has helped you survey as well. Be sure to claim your England farm and expand it!</h3>
-				
-				
-					var newUrl = $('form[target="flashAppIframe"]', dataHTML).attr('action');
-					var newParams = $('form[target="flashAppIframe"]', dataHTML).serialize();
-					
-					if(newUrl)
-					{
-						FGS.farmville.Requests.Click2(currentType, id, newUrl, newParams);
-						return;
-					}
-					
-					if($('.askMore_text', dataHTML).length > 0)
-					{
-						if($('.askMore_text', dataHTML).text().indexOf('You sent a') != -1) {
-							var i0 = $('.askMore_text', dataHTML).text().indexOf('!');
-							
-							info.image = 'gfx/90px-check.png';
-							info.title = $('.askMore_text', dataHTML).text().slice(0, i0);
-							info.text  = $('.askMore_text', dataHTML).text();
-							info.time = Math.round(new Date().getTime() / 1000);
-							FGS.endWithSuccess(currentType, id, info);
-							return;
-						}						
-					}
-					
-					
-					var tmpText = $('.main_giftConfirm_cont',dataHTML).find('h3').text();
-					
-					
-					if(tmpText != undefined && tmpText != '')
-					{
-						if(tmpText.indexOf(' survey their land!') != -1 || tmpText.indexOf('has helped you survey as well') != -1)
-						{
-							info.image = 'gfx/90px-check.png';
-							info.title = 'Survey their land';
-							info.text  = tmpText;
-							info.time = Math.round(new Date().getTime() / 1000);
-							FGS.endWithSuccess(currentType, id, info);
-							return;
-						}
-					}
-					
-					if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
-					{
-						info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
-						info.title = $(".giftConfirm_name",dataHTML).children().text();
-						info.text  = $(".giftFrom_name",dataHTML).children().text();
-						info.time = Math.round(new Date().getTime() / 1000);
-						
-						
-						var sendInfo = '';
-						
-						$('form', dataHTML).each(function()
-						{
-						
-							var tmpStr = unescape($(this).attr('action'));
-							
-							if(tmpStr.indexOf('sendThankYou') != -1)
-							{
-								var pos1 = tmpStr.indexOf('&giftRecipient=');
-								var pos2 = tmpStr.indexOf('&', pos1+1);
-								
-								var giftRecipient = tmpStr.slice(pos1+15,pos2);
-								
-								var pos1 = tmpStr.indexOf('&gift=');
-								var pos2 = tmpStr.indexOf('&', pos1+1);
-								
-								var giftName = tmpStr.slice(pos1+6,pos2);
-								
-								
-								sendInfo = {
-									gift: giftName,
-									destInt: giftRecipient,
-									destName: $('.giftFrom_name', dataHTML).text()
-								}							
-								return false;
-							}
-						});
-						
-						if(sendInfo == '')
-						{
-							var tmpStr = unescape(currentURL);
-												
-							var pos1 = tmpStr.indexOf('&gift=');
-							var pos2 = tmpStr.indexOf('&', pos1+1);
-							
-							var giftName = tmpStr.slice(pos1+6,pos2);
-							
-							sendInfo = {
-								gift: giftName,
-								destInt: $('.giftFrom_img', dataHTML).find('img').attr('uid'),
-								destName: $('.giftFrom_img', dataHTML).find('img').attr('title'),
-							}
-						}
-						info.thanks = sendInfo;
-						
-						FGS.endWithSuccess(currentType, id, info);
-					}
-					else if($('.giftFrom_img', dataHTML).length == 0 && $(".giftConfirm_img",dataHTML).length > 0)
-					{
-						info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
-						info.title = $(".giftConfirm_name",dataHTML).children().text();
-						info.text  = $(".padding_content",dataHTML).find('h3').text();
-						if(info.text == undefined || info.text == '')
-							info.text = $('.main_giftConfirm_cont',dataHTML).find('h3').text();
-						
-						info.time = Math.round(new Date().getTime() / 1000);
-
-						FGS.endWithSuccess(currentType, id, info);
-					}
-					else if($('.giftLimit', dataHTML).length > 0)
-					{
-						var error_text = $.trim($('.giftLimit', dataHTML).text());
-						FGS.endWithError('limit', currentType, id, error_text);
+						FGS.farmville.Requests.finalStep(dataStr, currentType, id, currentURL, undefined);
 					}
 					else
 					{
-						throw {message: dataStr}
+						var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
+						var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
+						
+						if(!url)
+						{
+							var paramTmp = FGS.findIframeAfterId('#app_content_266989143414', dataStr);
+							if(paramTmp == '') throw {message: 'no iframe'}
+							var url = paramTmp;
+						}
+						
+						FGS.farmville.Requests.Click2(currentType, id, url, params);
 					}
-				
 				}
 				catch(err)
 				{
@@ -450,7 +306,77 @@ FGS.farmville.Requests =
 		});
 	},
 	
-	Click2: function(currentType, id, currentURL, params, retry)
+
+	Click2:	function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		$.ajax({
+			type: "POST",
+			data: params,
+			url: currentURL,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					var pos1 = dataStr.indexOf('top.location.href = "');
+					if(pos1 != -1)
+					{
+						var pos2 = dataStr.indexOf('"', pos1+21);
+						var url = dataStr.slice(pos1+21, pos2);
+						
+						FGS.farmville.Requests.Click(currentType, id, url);
+						return;
+					}
+					
+					var pos1 = dataStr.indexOf("top.location.href='");
+					if(pos1 != -1 && dataStr.slice(pos1-1,pos1) != '"')
+					{
+						var pos2 = dataStr.indexOf("'", pos1+19);
+						var url = dataStr.slice(pos1+19, pos2);
+						
+						FGS.farmville.Requests.Click(currentType, id, url);
+						return;
+					}
+					
+					FGS.farmville.Requests.finalStep(dataStr, currentType, id, currentURL, undefined);					
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, params, true);
+					}
+					else
+					{
+						FGS.setNewFarmvilleBonus();
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, params, true);
+				}
+				else
+				{
+					FGS.setNewFarmvilleBonus();
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	Click3: function(currentType, id, currentURL, params, retry)
 	{
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
@@ -531,10 +457,170 @@ FGS.farmville.Requests =
 				}
 			}
 		});
+	},
+	
+	finalStep: function(dataStr, currentType, id, currentURL, params) {
+		
+		var $ = FGS.jQuery;
+		var info = {}
+		
+		
+		try
+		{
+			var dataHTML = FGS.HTMLParser(dataStr);
+			
+			
+			var limitArr = [
+				{ search: 'seem to send that gift to your friend right now', error: 'Sorry, farmer. We can\'t seem to send that gift to your friend right now.' },
+				{ search: 'duckling has already been helped.', error: 'Sorry, farmer. Looks like duckling has already been helped.' },
+				{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
+				{ search: 'has received all the tickets they', error: 'This person has received all the tickets they need.' },
+				{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
+				{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
+				{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
+				{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },				
+			];
+			
+			
+			var isLimit = false;
+			
+			$(limitArr).each(function(k,v)
+			{
+				if(dataStr.indexOf(v.search) != -1)
+				{
+					FGS.endWithError('limit', currentType, id, v.error);
+					isLimit = true;
+					return false;
+				}
+			});
+			
+			if(isLimit) return;
+		//Sorry, farmer. We can't seem to send that gift to your friend right now.
+		// <h3>Thanks for helping Matan survey their land!<br /><br />Matan has helped you survey as well. Be sure to claim your England farm and expand it!</h3>
+		
+		
+			var newUrl = $('form[target="flashAppIframe"]', dataHTML).attr('action');
+			var newParams = $('form[target="flashAppIframe"]', dataHTML).serialize();
+			
+			if(newUrl)
+			{
+				FGS.farmville.Requests.Click3(currentType, id, newUrl, newParams);
+				return;
+			}
+			
+			if($('.askMore_text', dataHTML).length > 0)
+			{
+				if($('.askMore_text', dataHTML).text().indexOf('You sent a') != -1) {
+					var i0 = $('.askMore_text', dataHTML).text().indexOf('!');
+					
+					info.image = 'gfx/90px-check.png';
+					info.title = $('.askMore_text', dataHTML).text().slice(0, i0);
+					info.text  = $('.askMore_text', dataHTML).text();
+					info.time = Math.round(new Date().getTime() / 1000);
+					FGS.endWithSuccess(currentType, id, info);
+					return;
+				}						
+			}			
+			
+			var tmpText = $('.main_giftConfirm_cont',dataHTML).find('h3').text();
+			
+			
+			if(tmpText != undefined && tmpText != '')
+			{
+				if(tmpText.indexOf(' survey their land!') != -1 || tmpText.indexOf('has helped you survey as well') != -1)
+				{
+					info.image = 'gfx/90px-check.png';
+					info.title = 'Survey their land';
+					info.text  = tmpText;
+					info.time = Math.round(new Date().getTime() / 1000);
+					FGS.endWithSuccess(currentType, id, info);
+					return;
+				}
+			}
+			
+			if($('.giftFrom_img', dataHTML).length > 0 && $(".giftConfirm_img",dataHTML).length > 0)
+			{
+				info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
+				info.title = $(".giftConfirm_name",dataHTML).children().text();
+				info.text  = $(".giftFrom_name",dataHTML).children().text();
+				info.time = Math.round(new Date().getTime() / 1000);
+				
+				
+				var sendInfo = '';
+				
+				$('form', dataHTML).each(function()
+				{
+				
+					var tmpStr = unescape($(this).attr('action'));
+					
+					if(tmpStr.indexOf('sendThankYou') != -1)
+					{
+						var pos1 = tmpStr.indexOf('&giftRecipient=');
+						var pos2 = tmpStr.indexOf('&', pos1+1);
+						
+						var giftRecipient = tmpStr.slice(pos1+15,pos2);
+						
+						var pos1 = tmpStr.indexOf('&gift=');
+						var pos2 = tmpStr.indexOf('&', pos1+1);
+						
+						var giftName = tmpStr.slice(pos1+6,pos2);
+						
+						
+						sendInfo = {
+							gift: giftName,
+							destInt: giftRecipient,
+							destName: $('.giftFrom_name', dataHTML).text()
+						}							
+						return false;
+					}
+				});
+				
+				if(sendInfo == '')
+				{
+					var tmpStr = unescape(currentURL);
+										
+					var pos1 = tmpStr.indexOf('&gift=');
+					var pos2 = tmpStr.indexOf('&', pos1+1);
+					
+					var giftName = tmpStr.slice(pos1+6,pos2);
+					
+					sendInfo = {
+						gift: giftName,
+						destInt: $('.giftFrom_img', dataHTML).find('img').attr('uid'),
+						destName: $('.giftFrom_img', dataHTML).find('img').attr('title'),
+					}
+				}
+				info.thanks = sendInfo;
+				
+				FGS.endWithSuccess(currentType, id, info);
+			}
+			else if($('.giftFrom_img', dataHTML).length == 0 && $(".giftConfirm_img",dataHTML).length > 0)
+			{
+				info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
+				info.title = $(".giftConfirm_name",dataHTML).children().text();
+				info.text  = $(".padding_content",dataHTML).find('h3').text();
+				if(info.text == undefined || info.text == '')
+					info.text = $('.main_giftConfirm_cont',dataHTML).find('h3').text();
+				
+				info.time = Math.round(new Date().getTime() / 1000);
+
+				FGS.endWithSuccess(currentType, id, info);
+			}
+			else if($('.giftLimit', dataHTML).length > 0)
+			{
+				var error_text = $.trim($('.giftLimit', dataHTML).text());
+				FGS.endWithError('limit', currentType, id, error_text);
+			}
+			else
+			{
+				throw {message: dataStr}
+			}
+		}
+		catch(err)
+		{
+			FGS.endWithError('connection', currentType, id);
+		}
 	}
-	
-	
-	
 };
 
 
@@ -788,7 +874,7 @@ FGS.farmville.Bonuses =
 			}
 			else
 			{
-				throw {message: dataStr}
+				throw {message: 'nothing here'}
 			}
 		} 
 		catch(err) 
@@ -797,6 +883,6 @@ FGS.farmville.Bonuses =
 			FGS.dump(err.message);
 			FGS.setNewFarmvilleBonus();
 			FGS.endWithError('receiving', currentType, id);
-		}		
+		}
 	}
 };
