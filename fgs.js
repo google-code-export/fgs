@@ -2121,6 +2121,12 @@ var FGS = {
 						bTitle = el.find('.uiTooltipText:first').text();
 					}
 					
+					if((typeof bTitle == 'undefined' || bTitle == '') && el.find('.appRequestBodyNewA strong').length > 0)
+					{
+						bTitle = el.find('.appRequestBodyNewA strong').text();
+					}
+					
+					
 					var gift = [elID, APPID, bTitle, newText, type, dataPost, curTime, stats];
 					giftArr.push(gift);
 				});
