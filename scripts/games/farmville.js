@@ -344,6 +344,18 @@ FGS.farmville.Requests =
 						return;
 					}
 					
+					
+					var url = FGS.findIframeByName('flashAppIframe', dataStr);
+					
+					if(url != '') {
+						FGS.farmville.Requests.Click(currentType, id, url);
+						return;
+					}
+					
+					var tst = new RegExp(/<script[^>]*?>[\s\S]*?<fb:fbml[^>]*?>([\s\S]*?)<\/fb:fbml>[\s\S]*?<\/script>/m).exec(dataStr);
+					if(tst != null)
+						dataStr = tst[1];
+					
 					FGS.farmville.Requests.finalStep(dataStr, currentType, id, currentURL, undefined);					
 				}
 				catch(err)
@@ -618,7 +630,7 @@ FGS.farmville.Requests =
 		}
 		catch(err)
 		{
-			FGS.endWithError('connection', currentType, id);
+			FGS.endWithError('receiving', currentType, id);
 		}
 	}
 };
