@@ -78,7 +78,7 @@ FGS.treasure.MessageCenter =
 					
 					var zyParam = JSON.parse(dataStr.slice(pos1,pos2));
 					
-					zyParam.snapi_auth = zyParam.zyAuthHash;
+					zyParam.snapi_auth = zyParam.zyAuthHash || zyParam.snapi_auth;
 					
 					var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
 					params.domain = params.step1url.match(re)[1].toString();

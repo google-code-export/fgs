@@ -529,15 +529,6 @@ FGS.farmville.Bonuses =
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
-
-		var otherLimits = 
-		{
-			'have any room to store that bushel': ['Get a Bushel', 'Take a Bushel'],
-			'need to use some of your fuel to be eligible to find more': [],
-			'All that lightning fast clicking is leaving the bits': [],
-			'trying to claim too many rewards from your friends at once': [],
-			'trying to claim rewards from your friends too quickly!': [],
-		}
 		
 		$.ajax({
 			type: "GET",
@@ -555,7 +546,6 @@ FGS.farmville.Bonuses =
 					}
 					else
 					{
-						FGS.setNewFarmvilleBonus();
 						FGS.endWithError('receiving', currentType, id);
 					}
 					return;
@@ -563,7 +553,7 @@ FGS.farmville.Bonuses =
 				
 				var dataStr = FGS.processPageletOnFacebook(dataStr);
 				var dataHTML = FGS.HTMLParser(dataStr);
-
+				
 				try
 				{
 					var redirectUrl2 = FGS.checkForGoURI(dataStr);
@@ -572,7 +562,95 @@ FGS.farmville.Bonuses =
 						retryThis(currentType, id, redirectUrl2, true);
 						return;
 					}
-				
+					
+					var url = $('form[target]', dataHTML).not(FGS.formExclusionString).first().attr('action');
+					var params = $('form[target]', dataHTML).not(FGS.formExclusionString).first().serialize();
+					
+					if(!url)
+					{
+						var paramTmp = FGS.findIframeAfterId('#app_content_266989143414', dataStr);
+						if(paramTmp == '') throw {message: 'no iframe'}
+						var url = paramTmp;
+					}
+					
+					FGS.farmville.Bonuses.Click2(currentType, id, url, params);
+					/*
+					*/
+				}
+				catch(err)
+				{
+					FGS.dump(err);
+					FGS.dump(err.message);
+					if(typeof(retry) == 'undefined')
+					{
+						retryThis(currentType, id, currentURL, true);
+					}
+					else
+					{
+						FGS.endWithError('receiving', currentType, id);
+					}
+				}
+			},
+			error: function()
+			{
+				if(typeof(retry) == 'undefined')
+				{
+					retryThis(currentType, id, currentURL, true);
+				}
+				else
+				{
+					FGS.endWithError('connection', currentType, id);
+				}
+			}
+		});
+	},
+	
+	Click2:	function(currentType, id, currentURL, params, retry)
+	{
+		var $ = FGS.jQuery;
+		var retryThis 	= arguments.callee;
+		var info = {}
+		
+		var otherLimits = 
+		{
+			'have any room to store that bushel': ['Get a Bushel', 'Take a Bushel'],
+			'need to use some of your fuel to be eligible to find more': [],
+			'All that lightning fast clicking is leaving the bits': [],
+			'trying to claim too many rewards from your friends at once': [],
+			'trying to claim rewards from your friends too quickly!': [],
+		}
+		
+		$.ajax({
+			type: "POST",
+			data: params,
+			url: currentURL,
+			dataType: 'text',
+			success: function(dataStr)
+			{
+				try
+				{
+					var dataHTML = FGS.HTMLParser(dataStr);
+					
+					var pos1 = dataStr.indexOf('top.location.href = "');
+					if(pos1 != -1)
+					{
+						var pos2 = dataStr.indexOf('"', pos1+21);
+						var url = dataStr.slice(pos1+21, pos2);
+						
+						FGS.farmville.Bonuses.Click(currentType, id, url);
+						return;
+					}
+					
+					var pos1 = dataStr.indexOf("top.location.href='");
+					if(pos1 != -1 && dataStr.slice(pos1-1,pos1) != '"')
+					{
+						var pos2 = dataStr.indexOf("'", pos1+19);
+						var url = dataStr.slice(pos1+19, pos2);
+						
+						FGS.farmville.Bonuses.Click(currentType, id, url);
+						return;
+					}
+					
 					if($('.inputsubmit[value="OK"]',dataHTML).length > 0)
 					{
 						var stop = false;
@@ -608,9 +686,17 @@ FGS.farmville.Bonuses =
 						info.image = $(".giftConfirm_img",dataHTML).children().attr("longdesc");
 						info.text  = $(".main_giftConfirm_cont", dataHTML).find('h3').text();						
 						
+						var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+						var domain = currentURL.match(re)[1].toString();
+						
+						if($('.inner_giftConfirm_cont', dataHTML).find('form:nth-child('+num+')').length > 0)
+						{
+							currentURL = $('.inner_giftConfirm_cont', dataHTML).find('form:nth-child('+num+')').attr('action').replace('apps.facebook.com/onthefarm', domain);
+						}
+						
 						$.ajax({
 							type: "POST",
-							data: giftReceivePost,
+							data: params,
 							url: currentURL,
 							success: function(d)
 							{
@@ -623,7 +709,7 @@ FGS.farmville.Bonuses =
 							{
 								if(typeof(retry) == 'undefined')
 								{
-									retryThis(currentType, id, currentURL, true);
+									retryThis(currentType, id, currentURL, params, true);
 								}
 								else
 								{
@@ -645,7 +731,7 @@ FGS.farmville.Bonuses =
 					FGS.dump(err.message);
 					if(typeof(retry) == 'undefined')
 					{
-						retryThis(currentType, id, currentURL, true);
+						retryThis(currentType, id, currentURL, params, true);
 					}
 					else
 					{
@@ -658,7 +744,7 @@ FGS.farmville.Bonuses =
 			{
 				if(typeof(retry) == 'undefined')
 				{
-					retryThis(currentType, id, currentURL, true);
+					retryThis(currentType, id, currentURL, params, true);
 				}
 				else
 				{
