@@ -5,10 +5,24 @@ FGS.farmville.Freegifts =
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var addAntiBot = (typeof(retry) == 'undefined' ? '' : '');
+		
+		if(typeof params.change1url != 'undefined')
+		{
+			var method = 'POST';
+			var url = params.change1url;
+			var data = params.click2params;
+		}
+		else
+		{
+			var method = 'GET';
+			var url = 'https://apps.facebook.com/onthefarm/'+addAntiBot;
+			var data = {};
+		}
 
 		$.ajax({
-			type: "GET",
-			url: 'https://apps.facebook.com/onthefarm/'+addAntiBot,
+			type: method,
+			url: url,
+			data: data,
 			dataType: 'text',
 			success: function(dataStr)
 			{
@@ -20,6 +34,18 @@ FGS.farmville.Freegifts =
 					var url = $('form[target="flashAppIframe"]', dataHTML).attr('action');
 					params.click2params = $('form[target="flashAppIframe"]', dataHTML).serialize();
 					params.click2url = url;
+					
+					if(!url) {
+						var url = $('form[id^="canvas_iframe_post_"]', dataHTML).attr('action');
+						params.click2params = $('form[id^="canvas_iframe_post_"]', dataHTML).serialize();
+						params.change1url = url;
+						
+						if(url)
+						{
+							FGS.farmville.Freegifts.Click(params);
+							return;
+						}
+					}
 					
 					if(!url)
 					{
@@ -216,6 +242,12 @@ FGS.farmville.Requests =
 		var $ = FGS.jQuery;
 		var retryThis 	= arguments.callee;
 		var info = {}
+		
+		if(FGS.checkForNotFound(currentURL) === true)
+		{
+			FGS.endWithError('not found', currentType, id);
+			return;
+		}
 		
 		$.ajax({
 			type: "GET",
