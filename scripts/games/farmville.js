@@ -278,7 +278,7 @@ FGS.farmville.Requests =
 						{ search: 'seem to send that gift to your friend right now', error: 'Sorry, farmer. We can\'t seem to send that gift to your friend right now.' },
 						{ search: 'duckling has already been helped.', error: 'Sorry, farmer. Looks like duckling has already been helped.' },
 						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
-						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
+						{ search: 'has received all the tickets they', error: 'This person has received all the tickets they need.' },
 						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
 						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
 						{ search: 'You are too late to claim a reward', error: 'You are too late to claim a reward.' },
@@ -311,6 +311,22 @@ FGS.farmville.Requests =
 						FGS.farmville.Requests.Click2(currentType, id, newUrl, newParams);
 						return;
 					}
+					
+					if($('.askMore_text', dataHTML).length > 0)
+					{
+						if($('.askMore_text', dataHTML).text().indexOf('You sent a') != -1) {
+							var i0 = $('.askMore_text', dataHTML).text().indexOf('!');
+							
+							info.image = 'gfx/90px-check.png';
+							info.title = $('.askMore_text', dataHTML).text().slice(0, i0);
+							info.text  = $('.askMore_text', dataHTML).text();
+							info.time = Math.round(new Date().getTime() / 1000);
+							FGS.endWithSuccess(currentType, id, info);
+							return;
+						}						
+					}
+					
+					
 					var tmpText = $('.main_giftConfirm_cont',dataHTML).find('h3').text();
 					
 					
